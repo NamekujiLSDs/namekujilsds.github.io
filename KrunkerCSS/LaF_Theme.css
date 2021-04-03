@@ -362,7 +362,7 @@
 #ammoDisplay{
     width:80px;
     letter-spacing:0px;
-    font-size:40px;
+    font-size:55px;
     border-radius:0px;
     background-color:transparent;
     position:fixed;
@@ -371,13 +371,13 @@
     padding-left:0px;
     padding-bottom:-50px;
     padding:0px;
-    bottom:39%;
+    bottom:35%;
     right:38%;
     margin-right:0px;
 }
 
 #ammoVal{
-    font-size:55px;
+    font-size:45px;
     text-align: center;
     text-shadow: 2px 2px 5px black, -2px -2px 5px black, 2px 2px 5px black, -2px -2px 5px black;
 }
