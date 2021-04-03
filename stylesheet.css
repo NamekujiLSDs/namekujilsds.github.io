@@ -1,0 +1,47 @@
+/*Font Change*/
+@font-face {
+	font-family: 'MyFont';
+	src: url(https://f.easyuploader.app/eu-prd/upload/20210330230425_36723173.ttf);
+}
+
+* {
+	font-family: MyFont;
+}
+
+body{
+	background-color:#252525;
+
+}
+h1.title{
+	font-weight:900;
+	font-size:50px;
+	text-align: center;
+	color:white;
+	text-shadow:1px 1px 5px black, -1px -1px 5px black,3px 3px 2px gray,4px 4px 1px gray;
+}
+
+h4.myname{
+	color:gray;
+	font-size:15px;
+	text-align:right;
+	text-shadow:2px 2px 5px black;
+}
+h2.cssname{
+	color:lightblue;
+	text-shadow:2px 2px 2px gray;
+	margin-left:3%;
+}
+
+img{
+    border: solid #7bf4ff 5px;
+    box-shadow: 3px 3px 1px #7b7bff, 4px 4px 1px #7b7bff;
+    width:60%;
+    cursor: pointer;
+}
+input[type="button" i] {
+    position:absolute;
+    height:10vh;
+    background-color: lightpink;
+    right:5%;
+    margin-top:-50px;
+}
