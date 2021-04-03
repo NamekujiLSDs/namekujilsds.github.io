@@ -1,12 +1,3 @@
-/*Font Change*/
-@font-face {
-	font-family: 'MyFont';
-	src: url(https://f.easyuploader.app/eu-prd/upload/20210330230425_36723173.ttf);
-}
-
-* {
-	font-family: MyFont;
-}
 
 body{
 	background-color:#252525;
