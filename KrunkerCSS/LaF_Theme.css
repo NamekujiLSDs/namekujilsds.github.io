@@ -383,7 +383,8 @@
 }
 .topRightCounters{
     position: fixed;
-    right: 48%;
+    right: 40%;
     top: 85%;
+    width:max-content !important;
     background-color:transparent;
 }
