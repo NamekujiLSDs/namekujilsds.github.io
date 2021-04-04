@@ -163,6 +163,7 @@ p.rs {
   color: yellow;
   text-align: center;
   margin: 0px;
+  margin-top:-6%;
   font-size: 18px;
 }
 .secssname{
@@ -176,4 +177,23 @@ p.cr{
   margin-top:10%;
   color:#252525;
   text-shadow:-1px -1px 1px white,1px 1px 1px white,1px -1px 1px white,-1px 1px 1px white,0px 0px 5px gray;
+}
+.social{
+  border:solid black 3px;
+  width:50px;
+  height:50px;
+  box-shadow:none;
+  margin:0px;
+  margin-left:1%;
+  margin-bottom:3%;
+  filter:brightness(0)drop-shadow(0 0 2px white) 
+}
+img.social:hover{
+    width: 55px;
+    height:auto;
+    margin-top:-5px;
+    margin-left: 1%;
+    margin-bottom: 3%;
+    box-shadow:1px 1px 2px white,-1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white;
+    transition: .3s;
 }
