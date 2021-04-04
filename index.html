@@ -2,6 +2,33 @@
 <html>
 
 <head>
+    <script type="text/javascript">
+        $(function () {
+            var audioBtn = $('.audio_button'),
+  audioWrap = $('.audio_wrap'),
+  audio = document.getElementById('audio');
+  audioBtn.on('click', function () {
+    if( audioWrap.hasClass('play') ) {
+      audio.pause();
+      audioWrap.removeClass('play');
+    } else {
+      audio.play();
+      audioWrap.addClass('play');
+    }
+  });
+});
+    </script>
+    <div class="audio_wrap">
+    <div class="audio_button"></div>
+    <audio id="audio" src="https://github.com/NamekujiLSDs/NAMEKUJILSDS.github.io/raw/main/slugmemobgm.mp3" loop>
+    あなたのブラウザーは
+        <code>
+        audio
+        </code>
+        をサポートしていません。
+        </audio>
+    </div>
+
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/NamekujiLSDs/NAMEKUJILSDS.github.io/main/icon.ico">
     <link rel="icon" href="https://raw.githubusercontent.com/NamekujiLSDs/NAMEKUJILSDS.github.io/main/icon.ico">
     <meta name="language" content="en">
