@@ -2,32 +2,6 @@
 <html>
 
 <head>
-    <script type="text/javascript">
-        $(function () {
-            var audioBtn = $('.audio_button'),
-  audioWrap = $('.audio_wrap'),
-  audio = document.getElementById('audio');
-  audioBtn.on('click', function () {
-    if( audioWrap.hasClass('play') ) {
-      audio.pause();
-      audioWrap.removeClass('play');
-    } else {
-      audio.play();
-      audioWrap.addClass('play');
-    }
-  });
-});
-    </script>
-    <div class="audio_wrap">
-    <div class="audio_button"></div>
-    <audio id="audio" src="https://github.com/NamekujiLSDs/NAMEKUJILSDS.github.io/raw/main/slugmemobgm.mp3" loop>
-    あなたのブラウザーは
-        <code>
-        audio
-        </code>
-        をサポートしていません。
-        </audio>
-    </div>
 
     <link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/NamekujiLSDs/NAMEKUJILSDS.github.io/main/icon.ico">
     <link rel="icon" href="https://raw.githubusercontent.com/NamekujiLSDs/NAMEKUJILSDS.github.io/main/icon.ico">
@@ -54,6 +28,32 @@
 </head>
 
 <body>
+    <audio　id="bgm" autoplay loop>
+	    <source src="music/https://github.com/NamekujiLSDs/NAMEKUJILSDS.github.io/raw/main/slugmemobgm.mp3">
+	</audio>
+	<button type="button" onclick="off()">OFF</button>
+	BGM
+<button type="button" onclick="on()">ON</button>
+	<script>
+	var media = document.getElementById("bgm");
+		
+		function on(){
+  var vl = media.volume;
+  if (vl < 1.0)
+  {
+    media.volume = 1.0;
+  }
+}
+		function off()
+{
+  var vl = media.volume;
+  if (vl > 0)
+  {
+    media.volume = 0;
+  }
+}
+	</script>
+		
     <h1 class="title">Krunker CSS</h1>
     <h4 class="myname">By NamekujiLSDs#7777</h4>
     <p class="rs">⚠RESOURCE SWAPPERS ARE REQUIRED⚠</p>
