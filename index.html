@@ -28,15 +28,14 @@
 </head>
 
 <body>
-    <audio　id="bgm" autoplay loop>
-	    <source src="music/https://github.com/NamekujiLSDs/NAMEKUJILSDS.github.io/raw/main/slugmemobgm.mp3">
+    <audio　id="bgm" controls autoplay loop>
+	    <source src="music/https://f.easyuploader.app/eu-prd/upload/20210404192510_75646535.mp3">
 	</audio>
 	<button type="button" onclick="off()">OFF</button>
 	BGM
 <button type="button" onclick="on()">ON</button>
 	<script>
 	var media = document.getElementById("bgm");
-		
 		function on(){
   var vl = media.volume;
   if (vl < 1.0)
