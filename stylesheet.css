@@ -35,16 +35,12 @@ h2.cssname{
 img{
     border: solid #7bf4ff 5px;
     box-shadow: 3px 3px 1px #7b7bff, 4px 4px 1px #7b7bff;
-    width:60%;
+    width:40%;
     cursor: pointer;
-    margin-bottom:15px;
+    margin-left:5%;
 }
 input[type="button" i] {
-    position:absolute;
-    height:10vh;
-    background-color: lightpink;
-    right:5%;
-    margin-top:-50px;
+
 }
 p.rs{
 	color:yellow;
