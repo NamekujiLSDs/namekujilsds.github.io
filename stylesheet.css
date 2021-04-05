@@ -197,3 +197,10 @@ img.social:hover{
     box-shadow:1px 1px 2px white,-1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white;
     transition: .3s;
 }
+.cutecomp{
+	  border-top:2px solid #edbeed;
+  padding-top:3%;
+  color: #edbeed;
+  text-shadow: 2px 2px 3px #7b7b7b;
+  margin-left: 3%;
+}
