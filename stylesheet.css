@@ -204,3 +204,15 @@ img.social:hover{
   text-shadow: 2px 2px 3px #7b7b7b;
   margin-left: 3%;
 }
+.wdname{
+  	  border-top:2px solid #ffffff;
+  padding-top:3%;
+  color: #ffffff;
+  text-shadow: 2px 2px 3px #7b7b7b;
+  margin-left: 3%;
+}
+.wdname::after{
+content:"ㅤㅤNEW!!";
+color:red;
+font-size:20px;
+}
