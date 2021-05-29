@@ -1,218 +1,326 @@
 @font-face {
-  font-family: 'MyFont';
-  src: url(https://f.easyuploader.app/eu-prd/upload/20210330230425_36723173.ttf);
+  font-family: material-icons;
+  src        : url(https://fonts.gstatic.com/s/materialicons/v59/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2)
+}
+
+.material-icons {
+  font-family: material-icons;
 }
 
 * {
-  font-family: MyFont;
+  color      : white;
+  font-family: 'Kosugi Maru', sans-serif;
 }
 
 body {
-  padding-bottom: 0%;
-  background-color: #252525;
+  background-color: black;
 }
 
-h1.title{
-  font-weight: 900;
-  font-size: 50px;
+.title {
+  display    : block;
+  color      : white;
+  text-align : center;
+  left       : 45%;
+  margin-top : 20px;
+  font-size  : 40px;
+  text-shadow: 0 0 4px white;
+}
+
+.abtme {
+  color     : white;
   text-align: center;
-  color: white;
-  margin-top: 0;
-  margin-bottom: -4%;
-    text-shadow: 1px 1px 5px black, -1px -1px 5px black, 3px 3px 2px gray, 4px 4px 1px gray;
+  font-size : 25px;
+}
+
+
+/*タブ切り替え全体のスタイル*/
+.tabs {
+  margin-top    : 50px;
+  padding-bottom: 40px;
+  box-shadow    : 0 0 10px rgb(0, 0, 0);
+  width         : 100%;
+  display       : flex;
+  flex-direction: row;
+  flex-wrap     : wrap;
+}
+
+/*タブのスタイル*/
+.tab_item {
+  width          : calc(100%/4);
+  height         : 50px;
+  border-bottom  : 2px white solid;
+  height         : 50px;
+  font-size      : 20px;
+  text-align     : center;
+  color          : #ffffff;
+  display        : flex;
+  font-weight    : bold;
+  transition     : all 0.2s ease;
+  justify-content: center;
+  align-content  : center;
+  align-items    : center;
+}
+
+.tab_item>#tab_cnt {
+  color      : white;
+  text-shadow: 0 0 2px black;
+  transition : all 0.2s ease;
+}
+
+#tab_cnt {
+  margin-left: 10px;
+}
+
+.tab_item:hover>#tab_cnt {
+  color      : black;
+  text-shadow: 0 0 2px black;
+  transition : all 0.2s ease;
+}
+
+.tab_item:hover {
+  transition : all 0.2s ease;
+  background : white;
+  color      : black;
+  text-shadow: 0 0 2px black;
+}
+
+/*ラジオボタンを全て消す*/
+input[name="tab_item"] {
+  display: none;
+}
+
+/*タブ切り替えの中身のスタイル*/
+.tab_content {
+  display : none;
+  padding : 40px 40px 0;
+  clear   : both;
+  overflow: hidden;
+}
+
+
+
+/*選択されているタブのコンテンツのみを表示*/
+#CSS-C:checked~#CSS,
+#MOD-C:checked~#MOD,
+#SKIN-C:checked~#SKIN,
+#SOCIAL-C:checked~#SOCIAL {
+  display: block;
+}
+
+/*選択されているタブのスタイルを変える*/
+.tabs input:checked+.tab_item {
+  background-color: #000000;
+  color           : #fff;
+}
+
+.tabs input:checked+.tab_item:hover {
+  background : white;
+  color      : black;
+  text-shadow: 0 0 2px black;
+}
+
+/*リストの中のスタイルを指定する*/
+.c-hd {
+  font-size     : 40px;
+  text-shadow   : 0 0 5px white;
+  border-bottom : 1px solid white;
+  padding-bottom: 15px;
+  margin-bottom : 20px;
+}
+
+.tab_content {
+  width: 100%;
+}
+
+#cssN,
+#modN,
+#skinN {
+  font-size     : 30px;
+  padding-bottom: 10px;
+}
+
+.cimg {
+  display       : flex;
+  flex-direction: row;
+  flex-wrap     : wrap;
+}
+
+.image:hover {
+  width     : 45%;
+  cursor    : pointer;
+  transition: .3s;
+  height    : auto;
+
 
 }
 
-h4.myname {
-  color: gray;
-  font-size: 15px;
-  text-align: right;
-  text-shadow: 2px 2px 5px black;
+.image {
+  transition    : .3s;
+  display       : flex;
+  flex-direction: row;
+  width         : 40%;
+  height        : auto;
+  margin-left   : auto;
+  margin-right  : auto;
+  margin-bottom : 20px;
+  margin-top    : 20px;
+  box-shadow    : -5px -5px rgb(255, 184, 234), 5px -5px rgb(255, 184, 234), 5px 5px rgb(255, 184, 234), -5px 5px rgb(255, 184, 234), 0 0 10px rgb(255, 184, 234), 0 0 10px rgb(255, 184, 234), 0 0 10px rgb(255, 184, 234);
 }
 
-h2.cssname {
-  border-top:2px solid #00BCD4;
-  padding-top:3%;
-  color: #b9eeff;
-  text-shadow: 2px 2px 2px gray;
-  margin-left: 3%;
-}
-
-img {
-  border: solid #7bf4ff 5px;
-  box-shadow: 3px 3px 1px #7b7bff, 4px 4px 1px #7b7bff;
-  width: 40%;
-  cursor: pointer;
-  margin-left: 5%;
-  margin-bottom:4%;
-}
-img:hover{
-  width:43%;
-  margin-left:2%;
-  margin-left:3%;
-  margin-bottom:2%;
-  box-shadow:3px 3px 5px #7b7bff, 4px 4px 5px #7b7bff;
+.sdt {
+  color     : rgb(224, 67, 255);
+  width     : 100%;
+  font-size : 18px;
   transition: .3s;
 }
 
-input[type="button" i] {
-  position: absolute;
-  text-align: center;
-  left: 40%;
-  height: 6vh;
-  font-size: 20px;
-  background-color: #b1f5e8;
-}
-input[type="button" i]:hover{
-  font-size: 22px;
-  left:39%;
-  transition:.3s;
-  box-shadow:0px 0px 10px #7a7a7a;
-}
-p.rs {
-  animation: glow;
-  color: yellow;
-  text-align: center;
-  margin: 0px;
-  font-size: 18px;
-}
-.secssname{
-  border-top:2px solid #fbb8ff;
-  padding-top:3%;
-  color: #d895ff;
-  text-shadow: 2px 2px 3px #7b7b7b;
-  margin-left: 3%;
-}
-p.cr{
-  margin-top:10%;
-  color:#252525;
-  text-shadow:-1px -1px 1px white,1px 1px 1px white,1px -1px 1px white,-1px 1px 1px white,0px 0px 5px gray;
-}@font-face {
-  font-family: 'MyFont';
-  src: url(https://f.easyuploader.app/eu-prd/upload/20210330230425_36723173.ttf);
-}
-
-* {
-  font-family: MyFont;
-}
-
-body {
-  padding-bottom: 0%;
-  background-color: #252525;
-}
-
-h1.title{
-  font-weight: 900;
-  font-size: 50px;
-  text-align: center;
-  color: white;
-  margin-top: 0;
-  margin-bottom: -4%;
-    text-shadow: 1px 1px 5px black, -1px -1px 5px black, 3px 3px 2px gray, 4px 4px 1px gray;
-
-}
-
-h4.myname {
-  color: gray;
-  font-size: 15px;
-  text-align: right;
-  text-shadow: 2px 2px 5px black;
-}
-
-h2.cssname {
-  border-top:2px solid #00BCD4;
-  padding-top:3%;
-  color: #b9eeff;
-  text-shadow: 2px 2px 2px gray;
-  margin-left: 3%;
-}
-
-img {
-  border: solid #7bf4ff 5px;
-  box-shadow: 3px 3px 1px #7b7bff, 4px 4px 1px #7b7bff;
-  width: 40%;
-  cursor: pointer;
-  margin-left: 5%;
-  margin-bottom:4%;
-}
-img:hover{
-  width:43%;
-  margin-left:2%;
-  margin-left:3%;
-  margin-bottom:2%;
-  box-shadow:3px 3px 5px #7b7bff, 4px 4px 5px #7b7bff;
+.sdt:hover {
+  font-size : 16px;
   transition: .3s;
+
 }
 
-input[type="button" i] {
-  position: absolute;
-  text-align: center;
-  left: 40%;
-  height: 6vh;
-  font-size: 20px;
-  background-color: #b1f5e8;
+#scnt {
+  cursor        : pointer;
+  display       : flex;
+  width         : 100%;
+  flex-direction: row;
+  flex-wrap     : wrap;
 }
-input[type="button" i]:hover{
-  font-size: 22px;
-  left:39%;
-  transition:.3s;
-  box-shadow:0px 0px 10px #7a7a7a;
+
+
+#DL {
+  cursor       : pointer;
+  border       : double 3px white;
+  width        : fit-content;
+  padding      : 5px;
+  font-size    : 25px;
+  margin-bottom: 15px;
+  transition   : .3s;
 }
-p.rs {
-  animation: glow;
-  color: yellow;
-  text-align: center;
-  margin: 0px;
-  margin-top:-6%;
-  font-size: 18px;
+
+#DL:hover {
+  transition: .3s;
+  transform : scale(.95);
 }
-.secssname{
-  border-top:2px solid #fbb8ff;
-  padding-top:3%;
-  color: #d895ff;
-  text-shadow: 2px 2px 3px #7b7b7b;
-  margin-left: 3%;
+
+#DL:after {
+  content    : "download";
+  font-family: material-icons;
+  font-size  : 20px;
 }
-p.cr{
-  margin-top:10%;
-  color:#252525;
-  text-shadow:-1px -1px 1px white,1px 1px 1px white,1px -1px 1px white,-1px 1px 1px white,0px 0px 5px gray;
+
+
+#spacer {
+  margin-top   : 20px;
+  margin-bottom: 20px;
+  height       : 0px;
+  border-bottom: 2px white dotted;
 }
-.social{
-  border:solid black 3px;
-  width:50px;
-  height:50px;
-  box-shadow:none;
-  margin:0px;
-  margin-left:1%;
-  margin-bottom:3%;
-  filter:brightness(0)drop-shadow(0 0 2px white) 
+
+.wd:after {
+  content    : "pets";
+  font-family: material-icons;
 }
-img.social:hover{
-    width: 55px;
-    height:auto;
-    margin-top:-5px;
-    margin-left: 1%;
-    margin-bottom: 3%;
-    box-shadow:1px 1px 2px white,-1px -1px 2px white, 1px -1px 2px white, -1px 1px 2px white;
-    transition: .3s;
+
+.laf:after {
+  content    : "account_balance";
+  font-family: material-icons;
 }
-.cutecomp{
-	  border-top:2px solid #edbeed;
-  padding-top:3%;
-  color: #edbeed;
-  text-shadow: 2px 2px 3px #7b7b7b;
-  margin-left: 3%;
+
+.MTZ {
+  color: #ff4600;
 }
-.wdname{
-  	  border-top:2px solid #ffffff;
-  padding-top:3%;
-  color: #ffffff;
-  text-shadow: 2px 2px 3px #7b7b7b;
-  margin-left: 3%;
+
+.MTZ:after {
+  content    : "upcoming";
+  font-family: material-icons;
 }
-.wdname::after{
-content:"ㅤㅤNEW!!";
-color:red;
-font-size:20px;
+
+.laf {
+  color: #ffccff;
+}
+
+.CC {
+  color: lightblue;
+}
+
+.CC:after {
+  content    : "favorite";
+  font-family: material-icons;
+}
+
+.social-cnt {
+  transition : .2s;
+  background : black;
+  color      : white;
+  text-shadow: 0 0 2px white;
+}
+
+.social-cnt {
+  border       : solid white 1px;
+  padding      : 15px;
+  font-size    : 30px;
+  margin-bottom: 20px;
+  margin-left  : auto;
+  margin-right : auto;
+}
+
+.social-cnt:hover {
+  background : white;
+  transition : .2s;
+  color      : black;
+  text-shadow: 0 0 2px black;
+}
+
+.social-cnt:hover>#soi {
+  color      : black;
+  text-shadow: 0 0 2px black;
+}
+
+.disc {
+  margin-top  : 10px;
+  line-height : 22px;
+  font-size   : 16px;
+  width       : 60%;
+  text-align  : center;
+  margin-left : auto;
+  margin-right: auto;
+}
+
+.pf::after {
+  content    : "account_box";
+  font-family: material-icons;
+}
+
+.tw::after {
+  content    : "history_edu";
+  font-family: material-icons;
+}
+
+.yt::after {
+  content    : "play_circle_filled";
+  font-family: material-icons;
+}
+
+.dc::after {
+  content    : "dns";
+  font-family: material-icons;
+}
+
+.simg {
+  cursor      : pointer;
+  display     : flex;
+  margin-left : auto;
+  margin-right: auto;
+  width       : 80%;
+  transition  : .3s;
+
+}
+
+.simg:hover {
+  margin-left : auto;
+  margin-right: auto;
+  width       : 90%;
+  transition  : .3s;
 }
