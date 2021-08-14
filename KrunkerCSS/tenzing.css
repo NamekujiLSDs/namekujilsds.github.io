@@ -489,3 +489,13 @@ span[style="color:#eb5656"],.endTableN[style="color:#eb5656"],.leaderName{
 #igXPBar{
     display:none !important;
 }
+
+#initLoader{
+    background:url("https://cdn.discordapp.com/attachments/870625919394521088/873111397607825418/New_Project_46.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#loadHeader,#loadTipsHolder,#loadEditrBtn,div[style="width:100%;text-align:center;transform:scale(1);"]{
+    display:none;
+}
+
