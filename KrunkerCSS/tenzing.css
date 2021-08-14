@@ -1,0 +1,491 @@
+:root {
+  --mainC: #df5dff;
+  --AMMOV: #f2cbff;
+  --HPV: #f393ff;
+  --subC: #3700f7;
+}
+
+@font-face {
+  font-family: gamefont;
+  src: url(https://fonts.gstatic.com/s/fredokaone/v8/k3kUo8kEI-tA1RRcTZGmTlHGCac.woff2) format('woff2');
+}
+
+#tlInfHold, div#onetrust-consent-sdk, #newsHolder, #aHolder, #faceItIconM, .weapKey {
+  display: none !important
+}
+
+#menuWindow.dark {
+  background: rgba(0, 0, 0, .8);
+  max-height: unset !important;
+  border-radius: 0 !important;
+  height: 100% !important;
+  top: unset !important;
+  bottom: unset !important;
+  right: 0!important;
+  left: unset !important;
+  transform: translate(0%, 0%) !important;
+  display: block;
+  width: 60% !important;
+}
+
+.stickyHeader {
+  padding-top: 1px!important;
+  max-height: calc(100%)!important;
+}
+
+a[style="float:right"] {
+  padding-bottom: 80px;
+}
+
+.setBodH[style="display:inline-block;padding-top:10px;vertical-align:top;width: -webkit-fill-available;margin-left:15px;margin-top:0px;"] {
+  display: block !important;
+  width: auto !important;
+}
+
+#windowCloser {
+  margin-left: 5%;
+  background: rgba(0, 0, 0, .5);
+  border-left: 4px white solid;
+}
+
+#windowHolder.popupWin[style="display: none;"] {
+  display: block !important;
+  transform: translateX(100%);
+  transition: .5s;
+}
+
+#windowHolder.popupWin[style="display: block;"] {
+  transition: .5s;
+}
+
+#windowHolder.popupWin[style="display: none;"]>#windowCloser {
+  transform: translateX(100%);
+  transition: .5s;
+}
+
+#windowHolder.popupWin[style="display: block;"]>#windowCloser {
+  transform: translateX(0%);
+  transition: .5s;
+}
+
+#windowHolder.popupWin {
+  background: transparent;
+}
+
+#selectorContainer {
+  display: inline-flex;
+  right: 50%;
+  height: unset;
+  background: transparent;
+  width: unset;
+  top: 0px;
+}
+
+.selectorItem {
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+#customizeContainer {
+  margin-top: 5%;
+}
+
+#customizeContainer[style="margin-top: -10px;"] {
+  margin-top: 5% !important;
+}
+
+input:checked+.slider {
+  background-color: var(--mainC);
+}
+
+.settingsBtn {
+  background: var(--mainC);
+}
+
+.xpBarB {
+  background: var(--mainC);
+}
+
+#menuItemContainer {
+  width: 5%;
+}
+
+.menuItem .menuItemTitle {
+  color: black;
+}
+
+.menuItem .menuItemIcon {
+  filter: brightness(0);
+}
+
+.menuItem {
+  color: black !important;
+  background: linear-gradient(45deg, var(--mainC) 0% 10%, transparent 0% 90%, var(--mainC) 90% 100%), linear-gradient(10deg, aqua 0% 10%, transparent 0% 90%, aqua 90% 100%), rgb(150, 150, 150);
+}
+
+.menuItem:hover {
+  border-left: unset !important;
+  color: black !important;
+  background: linear-gradient(45deg, var(--mainC) 0% 10%, transparent 0% 90%, var(--mainC) 90% 100%), linear-gradient(10deg, aqua 0% 10%, transparent 0% 90%, aqua 90% 100%), #fd82ff;
+}
+
+span[style="color: #eb5656"] {
+  color: var(--mainC)!important;
+}
+
+#subLogoButtons {
+  bottom: 1%;
+}
+
+#menuClassContainer {
+  right: unset;
+  top: unset;
+  left: unset;
+  left: 50%;
+  display: flex;
+  bottom: 5%;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-50%) scale(.8);
+}
+
+#classPreviewCanvas {
+  margin-bottom: 0;
+}
+
+#bubbleContainer, #menuClassNameTag, #menuClassSubtext, #menuClassName {
+  display: none;
+}
+
+.progressBarInner {
+  background: var(--mainC);
+}
+
+.skinList {
+  width: auto;
+}
+
+.classCard {
+  border-inline: var(--mainC) 10px solid;
+  border-radius: 20% 10% 20% 10%;
+}
+
+.contCanSelect {
+  transform: skewX(-5deg);
+}
+
+#itemSearchH {
+  background: transparent;
+}
+
+.skinCard {
+  border-radius: 30px;
+}
+
+.settingsHeader {
+  background: transparent;
+  backdrop-filter: blur(2px)
+}
+
+#instructions {
+  font-size: 0 !important;
+  animation: unset;
+}
+
+#instructions:after {
+  content: "CrispyYT";
+  font-size: 30px;
+  animation: rainbow 2s infinite;
+}
+
+.sliderM::-webkit-slider-thumb {
+  background: var(--mainC);
+  border-radius: 100%;
+  height: 20px;
+  width: 20px;
+}
+
+.slider {
+  background-color: transparent;
+}
+
+input:checked+.slider {
+  background-color: transparent;
+}
+
+input:checked+.slider::before {
+  background-color: transparent;
+  transform: unset;
+  content: "task_alt";
+  color: var(--mainC);
+}
+
+.slider::before {
+  background-color: transparent;
+  transform: unset;
+  left: 0;
+  top: 0;
+  font-size: 32px;
+  height: 32px;
+  width: 32px;
+  color: var(--subC);
+  content: "block";
+  font-family: 'Material Icons';
+  transition-duration: 0.25s;
+  font-weight: bold;
+}
+
+
+/*INGAME*/
+
+.weapIcon[style="opacity: 0.7; margin-right: 25px;"], .weapIcon[style="opacity: 0.7;"], .weapIcon[style="opacity:0.7;margin-right:25px"] {
+  left: 50%;
+  bottom: 1%;
+  margin-right: unset !important;
+  position: fixed;
+  transform: rotateX(90deg) translateX(-50%);
+  transition: .2s;
+}
+
+.weapIcon[style="opacity: 1;"], .weapIcon[style="opacity:1"], .weapIcon[style="opacity: 1; margin-right: 25px;"] {
+  left: 50%;
+  margin-right: unset !important;
+  position: fixed;
+  bottom: 1%;
+  transform: translateX(-50%);
+  transition: .2s;
+}
+
+#ammoDisplay {
+  position: fixed;
+  border: none !important;
+  box-shadow: unset !important;
+  display: block !important;
+  margin-right: 0px;
+  padding: 0px;
+  padding-top: 0px;
+  padding-left: 0px;
+  font-size: 70px;
+  letter-spacing: 0px;
+  border-radius: 0px;
+  height: 10px;
+  bottom: 1%;
+  position: fixed;
+  right: 40%;
+  transform: translateX(50%);
+  width: 230px;
+  background-color: transparent;
+  background-image: linear-gradient(var(--mainC), var(--mainC));
+  text-align: left;
+}
+
+#ammoDisplay[style="background-size: 0%; display: inline-block;"] {
+  background-size: 100% !important;
+}
+
+#ammoMax, #ammoIcon {
+  display: none !important;
+}
+
+#ammoVal {
+  position: fixed;
+  text-shadow: 2px 2px 4px black;
+  display: block !important;
+  color: var(--AMMOV);
+  border: none !important;
+  box-shadow: unset !important;
+  position: fixed;
+  bottom: 2% !important;
+  margin-bottom: 5%;
+}
+
+#ammoVal:before {
+  content: "Ammo! ";
+  font-size: 20px;
+  color: white;
+}
+
+.hostCBtn {
+  margin-bottom: 50px;
+}
+
+#healthBar {
+  border: none !important;
+  box-shadow: unset !important;
+  position: fixed;
+  display: flex;
+  background: rgba(0, 0, 0, .4);
+  height: 10px;
+  width: 230px;
+  bottom: 1%;
+  left: 40%;
+  transform: translateX(-50%);
+}
+
+.healthBarSeg {
+  border: none !important;
+  box-shadow: unset !important;
+  margin-right: -1px;
+  width: -webkit-fill-available;
+  background-color: unset;
+}
+
+.hpBSeg {
+  border-radius: unset;
+  -webkit-box-shadow: unset;
+  box-shadow: unset;
+}
+
+#challIcon, #maxHP {
+  display: none !important;
+}
+
+#healthValue {
+  border: none !important;
+  box-shadow: unset !important;
+  font-size: 70px;
+  bottom: 2%;
+  position: fixed;
+  left: calc(40%);
+  margin-left: -30px;
+  color: var(--HPV);
+  text-shadow: 2px 2px 4px black;
+}
+
+#healthValue:after {
+  content: "HP";
+  font-size: 20px;
+  color: #fff;
+}
+
+#timerIcon {
+  display: none !important;
+}
+
+#timerDisplay {
+  border: none !important;
+  box-shadow: unset !important;
+  background: transparent;
+  left: 50%;
+  bottom: 17%;
+  position: fixed;
+  transform: translateX(-50%);
+}
+
+#timerVal {
+  border: none !important;
+  box-shadow: unset !important;
+  font-size: 40px;
+  text-shadow: 2px 2px 4px black;
+}
+
+img#streakIcon {
+  display: none;
+}
+
+div#streakCount:before {
+  content: "Streak";
+  font-size: 20px;
+}
+
+div#streakCount {
+  border: none !important;
+  box-shadow: unset !important;
+  position: fixed;
+  left: 50%;
+  bottom: 10%;
+  font-size: 40px;
+  color: white !important;
+  background: transparent;
+  transform: translateX(-50%);
+  text-shadow: 2px 2px 2px black;
+}
+
+#killsVal, #deathsVal, #streakVal, #myScoreVal, #kdVal {
+  color: white;
+}
+
+#seasonLabel {
+  display: none !important;
+}
+#mainLogo{
+  content:url("https://cdn.discordapp.com/attachments/755101995437654018/872311897939120138/TENZINGs_Krunker_Logo.png")
+}
+.leaderItem {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+#leaderDisplay {
+  border: none !important;
+  box-shadow: none !important;
+  background: rgba(0, 0, 0, .5);
+}
+
+#leaderDisplay::before {
+  content: "leaderboard";
+  display: flex;
+  color: white !important;
+  font-size: 24px;
+  color: var(--white);
+  border-bottom: 4px solid var(--mainC);
+  border-image-slice: 1;
+  margin-bottom: 8px;
+  padding-bottom: 4px;
+}
+
+#hudClassIcon {
+  display: none;
+}
+
+#uiBase.onMenu #chatHolder {
+  bottom: 20px !important;
+  transition: .2s;
+}
+
+#uiBase.onGame #chatHolder {
+  bottom: 20px !important;
+  transition: .2s;
+}
+
+#healthValueHolder {
+  background: transparent;
+}
+
+.terms, .verticalSeparatorInline {
+  display: none;
+}
+
+#termsInfo {
+  background: transparent;
+}
+
+#termsInfo:before {
+  content: "CSS BY NamekujiLSDs#7777";
+  color: yellow;
+  font-size: 18px;
+}
+
+#reloadMsg {
+  position: fixed;
+  bottom: 47%;
+  border: unset;
+  font-size: 0;
+  background: transparent;
+  height: 0;
+}
+
+#reloadMsg:after {
+  content: "report_problem";
+  font-size: 40px;
+  font-family: Material Icons;
+  color: rebeccapurple;
+  text-shadow: 0 0 2px var(--mainC);
+}
+
+span[style="color:#eb5656"],.endTableN[style="color:#eb5656"],.leaderName{
+    color:var(--mainC) !important;
+}
+#igXPBar{
+    display:none !important;
+}
