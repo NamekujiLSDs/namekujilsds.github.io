@@ -1,0 +1,160 @@
+@font-face{
+    font-family:gamefont;
+    src:url("https://f.easyuploader.app/20210428002957_79524379.ttf");
+    font-weight:bolder;
+}
+
+:root{
+    --MTZ:#ff4600;
+}
+
+#ot-sdk-btn-floating.ot-floating-button,#seasonLabel,#gameNameHolder,#tlInfHold,#newsHolder,#faceItIconM,#aHider,#windowCloser{
+    display:none !important;
+}
+#windowHolder.popupWin{
+    background:transparent;
+}
+#subLogoButtons{
+    bottom:15%;
+}
+#menuItemContainer{
+    display:flex;
+    flex-direction: row;
+    top:unset;
+    bottom:0;
+    width:100%;
+    height:12%;
+}
+.menuItem:hover{
+    border-left:none !important;
+    border-top:10px var(--MTZ) solid;
+}
+#mapInfoHolder{
+    bottom:12%;
+}
+#termsInfo,.terms{
+    color:var(--MTZ);
+    background:transparent;
+}
+.verticalSeparatorInline{
+    border-color:white;
+}
+#termsInfo:after{
+    display:flex;
+    content:"MTZ_CSS BY NAMEKUJILSDs#7777";
+    font-size:15px;
+    justify-content: flex-end;
+    margin-top:3%;
+}
+
+#uiBase.onMenu #chatHolder{
+    bottom:12%;
+    left:1%;
+}
+#uiBase.onMenu #voiceDisplay{
+    bottom:12%;
+}
+.sliderM{
+    background: linear-gradient(90deg, #404040 0 0%, gray 10% 90%,#404040 100% 100%);
+}
+.sliderM::-webkit-slider-thumb{
+    background:var(--MTZ);
+    width:25px;
+    height:25px;
+    border-radius:100px;
+}
+.setHed{
+    background:transparent;
+    border:none;
+}
+.setBodH{
+    background:transparent;
+    margin-top:0 !important;
+}
+.setHed{
+    margin-top:0 !important;
+}
+.sliderVal{
+    border:0 !important;
+}
+input:checked+.slider{
+    background-color:var(--MTZ);
+}
+.slider{
+    border-radius:100px;
+}
+.slider:before{
+    border-radius:100px;
+}
+#menuWindow.dark .tabANew,div.bigMenTabA{
+    color:
+     #00a1ff !important;
+}
+.progressBar{
+    height:5px;
+}
+.progressBarInner{
+    background: linear-gradient(90deg,var(--MTZ)0% 10%,black);
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.progressBarInner:after{
+    content:" ";
+    display: block;
+    background: var(--MTZ);
+    padding-right: 5px;
+    width:0%;
+    border-radius: 100px !important;
+    height:100%;
+    margin-left:auto;
+    box-shadow: -7px 0 10px var(--MTZ),-6px 0 9px var(--MTZ),-5px 0 8px var(--MTZ),-4px 0 7px var(--MTZ),-3px 0 6px var(--MTZ), -2px 0 5px var(--MTZ),-1px 0 4px var(--MTZ),0 0 2px var(--MTZ),0 0 2px var(--MTZ),1px 0 2px var(--MTZ);
+}
+.menuLink{
+    color:var(--MTZ);
+}
+.accountButton,.settingsBtn,.hostCBtn,.loadoutBtn,.hostPresetBtn,.advancedToggle[style="background-color: rgb(33, 150, 243);"],.hostToggle,input:checked+.optCheck{
+    background:var(--MTZ) !important;
+}
+.hostCBtn{
+    border:0;
+}
+.premiumSkinCol{
+    color:var(--MTZ) !important;
+}
+a{
+    color:var(--MTZ) !important;
+}
+.healthBarSeg{
+    margin-right:-2px;
+}
+.hpBSeg{
+    box-shadow:none;
+    border-radius:0;
+}
+#healthBar{
+    height:40px;
+}
+.keyIcon{
+    border:none !important;
+    background:var(--MTZ);
+}
+.setToggle{
+    color:white;
+}
+.material-icons[style="color:#fbc02d;font-size:42px;vertical-align:bottom"]{
+    color:var(--MTZ) !important;
+}
+.material-icons[style="font-size:50px;color:#fff;vertical-align:middle;margin-top:-9px;margin-left:5px"]{
+    display:none !important;
+}
+.bigMFeatHold{
+    display:none !important;
+}
+.menuItem:hover .iconProfile,.menuItem:hover .iconShop,.menuItem:hover .iconChall,.menuItem:hover .iconSocial,.menuItem:hover .iconGames,.menuItem:hover .iconMods, .menuItem:hover .iconSettings{
+    transform:rotateY(0deg) !important;
+    transition:.5s;
+}
+.menuItem .iconProfile,.menuItem .iconShop,.menuItem .iconChall,.menuItem .iconSocial,.menuItem .iconGames,.menuItem .iconMods, .menuItem .iconSettings{
+    transform:rotateY(360deg) !important;
+    transition:.5s;
+}
