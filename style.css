@@ -1,15 +1,17 @@
 :root {
   --accent-color: #ffaadb;
-  --bg-color:hsla(0, 0%, 15%, 0.5);
-  --border-color:hsla(0, 0%, 50%, 0.5);
+  --bg-color: hsla(0, 0%, 15%, 0.5);
+  --border-color: hsla(0, 0%, 50%, 0.5);
 }
+
+
 /* フォント関係ここから */
+
 @font-face {
   font-family: icon;
   font-style: normal;
   font-weight: 400;
-  src: url(https://fonts.gstatic.com/s/materialicons/v115/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2)
-    format("woff2");
+  src: url(https://fonts.gstatic.com/s/materialicons/v115/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
 }
 
 .material-icons-outlined {
@@ -28,33 +30,39 @@
   -webkit-font-smoothing: antialiased;
 }
 
-
 * {
   margin: 0;
   padding: 0;
   font-family: "Yomogi", cursive;
   user-select: none;
   color: white;
-  transition:.2s;
+  transition: .2s;
 }
+
 ::-webkit-scrollbar {
   display: none;
 }
-/* フォント関係とか基本設定とかここまで */
-/* 背景 */
-body,
-html{
-height:100%;
-width:100%;
-}
-#net{
-  height:100%;
-  width:100%;
-  z-index: -1;
 
+
+/* フォント関係とか基本設定とかここまで */
+
+
+/* 背景 */
+
+body, html {
+  height: 100%;
+  width: 100%;
 }
+
+#net {
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+}
+
 
 /* 左のメニュー */
+
 #leftBar {
   float: left;
   width: 150px;
@@ -68,12 +76,12 @@ width:100%;
   animation: rotater 2s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
   filter: drop-shadow(0 0 4px white);
   cursor: pointer;
-  transition:.2s;
+  transition: .2s;
 }
 
-.logo:hover{
-  transition:.2s;
-  filter:drop-shadow(0 0 4px var(--accent-color));
+.logo:hover {
+  transition: .2s;
+  filter: drop-shadow(0 0 4px var(--accent-color));
 }
 
 @keyframes rotater {
@@ -137,30 +145,30 @@ ul.links li:nth-child(9) {
   padding-left: 10px;
 }
 
-ul.links li:hover,
-ul.links li.Younow,
-#shareBtn:hover {
+ul.links li:hover, ul.links li.Younow, #shareBtn:hover {
   background: linear-gradient(to right, var(--accent-color), transparent);
-    height:100%;
+  height: 100%;
   font-size: 18px;
   transition: 0.1s;
   color: black;
   font-weight: bolder;
 }
-#shareBtn{
-  background-color:#202020;
-  line-height:22px;
-  padding-top:10px;
-  padding-bottom:10px;
-  padding-left:10px;
-  width:140px;
-  border-radius:0 100px 100px 0;
-  
-  -shadow:0 0 10px var(--accent-color);
-  margin-top:20px;
+
+#shareBtn {
+  background-color: #202020;
+  line-height: 22px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  width: 140px;
+  border-radius: 0 100px 100px 0;
+  -shadow: 0 0 10px var(--accent-color);
+  margin-top: 20px;
 }
 
+
 /* 右の画面 */
+
 #rightContents {
   height: calc(100vh - 30px);
   float: right;
@@ -174,7 +182,9 @@ ul.links li.Younow,
   border: unset;
 }
 
+
 /* 右画面埋め込み */
+
 .box {
   background: var(--bg-color);
   padding: 20px;
@@ -186,7 +196,7 @@ ul.links li.Younow,
   box-shadow: 0 0 5px black;
   margin-left: 15px;
   margin-right: 15px;
-  backdrop-filter:blur(4px);
+  backdrop-filter: blur(4px);
 }
 
 h1 {
@@ -215,12 +225,12 @@ h1:first-letter {
   margin-bottom: 100px;
 }
 
-
 h2 {
   font-size: 1.4em;
   margin-bottom: 20px;
   text-shadow: 0 0 5px;
 }
+
 h2::first-letter {
   color: var(--accent-color);
   font-size: 1.5em;
@@ -235,7 +245,10 @@ h2::first-letter {
   transform: translateX(-50%);
   margin-top: 20px;
 }
+
+
 /* 規約ちゃんと読んだよね？？？ */
+
 .warn {
   margin-top: 20px;
   margin-bottom: 20px;
@@ -245,31 +258,32 @@ h2::first-letter {
 .space {
   height: 15px;
 }
+
 a {
   color: var(--accent-color);
 }
 
 
-
 /* ダウンロードボタン */
-.download{
+
+.download {
   margin: auto;
-  left:50%;
-  right:50%;
+  left: 50%;
+  right: 50%;
   text-align: center;
   font-weight: bolder;
-  font-size:1.1em;
-  text-shadow:0 0 4px white;
-  cursor:pointer;
+  font-size: 1.1em;
+  text-shadow: 0 0 4px white;
+  cursor: pointer;
 }
 
-footer{
-clear: both;
+footer {
+  clear: both;
   text-align: center;
   margin: 0px;
   position: fixed;
-  bottom:0;
-  left:50%;
+  bottom: 0;
+  left: 50%;
   transform: translateX(-50%);
-  width:1000px;
+  width: 1000px;
 }
