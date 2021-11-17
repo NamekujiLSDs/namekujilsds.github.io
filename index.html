@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+
+<head>
+	<link rel="apple-touch-icon" sizes="180x180" href="img/icon.ico">
+	<link rel="icon" href="img/icon.ico">
+	<meta name="language" content="en">
+	<meta property="og:title" content="Namekuji Krunker" />
+	<meta property="og:type" content="profile" />
+	<meta property="og:url" content="https://namekujilsds.github.io/" />
+	<meta property="og:description" content="Contents for Krunker.io! by Namekuji" />
+	<meta property="og:image" content="img/Tumbnail.png" />
+	<meta property="og:image:secure_url" content="img/Tumbnail.png" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="800" />
+	<meta property="og:image:height" content="500" />
+
+	<meta name="twitter:title" content="Namekuji Krunker" />
+	<meta name="twitter:description" content="Contents for Krunker.io! by Namekuji">
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:image" content="img/Tumbnail.png" />
+
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta charset="utf-8">
+	<title id="pTitle"> Namekuji - Main</title>
+	<meta name="description" content="A page for publishing and distributing content I've created">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta property="og:title" content="Namekuji.css">
+	<link rel="stylesheet" href="style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://slugkr.namekuji.repl.co/">
+	<link href="https://fonts.googleapis.com/css2?family=Yomogi&display=swap" rel="stylesheet">
+  	<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY5PW2EZWP"></script>
+</head>
+
+<body>
+
+	<div id="main">
+		<div id="leftBar">
+       <img class="logo" onclick="loadSubPage('Profile')" src="img/logo512.png">
+      <p class="menuTitle"> Menu </p>
+      <ul class="links">
+        <li class="menuBtn" onclick="loadSubPage('Top')"> Top </li>
+        <div class="linkspace"></div>
+        <li class="menuBtn" onclick="loadSubPage('CSS')"> CSS </li>
+        <div class="linkspace"></div>
+        <li class="menuBtn" onclick="loadSubPage('Mods')"> Mods </li>
+        <div class="linkspace"></div>
+        <li class="menuBtn" onclick="loadSubPage('Socials')"> Socials </li>
+        <div class="linkspace"></div>
+        <li class="menuBtn" onclick="loadSubPage('request')"> Request </li>
+      </ul>
+      <div id="shareBtn" onclick="copyUrl()">Share</div>
+    </div>
+    <div id="rightContents">
+      <iframe src='top.html'>
+      </iframe>
+    </div>
+  </div>
+  <footer>©All rights reserved by Namekuji 2021-</footer>
+<div id="net"></div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+<script>
+VANTA.NET({
+  el: "#net",
+  mouseControls: false,
+  touchControls: false,
+  gyroControls: false,
+  minHeight: 200.00,
+  minWidth: 200.00,
+  scale: 1.00,
+  scaleMobile: 1.00,
+  color: 0x3ff3ff,
+})
+</script>
+
+<script type="text/javascript" src="script.js"></script>
+
+</body>
+
+</html>
