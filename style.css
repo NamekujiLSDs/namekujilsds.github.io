@@ -155,7 +155,8 @@ ul.links li.Younow,
   padding-left:10px;
   width:140px;
   border-radius:0 100px 100px 0;
-  box-shadow:0 0 10px var(--accent-color);
+  
+  -shadow:0 0 10px var(--accent-color);
   margin-top:20px;
 }
 
@@ -185,6 +186,7 @@ ul.links li.Younow,
   box-shadow: 0 0 5px black;
   margin-left: 15px;
   margin-right: 15px;
+  backdrop-filter:blur(4px);
 }
 
 h1 {
