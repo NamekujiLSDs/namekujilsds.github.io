@@ -19,7 +19,9 @@ const colors = [
 document.ondragstart = function() {
     return false;
 };
-
+window.onload = function() {
+    document.getElementsByTagName('html')[0].style.setProperty('--accent-color', colors[Math.round(Math.random() * (colors.length - 1))])
+}
 // ページ読み込み時に実行(色のランダム化)
 window.onload = function() {
     document.getElementsByTagName('html')[0].style.setProperty('--accent-color', colors[Math.round(Math.random() * (colors.length - 1))])
