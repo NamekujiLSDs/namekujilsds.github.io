@@ -359,6 +359,7 @@ input:checked+.slider:before, input:checked+.sliderSml:before {
 
 #menuWindow ,#menuWindow.dark{
   background: #0004;
+  backdrop-filter: blur(4px);
 }
 
 .setHed[style="margin-top:0;margin-bottom:10px"] {
@@ -399,7 +400,6 @@ div[style="color:rgba(0,0,0,0.6)"] {
 
 .settingsHeader, .serverHeader, #itemSearchH, .settingsHeader {
   background: transparent;
-  backdrop-filter: blur(10px);
 }
 
 #spinHeader {
@@ -692,8 +692,7 @@ div#rankedSoonTm{
 }
 /*DO NOT STEEL CODES*/
 
-2020 05/10
-
-Last Update 2021 11/19
+/* Made in 2020 05/10 */
+/* Last Update 2021 11/19 */
 /* Fixed something a lot*/
 
