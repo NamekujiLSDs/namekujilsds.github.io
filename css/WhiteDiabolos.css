@@ -1,3 +1,4 @@
+
 /*CSS MADE BY NAMEKUJILSDS#7777*/
 
 /*DO NOT STEEL CODES*/
@@ -358,7 +359,7 @@ input:checked+.slider:before, input:checked+.sliderSml:before {
 }
 
 #menuWindow ,#menuWindow.dark{
-  background: #0004;
+  background: rgba(0,0,0,.5);
   backdrop-filter: blur(4px);
 }
 
@@ -622,32 +623,6 @@ span.material-icons.plusOrMinus {
   text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
 }
 
-#teamScores {
-  top: 75%;
-  left: 50%;
-  background: transparent;
-  position: fixed;
-}
-
-#tScoreC1.tScoreC {
-  transform: translateX(-220px) translateY(20px);
-  position: absolute;
-}
-
-#tScoreV1.tScoreT {
-  position: absolute;
-  transform: translateX(-180px) translateY(20px);
-}
-
-#tScoreC2.tScoreC {
-  position: absolute;
-  transform: translateX(180px) translateY(15px);
-}
-
-#tScoreV2.tScoreT {
-  position: absolute;
-  transform: translateX(120px) translateY(15px);
-}
 
 #chatHolder[style="bottom: 148px;"] {
   bottom: 20px !important;
@@ -690,9 +665,13 @@ div#rankedSoonTm{
   left:20px;
   transition:.1s;
 }
+#reloadMsg{
+    border:unset !important;
+    
+}
+
 /*DO NOT STEEL CODES*/
 
 /* Made in 2020 05/10 */
 /* Last Update 2021 11/19 */
 /* Fixed something a lot*/
-
