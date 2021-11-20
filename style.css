@@ -52,7 +52,7 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 100px;
   opacity      : 0.5;
-  background   : linear-gradient(white 0% 5%, var(--accent-color), white, var(--accent-color), white 95% 100%);
+  background   : linear-gradient(white, var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), white);
 }
 
 
@@ -317,6 +317,11 @@ h2::first-letter {
 
 a {
   color: var(--accent-color);
+}
+
+.kyouchou {
+  color      : var(--accent-color);
+  font-weight: bolder;
 }
 
 
