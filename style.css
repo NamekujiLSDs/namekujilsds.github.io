@@ -38,12 +38,21 @@
   transition : .2s;
 }
 
-::-webkit-scrollbar-thumb{
-  color:red;
-  background:red;
+::-webkit-scrollbar {
+  width: 12px;
 }
-::-webkit-scrollbar-track{
-  background:red;
+
+::-webkit-scrollbar-track {
+  border-bottom: 4px white solid;
+  border-top   : 4px white solid;
+  border-radius: 10px;
+
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  opacity      : 0.5;
+  background   : linear-gradient(transparent, transparent, var(--accent-color), white, var(--accent-color), transparent, transparent);
 }
 
 
@@ -270,9 +279,7 @@ h1:first-letter {
   text-decoration: unset;
 }
 
-.box:nth-child(3) {
-  margin-bottom: 100px;
-}
+
 
 h2 {
   font-size    : 1.4em;
@@ -335,4 +342,50 @@ footer {
   left      : 50%;
   transform : translateX(-50%);
   width     : 1000px;
+}
+
+/* 画像隠したりするやつ */
+.hide_check {
+  cursor : pointer;
+  display: none;
+}
+
+.css_img_label {
+  cursor    : pointer;
+  font-size : 20px;
+  text-align: center;
+  font-weight: bolder;
+  text-shadow:0 0 10px;
+}
+
+.hidden_img_1 img,
+.hidden_img_2 img,
+.hidden_img_3 img,
+.hidden_img_4 img,
+.hidden_img_5 img,
+.hidden_img_6 img,
+.hidden_img_7 img,
+.hidden_img_8 img,
+.hidden_img_9 img,
+.hidden_img_10 img,
+.hidden_img_11 img,
+.hidden_img_12 img {
+  height    : 0px;
+  transition: .2s;
+}
+
+#hide_1:checked~.hidden_img_1 img,
+#hide_2:checked~.hidden_img_2 img,
+#hide_3:checked~.hidden_img_3 img,
+#hide_4:checked~.hidden_img_4 img,
+#hide_1:checked~.hidden_img_5 img,
+#hide_2:checked~.hidden_img_6 img,
+#hide_3:checked~.hidden_img_7 img,
+#hide_4:checked~.hidden_img_8 img,
+#hide_1:checked~.hidden_img_9 img,
+#hide_2:checked~.hidden_img_10 img,
+#hide_3:checked~.hidden_img_11 img,
+#hide_4:checked~.hidden_img_12 img{
+  height    : auto;
+  transition: .2s;
 }
