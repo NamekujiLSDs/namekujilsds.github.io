@@ -378,14 +378,14 @@ footer {
 #hide_2:checked~.hidden_img_2 img,
 #hide_3:checked~.hidden_img_3 img,
 #hide_4:checked~.hidden_img_4 img,
-#hide_1:checked~.hidden_img_5 img,
-#hide_2:checked~.hidden_img_6 img,
-#hide_3:checked~.hidden_img_7 img,
-#hide_4:checked~.hidden_img_8 img,
-#hide_1:checked~.hidden_img_9 img,
-#hide_2:checked~.hidden_img_10 img,
-#hide_3:checked~.hidden_img_11 img,
-#hide_4:checked~.hidden_img_12 img {
+#hide_5:checked~.hidden_img_5 img,
+#hide_6:checked~.hidden_img_6 img,
+#hide_7:checked~.hidden_img_7 img,
+#hide_8:checked~.hidden_img_8 img,
+#hide_9:checked~.hidden_img_9 img,
+#hide_10:checked~.hidden_img_10 img,
+#hide_11:checked~.hidden_img_11 img,
+#hide_12:checked~.hidden_img_12 img {
   height    : auto;
   transition: .2s;
 }

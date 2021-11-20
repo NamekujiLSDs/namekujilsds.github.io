@@ -1,4 +1,14 @@
-*:before,
-*:after {
-  content: "unti";
+#termsInfo:after{
+  content:"I have updated the terms of use for all my CSS.Please go to https://namekujilsds.github.io/ and check the terms and use and download the CSS again.Thank you for your patience.";
+  position:fixed;
+  top:30%;
+  left:50%;
+  transform:translateX(-50%);
+  color:white;
+  font-family:monospace;
+  font-size:50px;
+  color:red;
+  background:white;
+  padding:20px;
+  font-weight:bolder;
 }
