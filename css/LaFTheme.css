@@ -183,14 +183,8 @@
 
 }
 
-.chatItem {
-    background : #ffffff !important;
-    color      : gray !important;
-    border     : solid black 1px !important;
-    font-size  : 20px !important;
-    width      : -webkit-fill-available !important;
-    height     : min-content !important;
-    line-height: 30px !important;
+.menBtnIcn {
+    display: none;
 }
 
 .chatMsg {
@@ -322,32 +316,6 @@
     border       : solid black 5px;
 }
 
-/*Leader Board*/
-#leaderContainer:BEFORE {
-    content      : "-LEADERBOARD-";
-    text-align   : center;
-    padding-left : 50px;
-    color        : #00c0ff;
-    height       : min-content;
-    width        : min-content;
-    border-bottom: 5px solid #c400ff;
-    padding-right: 50px;
-}
-
-#leaderDisplay {
-    border       : black double 8px;
-    border-radius: 0px;
-    transform    : skew(-5deg, 0deg);
-    position     : fixed;
-    right        : 30px;
-    padding-right: 20px;
-    padding-left : 20px;
-}
-
-#leaderContainer {
-    transform: skewX(5deg);
-}
-
 /*Health value*/
 #healthValueHolder {
     background   : transparent;
@@ -416,9 +384,20 @@
 }
 
 #rankedSoonTm {
-    display: none;
+    display: none
 }
 
-.menuSocialB {
-    display: none !important;
+#menuBtnProfile,
+div#menuBtnShop {
+    font-size: 0 !important;
+}
+
+div#menuBtnProfile:after {
+    font-size: 30px !important;
+    content  : "Profile"
+}
+
+div#menuBtnShop:after {
+    font-size: 30px !important;
+    content  : "Shop"
 }

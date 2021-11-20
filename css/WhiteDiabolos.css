@@ -1,762 +1,409 @@
-/*CSS MADE BY NAMEKUJILSDS#7777*/
+/*⚠THIS CSS REQUIRES A RESOURCE SWAPPER⚠*/
 
-/*DO NOT STEEL CODES*/
-/*DO NOT STEEL CODES*/
-/*DO NOT STEEL CODES*/
+/*Code by NamekujiLSDs#7777*/
 
-@font-face {
-  font-family: gamefont;
-  src        : url(https://namekujilsds.github.io/font/vag-rounded-400.woff2);
-}
+/*⚠DO NOT RE:WRITE CODES WITHOUT CONTACT ME⚠*/
 
-#mLevelCont,
-.verticalSeparator,
-.redditSocial,
+/*© Copyright 2021 Namekuji All Rights Reserved.*/
+
+
+
+/*Display:none;*/
 #editorBtnM,
-.discordSocial,
-.downloadClient,
-#menuLvlHold,
-#bubbleContainer,
+#tlInfHold,
+#newsHolder,
 #uiBase.onMenu #voiceDisplay,
 .menuItem .menuItemIcon,
-#ot-sdk-btn-floating.ot-floating-button,
-ot-floating-button__front,
-#ot-sdk-btn-floating.ot-floating-button button,
-div#aHolder,
-#seasonLabel,
-#gameNameHolder,
+.imageButton,
+.verticalSeparator,
+#tlInfHold,
 #newsHolder,
-#tlInfHold {
-  display: none !important;
+.menuItem .menuItemIcon,
+.material-icons,
+#seasonLabel,
+#bidPrevBtn,
+#bidPrevBB,
+#maxHP,
+#challIcon,
+#hudClassIcon,
+#timerIcon,
+#ammoMax,
+#ammoIcon {
+    display: none;
+    opacity: 0;
+}
+
+/*Transparent*/
+#itemSearchH,
+.serverHeader,
+.settingsHeader,
+#selectorContainer,
+#settingsTabLayout {
+    background: transparent;
 }
 
 
-/*Menu Item*/
-#faceItIconM {
-  display: none;
-
+/*Font Change*/
+@font-face {
+    font-family: gamefont;
+    src        : url(https://namekujilsds.github.io/font/vag-rounded-400.woff2);
 }
 
-#windowCloser {
-  display: none;
-}
 
-#settSearch {
-  background: gray;
-}
-
-#adunit {
-  display: none !important;
-}
-
+/*left side bar*/
 #menuItemContainer {
-  width         : fit-content;
-  height        : min-content;
-  top           : unset;
-  bottom        : 4%;
-  left          : 50%;
-  transform     : translateX(-50%);
-  flex-direction: row;
-  background    : transparent;
+    transform: rotate3d(0, 0, 1, 2deg);
+    position : fixed;
+    left     : -3%;
+    width    : 200px;
+    top      : 30px;
+    z-index  : 2;
 }
 
 .menuItem {
-  font-size     : 40px !important;
-  align-items   : center;
-  background    : transparent;
-  padding-bottom: 5px;
-  padding-left  : 22px;
-  padding-right : 22px;
-  pointer-events: none;
+    border-right: solid 20px white;
+    background  : #fbcaff;
+    border-left : solid 120px #84fdff;
+    box-sizing  : border-box;
 }
 
+/*When Cursor hover left menu*/
 .menuItem:hover {
-  background : transparent;
-  color      : #fff;
-  border-left: none;
+    background  : linear-gradient(90deg, #93f8ff, white);
+    width       : 240px;
+    border-color: lightgreen;
 }
 
-.menuItem:active {
-  background: transparent;
-  color     : #fff;
-}
-
-.menuItem .menuItemTitle {
-  margin-top    : 0;
-  font-size     : 25px !important;
-  text-transform: var(--text-transform);
-  pointer-events: all;
-  transition    : all .2s;
-}
-
-.menuItemTitle:hover {
-  color    : #fff !important;
-  transform: scale(.9);
-}
-
-.menuItemTitle:active {
-  color: #fff !important;
-}
-
-.menuItem .menuItemIcon {
-  display: none;
-}
-
-#windowHolder.popupWin {
-  background: transparent !important;
-}
-
-#windowHolder[style="display: none;"] {
-  display   : block !important;
-  width     : 100%;
-  height    : 100%;
-  transform : translateY(100%);
-  transition: .5s;
-  z-index   : 5;
-}
-
-#windowHolder {
-  position  : fixed;
-  width     : 100%;
-  height    : 100%;
-  transform : translateX(0%);
-  transition: .5s;
-  z-index   : 5;
-}
-
-.setHed {
-  border-radius: 0 !important;
-}
-
-.setHed:hover {
-  background: #52525224;
-  filter    : brightness(4);
-}
-
-#uiBase.onMenu #spectButton {
-  z-index: 1;
-}
-
-#subLogoButtons,
-#subLogoButtons>.button {
-  background : transparent !important;
-  box-shadow : none !important;
-  text-shadow: none !important;
-}
-
-#subLogoButtons {
-  bottom: 8%;
-}
-
-#menuWindow,
-#menuWindow.dark {
-  box-shadow: none;
-}
-
-.bigMenTabs,
-#selectorContainer,
-.bigMenTabA,
-.setBodH {
-  background: transparent;
-}
-
-.setHed {
-  border    : 0px;
-  background: transparent;
-}
-
-.settName,
-.settNameSmall {
-  border-bottom: 0px;
-}
-
-.selectedItem,
-.selectorItem {
-  background: transparent !important;
-}
-
-.selectorItem:hover {
-  filter: brightness(1.2) drop-shadow(0 0 2px white);
-}
-
-.selectedItem {
-  animation: sentaku 1s infinite;
-  filter   : drop-shadow(0 0 5px white) !important;
-}
-
-@keyframes sentaku {
-  0% {
-    transform: scale(0.9) translateX(-48%) translateX(-5%);
-  }
-
-  50% {
-    transform: scale(1) translateX(-48%);
-  }
-
-  100% {
-    transform: scale(.9) translateX(-48%)translateX(-5%);
-  }
-}
-
-#uiBase.onMenu #chatHolder[style="bottom: 20px;"] {
-  left      : 2%;
-  transition: .5s;
-}
-
-#uiBase.onMenu #chatHolder[style="bottom: 148px;"] {
-  transition: .5s;
-  bottom    : 20px !important;
+/*Just for beauty*/
+.serverHeader {
+    background: linear-gradient(#e8caff, #e3cdff)
 }
 
 ::-webkit-scrollbar {
-  width: 0px;
+    width: 0px;
 }
 
-#classPreviewCanvas,
-#menuClassName,
-#menuClassNameTag,
-#menuClassSubtext {
-  opacity            : 0;
-  transition-duration: 0.25s;
+/*menu windos setting*/
+#menuWindow {
+    box-shadow: none !important;
+    background: linear-gradient(0deg, #b4f0ff, #e8caff);
+    border    : solid white 5px;
 }
 
-#menuClassContainer:hover>#classPreviewCanvas {
-  opacity: 1;
+.menuItem .menuItemTitle {
+    color      : lightblue;
+    margin-left: 200%;
+    text-align : right;
+    margin-top : 10%;
+    font-size  : 30px !important;
+    text-shadow: 0 0 20px black, 0 0 20px black, 0 0 20px black, 0 0 20px black, 0 0 20px black;
+    transform  : rotate3d(0, 0, 1, -2deg);
 }
 
-#menuClassContainer:hover>#menuClassName {
-  opacity: 1;
+#classPreviewCanvas {
+    margin-bottom: -140px;
 }
 
-#menuClassContainer:hover>#menuClassSubtext {
-  opacity: 1;
+.skinCard {
+    line-height: 30px;
 }
 
-#menuClassContainer:hover>#menuClassNameTag {
-  opacity: 1;
+.skinImgC {
+    margin-top: -15px;
 }
 
-#customizeButton:hover {
-  backdrop-filter: blur(3px);
+.chalRight {
+    line-height: 30px;
 }
 
-#customizeButton,
-#policeButton {
-  box-shadow: none !important;
-  background: transparent !important;
-  border    : unset !important;
+#settingsTabLayout {
+    border-radius: 100px;
 }
 
-#signedInHeaderBar {
-  background: transparent;
-}
-
-.headerBarRight {
-  background: transparent;
-  transform : scale(2) translateX(-20%) translateY(5%);
-}
-
-#menuRegionLabel {
-  color: lightpink;
-}
-
-#customizeButton:hover:before {
-  content    : "visibility a";
-  font-family: Material Icons;
-}
-
-#customizeButton:before {
-  content    : "visibility_off a";
-  font-family: Material Icons;
-}
-
-#instructionHolder {
-  backdrop-filter: grayscale(1) brightness(0.6);
-  background     : transparent;
-}
-
-#menuClassContainer {
-  position: absolute;
-  left    : -5%;
-  top     : 59%;
-  z-index : 6;
-}
-
-#uiBase.onMenu #spectButton {
-  position : absolute;
-  transform: scale(1.2);
-  bottom   : -25%;
-  left     : 56%;
-}
-
-#teamSelector {
-  position: fixed;
-  bottom  : 14%;
-  left    : 40%;
-}
-
-#policeButton {
-  display: none;
-}
-
-#termsInfo {
-  background: transparent;
-}
-
-.verticalSeparatorInline {
-  display: none;
-}
-
-.terms {
-  display: none;
-}
-
-.terms.standout {
-  display  : block;
-  font-size: 0px;
-  content  : " ";
-}
-
-.terms.standout:before {
-  font-size: 20px;
-  content  : "CSS BY NAMEKUJILSDs#7777";
-  color    : gold;
-}
-
-#menuMiniProfilePic {
-  display: none;
-}
-
-input[type=number] {
-  background: gray;
-}
-
-input:checked+.slider,
-input:checked+.sliderSml {
-  background   : #c3f0ff;
-  border-radius: 100px;
-}
-
-input:checked+.slider:before,
-input:checked+.sliderSml:before {
-  border-radius: 100px;
-  background   : gray;
-  content      : " ";
-}
-
-.sliderM {
-  background   : #ffffff5c;
-  border-radius: 50px;
-}
-
-.sliderM::-webkit-slider-thumb {
-  background-color: #ffffff;
-  width           : 25px;
-  height          : 25px;
-  border          : 5px solid #959595;
-  box-shadow      : 0 0 4px #000000;
-  border-radius   : 30px;
-}
-
-#settingsTabLayout,
-.menuTabsNew {
-  background: transparent;
+.settingTab {
+    background   : lightblue;
+    border-radius: 300px;
+    height       : max-content;
 }
 
 .tabANew {
-  animation          : sentaku2 infinite 1s;
-  border-bottom-color: white;
+    border-color: blue;
 }
 
-.serverPing.material-icons {
-  display: none;
+.settingsHeader,
+#selectorContainer,
+#settingsTabLayout {
+    background           : transparent;
+    grid-template-columns: auto auto auto auto auto auto auto;
 }
 
-@keyframes sentaku2 {
-  0% {
-    transform: scale(.9)
-  }
-
-  50% {
-    transform: scale(1)
-  }
-
-  100% {
-    transform: scale(.9)
-  }
-}
-
-.slider {
-  border-radius: 50px;
-}
-
-.slider:before {
-  border-radius: 50px;
-}
-
-.headerBarLeft,
-.button.lgn {
-  background: transparent !important;
-  box-shadow: none !important;
-}
-
-#menuWindow,
-#menuWindow.dark {
-  background     : rgba(0, 0, 0, .5);
-  backdrop-filter: blur(4px);
-}
-
-.setHed[style="margin-top:0;margin-bottom:10px"] {
-  color: white;
-}
-
-div[style="color:rgba(0,0,0,0.4)"],
-.partnerItem,
-.settName,
-.floatR,
-.menuTabNew,
-.settNameSmall {
-  color: white !important;
-}
-
-span[style="color:rgba(0,0,0,0.5)"] {
-  color: lightgray !important;
-}
-
-div[style="padding:10px;background-color:rgba(0,0,0,0.2);margin-bottom:0px;margin-top:0px;padding-left:15px;font-size:18px"],
-div[style="margin-bottom:10px"],
-div[style="margin-top:10px"],
-div[style="font-size:26px;margin-top:20px;"],
-div[style="font-size:26px;margin-top:12px;"],
-div[style="font-size:17px;color:rgba(0,0,0,0.4);margin-top:5px"],
-div[style="color:rgba(0,0,0,0.6);margin-bottom:20px"],
-div[style="font-size:26px;margin-top:20px;font-weight:bold"],
-div[style="color:rgba(0,0,0,0.3);margin-top:-5px;margin-bottom:10px"] {
-  color: lightgray !important;
-}
-
-div[style="padding:10px;background-color:rgba(0,0,0,0.2);margin-bottom:0px;margin-top:0px;padding-left:15px;font-size:18px"] {
-  background: transparent !important;
-}
-
-input {
-  color: white !important;
-}
-
-div[style="float:right"],
-.mapByTxt,
-.grey,
-div[style="font-size:15px;text-align:right;flex-grow:1"] {
-  color: white !important;
-}
-
-div[style="color:rgba(0,0,0,0.6)"] {
-  color: white;
+.classCard {
+    border    : solid black 3px;
+    margin    : 5px;
+    background: #ffffff;
+    color     : gray;
 }
 
 .mapListItem:active .mapActionOvrl,
 .mapListItem:hover .mapActionOvrl {
-  height: 70%;
+    opacity: 0.5;
 }
 
-.settingsHeader,
-.serverHeader,
-#itemSearchH,
-.settingsHeader {
-  background: transparent;
+.mapActionOvrl {
+    height          : 100px;
+    background-color: blue;
 }
 
-#spinHeader {
-  font-size: 0px !important;
+.mapListItem {
+    background: gray;
 }
 
-#spinHeader:before {
-  content  : "BAKUSI";
-  font-size: 53.01px;
+
+.headerBarLeft {
+    z-index   : 3;
+    width     : 345px;
+    background: lightblue;
 }
 
-#freeKRClaimTxt {
-  text-shadow: none;
-  filter     : drop-shadow(0 0 5px black);
+.headerBar div,
+#menuKRCount {
+    color: black;
 }
 
-.menuItem,
-#subLogoButtons>.button {
-  filter: drop-shadow(0 0 2px rgb(255 255 255 / 0.5));
+#mLevelCont {
+    background: #2196f3;
+    position  : fixed;
+    left      : 3px;
 }
 
-.settingTab {
-  color     : white;
-  background: transparent;
+/*Chat Position*/
+#uiBase.onMenu #chatHolder {
+    position: fixed;
+    left    : 10%;
+
 }
 
-.setHed {
-  color     : aliceblue;
-  border-top: 3px white solid;
+.menBtnIcn {
+    display: none;
 }
 
-span.material-icons.plusOrMinus {
-  color: white;
-}
-
-.settingsBtn {
-  background: gray;
-}
-
-#instructions {
-  color      : white;
-  text-shadow: 0 0 4px white, 0 0 4px white;
-  font-size  : 50px;
-  animation  : moji infinite 1.5s;
-}
-
-@keyframes moji {
-  0% {
-    font-size: 40px;
-  }
-
-  50% {
-    font-size: 50px;
-  }
-
-  100% {
-    font-size: 40px;
-  }
-}
-
-.chatItem {
-  width: -webkit-fill-available
+.chatMsg {
+    color      : black;
+    text-shadow: 6px 5px 21px black;
 }
 
 #chatList::-webkit-scrollbar {
-  background: transparent;
-  display   : none;
+    width           : 1px;
+    background-color: black;
+    color           : white;
 }
 
-.classCard {
-  background  : #0005;
-  text-shadow : 0 0 2px black;
-  border      : 2px black solid;
-  margin-right: 1%;
+/*menu ping,fps,server */
+.headerBarRight {
+    position    : fixed;
+    right       : 0%;
+    background  : transparent;
+    padding-left: 0px;
 }
 
-#classPreviewCanvas {
-  height: 350px !important;
-  width : 580px !important;
+#menuServerInfoContainer {
+    position     : absolute;
+    right        : 0%;
+    padding-right: 10px;
 }
 
-.carousel {
-  display: none;
+#menuRegionLabel,
+#menuPingText {
+    color: #00ffdb;
 }
 
-.menuSelector,
-.serverHostOpH,
-.menuSelectorHeader,
-.serverPCount,
-.serverRegion {
-  color: white !important;
+/*Loadout Custom Screen*/
+#selectorContainer {
+    background-color: #282828;
+    height          : max-content;
+    padding-bottom  : 15px;
 }
 
-.menuSelectorHeader {
-  border-bottom: 2px white solid;
+.selectorItem {
+    background-color: gray !important;
+    border          : solid #00eeff 2px;
 }
 
-/*DO NOT STEEL CODES*/
-
-
-/*Game UI*/
-
-
-/*DO NOT STEEL CODES*/
-
-#gameMessage {
-  text-shadow: 0 0 5px black;
+.selectedItem {
+    background: lightgray !important;
+    box-shadow: 0 0 20px white;
+    filter    : none !important;
 }
 
-.weapIcon {
-  filter: drop-shadow(0 0 2px black)drop-shadow(0 0 2px black)drop-shadow(0 0 2px black)
+.classWeap {
+    color: black;
 }
 
-.weapIcon[style="opacity: 0.7; margin-right: 25px;"],
-.weapIcon[style="opacity: 0.7;"],
-.weapIcon[style="opacity:0.7;margin-right:25px"] {
-  position    : fixed;
-  left        : 46%;
-  bottom      : -10%;
-  transition  : .3s;
-  margin-right: 0px !important;
+.classImgC {
+    margin-top: 0px;
 }
 
-.weapIcon[style="opacity: 1;"],
-.weapIcon[style="opacity:1"],
-.weapIcon[style="opacity: 1; margin-right: 25px;"] {
-  bottom      : 2%;
-  position    : fixed;
-  left        : 50%;
-  transform   : translateX(-50%);
-  transition  : .3s;
-  margin-right: 0px !important;
+/*Menu Buttons*/
+
+.button.small {
+    padding-top: 0px !important;
+
+    height: 50px !important;
 }
 
-.weapKey {
-  display: none;
+.button.small,
+#customizeButton {
+    text-shadow: none !important;
+    background : #abfcff !important;
+    box-shadow : none !important;
+    color      : gray !important;
 }
 
-#ammoMax,
-#maxHP,
-#ammoIcon,
-#challIcon {
-  display: none;
+#customizeButton {
+    font-size: xx-large;
+    height   : fit-content !important;
+    padding  : 0px;
 }
 
-#ammoDisplay {
-  background-image: url(https://media.discordapp.net/attachments/759360337706483712/794850680380194846/1609577495989.PNG);
-  position        : fixed;
-  background-color: transparent;
-  right           : 49.5%;
-  bottom          : 48%;
-  padding         : 0px !important;
-  height          : 5px;
+/*Logo*/
+#mainLogo {
+    content: url(https://f.easyuploader.app/eu-prd/upload/20210330233708_62494330.png);
 }
 
-#ammoVal {
-  transform  : translateY(120px) translateX(180px);
-  font-size  : 50px;
-  text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
+/*top left box*/
+#mailIcon {
+    opacity: 1;
 }
 
-#reloadMsg {
-  background : transparent;
-  bottom     : 41%;
-  color      : red;
-  font-size  : 20px;
-  text-shadow: 0 0 2px black;
+/*Put my name in advertise */
+.standout {
+    color    : rgb(0 0 0 / 0);
+    font-size: 0px;
+}
+
+.standout:before {
+    color    : #ffcd05;
+    content  : "css by NamekujiLSDs#7777";
+    font-size: 25px;
+}
+
+
+/*INGAME UI*/
+
+/*End Board*/
+.endCard {
+    max-width: 800px;
+}
+
+/*Healthbar*/
+#healthBar {
+    position: fixed;
+    left    : 45%;
+    bottom  : 5%
 }
 
 .healthBarSeg {
-  background  : transparent;
-  margin-right: -1px;
-  width       : 50px;
+    background-color: transparent;
+    width           : 30px;
 }
 
 .hpBSeg {
-  box-shadow      : none;
-  border-radius   : 0px;
-  height          : 100%;
-  background-color: white !important;
-  box-shadow      : 0 0 4px black;
+    box-shadow   : none;
+    border-radius: 50px;
+    width        : 30px;
+    height       : 30px;
+    background   : transparent;
+    border       : solid black 5px;
 }
 
-#healthBar {
-  height       : 10px;
-  display      : block;
-  border-radius: 0px;
-  position     : fixed;
-  left         : 50%;
-  bottom       : 15px;
-  transform    : translateX(-50%);
-}
 
-#igXPBar {
-  display: none !important;
-}
 
-#hudClassImg {
-  content: url(https://media.discordapp.net/attachments/714628674091089924/836745633952038932/slug-vector-id1020707028.png);
-}
 
-#hudClassIcon {
-  display: none;
-}
-
+/*Health value*/
 #healthValueHolder {
-  background: transparent;
-  position  : fixed;
-  left      : 39%;
-  top       : 62%;
+    background   : transparent;
+    position     : fixed;
+    margin-bottom: 0px;
+    padding-right: 0px;
+    padding-left : 0px;
+    padding      : 0px;
+    bottom       : 35%;
+    left         : 39%;
 }
 
 #healthValue {
-  font-size  : 50px;
-  text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
+    font-size  : 55px;
+    text-align : center;
+    text-shadow: 2px 2px 5px black, -2px -2px 5px black, 2px 2px 5px black, -2px -2px 5px black;
 }
 
-#timerIcon {
-  display: none;
-}
-
+/*TIMER*/
 #timerDisplay {
-  background: transparent;
-  top       : 75%;
-  left      : 46.5%;
-  position  : fixed;
+    background: transparent;
+    position  : fixed;
+    bottom    : 20%;
+    left      : 46%;
+    text-align: center;
 }
 
 #timerVal {
-  font-size  : 40px;
-  text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
+    font-size  : 60px;
+    text-shadow: 2px 2px 5px black, -2px -2px 5px black, 2px 2px 5px black, -2px -2px 5px black;
 }
 
-
-#chatHolder[style="bottom: 148px;"] {
-  bottom    : 20px !important;
-  transition: .3s;
+/*AMMO and Weapon*/
+#weapDisplay {
+    position: fixed;
+    bottom  : 40%;
 }
 
-#leaderContainer {
-  border-top: dotted 5px white;
+#ammoDisplay {
+    width           : 80px;
+    letter-spacing  : 0px;
+    font-size       : 55px;
+    border-radius   : 0px;
+    background-color: transparent;
+    position        : fixed;
+    margin-bottom   : 0px;
+    padding-right   : 0px;
+    padding-left    : 0px;
+    padding-bottom  : -50px;
+    padding         : 0px;
+    bottom          : 39%;
+    right           : 38%;
+    margin-right    : 0px;
 }
 
-#leaderDisplay:before {
-  content    : "Leader Board";
-  color      : #d592ff;
-  text-shadow: 0 0 4px #9341ffec;
+#ammoVal {
+    font-size  : 55px;
+    text-align : center;
+    text-shadow: 2px 2px 5px black, -2px -2px 5px black, 2px 2px 5px black, -2px -2px 5px black;
 }
 
+.topRightCounters {
+    position: fixed;
+    right   : 0%;
+    top     : 15%;
+}
 .menuSocialB {
   display: none;
 }
 
-.menBtnIcn {
-  display: none !important;
+#rankedSoonTm {
+    display: none
 }
 
-div#menuBtnProfile,
+#menuBtnProfile,
 div#menuBtnShop {
-  font-size: 0 !important;
+    font-size: 0 !important;
 }
 
 div#menuBtnProfile:after {
-  font-size: 25px !important;
-  content  : "Profile"
+    font-size: 30px !important;
+    content  : "Profile"
 }
 
 div#menuBtnShop:after {
-  font-size: 25px !important;
-  content  : "Shop"
+    font-size: 30px !important;
+    content  : "Shop"
 }
-
-.menuItem,
-#subLogoButtons>.button {
-  border-color: transparent !important;
-}
-
-div#rankedSoonTm {
-  display: none !important;
-}
-
-#uiBase.onMenu #chatHolder {
-  left      : 20px;
-  transition: .1s;
-}
-
-#reloadMsg {
-  border: unset !important;
-
-}
-
-/*DO NOT STEEL CODES*/
-
-/* Made in 2020 05/10 */
-/* Last Update 2021 11/19 */
-/* Fixed something a lot*/
