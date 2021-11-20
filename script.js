@@ -19,25 +19,13 @@ const colors = [
 document.ondragstart = function() {
     return false;
 };
-window.onload = function() {
-    document.getElementsByTagName('html')[0].style.setProperty('--accent-color', colors[Math.round(Math.random() * (colors.length - 1))])
-}
+
 // ページ読み込み時に実行(色のランダム化)
 window.onload = function() {
     document.getElementsByTagName('html')[0].style.setProperty('--accent-color', colors[Math.round(Math.random() * (colors.length - 1))])
-    VANTA.NET({
-        el: "#net",
-        mouseControls: false,
-        touchControls: false,
-        gyroControls: false,
-        minHeight: 200.00,
-        minWidth: 200.00,
-        scale: 1.00,
-        scaleMobile: 1.00,
-        backgroundColor: 0x50309,
-        color: colors[Math.round(Math.random() * (colors.length - 1))]
-    })
 }
+
+
 
 // ページ切り替え
 const loadSubPage = (name) => {
