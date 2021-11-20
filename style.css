@@ -38,8 +38,12 @@
   transition : .2s;
 }
 
-::-webkit-scrollbar {
-  display: none;
+::-webkit-scrollbar-thumb{
+  color:red;
+  background:red;
+}
+::-webkit-scrollbar-track{
+  background:red;
 }
 
 
