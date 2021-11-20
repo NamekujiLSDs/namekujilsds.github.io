@@ -16,12 +16,12 @@ const colors = [
 ];
 
 // 文字列選択の無効化
-document.ondragstart = function() {
+document.ondragstart = function () {
     return false;
 };
 
 // ページ読み込み時に実行(色のランダム化)
-window.onload = function() {
+window.onload = function () {
     document.getElementsByTagName('html')[0].style.setProperty('--accent-color', colors[Math.round(Math.random() * (colors.length - 1))])
 }
 
@@ -40,5 +40,3 @@ function copyUrl() {
     navigator.clipboard.writeText(url);
     share.innerHTML = "URL Copied";
 }
-
-
