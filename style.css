@@ -52,17 +52,27 @@
 body, html {
   height: 100%;
   width: 100%;
-  background-color:#101010;
 }
 
 #net {
   height: 100%;
   width: 100%;
-  z-index: -1;
-  background:linear-gradient(to bottom,transparent,var(--accent-color));
+  z-index: 1;
+  background:linear-gradient(to bottom,transparent,#0000,var(--accent-color));
   opacity:0.3;
 }
-
+#net2{
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background:#101010;
+}
+div#main{
+  height:100%;
+  width:100%;
+  position:fixed;
+  z-index:5;
+}
 
 /* 左のメニュー */
 
