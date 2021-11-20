@@ -52,7 +52,7 @@
 ::-webkit-scrollbar-thumb {
   border-radius: 100px;
   opacity      : 0.5;
-  background   : linear-gradient(transparent, transparent, var(--accent-color), white, var(--accent-color), transparent, transparent);
+  background   : linear-gradient(white 0% 5%, var(--accent-color), white, var(--accent-color), white 95% 100%);
 }
 
 
@@ -351,11 +351,11 @@ footer {
 }
 
 .css_img_label {
-  cursor    : pointer;
-  font-size : 20px;
-  text-align: center;
+  cursor     : pointer;
+  font-size  : 20px;
+  text-align : center;
   font-weight: bolder;
-  text-shadow:0 0 10px;
+  text-shadow: 0 0 10px;
 }
 
 .hidden_img_1 img,
@@ -385,7 +385,7 @@ footer {
 #hide_1:checked~.hidden_img_9 img,
 #hide_2:checked~.hidden_img_10 img,
 #hide_3:checked~.hidden_img_11 img,
-#hide_4:checked~.hidden_img_12 img{
+#hide_4:checked~.hidden_img_12 img {
   height    : auto;
   transition: .2s;
 }

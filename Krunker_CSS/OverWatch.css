@@ -1,10 +1,22 @@
 @font-face {
   font-family: gamefont;
   font-weight: bolder;
-  src: url(https://f.easyuploader.app/20210513080616_7558486f.ttf);
+  src        : url(https://f.easyuploader.app/20210513080616_7558486f.ttf);
 }
 
-#tlInfHold, #chatSwitchHolder, #menuPingDisplay .material-icons, #seasonLabel, #mLevelCont, #uiBase.onMenu #voiceDisplay, #faceItIconM, aHider, #aHolder, #newsHolder, #editorBtnM, .verticalSeparator, .imageButton {
+#tlInfHold,
+#chatSwitchHolder,
+#menuPingDisplay .material-icons,
+#seasonLabel,
+#mLevelCont,
+#uiBase.onMenu #voiceDisplay,
+#faceItIconM,
+aHider,
+#aHolder,
+#newsHolder,
+#editorBtnM,
+.verticalSeparator,
+.imageButton {
   display: none !important;
 }
 
@@ -16,18 +28,18 @@
 }
 
 .menuItem {
-  display: flex;
-  transition: .2s;
-  background: transparent;
+  display        : flex;
+  transition     : .2s;
+  background     : transparent;
   justify-content: center;
-  align-self: flex-start;
+  align-self     : flex-start;
 }
 
 .menuItem:hover {
-  transition: .2s;
-  display: flex;
+  transition     : .2s;
+  display        : flex;
   justify-content: center;
-  border-left: solid 50px transparent;
+  border-left    : solid 50px transparent;
 }
 
 .mapListItem .mapActionOvrl {
@@ -35,16 +47,16 @@
 }
 
 .mFeatSepar {
-  background: transparent;
-  border: 0;
+  background   : transparent;
+  border       : 0;
   border-bottom: 5px white solid;
   border-radius: 0
 }
 
 #menuItemContainer {
   margin-left: 2%;
-  height: 40%;
-  top: 15%;
+  height     : 40%;
+  top        : 15%;
 }
 
 .menuItem .menuItemTitle {
@@ -56,7 +68,7 @@
 }
 
 .headerBarLeft {
-  left: 85%;
+  left      : 85%;
   background: transparent !important;
 }
 
@@ -72,34 +84,34 @@
 .buttonP.lgn:hover {
   background: transparent !important;
   box-shadow: none !important;
-  filter: drop-shadow(2px 2px 5px white);
+  filter    : drop-shadow(2px 2px 5px white);
 }
 
 #subLogoButtons {
-  position: fixed;
-  left: 5%;
+  position      : fixed;
+  left          : 5%;
   flex-direction: column;
-  top: 55%;
-  transition: .2s;
+  top           : 55%;
+  transition    : .2s;
 }
 
 #subLogoButtons>.button {
-  display: flex;
-  font-size: 25px !important;
-  text-shadow: none !important;
+  display       : flex;
+  font-size     : 25px !important;
+  text-shadow   : none !important;
   flex-direction: column;
-  align-content: flex-start;
-  align-items: stretch;
-  flex-wrap: nowrap;
-  transition: .2s;
+  align-content : flex-start;
+  align-items   : stretch;
+  flex-wrap     : nowrap;
+  transition    : .2s;
 }
 
 #subLogoButtons>.button:hover {
-  background: transparent !important;
-  box-shadow: none !important;
-  border-left: transparent solid 50px;
+  background  : transparent !important;
+  box-shadow  : none !important;
+  border-left : transparent solid 50px;
   border-color: transparent;
-  transition: .2s;
+  transition  : .2s;
 }
 
 .small.button:hover>#subLogoButtons {
@@ -109,10 +121,11 @@
 
 /*chat*/
 
-#chatInput, #chatInputHolder {
+#chatInput,
+#chatInputHolder {
   background: transparent;
   box-shadow: none !important;
-  border: none !important;
+  border    : none !important;
 }
 
 #chatList {
@@ -122,23 +135,24 @@
 
 #chatList::-webkit-scrollbar {
   background: #ff000000;
-  border: none;
-  width: 0px;
+  border    : none;
+  width     : 0px;
 }
 
 #chatList::-webkit-scrollbar-thumb {
   background: white;
-  border: none;
-  width: 0px;
+  border    : none;
+  width     : 0px;
 }
 
 #uiBase.onMenu #chatHolder {
-  left: 2%;
-  width: 10%;
+  left      : 2%;
+  width     : 10%;
   transition: .2s;
 }
 
-#instructions:before, #instructions:after {
+#instructions:before,
+#instructions:after {
   content: " - ";
 }
 
@@ -152,11 +166,11 @@
 }
 
 .chatItem {
-  margin-top: 0;
+  margin-top   : 0;
   margin-bottom: 3%;
-  font-size: 20px;
-  background: transparent !important;
-  text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black;
+  font-size    : 20px;
+  background   : transparent !important;
+  text-shadow  : 0 0 1px black, 0 0 1px black, 0 0 1px black;
 }
 
 #ot-sdk-btn-floating.ot-floating-button {
@@ -174,46 +188,51 @@
 }
 
 #mainLogo {
-  content: url("https://f.easyuploader.app/20210513140956_4e416462.png");
-  position: absolute;
+  content  : url("https://f.easyuploader.app/20210513140956_4e416462.png");
+  position : absolute;
   transform: translateX(-95%) translateY(-20%) scale(0.7);
 }
 
 #customizeButton:hover {
   border-radius: 0px;
-  background: transparent !important;
-  box-shadow: none !important;
+  background   : transparent !important;
+  box-shadow   : none !important;
   border-bottom: 10px solid #ffffff;
   ;
 }
 
-.terms, .verticalSeparatorInline {
+.terms,
+.verticalSeparatorInline {
   display: none;
 }
 
 .standout {
-  display: block;
+  display  : block;
   font-size: 0px;
 }
 
 .standout:before {
   font-size: 25px;
-  content: "CSS BY NAMEKUJILSDS#7777";
-  color: #f0ff02;
+  content  : "CSS BY NAMEKUJILSDS#7777";
+  color    : #f0ff02;
 }
 
 #termsInfo {
   background: transparent;
 }
 
-#menuServerInfoContainer, .headerBarRight {
+#menuServerInfoContainer,
+.headerBarRight {
   background: transparent;
-  right: 7%;
-  bottom: 5%;
-  position: fixed;
+  right     : 7%;
+  bottom    : 5%;
+  position  : fixed;
 }
 
-#menuPingText, #menuRegionLabel, #menuPingDisplay, #menuFPSDisplay {
+#menuPingText,
+#menuRegionLabel,
+#menuPingDisplay,
+#menuFPSDisplay {
   font-size: 30px;
 }
 
@@ -222,34 +241,38 @@
 }
 
 #customizeButton {
-  border-bottom: 0px white solid;
-  border-radius: 0;
+  border-bottom  : 0px white solid;
+  border-radius  : 0;
   backdrop-filter: blur(5px);
 }
 
 #policeButton:hover {
   border-radius: 0px;
-  background: transparent !important;
-  box-shadow: none !important;
+  background   : transparent !important;
+  box-shadow   : none !important;
   border-bottom: 10px solid #fff;
 }
 
 
 /*Menu Window*/
 
-.settingsHeader, #itemSearchH, .serverHeader {
+.settingsHeader,
+#itemSearchH,
+.serverHeader {
   backdrop-filter: blur(10px);
-  background: transparent;
+  background     : transparent;
 }
 
-#menuWindow.dark, #menuWindow {
+#menuWindow.dark,
+#menuWindow {
   background: linear-gradient(45deg, rgb(228 167 255 / 50%), rgb(175 240 255 / 50%));
 }
 
-.setHed, .setHed:hover {
+.setHed,
+.setHed:hover {
   background: transparent;
-  border: none;
-  padding: 0 !important;
+  border    : none;
+  padding   : 0 !important;
   margin-top: 1%;
 }
 
@@ -266,13 +289,14 @@
   margin-top: 0;
 }
 
-.settName, .settNameSmall {
-  background: #0000007d;
-  padding-left: 2%;
+.settName,
+.settNameSmall {
+  background    : #0000007d;
+  padding-left  : 2%;
   padding-bottom: 1%;
-  padding-top: 1%;
-  padding-right: 2%;
-  height: -webkit-fill-available;
+  padding-top   : 1%;
+  padding-right : 2%;
+  height        : -webkit-fill-available;
 }
 
 .settingTab {
@@ -288,10 +312,10 @@
 }
 
 .sliderVal {
-  background: transparent;
-  border: 0 !important;
-  margin-top: -0.5%;
-  font-size: 25px !important;
+  background   : transparent;
+  border       : 0 !important;
+  margin-top   : -0.5%;
+  font-size    : 25px !important;
   border-bottom: double 5px white !important;
   border-radius: 0;
 }
@@ -302,29 +326,29 @@
 
 .settingsBtn {
   background: lightblue;
-  color: black !important;
+  color     : black !important;
 }
 
 .sliderM {
-  height: 10px;
+  height    : 10px;
   background: #4f97ff;
 }
 
 .sliderM::-webkit-slider-thumb {
-  width: 25px;
-  height: 25px;
+  width        : 25px;
+  height       : 25px;
   border-radius: 15px;
 }
 
 .slider {
   background: lightgray;
-  border: 0 !important;
+  border    : 0 !important;
 }
 
 input:checked+.slider:before {
   transform: none;
-  width: 0;
-  content: "ON";
+  width    : 0;
+  content  : "ON";
   font-size: 25px;
 }
 
@@ -338,7 +362,7 @@ input:checked+.slider {
 
 .slider:before {
   font-size: 25px;
-  content: " OFF";
+  content  : " OFF";
 }
 
 .slider {
@@ -349,7 +373,8 @@ input:checked+.slider {
   width: 0;
 }
 
-.selectorItem:hover, .selectorItem {
+.selectorItem:hover,
+.selectorItem {
   background: transparent;
 }
 
@@ -358,9 +383,9 @@ input:checked+.slider {
 }
 
 .selectedItem {
-  animation-name: selected;
-  animation-duration: 1s;
-  animation-play-state: running;
+  animation-name           : selected;
+  animation-duration       : 1s;
+  animation-play-state     : running;
   animation-iteration-count: infinite;
 }
 
@@ -368,9 +393,11 @@ input:checked+.slider {
   0% {
     transform: scale(0.9) translateX(-55%);
   }
+
   50% {
     transform: scale(1) translateX(-50%);
   }
+
   100% {
     transform: scale(0.9) translateX(-55%);
   }
@@ -386,25 +413,28 @@ input:checked+.slider {
 
 .classCard {
   padding-right: 3%;
-  padding-left: 2%;
-  width: 17%;
-  height: 10%;
-  text-shadow: none!important;
+  padding-left : 2%;
+  width        : 17%;
+  height       : 10%;
+  text-shadow  : none !important;
   border-radius: 0;
 }
 
-.classImgC, .classImgC:hover {
-  width: -webkit-fill-available;
+.classImgC,
+.classImgC:hover {
+  width        : -webkit-fill-available;
   border-radius: 0px;
 }
 
 .classCard {
-  border: solid black 2px;
-  color: black !important;
+  border       : solid black 2px;
+  color        : black !important;
   margin-bottom: 3%;
 }
 
-.classXPBar, .classLvl, .classHP {
+.classXPBar,
+.classLvl,
+.classHP {
   display: none !important;
 }
 
@@ -413,7 +443,7 @@ input:checked+.slider {
 }
 
 .skinImgC {
-  width: inherit;
+  width    : inherit;
   transform: skewX(5deg);
 }
 
@@ -422,7 +452,7 @@ input:checked+.slider {
 }
 
 .custContainer {
-  margin-left: -2%;
+  margin-left : -2%;
   margin-right: 2%;
 }
 
@@ -430,13 +460,13 @@ input:checked+.slider {
 
 .settNameSmall {
   background: transparent;
-  border: none !important;
+  border    : none !important;
 }
 
 #spectButton {
-  position: fixed !important;
-  left: 86% !important;
-  bottom: 10% !important;
+  position : fixed !important;
+  left     : 86% !important;
+  bottom   : 10% !important;
   transform: scale(1.5) !important;
 }
 
@@ -448,17 +478,17 @@ input:checked+.slider {
 }
 
 #windowHolder[style="display: none;"] {
-  display: block !important;
-  position: fixed;
+  display   : block !important;
+  position  : fixed;
   background: transparent;
-  transform: translateX(100%);
+  transform : translateX(100%);
   transition: .3s;
 }
 
 #windowHolder[style="display: block;"] {
-  position: fixed;
+  position  : fixed;
   background: transparent;
-  transform: translateX(0%);
+  transform : translateX(0%);
   transition: .3s
 }
 
@@ -467,7 +497,7 @@ input:checked+.slider {
 }
 
 .setHedS {
-  border: 0;
+  border    : 0;
   background: transparent;
 }
 
@@ -476,7 +506,7 @@ input:checked+.slider {
 }
 
 .xpBarV {
-  color: black;
+  color    : black;
   font-size: 25px;
 }
 
@@ -492,7 +522,7 @@ input:checked+.slider {
 }
 
 #healthValueHolder {
-  transform: rotateZ(-5deg);
+  transform : rotateZ(-5deg);
   background: transparent;
 }
 
@@ -506,40 +536,40 @@ input:checked+.slider {
 
 .healthBarSeg {
   margin-right: 5px;
-  background: transparent;
+  background  : transparent;
 }
 
 .hpBSeg {
-  box-shadow: none !important;
-  background: rgb(255 255 255 / 0.7) !important;
+  box-shadow   : none !important;
+  background   : rgb(255 255 255 / 0.7) !important;
   border-radius: 0px;
 }
 
 #healthBar {
-  transform: skewX(-15deg) translateY(-30%) translateX(5%) rotateZ(-5deg);
+  transform    : skewX(-15deg) translateY(-30%) translateX(5%) rotateZ(-5deg);
   border-radius: 0px;
 }
 
 #hudClassIcon {
-  border: 5px black solid;
+  border    : 5px black solid;
   box-shadow: 0 0 10px black;
-  transform: rotateZ(45deg);
+  transform : rotateZ(45deg);
   background: white;
 }
 
 #hudClassImg {
-  filter: drop-shadow(0 0 10px black);
+  filter   : drop-shadow(0 0 10px black);
   transform: rotateZ(-45deg);
 }
 
 #igXPBar {
-  width: 12%;
-  height: 1%;
-  left: 11%;
-  bottom: 8%;
-  transform: rotateZ(-5deg);
-  background: white !important;
-  opacity: 1 !important;
+  width           : 12%;
+  height          : 1%;
+  left            : 11%;
+  bottom          : 8%;
+  transform       : rotateZ(-5deg);
+  background      : white !important;
+  opacity         : 1 !important;
   background-color: white;
 }
 
@@ -548,16 +578,16 @@ input:checked+.slider {
 }
 
 #bottomLeftHolder {
-  margin-left: 3%;
+  margin-left  : 3%;
   margin-bottom: 3%;
 }
 
 #ammoDisplay {
   background: transparent;
-  transform: rotateZ(5deg);
-  position: fixed;
-  right: 5%;
-  bottom: 10%;
+  transform : rotateZ(5deg);
+  position  : fixed;
+  right     : 5%;
+  bottom    : 10%;
 }
 
 #ammoVal {
@@ -584,27 +614,31 @@ input:checked+.slider {
   display: none !important;
 }
 
-.weapIcon[style="opacity: 1; margin-right: 25px;"], .weapIcon[style="opacity: 1;"], .weapIcon[style="opacity:1"] {
-  right: 3%;
-  bottom: 5%;
-  position: fixed;
+.weapIcon[style="opacity: 1; margin-right: 25px;"],
+.weapIcon[style="opacity: 1;"],
+.weapIcon[style="opacity:1"] {
+  right        : 3%;
+  bottom       : 5%;
+  position     : fixed;
   border-radius: 10px;
   padding-right: 1%;
-  border-right: 5px #7ff7fc solid;
-  transition: .1s;
-  margin-right: 0 !important;
+  border-right : 5px #7ff7fc solid;
+  transition   : .1s;
+  margin-right : 0 !important;
 }
 
-.weapIcon[style="opacity: 0.7;"], .weapIcon[style="opacity:0.7;margin-right:25px"], .weapIcon[style="opacity: 0.7; margin-right: 25px;"] {
-  right: 3%;
-  bottom: 5%;
-  position: fixed;
+.weapIcon[style="opacity: 0.7;"],
+.weapIcon[style="opacity:0.7;margin-right:25px"],
+.weapIcon[style="opacity: 0.7; margin-right: 25px;"] {
+  right        : 3%;
+  bottom       : 5%;
+  position     : fixed;
   border-radius: 20px;
   padding-right: 1%;
-  border-right: 5px #7ff7fc solid;
-  opacity: 0 !important;
-  margin-right: 0px !important;
-  transition: .1s;
+  border-right : 5px #7ff7fc solid;
+  opacity      : 0 !important;
+  margin-right : 0px !important;
+  transition   : .1s;
 }
 
 .endAHolder {
@@ -612,9 +646,9 @@ input:checked+.slider {
 }
 
 #timerDisplay {
-  position: fixed;
-  left: 47%;
-  background: transparent;
+  position     : fixed;
+  left         : 47%;
+  background   : transparent;
   border-radius: 100px;
 }
 
@@ -623,12 +657,12 @@ input:checked+.slider {
 }
 
 #timerVal {
-  font-size: 60px;
+  font-size  : 60px;
   text-shadow: 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black, 0 0 3px black;
 }
 
 .debugInfo {
-  right: 1%;
+  right   : 1%;
   position: fixed;
 }
 
@@ -636,59 +670,64 @@ input:checked+.slider {
   display: none;
 }
 
-#pingText, #ingameFPS, #ingressPacketCount, #ingressDataSize, #egressPacketCount, #egressDataSize {
-  color: white !important;
+#pingText,
+#ingameFPS,
+#ingressPacketCount,
+#ingressDataSize,
+#egressPacketCount,
+#egressDataSize {
+  color      : white !important;
   text-shadow: 0 0 4px black;
-  font-size: 25px !important;
+  font-size  : 25px !important;
 }
 
 #pingText:after {
-  content: " ping";
+  content  : " ping";
   font-size: 18px;
 }
 
 #pingDisplay {
   position: fixed;
-  left: 5%;
-  top: 96.5%;
+  left    : 5%;
+  top     : 96.5%;
 }
 
 #uiBase.onGame #chatHolder {
-  bottom: 20% !important;
+  bottom    : 20% !important;
   transition: .2s;
 }
 
 #tScoreV1.tScoreT {
-  position: fixed;
-  left: 44%;
-  top: 4%;
-  font-size: 40px;
-  color: red;
-  border: solid white 2px;
-  padding-right: 20px;
-  padding-left: 20px;
+  position              : fixed;
+  left                  : 44%;
+  top                   : 4%;
+  font-size             : 40px;
+  color                 : red;
+  border                : solid white 2px;
+  padding-right         : 20px;
+  padding-left          : 20px;
   border-top-left-radius: 20px;
-  color: white;
-  text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black;
+  color                 : white;
+  text-shadow           : 0 0 5px black, 0 0 5px black, 0 0 5px black;
 }
 
 #tScoreV2.tScoreT {
-  position: fixed;
-  right: 42%;
-  top: 4%;
-  font-size: 40px;
-  color: white;
-  text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black;
-  border: solid white 2px;
-  padding-right: 20px;
-  padding-left: 20px;
+  position               : fixed;
+  right                  : 42%;
+  top                    : 4%;
+  font-size              : 40px;
+  color                  : white;
+  text-shadow            : 0 0 5px black, 0 0 5px black, 0 0 5px black;
+  border                 : solid white 2px;
+  padding-right          : 20px;
+  padding-left           : 20px;
   border-top-right-radius: 20px;
-  background: rgb(255 255 255 / 0%)55 255 255 / 0.5);
+  background             : rgb(255 255 255 / 0%);
 }
 
 #gameMessage {
   text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
-  color: white;
+  color      : white;
 }
 
 .tScoreC {
@@ -700,11 +739,12 @@ input:checked+.slider {
 }
 
 #fpsDisplay {
-  bottom: 1%;
-  left: 2%;
+  bottom  : 1%;
+  left    : 2%;
   position: fixed;
 }
 
-.tScoreM, .tScoreF {
+.tScoreM,
+.tScoreF {
   display: none !important;
 }

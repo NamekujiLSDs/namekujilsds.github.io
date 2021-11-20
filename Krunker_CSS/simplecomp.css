@@ -6,24 +6,34 @@
   /*Why i add this...?*/
   --color3: black;
   /*timer color*/
-  --time: #8194ff;
+  --time  : #8194ff;
   /*ammo color*/
-  --ammoC: #fff;
+  --ammoC : #fff;
   /*Health color*/
-  --hpC: #fff;
+  --hpC   : #fff;
   /*reload bar color*/
-  --relc1: #95ff4b;
-  --relc2: #53f0ff;
+  --relc1 : #95ff4b;
+  --relc2 : #53f0ff;
   /*[R]Reloading color*/
   --relmsg: pink;
 }
 
 @font-face {
   font-family: gamefont;
-  src: url(https://fonts.gstatic.com/s/fredokaone/v8/k3kUo8kEI-tA1RRcTZGmTlHGCac.woff2);
+  src        : url(https://fonts.gstatic.com/s/fredokaone/v8/k3kUo8kEI-tA1RRcTZGmTlHGCac.woff2);
 }
 
-.discordSocial, div#onetrust-consent-sdk, .verticalSeparator, .redditSocial, #editorBtnM, #editorBtnM, #tlInfHold, #newsHolder, #aHolder, #faceItIconM, .weapKey {
+.discordSocial,
+div#onetrust-consent-sdk,
+.verticalSeparator,
+.redditSocial,
+#editorBtnM,
+#editorBtnM,
+#tlInfHold,
+#newsHolder,
+#aHolder,
+#faceItIconM,
+.weapKey {
   display: none !important
 }
 
@@ -32,37 +42,37 @@
 }
 
 #menuItemContainer {
-  border-right: 4px white solid;
-  display: flex;
+  border-right  : 4px white solid;
+  display       : flex;
   flex-direction: row;
-  top: unset;
-  bottom: 0;
-  height: 12%;
-  left: 0;
-  right: 0;
-  width: 100%;
+  top           : unset;
+  bottom        : 0;
+  height        : 12%;
+  left          : 0;
+  right         : 0;
+  width         : 100%;
 }
 
 .menuItem:hover {
   border-left: unset;
-  border-top: 10px solid;
+  border-top : 10px solid;
 }
 
 #mapInfoHolder {
-  display: block;
-  bottom: 13%;
+  display       : block;
+  bottom        : 13%;
   padding-bottom: 50px;
 }
 
 #termsInfo {
   background: transparent;
-  padding: 0;
-  height: 0px;
+  padding   : 0;
+  height    : 0px;
 }
 
 #termsInfo:before {
-  content: "CSS BY NamekujiLSDs#7777";
-  color: yellow;
+  content  : "CSS BY NamekujiLSDs#7777";
+  color    : yellow;
   font-size: 18px;
 }
 
@@ -84,8 +94,8 @@
 }
 
 #uiBase.onMenu #chatHolder {
-  bottom: 15%;
-  left: 1%;
+  bottom    : 15%;
+  left      : 1%;
   transition: .2s;
 }
 
@@ -98,7 +108,7 @@
 
 #leaderDisplay:before {
   content: "LeaderBoard";
-  color: var(--color1);
+  color  : var(--color1);
 }
 
 #leaderContainer {
@@ -108,42 +118,50 @@
 
 div#streakCount {
   background: transparent;
-  left: 50%;
-  position: fixed;
-  transform: translateX(-50%) scale(2);
-  bottom: 15%;
+  left      : 50%;
+  position  : fixed;
+  transform : translateX(-50%) scale(2);
+  bottom    : 15%;
 }
 
-#killsVal, #deathsVal, #streakVal, #myScoreVal, #kdVal {
+#killsVal,
+#deathsVal,
+#streakVal,
+#myScoreVal,
+#kdVal {
   color: white;
 }
 
 .weapItem {
-  display: block;
-  position: fixed;
-  left: 50%;
-  bottom: 3%;
+  display  : block;
+  position : fixed;
+  left     : 50%;
+  bottom   : 3%;
   transform: translateX(-50%);
 }
 
-.weapIcon[style="opacity: 0.7; margin-right: 25px;"], .weapIcon[style="opacity: 0.7;"], .weapIcon[style="opacity:0.7;margin-right:25px"] {
-  transform: rotateX(90deg);
+.weapIcon[style="opacity: 0.7; margin-right: 25px;"],
+.weapIcon[style="opacity: 0.7;"],
+.weapIcon[style="opacity:0.7;margin-right:25px"] {
+  transform : rotateX(90deg);
   transition: .2s;
-  filter: drop-shadow(4px 4px 0px var(--color2));
+  filter    : drop-shadow(4px 4px 0px var(--color2));
 }
 
-.weapIcon[style="opacity: 1;"], .weapIcon[style="opacity:1"], .weapIcon[style="opacity: 1; margin-right: 25px;"] {
+.weapIcon[style="opacity: 1;"],
+.weapIcon[style="opacity:1"],
+.weapIcon[style="opacity: 1; margin-right: 25px;"] {
   transition: .2s;
-  filter: drop-shadow(4px 4px 0px var(--color2));
+  filter    : drop-shadow(4px 4px 0px var(--color2));
 }
 
 #timerDisplay {
-  display: block !important;
+  display   : block !important;
   background: transparent;
-  left: 50%;
-  bottom: 20%;
-  position: fixed;
-  transform: translateX(-50%);
+  left      : 50%;
+  bottom    : 20%;
+  position  : fixed;
+  transform : translateX(-50%);
 }
 
 #timerIcon {
@@ -151,56 +169,60 @@ div#streakCount {
 }
 
 #timerVal {
-  color: var(--time);
+  color    : var(--time);
   font-size: 40px;
 }
 
 .debugInfo {
-  background: rgba(0, 0, 0, .3);
-  padding: 10px;
-  bottom: 3%;
-  left: 10px;
-  margin-top: -10px;
+  background : rgba(0, 0, 0, .3);
+  padding    : 10px;
+  bottom     : 3%;
+  left       : 10px;
+  margin-top : -10px;
   margin-left: -10px;
 }
 
-#timerVal, #ammoVal, #healthValue {
+#timerVal,
+#ammoVal,
+#healthValue {
   text-shadow: 2px 2px black, 2px -2px black, -2px 2px black, -2px -2px black;
 }
 
 #ammoDisplay {
-  position: fixed;
-  bottom: 47%;
-  left: calc(50% - 40px);
-  transform: unset;
-  width: 80px;
-  padding: 0;
-  height: 8px;
+  position        : fixed;
+  bottom          : 47%;
+  left            : calc(50% - 40px);
+  transform       : unset;
+  width           : 80px;
+  padding         : 0;
+  height          : 8px;
   background-color: transparent;
   background-image: linear-gradient(90deg, var(--relc1), var(--relc2))
 }
 
 #ammoVal {
-  position: fixed;
-  bottom: 35%;
-  right: 40%;
+  position : fixed;
+  bottom   : 35%;
+  right    : 40%;
   font-size: 60px;
-  color: var(--ammoC)
+  color    : var(--ammoC)
 }
 
-#ammoMax, #ammoIcon {
+#ammoMax,
+#ammoIcon {
   display: none;
 }
 
 #healthValue {
-  color: var(--hpC);
+  color    : var(--hpC);
   font-size: 60px;
-  position: fixed;
-  left: 40%;
-  bottom: 35%;
+  position : fixed;
+  left     : 40%;
+  bottom   : 35%;
 }
 
-#maxHP, #challIcon {
+#maxHP,
+#challIcon {
   display: none;
 }
 
@@ -209,38 +231,38 @@ div#streakCount {
 }
 
 #reloadMsg {
-  padding-left: unset;
+  padding-left : unset;
   padding-right: unset;
-  line-height: unset;
-  bottom: 44%;
-  background: transparent;
-  border: none;
-  color: var(--relmsg);
+  line-height  : unset;
+  bottom       : 44%;
+  background   : transparent;
+  border       : none;
+  color        : var(--relmsg);
 }
 
 .healthBarSeg {
-  width: -webkit-fill-available;
-  margin-right: -1px;
+  width        : -webkit-fill-available;
+  margin-right : -1px;
   border-radius: unset;
-  background: transparent;
+  background   : transparent;
 }
 
 #healthBar {
-  border: black solid 2px;
-  width: 300px;
-  height: 10px;
-  display: flex;
+  border        : black solid 2px;
+  width         : 300px;
+  height        : 10px;
+  display       : flex;
   flex-direction: row;
-  background: transparent;
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  background    : transparent;
+  position      : fixed;
+  bottom        : 10px;
+  left          : 50%;
+  transform     : translateX(-50%);
 }
 
 .hpBSeg {
   border-radius: unset;
-  box-shadow: unset;
+  box-shadow   : unset;
 }
 
 #hudClassIcon {

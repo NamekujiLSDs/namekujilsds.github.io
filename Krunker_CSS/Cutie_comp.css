@@ -11,23 +11,30 @@
 
 @font-face {
   font-family: 'MyFont';
-  src: url(https://f.easyuploader.app/eu-prd/upload/20210405225035_74567278.ttf);
+  src        : url(https://f.easyuploader.app/eu-prd/upload/20210405225035_74567278.ttf);
 }
 
 * {
   font-family: MyFont;
-  font-wight: 900;
+  font-wight : 900;
 }
 
-#aHolder, #newsHolder, .verticalSeparator, .imageButton, #tlInfHold, #editorBtnM, #gameNameHolder, #seasonLabel {
+#aHolder,
+#newsHolder,
+.verticalSeparator,
+.imageButton,
+#tlInfHold,
+#editorBtnM,
+#gameNameHolder,
+#seasonLabel {
   display: none !important;
 }
 
 #menuItemContainer {
-  width: 8%;
+  width    : 8%;
   transform: skewX(-2deg);
-  position: absolute;
-  left: -2%;
+  position : absolute;
+  left     : -2%;
 }
 
 .xpBarB {
@@ -35,34 +42,34 @@
 }
 
 .menuItem:hover {
-  border-left: 0px;
+  border-left : 0px;
   margin-right: -10%;
-  background: linear-gradient(90deg, rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), #05e4ff);
+  background  : linear-gradient(90deg, rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), #05e4ff);
 }
 
 .menuItem {
-  border-right: 5px solid #05e4ff;
+  border-right : 5px solid #05e4ff;
   border-bottom: solid 2px black;
-  background: linear-gradient(90deg, rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), #05e4ff);
+  background   : linear-gradient(90deg, rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), rgb(255 255 255), #05e4ff);
 }
 
 #windowHolder {
-  content: " ";
-  position: fixed;
-  display: block !important;
-  width: 100%;
-  height: 100%;
-  transform: translateY(100%);
-  z-index: 0;
+  content   : " ";
+  position  : fixed;
+  display   : block !important;
+  width     : 100%;
+  height    : 100%;
+  transform : translateY(100%);
+  z-index   : 0;
   transition: cubic-bezier(0.36, 0.27, 0, 0.89) .5s;
 }
 
 #windowHolder[style="display: block;"] {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  transform: translateY(0);
-  z-index: 1;
+  position  : absolute;
+  width     : 100%;
+  height    : 100%;
+  transform : translateY(0);
+  z-index   : 1;
   transition: cubic-bezier(0.36, 0.27, 0, 0.89) .5s;
 }
 
@@ -75,7 +82,7 @@
 }
 
 .tabANew {
-  color: white !important;
+  color      : white !important;
   text-shadow: 0 0 15px #77fffb;
 }
 
@@ -87,13 +94,14 @@
   border-bottom: 5px solid blue;
 }
 
-.tabANew:hover, .menuTabNew:hover {
+.tabANew:hover,
+.menuTabNew:hover {
   border-bottom: 5px solid #00ffd4;
 }
 
 #menuWindow {
-  color: white !important;
-  box-shadow: none;
+  color           : white !important;
+  box-shadow      : none;
   background-color: #00000087;
 }
 
@@ -101,10 +109,12 @@ span {
   color: #ffb1fc;
 }
 
-.settName, .settNameSmall, .floatR {
-  color: #00cdff;
+.settName,
+.settNameSmall,
+.floatR {
+  color        : #00cdff;
   margin-bottom: 4%;
-  font-size: 20px;
+  font-size    : 20px;
 }
 
 .settingsHeader {
@@ -113,19 +123,19 @@ span {
 
 #uiBase.onMenu #chatHolder {
   position: absolute;
-  left: 11%;
-  bottom: 10%;
-  width: 15%;
+  left    : 11%;
+  bottom  : 10%;
+  width   : 15%;
 }
 
 .chatItem {
-  color: #b7b7b7 !important;
-  width: -webkit-fill-available;
-  background: #d0fdff;
-  opacity: 1 !important;
-  text-shadow: 1px 1px 1px black, 1px -1px 01px black, -1px -1px 1px black, -1px 1px 1px black;
+  color        : #b7b7b7 !important;
+  width        : -webkit-fill-available;
+  background   : #d0fdff;
+  opacity      : 1 !important;
+  text-shadow  : 1px 1px 1px black, 1px -1px 01px black, -1px -1px 1px black, -1px 1px 1px black;
   border-radius: 0px;
-  box-shadow: 4px 4px 2px #f8acf5, 5px 5px 2px #f8acf5;
+  box-shadow   : 4px 4px 2px #f8acf5, 5px 5px 2px #f8acf5;
   padding-right: 5%;
   margin-bottom: 5%;
 }
@@ -143,10 +153,10 @@ span {
 }
 
 #subLogoButtons>.button {
-  height: fit-content;
+  height    : fit-content;
   box-shadow: none !important;
   background: black !important;
-  border: solid white 3px;
+  border    : solid white 3px;
 }
 
 .menuItem .menuItemIcon {
@@ -158,34 +168,35 @@ div {
 }
 
 .menuItem .menuItemTitle {
-  margin-top: 1%;
+  margin-top : 1%;
   margin-left: 110%;
   align-items: end;
-  font-size: 33px !important;
-  transform: skewX(-10deg);
+  font-size  : 33px !important;
+  transform  : skewX(-10deg);
   text-shadow: 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black, 0 0 5px black;
 }
 
 #uiBase.onMenu #spectButton {
-  height: max-content;
-  position: absolute;
-  top: 4%;
-  left: 48%;
-  font-size: 30px !important;
-  transform: scale(1.5);
-  text-align: center;
+  height       : max-content;
+  position     : absolute;
+  top          : 4%;
+  left         : 48%;
+  font-size    : 30px !important;
+  transform    : scale(1.5);
+  text-align   : center;
   align-content: center;
 }
 
 .headerBarRight {
   background: transparent;
-  top: 2%;
-  right: 0.5%;
+  top       : 2%;
+  right     : 0.5%;
 }
 
-#menuServerInfoContainer, #menuPingText {
+#menuServerInfoContainer,
+#menuPingText {
   font-size: 25px;
-  top: 7%;
+  top      : 7%;
 }
 
 #menuPingDisplay .material-icons {
@@ -193,33 +204,35 @@ div {
 }
 
 #mLevelCont {
-  position: fixed;
+  position   : fixed;
   margin-left: -2%;
 }
 
 #menuKRCount {
   font-size: 15px;
-  width: -webkit-fill-available;
+  width    : -webkit-fill-available;
 }
 
 .headerBarLeft {
-  width: fit-content;
+  width        : fit-content;
   padding-right: 3%;
 }
 
-.serverHeader, #selectorContainer, #itemSearchH {
+.serverHeader,
+#selectorContainer,
+#itemSearchH {
   background: transparent;
 }
 
 .selectorItem {
   border-radius: 0px;
-  background: transparent !important;
-  filter: drop-shadow(2px 2px 2px #00fff3) !important;
+  background   : transparent !important;
+  filter       : drop-shadow(2px 2px 2px #00fff3) !important;
 }
 
 .selectedItem {
   border-radius: 0px;
-  filter: drop-shadow(2px 2px 2px #ef00ff) !important;
+  filter       : drop-shadow(2px 2px 2px #ef00ff) !important;
 }
 
 .selectorItem:hover {
@@ -232,17 +245,18 @@ div {
 
 #teamSelector {
   position: fixed;
-  bottom: 10%;
+  bottom  : 10%;
 }
 
 #mailIcon {
   margin-right: -50%;
 }
 
-#customizeButton, #policeButton {
+#customizeButton,
+#policeButton {
   box-shadow: none !important;
   background: black !important;
-  border: solid white 3px;
+  border    : solid white 3px;
 }
 
 .material-icons {
@@ -250,11 +264,11 @@ div {
 }
 
 #leaderDisplay {
-  position: relative;
+  position     : relative;
   border-radius: 0px;
-  background: #dffff4;
-  box-shadow: 3px 3px 2px cyan, 4px 4px 2px cyan, 5px 5px 2px cyan, 6px 6px 2px cyan;
-  left: -10%;
+  background   : #dffff4;
+  box-shadow   : 3px 3px 2px cyan, 4px 4px 2px cyan, 5px 5px 2px cyan, 6px 6px 2px cyan;
+  left         : -10%;
 }
 
 #leaderContainer {
@@ -262,19 +276,20 @@ div {
 }
 
 #leaderDisplay:before {
-  content: "LeaderBoard";
-  color: black;
+  content    : "LeaderBoard";
+  color      : black;
   text-shadow: 2px 2px 2px gray;
-  width: 400px;
-  padding: 10px;
+  width      : 400px;
+  padding    : 10px;
 }
 
 .leaderCounter {
   color: black !important;
 }
 
-.leaderNameM, .leaderNameF {
-  color: #0022ff !important;
+.leaderNameM,
+.leaderNameF {
+  color      : #0022ff !important;
   font-weight: bolder;
 }
 
@@ -292,7 +307,7 @@ div {
 
 .countIcon {
   background: transparent !important;
-  filter: drop-shadow(10px 0px 10px black);
+  filter    : drop-shadow(10px 0px 10px black);
 }
 
 #menuClassNameTag {
@@ -300,13 +315,13 @@ div {
 }
 
 #timerDisplay {
-  background: transparent;
-  position: fixed;
-  top: 80%;
-  left: 46%;
+  background   : transparent;
+  position     : fixed;
+  top          : 80%;
+  left         : 46%;
   align-content: left;
-  text-align: left;
-  margin: 0px;
+  text-align   : left;
+  margin       : 0px;
 }
 
 #timerIcon {
@@ -315,11 +330,23 @@ div {
 
 #timerVal {
   text-shadow: 1px 1px 3px black, -1px -1px 3px black, -1px 1px 3px black, 1px -1px 3px black, 2px 2px 2px black, 4px 4px 4px black;
-  font-size: 40px;
+  font-size  : 40px;
 }
 
-#pingDisplay, #fpsDisplay, #ingressDisplay, #egressDisplay, span#ingameFPS, #pingText, #ingressPacketCount, #ingressDataSize, #egressPacketCount, #egressDataSize, #pingDisplay .material-icons, #ingressDisplay .material-icons, #egressDisplay .material-icons {
-  color: #e941ff !important;
+#pingDisplay,
+#fpsDisplay,
+#ingressDisplay,
+#egressDisplay,
+span#ingameFPS,
+#pingText,
+#ingressPacketCount,
+#ingressDataSize,
+#egressPacketCount,
+#egressDataSize,
+#pingDisplay .material-icons,
+#ingressDisplay .material-icons,
+#egressDisplay .material-icons {
+  color      : #e941ff !important;
   text-shadow: 1px 1px 1px black, -1px -1px 1px black, -1px 1px 1px black, 1px -1px 1px black;
 }
 
@@ -328,39 +355,40 @@ div {
 }
 
 #reloadMsg {
-  position: fixed;
+  position  : fixed;
   background: transparent;
-  left: 49%;
-  top: 53%;
-  font-size: 15px;
-  color: red !important;
+  left      : 49%;
+  top       : 53%;
+  font-size : 15px;
+  color     : red !important;
 }
 
 #ammoDisplay {
   background-color: transparent;
-  position: fixed;
-  top: 53%;
-  padding-top: 0px;
-  height: 5px;
-  padding: 0px;
-  padding-left: 20px;
-  padding-right: 7px;
-  width: 1%;
-  left: 49%;
-  border-radius: 0px;
+  position        : fixed;
+  top             : 53%;
+  padding-top     : 0px;
+  height          : 5px;
+  padding         : 0px;
+  padding-left    : 20px;
+  padding-right   : 7px;
+  width           : 1%;
+  left            : 49%;
+  border-radius   : 0px;
   background-image: url(https://f.easyuploader.app/eu-prd/upload/20210405230547_66556653.png);
-  filter: brightness(1.5)
+  filter          : brightness(1.5)
 }
 
-#ammoMax, #ammoIcon {
+#ammoMax,
+#ammoIcon {
   display: none;
 }
 
 #ammoVal {
-  position: fixed;
-  top: 4000%;
-  left: 400%;
-  font-size: 40px;
+  position   : fixed;
+  top        : 4000%;
+  left       : 400%;
+  font-size  : 40px;
   text-shadow: 1px 1px 3px black, -1px -1px 3px black, -1px 1px 3px black, 1px -1px 3px black;
 }
 
@@ -370,57 +398,58 @@ div {
 
 #healthBar {
   align-content: center;
-  position: fixed;
-  left: 43.5%;
-  bottom: 5%;
-  border: solid 8px white;
+  position     : fixed;
+  left         : 43.5%;
+  bottom       : 5%;
+  border       : solid 8px white;
   align-content: right;
-  transform: scaleX(2) skew(-10deg);
+  transform    : scaleX(2) skew(-10deg);
 }
 
 .hpBSeg {
-  border-radius: 0px;
-  box-shadow: none;
+  border-radius   : 0px;
+  box-shadow      : none;
   background-color: #72cef1 !important;
 }
 
 .healthBarSeg {
-  border-radius: 0px;
-  margin-right: -1px;
-  box-shadow: none;
+  border-radius   : 0px;
+  margin-right    : -1px;
+  box-shadow      : none;
   background-color: #f670ff;
 }
 
 #healthValueHolder {
-  background: transparent;
-  position: fixed;
-  top: 67.5%;
-  left: 35%;
+  background : transparent;
+  position   : fixed;
+  top        : 67.5%;
+  left       : 35%;
   text-shadow: 1px 1px 3px black, -1px -1px 3px black, -1px 1px 3px black, 1px -1px 3px black;
 }
 
 #healthValue {
-  color: yellowgreen !important;
+  color    : yellowgreen !important;
   font-size: 40px;
 }
 
-#maxHP, #challIcon {
+#maxHP,
+#challIcon {
   display: none;
 }
 
 #killCardHolder {
   text-shadow: 1px 1px 3px black, -1px -1px 3px black, -1px 1px 3px black, 1px -1px 3px black;
-  color: black !important;
+  color      : black !important;
 }
 
 .standout {
-  color: transparent !important;
+  color    : transparent !important;
   font-size: 0px;
 }
 
 .standout:before {
-  content: "CSS BY NamekujiLSDs#7777 ";
-  color: yellow;
+  content  : "CSS BY NamekujiLSDs#7777 ";
+  color    : yellow;
   font-size: 15px;
 }
 
@@ -434,9 +463,9 @@ div {
 
 .classCard {
   background-color: #e5ffff;
-  border-radius: 0px;
-  box-shadow: 6px 6px 2px blue;
-  margin-right: 2px;
+  border-radius   : 0px;
+  box-shadow      : 6px 6px 2px blue;
+  margin-right    : 2px;
 }
 
 .weapKey {
@@ -445,26 +474,27 @@ div {
 
 .weapItem {
   opacity: 1;
-  filter: drop-shadow(5px 3px 0px #04c1ff);
+  filter : drop-shadow(5px 3px 0px #04c1ff);
 }
 
-.setHedBind, .setHed {
-  margin-bottom: 2%;
-  color: cyan !important;
-  border-bottom: 2px solid cyan;
+.setHedBind,
+.setHed {
+  margin-bottom : 2%;
+  color         : cyan !important;
+  border-bottom : 2px solid cyan;
   padding-bottom: 1%;
 }
 
 .custContainer {
-  background: #ffffff4d;
+  background   : #ffffff4d;
   margin-bottom: 0px;
 }
 
 #termsInfo {
   padding-bottom: 0px;
-  padding-top: 0px;
-  border: 0px;
-  height: fit-content;
+  padding-top   : 0px;
+  border        : 0px;
+  height        : fit-content;
 }
 
 #mapInfo {
@@ -477,18 +507,19 @@ div {
 }
 
 .mapActionOvrl {
-  height: 70%;
+  height          : 70%;
   background-color: #00ffff33;
 }
 
-.weaponChatIcon, .headShotChatIcon {
-  filter: brightness(0);
+.weaponChatIcon,
+.headShotChatIcon {
+  filter : brightness(0);
   opacity: 1 !important;
 }
 
 #mapInfoHolder {
   height: fit-content;
-  width: 15%;
+  width : 15%;
 }
 
 .terms {
@@ -504,10 +535,10 @@ div {
 }
 
 #instructionsUpdate {
-  background: white;
+  background : white;
   text-shadow: 2px 2px 1px gray, 3px 3px 1px gray;
-  color: black !important;
-  box-shadow: 5px 5px 1px gray, 6px 6px 1px gray, 7px 7px 1px gray;
+  color      : black !important;
+  box-shadow : 5px 5px 1px gray, 6px 6px 1px gray, 7px 7px 1px gray;
 }
 
 #instructionsUpdateBG {
@@ -521,13 +552,21 @@ div {
 #policeButton {
   transform: scaleY(0.8);
 }
-.slider,input:checked+.slider,.slider:before,input:checked+.slider:before{
-  border-radius:30px;
+
+.slider,
+input:checked+.slider,
+.slider:before,
+input:checked+.slider:before {
+  border-radius: 30px;
 }
-.slider,input:checked+.slider,input[type=number]{
-  color:red;
-  background:#f9a9ff;
+
+.slider,
+input:checked+.slider,
+input[type=number] {
+  color     : red;
+  background: #f9a9ff;
 }
-input[type=color]{
-  border:4px solid #ffb3f9;
+
+input[type=color] {
+  border: 4px solid #ffb3f9;
 }

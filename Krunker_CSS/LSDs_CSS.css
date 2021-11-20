@@ -4,9 +4,11 @@
   0% {
     transform: rotateZ(2deg);
   }
+
   50% {
     transform: rotateZ(-2deg);
   }
+
   100% {
     transform: rotateZ(2deg);
   }
@@ -14,7 +16,7 @@
 
 @font-face {
   font-family: "CFont";
-  src: url(https://f.easyuploader.app/eu-prd/upload/20210415125336_546b3649.ttf);
+  src        : url(https://f.easyuploader.app/eu-prd/upload/20210415125336_546b3649.ttf);
 }
 
 * {
@@ -24,38 +26,57 @@
 
 /*MenuUI*/
 
-#igXPBar, #mLevelCont, #challIcon, .purejscarousel-slides-container, .endAHolder, #uiBase.onMenu #voiceDisplay, .imageButton, #ot-sdk-btn-floating .ot-floating-button__front, .menuItem .menuItemIcon, .verticalSeparator, #mainLogo, #aHolder, #newsHolder, #tlInfHold, #seasonLabel, #editorBtnM {
+#igXPBar,
+#mLevelCont,
+#challIcon,
+.purejscarousel-slides-container,
+.endAHolder,
+#uiBase.onMenu #voiceDisplay,
+.imageButton,
+#ot-sdk-btn-floating .ot-floating-button__front,
+.menuItem .menuItemIcon,
+.verticalSeparator,
+#mainLogo,
+#aHolder,
+#newsHolder,
+#tlInfHold,
+#seasonLabel,
+#editorBtnM {
   display: none !important;
 }
 
-#menuServerInfoContainer, .headerBarRight {
+#menuServerInfoContainer,
+.headerBarRight {
   background: transparent;
-  font-size: 20px !important;
-  transform: scale(1.3);
-  top: 1%;
-  right: 3%;
+  font-size : 20px !important;
+  transform : scale(1.3);
+  top       : 1%;
+  right     : 3%;
 }
 
 #instructions {
-  content: url("https://cdn.discordapp.com/attachments/826440644964122666/832090696855977994/user.png");
-  animation: yure 7s infinite;
-  margin-top: -10%;
+  content    : url("https://cdn.discordapp.com/attachments/826440644964122666/832090696855977994/user.png");
+  animation  : yure 7s infinite;
+  margin-top : -10%;
   margin-left: -13%;
 }
 
 #uiBase.onMenu #spectButton {
-  position: fixed;
-  bottom: -11%;
+  position : fixed;
+  bottom   : -11%;
   transform: scale(1.5);
-  left: 48%;
-  z-index: 1;
+  left     : 48%;
+  z-index  : 1;
 }
-#windowHolder.popupWin{
-  background:transparent;
+
+#windowHolder.popupWin {
+  background: transparent;
 }
-#windowCloser{
-  display:none !important;
+
+#windowCloser {
+  display: none !important;
 }
+
 .sliderSml {
   background: pink;
 }
@@ -69,31 +90,31 @@ input:checked+.sliderSml {
 }
 
 #menuItemContainer {
-  height: 98%;
-  margin-left: -6%;
-  width: 13%;
-  transform: rotateZ(2deg);
-  margin-top: -1.5%;
-  z-index: 1;
+  height         : 98%;
+  margin-left    : -6%;
+  width          : 13%;
+  transform      : rotateZ(2deg);
+  margin-top     : -1.5%;
+  z-index        : 1;
   backdrop-filter: blur(10px);
 }
 
 .menuItem .menuItemTitle {
-  margin-left: 90%;
+  margin-left  : 90%;
   border-bottom: 3px white solid;
-  transform: skewX(-20deg) rotateZ(-2deg);
-  font-size: 30px !important;
-  margin-top: 3%;
-  text-shadow: 3px 3px black, 4px 4px black, 5px 5px black, 6px 6px black;
+  transform    : skewX(-20deg) rotateZ(-2deg);
+  font-size    : 30px !important;
+  margin-top   : 3%;
+  text-shadow  : 3px 3px black, 4px 4px black, 5px 5px black, 6px 6px black;
 }
 
 .menuItem {
   background-color: #00000052;
-  height: 80%;
+  height          : 80%;
 }
 
 .menuItem:hover {
-  border: 0px;
+  border          : 0px;
   background-color: #ffffff10;
 }
 
@@ -106,132 +127,138 @@ input:checked+.sliderSml {
 }
 
 #windowHolder {
-  position: fixed;
-  display: block !important;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transform: rotateZ(180deg) scale(0);
+  position           : fixed;
+  display            : block !important;
+  width              : 100%;
+  height             : 100%;
+  opacity            : 0;
+  transform          : rotateZ(180deg) scale(0);
   transition-duration: 0.4s;
-  z-index: 999;
+  z-index            : 999;
 }
 
 #windowHolder[style="display: block;"] {
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  transform: rotateZ(0deg) scale(1);
+  width              : 100%;
+  height             : 100%;
+  opacity            : 1;
+  transform          : rotateZ(0deg) scale(1);
   transition-duration: 0.4s;
-  z-index: 999;
+  z-index            : 999;
 }
 
-::-webkit-scrollbar-track, ::-webkit-scrollbar, ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-track,
+::-webkit-scrollbar,
+::-webkit-scrollbar-thumb {
   display: none;
 }
 
 #menuWindow {
   background-color: rgb(255 255 255 / 0.6);
-  padding-bottom: 2%;
+  padding-bottom  : 2%;
 }
 
-.serverHeader, #itemSearchH, .settingsHeader {
+.serverHeader,
+#itemSearchH,
+.settingsHeader {
   background-color: transparent !important;
-  backdrop-filter: blur(10px);
+  backdrop-filter : blur(10px);
 }
 
 .mapActionOvrl {
   height: 100px;
-  width: 220px;
+  width : 220px;
 }
 
-.button.small, #customizeButton {
+.button.small,
+#customizeButton {
   box-shadow: none !important;
 }
 
 .button.small {
   background-color: transparent !important;
-  font-size: 30px !important;
-  text-shadow: none !important;
+  font-size       : 30px !important;
+  text-shadow     : none !important;
 }
 
 .button:hover {
-  transform: scale(1);
-  color: lime;
+  transform  : scale(1);
+  color      : lime;
   text-shadow: 0 0 10px rgb(0 0 0 / 100%) !important;
-  bottom: 1%;
-  position: f;
+  bottom     : 1%;
+  position   : f;
 }
 
 .selectorItem {
   background-color: transparent;
   background-color: #c5d4f5 !important;
-  box-shadow: 4px 4px #bfff8f, 5px 5px #bfff8f, 6px 6px #bfff8f !important;
+  box-shadow      : 4px 4px #bfff8f, 5px 5px #bfff8f, 6px 6px #bfff8f !important;
 }
 
 .selectedItem {
   background-color: #b9ffaa !important;
-  box-shadow: 4px 4px 1px lightblue, 5px 5px 1px lightblue, 6px 6px 1px lightblue !important;
-  border-radius: 0px !important;
+  box-shadow      : 4px 4px 1px lightblue, 5px 5px 1px lightblue, 6px 6px 1px lightblue !important;
+  border-radius   : 0px !important;
 }
 
 #selectorContainer {
   background-color: transparent;
-  filter: none;
+  filter          : none;
 }
 
 .selectorItem:hover {
-  background-color: transparent;
+  background-color   : transparent;
   transition-duration: .2s;
-  background-color: #dba3ff !important;
+  background-color   : #dba3ff !important;
 }
 
 .selectorLabel {
   text-shadow: none !important;
-  color: black;
-  filter: none;
-  box-shadow: none !important;
+  color      : black;
+  filter     : none;
+  box-shadow : none !important;
 }
 
 #menuWindow {
   -webkit-box-shadow: 0 0px 0 0 transparent;
-  -moz-box-shadow: 0 9px 0 0 transparent;
-  box-shadow: 0 9px 0 0 transparent;
-  z-index: 999999;
+  -moz-box-shadow   : 0 9px 0 0 transparent;
+  box-shadow        : 0 9px 0 0 transparent;
+  z-index           : 999999;
 }
 
 .selectorItem .selectorIcon {
-  filter: none !important;
+  filter    : none !important;
   box-shadow: none !important;
 }
 
-.selectorItem, .selectedItem {
-  filter: none !important;
+.selectorItem,
+.selectedItem {
+  filter       : none !important;
   border-radius: 0px;
   margin-bottom: 10%;
 }
 
 input:checked+.slider {
   background-color: lightgreen;
-  border-radius: 30px;
+  border-radius   : 30px;
 }
 
 .slider:before {
   border-radius: 30px;
-  font-size: 26px;
-  color: #ec0000;
-  background: gray;
+  font-size    : 26px;
+  color        : #ec0000;
+  background   : gray;
 }
 
 input:checked+.slider:before {
-  font-family: 'Material Icons';
+  font-family  : 'Material Icons';
   border-radius: 30px;
-  font-size: 26px;
-  color: #1f10ff;
+  font-size    : 26px;
+  color        : #1f10ff;
 }
 
 .slider {
   background-color: #ffbcfa;
-  border-radius: 30px;
+  border-radius   : 30px;
 }
 
 input[type=color] {
@@ -240,36 +267,37 @@ input[type=color] {
 
 .sliderM {
   background-color: #ffffff;
-  border-radius: 30px;
-  border: solid 1px black;
+  border-radius   : 30px;
+  border          : solid 1px black;
 }
 
 .sliderM::-webkit-slider-thumb {
   border-radius: 30px;
-  height: 27px;
-  width: 27px;
-  border: solid gray 5px;
-  background: #f7b6ff;
-  color: gray;
+  height       : 27px;
+  width        : 27px;
+  border       : solid gray 5px;
+  background   : #f7b6ff;
+  color        : gray;
 }
 
 .sliderVal {
   background: #8de3ff;
-  color: #ff0018;
+  color     : #ff0018;
 }
 
 
 .settingsBtn {
   background: gray;
 }
+
 .headerBarLeft {
   z-index: 2
 }
 
 #subLogoButtons {
   bottom: 5%;
-  width: max-content;
-  left: 52%;
+  width : max-content;
+  left  : 52%;
 }
 
 #teamSelector {
@@ -288,7 +316,8 @@ input[type=color] {
   backdrop-filter: blur(10px);
 }
 
-#menuPingDisplay, #menuFPSDisplay {
+#menuPingDisplay,
+#menuFPSDisplay {
   font-size: 20px !important;
 }
 
@@ -297,10 +326,10 @@ input[type=color] {
 }
 
 #termsInfo {
-  height: fit-content;
-  padding: 0px;
-  border: 0px;
-  border-radius: 0px;
+  height        : fit-content;
+  padding       : 0px;
+  border        : 0px;
+  border-radius : 0px;
   padding-bottom: 3%;
 }
 
@@ -309,45 +338,47 @@ input[type=color] {
 }
 
 .terms {
-  display: none;
+  display   : none;
   background: transparent;
 }
 
-.terms.standout, #termsInfo {
-  display: block;
-  content: "";
-  font-size: 0px;
+.terms.standout,
+#termsInfo {
+  display   : block;
+  content   : "";
+  font-size : 0px;
   background: transparent;
 }
 
 .terms.standout:before {
-  content: "CSS FOR LSDs BY NAMEKUJI";
-  font-size: 20px;
-  color: yellow;
-  background: transparent;
+  content     : "CSS FOR LSDs BY NAMEKUJI";
+  font-size   : 20px;
+  color       : yellow;
+  background  : transparent;
   padding-left: 120%;
 }
 
-.settName, .settNameSmall {
+.settName,
+.settNameSmall {
   margin-top: 2%;
 }
 
 .menuClassPlayerClan {
-  content: " ";
+  content  : " ";
   font-size: 0px;
 }
 
 .menuClassPlayerClan:before {
-  content: "[LSDs]";
+  content  : "[LSDs]";
   font-size: 20px;
-  color: #fff53d
+  color    : #fff53d
 }
 
 .menuClassPlayerClan:after {
   font-family: "Material Icons";
-  content: "lock";
-  font-size: 30px;
-  color: white;
+  content    : "lock";
+  font-size  : 30px;
+  color      : white;
 }
 
 #menuAccountUsername:after {
@@ -356,12 +387,12 @@ input[type=color] {
 
 #claimPop {
   animation: yure 1s running infinite;
-  left: 40%;
-  top: 45%;
+  left     : 40%;
+  top      : 45%;
 }
 
 a {
-  color: #f2cdff;
+  color : #f2cdff;
   filter: drop-shadow(0px 0px 2px black);
 }
 
@@ -370,20 +401,20 @@ span [style="color:#fff"] {
 }
 
 #spinHeader {
-  content: " ";
+  content  : " ";
   font-size: 0px;
 }
 
 #spinHeader:before {
-  font-size: 60px;
+  font-size  : 60px;
   font-weight: bolder;
-  content: "爆死";
+  content    : "爆死";
 }
 
 #spinHeader:after {
-  font-size: 40px;
+  font-size  : 40px;
   font-weight: bolder;
-  content: "ボタン";
+  content    : "ボタン";
 }
 
 #spinItems {
@@ -391,7 +422,7 @@ span [style="color:#fff"] {
 }
 
 #customizeButton {
-  background: #ffc0ff !important;
+  background   : #ffc0ff !important;
   border-radius: 300px;
 }
 
@@ -405,22 +436,23 @@ div#modList {
 
 #settingsTabLayout {
   grid-template-columns: auto auto auto auto auto auto max-content;
-  min-width: 0px;
+  min-width            : 0px;
 }
 
 .tabANew {
   border-bottom: 5px white solid;
-  filter: drop-shadow(0 0 5px white)
+  filter       : drop-shadow(0 0 5px white)
 }
 
-.settingTab:hover, .menuTabNew:hover {
+.settingTab:hover,
+.menuTabNew:hover {
   text-shadow: 0 0 5px #00dcff;
 }
 
 .chatItem {
-  width: -webkit-fill-available;
-  background: #fdd5ff !important;
-  opacity: 1 !important;
+  width        : -webkit-fill-available;
+  background   : #fdd5ff !important;
+  opacity      : 1 !important;
   margin-bottom: 3%;
   border-radius: 0px;
 }
@@ -430,8 +462,8 @@ div#modList {
 }
 
 #chatList {
-  opacity: 1 !important;
-  background:#fdd5ff;
+  opacity   : 1 !important;
+  background: #fdd5ff;
 }
 
 .chatTextOutline {
@@ -442,9 +474,12 @@ div#modList {
   color: darkgray;
 }
 
-input:checked+.optCheck, .hostToggle, .advancedToggle, .hostPresetBtn {
-  background: #f7c0ff;
-  color: black;
+input:checked+.optCheck,
+.hostToggle,
+.advancedToggle,
+.hostPresetBtn {
+  background : #f7c0ff;
+  color      : black;
   font-weight: bolder;
 }
 
@@ -454,7 +489,7 @@ input:checked+.optCheck, .hostToggle, .advancedToggle, .hostPresetBtn {
 
 .optName {
   text-shadow: none;
-  color: gray;
+  color      : gray;
 }
 
 .optImg {
@@ -476,7 +511,7 @@ input:checked+.optCheck, .hostToggle, .advancedToggle, .hostPresetBtn {
 .classCard {
   text-shadow: none;
   text-shadow: 2px 2px 0 black, 3px 3px 0 black;
-  background: transparent;
+  background : transparent;
 }
 
 #setBod_interface {
@@ -484,12 +519,12 @@ input:checked+.optCheck, .hostToggle, .advancedToggle, .hostPresetBtn {
 }
 
 #classConf0[style="display: none; margin-top: 10px;"] {
-  display: none !important;
+  display   : none !important;
   transition: .5s;
 }
 
 #classConf0[style="display: block; margin-top: 10px;"] {
-  display: block !important;
+  display   : block !important;
   transition: .5s;
 }
 
@@ -503,26 +538,27 @@ span[style="color:#fff"] {
 
 #leaderDisplay {
   background-color: #d6ffe8;
-  border-radius: 0px;
+  border-radius   : 0px;
 }
 
 #leaderDisplay:before {
-  content: "LeaderBoard";
-  color: #ff13ff;
+  content    : "LeaderBoard";
+  color      : #ff13ff;
   align-items: center;
-  width: -webkit-fill-available;
+  width      : -webkit-fill-available;
 }
 
 #leaderContainer {
   border-top: double 10px gray;
 }
 
-.leaderNameM, .leaderNameF {
+.leaderNameM,
+.leaderNameF {
   color: blue !important;
 }
 
 .leaderCounter {
-  color: black;
+  color    : black;
   font-size: 100%
 }
 
@@ -531,72 +567,74 @@ span[style="color:#fff"] {
 }
 
 #killCount {
-  position: fixed;
+  position  : fixed;
   background: transparent;
-  top: 75%;
-  left: 44%;
+  top       : 75%;
+  left      : 44%;
 }
 
-#killsIcon, #deathsIcon, #streakIcon {
+#killsIcon,
+#deathsIcon,
+#streakIcon {
   width: 0px;
 }
 
 #killsVal {
-  font-size: 35px;
-  color: white;
+  font-size  : 35px;
+  color      : white;
   text-shadow: 0 0 10px black;
 }
 
 #killsVal:before {
-  content: "ㅤK ";
+  content  : "ㅤK ";
   font-size: 25px;
-  color: black;
-  width: max-content;
+  color    : black;
+  width    : max-content;
 }
 
 #deathsVal {
-  font-size: 35px;
-  color: white;
+  font-size  : 35px;
+  color      : white;
   text-shadow: 0 0 10px black;
 }
 
 #deathsVal:before {
-  content: "ㅤD ";
+  content  : "ㅤD ";
   font-size: 25px;
-  color: black;
+  color    : black;
 }
 
 #deathCount {
   background: transparent;
-  position: fixed;
-  top: 75%;
-  left: 48%;
+  position  : fixed;
+  top       : 75%;
+  left      : 48%;
 }
 
 #streakCount {
   background: transparent;
-  position: fixed;
-  top: 75%;
-  left: 52%;
+  position  : fixed;
+  top       : 75%;
+  left      : 52%;
 }
 
 #streakVal {
-  font-size: 35px;
-  color: white;
+  font-size  : 35px;
+  color      : white;
   text-shadow: 0 0 10px black;
 }
 
 #streakVal:before {
-  color: black;
+  color    : black;
   font-size: 25px;
-  content: "ㅤS "
+  content  : "ㅤS "
 }
 
 #timerDisplay {
-  position: fixed;
+  position  : fixed;
   background: transparent;
-  top: 2%;
-  left: 45%;
+  top       : 2%;
+  left      : 45%;
 }
 
 #timerIcon {
@@ -607,109 +645,111 @@ span[style="color:#fff"] {
   font-size: 70px;
 }
 
-#hudClassIcon, #maxHP {
+#hudClassIcon,
+#maxHP {
   display: none;
 }
 
 #healthValueHolder {
-  z-index: 100;
-  position: fixed;
-  left: 35%;
-  bottom: 3%;
+  z-index   : 100;
+  position  : fixed;
+  left      : 35%;
+  bottom    : 3%;
   background: transparent;
 }
 
 #healthValue {
-  font-size: 130px;
+  font-size  : 130px;
   text-shadow: 0 0 10px black, 0 0 10px black;
 }
 
 #healthValue:before {
   font-family: Material Icons;
-  content: "favorite";
-  font-size: 50px;
-  color: pink;
+  content    : "favorite";
+  font-size  : 50px;
+  color      : pink;
   text-shadow: 0 0 10px black;
 }
 
 #healthBar {
-  position: fixed;
-  left: 36%;
-  bottom: 1.5%;
-  border: 5px solid #ffb0fe;
-  transform: scaleX(1.25) skewX(-20deg);
+  position  : fixed;
+  left      : 36%;
+  bottom    : 1.5%;
+  border    : 5px solid #ffb0fe;
+  transform : scaleX(1.25) skewX(-20deg);
   box-shadow: 5px 5px 5px black;
 }
 
 .healthBarSeg {
-  background: #fdd1ff;
+  background   : #fdd1ff;
   border-radius: 0px;
-  margin-right: 0;
+  margin-right : 0;
 }
 
 .hpBSeg {
-  background: #9dffc6 !important;
+  background   : #9dffc6 !important;
   border-radius: 0px;
-  box-shadow: none;
+  box-shadow   : none;
 }
 
-#ammoMax, #ammoIcon {
+#ammoMax,
+#ammoIcon {
   display: none;
 }
 
 #ammoDisplay {
   background: transparent;
-  position: fixed;
-  bottom: 16%;
-  right: 35%;
-  z-index: 10;
+  position  : fixed;
+  bottom    : 16%;
+  right     : 35%;
+  z-index   : 10;
 }
 
 #ammoVal {
-  transform: scaleX(0.9);
-  font-size: 180px;
+  transform  : scaleX(0.9);
+  font-size  : 180px;
   text-shadow: 0 0 10px black, 0 0 10px black;
 }
 
 #weapDisplay {
   position: fixed;
-  right: 46%;
+  right   : 46%;
 }
 
 .weapIcon[style="opacity: 1;"] {
-  position: fixed;
-  left: 55%;
-  bottom: 1%;
-  transform: translateY(0%)scale(1.2);
+  position           : fixed;
+  left               : 55%;
+  bottom             : 1%;
+  transform          : translateY(0%)scale(1.2);
   transition-duration: .2s;
 }
 
 .weapIcon[style="opacity: 1; margin-right: 25px;"] {
-  position: fixed;
-  left: 55%;
-  bottom: 1%;
-  margin-right: 0px;
-  transform: translateY(0%) scale(1.2);
+  position           : fixed;
+  left               : 55%;
+  bottom             : 1%;
+  margin-right       : 0px;
+  transform          : translateY(0%) scale(1.2);
   transition-duration: .2s;
 }
 
 .weapIcon[style="opacity:1"] {
-  position: fixed;
-  left: 55%;
-  bottom: 1%;
-  margin-right: 0px;
-  transform: translateY(0%) scale(1.2);
+  position           : fixed;
+  left               : 55%;
+  bottom             : 1%;
+  margin-right       : 0px;
+  transform          : translateY(0%) scale(1.2);
   transition-duration: .2s;
 }
 
 .weapIcon {
-  position: fixed;
-  display: block !important;
-  left: 55%;
-  bottom: 1%;
-  transform: translateY(500%) scale(0);
+  position           : fixed;
+  display            : block !important;
+  left               : 55%;
+  bottom             : 1%;
+  transform          : translateY(500%) scale(0);
   transition-duration: .2s;
-  filter: drop-shadow(0 0 5px black) drop-shadow(0 0 5px black);
+  filter             : drop-shadow(0 0 5px black) drop-shadow(0 0 5px black);
 }
 
 .weapKey {
