@@ -193,9 +193,8 @@ div {
   display: none;
 }
 
-#mLevelCont {
-  position: fixed;
-  margin-left: -2%;
+.menuSocialB{
+  display:none;
 }
 
 #menuKRCount {
