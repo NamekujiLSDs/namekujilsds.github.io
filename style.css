@@ -52,13 +52,15 @@
 body, html {
   height: 100%;
   width: 100%;
+  background-color:#101010;
 }
 
 #net {
   height: 100%;
   width: 100%;
   z-index: -1;
-  background-color:#101010;
+  background:linear-gradient(to bottom,transparent,var(--accent-color));
+  opacity:0.3;
 }
 
 
