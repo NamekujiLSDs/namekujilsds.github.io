@@ -1,8 +1,3 @@
-/*⚠THIS CSS REQUIRES A RESOURCE SWAPPER⚠*/
-
-/*Code by NamekujiLSDs#7777*/
-
-/*⚠DO NOT RE:WRITE CODES WITHOUT CONTACT ME⚠*/
 
 /*© Copyright 2021 Namekuji All Rights Reserved.*/
 
@@ -316,6 +311,9 @@
     border       : solid black 5px;
 }
 
+
+
+
 /*Health value*/
 #healthValueHolder {
     background   : transparent;
@@ -381,6 +379,9 @@
     position: fixed;
     right   : 0%;
     top     : 15%;
+}
+.menuSocialB {
+  display: none;
 }
 
 #rankedSoonTm {
