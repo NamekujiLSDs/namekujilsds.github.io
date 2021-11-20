@@ -45,13 +45,10 @@
 
 /*Font Change*/
 @font-face {
-    font-family: 'MyFont';
-    src        : url(https://f.easyuploader.app/eu-prd/upload/20210330230425_36723173.ttf);
+    font-family:gamefont;
+    src        : url(https://namekujilsds.github.io/font/vag-rounded-400.woff2);
 }
 
-* {
-    font-family: MyFont;
-}
 
 /*left side bar*/
 #menuItemContainer {
