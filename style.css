@@ -76,7 +76,17 @@ div#main{
   position:fixed;
   z-index:5;
 }
-
+@keyframes bg-hue{
+  0%{
+    filter:hue-rotate(0deg);
+  }
+  100%{
+    filter:hue-rotate(360deg);
+  }
+}
+#net{
+  animation:bg-hue 10s linear infinite
+}
 /* 左のメニュー */
 
 #leftBar {
