@@ -991,7 +991,7 @@ div[id*="chatMsg"] {
   box-shadow   : unset;
 }
 
-.healthBarSeg .hpBSeg {}
+
 
 .healthBarSeg:last-child .hpBSeg {
   border-bottom-right-radius: 20px;

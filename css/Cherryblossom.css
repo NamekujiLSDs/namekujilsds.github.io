@@ -1278,7 +1278,7 @@ div[title="Requires Partner"] i[style*="color:#993299;"]:after {
   text-shadow: 0 0 10px var(--sub-color);
   font-size  : 50px;
   transform  : translate(-50%, 0%);
-  font-color : white !important;
+ color : white !important;
 }
 
 #backgroundImage:after {

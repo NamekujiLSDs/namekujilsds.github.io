@@ -237,7 +237,7 @@ div#aHolder,
 }
 
 #menuClassContainer:hover>#menuClassSubtext {
-  opacity:1;
+  opacity: 1;
 }
 
 #menuClassContainer:hover>#menuClassNameTag {

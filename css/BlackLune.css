@@ -50,7 +50,6 @@ div#aHider,
 }
 
 
-
 .menuItem:hover {
     filter: drop-shadow(0 0 5px white);
 }
@@ -210,7 +209,6 @@ div#policeButton {
     margin        : unset;
     width         : 50px !important;
     height        : 50px !important;
-
 }
 
 #menuClassNameTag,
@@ -609,4 +607,8 @@ div#infoHider {
     content    : "CSS BY NamekujiLSDs#7777";
     color      : #00ffdf;
     text-shadow: unset !important;
+}
+
+#rankedSoonTm {
+    display: none;
 }

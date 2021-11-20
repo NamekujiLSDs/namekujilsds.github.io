@@ -301,7 +301,7 @@
 
 /*End Board*/
 .endCard {
-    max-content: 800px;
+    max-width: 800px;
 }
 
 /*Healthbar*/

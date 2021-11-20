@@ -55,7 +55,7 @@
   background: transparent !important;
   box-shadow: none !important;
   border: 3px dotted var(--main);
-  border-radius: 0 !!important;
+  border-radius: 0 !important;
 }
 
 #menuItemContainer {
@@ -136,7 +136,7 @@ div#aHider {
   transform: scale(0.9);
 }
 
-canvas#classPreviewCanvas {}
+
 
 #classPreviewCanvas, #menuClassName, #menuClassNameTag, #menuClassSubtext {
   opacity: 0;
@@ -596,10 +596,6 @@ a:active {
   ;
 }
 
-. weapItem {
-  display: flex;
-}
-
 .weapKey {
   display: none;
 }
@@ -623,8 +619,6 @@ a:active {
   font-size: 40px;
   color: var(--main);
 }
-
-#ammoDisplay {}
 
 .socPost, #postEntryC, .scrollItem, .feedTab {
   box-shadow: none;
