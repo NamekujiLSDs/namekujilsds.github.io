@@ -1,0 +1,167 @@
+/*LastUpdate 2021 11/22 By namekujilsds#7777 */
+
+@font-face{
+    font-family:gamefont;
+    src:url("https://namekujilsds.github.io/font/vag-rounded-400.woff2");
+}
+
+
+
+/* MENU  */
+#termsInfo,#braveWarning,#aHider,.verticalSeparator,.imageButton,.menBtnIcn,#editorBtnM,.menuSocialB,#newsHolder,#tlInfHold{
+    display:none !important;
+}
+#menuItemContainer{
+    top:unset;
+    height:150px;
+    width:100%;
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+}
+.menuItem{
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-grow: unset;
+    width: -webkit-fill-available;
+}
+.menuItem:hover{
+    border-top:10px white solid;
+    height:calc(100% - 10px);
+}
+.menuItem .menuItemTitle:before,.menuItem .menuItemTitle:after{
+    content:" - "
+}
+.menuItem .menuItemTitle{
+    font-size:30px !important;
+    margin: unset;
+}
+#subLogoButtons{
+    bottom:160px;
+}
+#subLogoButtons>.button:hover{
+    transform:unset;
+    border-top:10px white solid !important;
+    height: 90px;
+    transition: .2s;
+}
+#subLogoButtons>.button{
+    height:100px;
+    border:unset !important;
+    border-radius:unset;
+    width:-webkit-fill-available;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#subLogoButtons{
+    width:50%;
+    display:flex;
+}
+#uiBase.onMenu #chatHolder{
+    bottom:150px !important;
+    left:10px !important;
+}
+/* INGAME */
+#maxHP,#rankedSoonTm,#igXPBar,#timerIcon,#hudClassIcon,#challIcon,#healthBar {
+    display:none !important;
+}
+#uiBase.onGame #chatHolder{
+    bottom:10px !important;
+    left:10px !important;
+}
+#healthValue,#timerVal,#ammoVal{
+    text-shadow: 0 0 4px black,0 0 4px black,0 0 4px black,0 0 4px black;
+}
+
+#timerVal {
+    color: #00a5ff; 
+    font-size: 45px;
+    padding-left: 0;
+    will-change: unset;
+}
+#healthValue {
+    color: #ff0000;
+    font-size: 40px; 
+    letter-spacing: 2px;
+    text-align: center;
+    margin-top: 0;
+    will-change: unset;
+}
+
+#ammoVal {
+    color: #fa00ff;
+    font-size: 25px;
+}
+
+#timerDisplay {
+    text-align: center;
+    position: fixed;
+    transform: translateX(-50%);
+    bottom: 35%;
+    left: 50%;
+    padding: unset;
+    margin:unset;
+    border-radius: 0;
+    background-color: transparent;
+}
+
+#healthValueHolder {
+    background-color: transparent;
+    width: 125px;
+    height: 65px;
+    border-radius: 0;
+    position: fixed;
+    left: 40%;
+    bottom: 35%;
+    padding: unset;
+    margin:unset;
+    align-items: center;
+}
+#bottomRight{
+    position:fixed;
+}
+
+#ammoDisplay {
+    display: block !important;
+    background-color: transparent;
+    background-image:linear-gradient(to right,blue,#ff2f00);
+    position: fixed;
+    border-radius:0px;
+    bottom: 48%;
+    padding:unset;
+    left:50%;
+    transform:translateX(-50%);
+    width:50px;
+    height:6px;
+    border-radius:100px;
+}
+
+
+#ammoMax {
+    display: none;
+}
+
+#ammoIcon {
+    display: none;
+}
+
+
+#reloadMsg {
+    background: transparent;
+    position:fixed;
+    border: unset !important;
+    bottom:45%;
+    font-size: 20px;
+}
+
+
+
