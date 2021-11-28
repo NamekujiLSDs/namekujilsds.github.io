@@ -1,7 +1,7 @@
 /*LastUpdate 2021 11/27 By namekujilsds#7777 */
 @font-face {
     font-family: gamefont;
-    src: url("https://namekujilsds.github.io/font/vag-rounded-400.woff2");
+    src        : url("https://namekujilsds.github.io/font/vag-rounded-400.woff2");
 }
 
 /* MENU  */
@@ -22,32 +22,32 @@
 }
 
 #menuItemContainer {
-    top: unset;
-    bottom: 20px;
-    height: 100px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    align-content: center;
+    top            : unset;
+    bottom         : 20px;
+    height         : 100px;
+    width          : 100%;
+    display        : flex;
+    flex-direction : row;
+    align-items    : center;
+    align-content  : center;
     justify-content: center;
-    flex-wrap: nowrap;
-    background: transparent;
+    flex-wrap      : nowrap;
+    background     : transparent;
 }
 
 .menuItem {
-    height: 100%;
-    display: flex;
-    width: 150px;
+    height         : 100%;
+    display        : flex;
+    width          : 150px;
     justify-content: center;
-    align-content: center;
-    align-items: center;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    flex-grow: unset;
-    margin-left: 20px;
-    margin-right: 20px;
-    background: #0006;
+    align-content  : center;
+    align-items    : center;
+    flex-direction : row;
+    flex-wrap      : nowrap;
+    flex-grow      : unset;
+    margin-left    : 20px;
+    margin-right   : 20px;
+    background     : #0006;
 }
 
 .menuItem:hover .menBtnIcn {
@@ -62,38 +62,39 @@
     bottom: 160px;
 }
 
-#subLogoButtons > .button:hover,
+#subLogoButtons>.button:hover,
 .menuItem:hover {
-    transform: unset;
+    transform : unset;
     box-shadow: 0 0 0 5px white !important;
     transition: .1s;
 }
 
-#subLogoButtons > .button {
-    background: #0006;
-    height: 100px;
-    border: unset !important;
-    border-radius: unset;
-    width: -webkit-fill-available;
-    display: flex;
-    align-items: center;
+#subLogoButtons>.button {
+    background     : #0006;
+    height         : 100px;
+    border         : unset !important;
+    border-radius  : unset;
+    width          : -webkit-fill-available;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
 }
 
 #subLogoButtons {
-    width: 50%;
+    width  : 50%;
     display: flex;
 }
 
 #uiBase.onMenu #chatHolder {
     bottom: 150px !important;
-    left: 10px !important;
+    left  : 10px !important;
 }
 
 /* Menu Windo*/
 ::-webkit-scrollbar {
     width: 5px;
 }
+
 #menuWindow.dark {
     background: #fff6;
 }
@@ -103,8 +104,9 @@
 .setBodH,
 .setHed {
     background: transparent !important;
-    border: unset !important;
+    border    : unset !important;
 }
+
 .settName,
 .settNameSmall {
     color: #000 !important;
@@ -123,7 +125,7 @@
 
 #uiBase.onGame #chatHolder {
     bottom: 10px !important;
-    left: 10px !important;
+    left  : 10px !important;
 }
 
 #healthValue,
@@ -133,49 +135,49 @@
 }
 
 #timerVal {
-    color: #00a5ff;
-    font-size: 45px;
+    color       : #00a5ff;
+    font-size   : 45px;
     padding-left: 0;
-    will-change: unset;
+    will-change : unset;
 }
 
 #healthValue {
-    color: #ff0000;
-    font-size: 40px;
+    color         : #ff0000;
+    font-size     : 40px;
     letter-spacing: 2px;
-    text-align: center;
-    margin-top: 0;
-    will-change: unset;
+    text-align    : center;
+    margin-top    : 0;
+    will-change   : unset;
 }
 
 #ammoVal {
-    color: #fa00ff;
+    color    : #fa00ff;
     font-size: 25px;
 }
 
 #timerDisplay {
-    text-align: center;
-    position: fixed;
-    transform: translateX(-50%);
-    bottom: 35%;
-    left: 50%;
-    padding: unset;
-    margin: unset;
-    border-radius: 0;
+    text-align      : center;
+    position        : fixed;
+    transform       : translateX(-50%);
+    bottom          : 35%;
+    left            : 50%;
+    padding         : unset;
+    margin          : unset;
+    border-radius   : 0;
     background-color: transparent;
 }
 
 #healthValueHolder {
     background-color: transparent;
-    width: 125px;
-    height: 65px;
-    border-radius: 0;
-    position: fixed;
-    left: 40%;
-    bottom: 35%;
-    padding: unset;
-    margin: unset;
-    align-items: center;
+    width           : 125px;
+    height          : 65px;
+    border-radius   : 0;
+    position        : fixed;
+    left            : 40%;
+    bottom          : 35%;
+    padding         : unset;
+    margin          : unset;
+    align-items     : center;
 }
 
 #bottomRight {
@@ -183,17 +185,17 @@
 }
 
 #ammoDisplay {
-    display: block !important;
+    display         : block !important;
     background-color: transparent;
     background-image: linear-gradient(to right, blue, #ff2f00);
-    position: fixed;
-    bottom: 48%;
-    padding: unset;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 6px;
-    border-radius: 100px;
+    position        : fixed;
+    bottom          : 48%;
+    padding         : unset;
+    left            : 50%;
+    transform       : translateX(-50%);
+    width           : 50px;
+    height          : 6px;
+    border-radius   : 100px;
 }
 
 #ammoMax {
@@ -206,31 +208,31 @@
 
 #reloadMsg {
     background: transparent;
-    position: fixed;
-    border: unset !important;
-    bottom: 45%;
-    font-size: 20px;
+    position  : fixed;
+    border    : unset !important;
+    bottom    : 45%;
+    font-size : 20px;
 }
 
 /* Menu Timer */
 #uiBase.onMenu #spectateUI {
-    display: block!important;
-    position: fixed;
-    bottom: 48.5%;
-    top: unset;
-    left: 50%;
-    right: unset;
+    display  : block !important;
+    position : fixed;
+    bottom   : 48.5%;
+    top      : unset;
+    left     : 50%;
+    right    : unset;
     transform: translate(-50%, 50%);
-    z-index: 1;
-    width: 10px;
-    height: 10px;
+    z-index  : 1;
+    width    : 10px;
+    height   : 10px;
 }
 
 #uiBase.onMenu #spectateHUD {
-    display: flex;
+    display        : flex;
     justify-content: center;
-    transform: unset;
-    left: unset;
+    transform      : unset;
+    left           : unset;
 }
 
 #uiBase.onMenu #specTeam0,
@@ -244,26 +246,26 @@
 #uiBase.onMenu #specTeam1,
 #uiBase.onMenu #specGMessage,
 #uiBase.onMenu #specGameInfo {
-    display: none!important
+    display: none !important
 }
 
 #uiBase.onMenu #specTimer {
-    display: block!important;
-    font-size: 35px;
+    display         : block !important;
+    font-size       : 35px;
     background-color: transparent;
-    color: rgba(255, 255, 255, .55)
+    color           : rgba(255, 255, 255, .55)
 }
 
 /* Class Picker */
 #hiddenClasses {
-    display: flex !important;
+    display       : flex !important;
     flex-direction: column;
-    position: fixed;
-    left: 10px;
-    bottom: unset;
-    top: 50%;
-    transform: translate(0, -50%);
-    margin-right: 10px;
+    position      : fixed;
+    left          : 10px;
+    bottom        : unset;
+    top           : 50%;
+    transform     : translate(0, -50%);
+    margin-right  : 10px;
 }
 
 #menuClassPicker0[onclick="selectClass(0)"],
@@ -281,13 +283,13 @@
 #menuClassPicker12[onclick="selectClass(12)"],
 #menuClassPicker13[onclick="selectClass(13)"],
 #menuClassPicker14[onclick="selectClass(14)"] {
-    display: block;
-    width: 55px;
-    height: 55px;
-    pointer-events: auto;
+    display        : block;
+    width          : 55px;
+    height         : 55px;
+    pointer-events : auto;
     image-rendering: pixelated;
-    margin-bottom: 10px;
-    filter: saturate(0);
+    margin-bottom  : 10px;
+    filter         : saturate(0);
 }
 
 #menuClassPicker0[onclick="selectClass(0)"] {

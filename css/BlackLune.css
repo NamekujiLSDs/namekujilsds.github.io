@@ -200,15 +200,15 @@ div#policeButton img {
 }
 
 div#policeButton {
-    border        : solid 2px white !important;
-    display       : block !important;
-    position      : fixed;
-    right         : 0 !important;
-    top           : 70px;
-    right         : unset;
-    margin        : unset;
-    width         : 50px !important;
-    height        : 50px !important;
+    border  : solid 2px white !important;
+    display : block !important;
+    position: fixed;
+    right   : 0 !important;
+    top     : 70px;
+    right   : unset;
+    margin  : unset;
+    width   : 50px !important;
+    height  : 50px !important;
 }
 
 #menuClassNameTag,
