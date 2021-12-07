@@ -1,352 +1,78 @@
 :root {
-  --accent-color: #ffaadb;
-  --bg-color    : hsla(0, 0%, 15%, 0.5);
-  --border-color: hsla(0, 0%, 50%, 0.5);
+  --accent-color: ;
+  --bg-color: #202020;
+  --nav-color: #404040;
 }
-
-
-/* フォント関係ここから */
+/* 基本設定ここから */
 
 @font-face {
-  font-family: icon;
-  font-style : normal;
-  font-weight: 400;
-  src        : url(https://fonts.gstatic.com/s/materialicons/v115/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format("woff2");
+  font-family: "JP-Font";
+  src: url(https://namekujilsds.github.io/font/SourceHanSansJP-Heavy.otf);
 }
-
-.material-icons-outlined {
-  font-family           : "Material Icons";
-  font-weight           : normal;
-  font-style            : normal;
-  font-size             : 24px;
-  line-height           : 1;
-  letter-spacing        : normal;
-  text-transform        : none;
-  display               : inline-block;
-  white-space           : nowrap;
-  word-wrap             : normal;
-  direction             : ltr;
-  -webkit-font-smoothing: antialiased;
-}
-
 * {
-  margin     : 0;
-  padding    : 0;
-  font-family: "Yomogi", cursive;
-  user-select: none;
-  color      : white;
-  transition : .2s;
+  font-family: "JP-Font";
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  border-bottom: 4px white solid;
-  border-top   : 4px white solid;
-  border-radius: 10px;
-
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 100px;
-  opacity      : 0.5;
-  background   : linear-gradient(white, var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), var(--accent-color), white);
-}
-
-
-/* フォント関係とか基本設定とかここまで */
-
-
-/* 背景 */
-
-body,
 html {
-  height: 100%;
-  width : 100%;
+  scroll-behavior: smooth;
 }
 
-#net {
-  height  : 100%;
-  width   : 100%;
-  z-index : 1;
+body {
+  height: 100vh;
+  background: var(--bg-color);
+}
+/* 基本設定ここまで */
+
+/* コンテンツの設定ここから */
+#content {
+  width: 900px;
+  height: calc(100vh - 100px);
+  overflow: scroll;
+  left: 50%;
+  padding: 10px;
   position: fixed;
-
-  background: linear-gradient(to bottom, transparent, #0000, var(--accent-color));
-  opacity   : 0.3;
+  transform: translate(-50%);
 }
-
-#net2 {
-  height    : 100%;
-  width     : 100%;
-  position  : fixed;
-  z-index   : -1;
-  background: #101010;
-}
-
-div#main {
-  height  : 100%;
-  width   : 100%;
-  position: fixed;
-  z-index : 5;
-}
-
-@keyframes bg-hue {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-
-#net {
-  animation: bg-hue 10s linear infinite
-}
-
-/* デカタイトル */
-.bigTitle {
-  text-shadow  : 0 0 5px;
-  color        : var(--accent-color);
-  font-size    : 30px;
-  text-align   : center;
-  margin-top   : 20px;
-  margin-bottom: 20px;
-}
-
-/* 左のメニュー */
-
-#leftBar {
-  float     : left;
-  width     : 150px;
-  text-align: left;
-  margin    : 30px 0px 0px 0px;
-}
-
-.logo {
-  height     : 100px;
-  margin-left: 10px;
-  animation  : rotater 2s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  filter     : drop-shadow(0 0 4px white);
-  cursor     : pointer;
-  transition : .2s;
-}
-
-.logo:hover {
-  transition: .2s;
-  filter    : drop-shadow(0 0 4px var(--accent-color));
-}
-
-@keyframes rotater {
-  0% {
-    transform: rotateZ(0deg);
-  }
-
-  100% {
-    transform: rotateZ(360deg);
-  }
-}
-
-.menuTitle {
-  background   : #252525;
-  left         : 0;
-  margin       : 0;
-  padding-left : 10px;
-  color        : white;
-  border-radius: 0 30px 30px 0px;
-  margin-top   : 15px;
-  font-size    : 30px;
-  line-height  : 50px;
-  height       : 60px;
-  text-shadow  : 0 0 5px white;
-}
-
-.links {
-  margin-top   : 20px;
-  color        : white;
-  background   : #202020;
-  border-radius: 0 30px 30px 0;
-  height       : -webkit-fill-available;
-}
-
-ul.links li {
-  background  : transparent;
-  width       : calc(100% - 10px);
-  list-style  : none;
-  height      : 50px;
-  cursor      : pointer;
-  line-height : 50px;
-  padding-left: 10px;
-  transition  : 0.1s;
-  font-size   : 15px;
-  color       : #808080;
-  font-weight : bolder;
-}
-
-ul.links li:nth-child(1) {
-  border-top-right-radius: 30px;
-}
-
-ul.links li:nth-child(9) {
-  border-bottom-right-radius: 30px;
-}
-
-.linkspace {
-  width           : calc(100% - 20px);
-  height          : 4px;
-  border-radius   : 0 10px 10px 0;
-  background-color: gray;
-  padding-left    : 10px;
-}
-
-ul.links li:hover,
-ul.links li.Younow,
-#shareBtn:hover {
-  background : linear-gradient(to right, var(--accent-color), transparent);
-  height     : 100%;
-  font-size  : 18px;
-  transition : 0.1s;
-  color      : black;
-  font-weight: bolder;
-}
-
-#shareBtn {
-  background-color: #202020;
-  line-height     : 22px;
-  padding-top     : 10px;
-  padding-bottom  : 10px;
-  padding-left    : 10px;
-  width           : 140px;
-  border-radius   : 0 100px 100px 0;
-  -shadow         : 0 0 10px var(--accent-color);
-  margin-top      : 20px;
-}
-
-
-/* 右の画面 */
-
-#rightContents {
-  height      : calc(100vh - 30px);
-  float       : right;
-  width       : calc(100% - 300px);
-  margin-right: 50px;
-}
-
-#rightContents iframe {
-  height: calc(100vh - 30px);
-  width : 100%;
-  border: unset;
-}
-
-
-/* 右画面埋め込み */
-
 .box {
-  background     : var(--bg-color);
-  padding        : 20px;
-  border-radius  : 20px;
-  margin-top     : 20px;
-  font-size      : 18px;
-  line-height    : 1.4em;
-  border         : solid var(--border-color) 5px;
-  box-shadow     : 0 0 5px black;
-  margin-left    : 15px;
-  margin-right   : 15px;
-  backdrop-filter: blur(4px);
+  background: #fff2;
+  width: calc(100% - 15px);
+  padding: 20px;
+  line-height: 150%;
+  color: white;
+  font-weight: lighter;
+  box-shadow: 5px 5px var(--accent-color);
+  margin-bottom: 20px;
+  margin-top:10px;
 }
-
-h1 {
-  font-size  : 1.2em;
-  line-height: 1.2em;
-}
-
-h1:first-letter {
-  color      : var(--accent-color);
-  font-size  : 40px;
-  text-shadow: 0 0 4px var(--accent-color);
-}
-
-.box a:after {
-  content    : "launch";
-  font-family: icon;
-  margin-left: 10px;
-  font-size  : 18px;
-}
-
 .box a {
+  color: white;
   text-decoration: unset;
 }
-
-
-
-h2 {
-  font-size    : 1.4em;
-  margin-bottom: 20px;
-  text-shadow  : 0 0 5px;
-}
-
-h2::first-letter {
-  color      : var(--accent-color);
-  font-size  : 1.5em;
-  text-shadow: 0 0 5px;
-}
-
-.box img {
-  width     : 80%;
-  margin    : auto;
-  position  : relative;
-  left      : 50%;
-  transform : translateX(-50%);
-  margin-top: 20px;
-}
-
-
-/* 規約ちゃんと読んだよね？？？ */
-
-.warn {
-  margin-top   : 20px;
-  margin-bottom: 20px;
-  font-size    : 20px;
-}
-
-.space {
-  height: 15px;
-}
-
-a {
+h1 {
   color: var(--accent-color);
+  font-size: 40px;
+  text-shadow: 0 0 10px var(--accent-color);
+  line-height: 50px;
 }
-
-.kyouchou {
-  color      : var(--accent-color);
-  font-weight: bolder;
+h2 {
+  color: var(--accent-color);
+  font-size: 25px;
+  line-height: 35px;
 }
-
-
-/* ダウンロードボタン */
-
-.download {
-  margin     : auto;
-  left       : 50%;
-  right      : 50%;
-  text-align : center;
-  font-weight: bolder;
-  font-size  : 1.1em;
-  text-shadow: 0 0 4px white;
-  cursor     : pointer;
+iframe{
+border:unset !important;
+width:100%;
+height:100%;
 }
-
-footer {
-  clear     : both;
-  text-align: center;
-  margin    : 0px;
-  position  : fixed;
-  bottom    : 0;
-  left      : 50%;
-  transform : translateX(-50%);
-  width     : 1000px;
+.space{
+height:30px;
+}
+.box img{
+width:80%;
+margin-left:10%;
+margin-right:10%;
 }
 
 /* 画像隠したりするやつ */
@@ -394,3 +120,149 @@ footer {
   height    : auto;
   transition: .2s;
 }
+/* ダウンロードボタン */
+
+.download {
+  margin     : auto;
+  left       : 50%;
+  right      : 50%;
+  text-align : center;
+  font-weight: bolder;
+  font-size  : 1.1em;
+  text-shadow: 0 0 4px white;
+  cursor     : pointer;
+}
+/* コンテンツの設定ここまで */
+
+/* ナビゲーションバーここから */
+/* ナビゲーションバー背景 */
+.navigation:before {
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  content: " ";
+  background: var(--nav-color);
+}
+/* 本体 */
+.navigation {
+  filter: drop-shadow(0 0 10px var(--accent-color));
+  bottom: 0;
+  left: 50%;
+  transform: translatex(-50%);
+  position: fixed;
+  width: 600px;
+  height: 70px;
+  background: var(--nav-color);
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border-radius: 20px;
+}
+/* ５個の選択 */
+.navigation ul {
+  display: flex;
+  width: 500px;
+}
+/* アイテム一個ずつ */
+.navigation ul li {
+  list-style: none;
+  position: relative;
+  width: 100px;
+  height: 70px;
+  z-index: 2;
+}
+/* アイテムの中身 */
+.navigation ul li a {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  text-align: center;
+}
+/* アイコン */
+.navigation ul li a .navIcon {
+  position: relative;
+  display: block;
+  line-height: 85px;
+  font-size: 3em;
+  transition: 0.5s;
+  color: white;
+  margin-top: 10px;
+}
+/* 文字 */
+.navigation ul li a .navText {
+  position: absolute;
+  background: var(--accent-color);
+  color: white;
+  padding: 2px 7px;
+  border-radius: 12px;
+  font-size: 1em;
+  letter-spacing: 0.05em;
+  transition: 0.5s;
+  opacity: 0;
+  transform: translatey(15px);
+}
+/* 選択時の文字とアイコン */
+.navigation ul li.active a .navText {
+  transform: translatey(-4px);
+  opacity: 1;
+  color:black;
+}
+.navigation ul li.active a .navIcon {
+  transform: translatey(-40px);
+  color: var(--accent-color);
+  margin-top:unset;
+}
+/* 丸っこい部分 */
+.indicator {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  background: var(--nav-color);
+  border-radius: 50%;
+  top: -50px;
+  transition: 0.5s;
+}
+/* 角取り */
+.indicator:before {
+  content: " ";
+  position: absolute;
+  top: 15px;
+  left: -32px;
+  height: 35px;
+  width: 35px;
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 20px 20px var(--nav-color);
+}
+.indicator:after {
+  content: " ";
+  position: absolute;
+  top: 15px;
+  right: -32px;
+  height: 35px;
+  width: 35px;
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: -20px 20px var(--nav-color);
+}
+/* 丸い奴が動くようにするやつ */
+.navigation ul li:nth-child(1).active ~ .indicator {
+  transform: translatex(calc(100px * 0));
+}
+.navigation ul li:nth-child(2).active ~ .indicator {
+  transform: translatex(calc(100px * 1));
+}
+.navigation ul li:nth-child(3).active ~ .indicator {
+  transform: translatex(calc(100px * 2));
+}
+.navigation ul li:nth-child(4).active ~ .indicator {
+  transform: translatex(calc(100px * 3));
+}
+.navigation ul li:nth-child(5).active ~ .indicator {
+  transform: translatex(calc(100px * 4));
+}
+
+/* ナビゲーションバーここまで */
