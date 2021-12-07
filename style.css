@@ -647,11 +647,11 @@ iframe {
 }
 
 .lang:nth-child(1) {
-    animation: 2s infinite fuwa;
+    animation: 4s infinite fuwa ease-in-out;
 }
 
 .lang:nth-child(2) {
-    animation: 2s infinite fuwa2;
+    animation: 4s infinite fuwa2 ease-in-out;
 }
 
 .lang:hover {
@@ -664,26 +664,30 @@ iframe {
         transform: scale(1);
     }
 
-    50% {
+    25% {
         transform: scale(1.1);
     }
 
-    100% {
+    50% {
         transform: scale(1);
     }
-}
+  100%{
+        transform: scale(1);
+    }
 
 @keyframes fuwa2 {
     0% {
-        transform: scale(1.1);
+        transform: scale(1);
     }
 
     50% {
         transform: scale(1);
     }
-
-    100% {
+    75% {
         transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
     }
 }
 
