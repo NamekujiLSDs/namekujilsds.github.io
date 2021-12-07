@@ -51,7 +51,7 @@ body {
   margin-top   : 10px;
 }
 .box p{
-      text-shadow: 0px 0px var(--black), 0px 1px var(--black), 0px 2px var(--black), 0px 3px var(--black), 0px -1px var(--black), 0px -2px var(--black), 0px -3px var(--black), 1px 0px var(--black), 1px 1px var(--black), 1px 2px var(--black), 1px 3px var(--black), 1px -1px var(--black), 1px -2px var(--black), 1px -3px var(--black), 2px 0px var(--black), 2px 1px var(--black), 2px 2px var(--black), 2px 3px var(--black), 2px -1px var(--black), 2px -2px var(--black), 2px -3px var(--black), 3px 0px var(--black), 3px 1px var(--black), 3px 2px var(--black), 3px 3px var(--black), 3px -1px var(--black), 3px -2px var(--black), 3px -3px var(--black), -1px 0px var(--black), -1px 1px var(--black), -1px 2px var(--black), -1px 3px var(--black), -1px -1px var(--black), -1px -2px var(--black), -1px -3px var(--black), -2px 0px var(--black), -2px 1px var(--black), -2px 2px var(--black), -2px 3px var(--black), -2px -1px var(--black), -2px -2px var(--black), -2px -3px var(--black), -3px 0px var(--black), -3px 1px var(--black), -3px 2px var(--black), -3px 3px var(--black), -3px -1px var(--black), -3px -2px var(--black), -3px -3px var(--black) !important;
+text-shadow:0 0 0 var(--black),1px 0 0 var(--black),-1px 0 var(--black),0 -1px var(--black),0 1px var(--black),1px 1px var(--black),1px -1px var(--black),-1px 1px var(--black),-1px -1px var(--black),0 2px var(--black),0 -2px var(--black),2px 0 var(--black),-2px 0  var(--black),1px 2px var(--black),-1px 2px var(--black),1px -2px var(--black),-1px -2px var(--black),2px 2px var(--black),-2px 2px var(--black),2px -2px var(--black),-2px -2px var(--black),0 0 2px var(--black),0 0 2px var(--black),0 0 2px var(--black) ;
 }
 .box a {
   color          : white;
