@@ -52,7 +52,15 @@ window.onload = function () {
     .getElementsByTagName("html")[0]
     .style.setProperty(
   "--accent-color-2",
-    colors[Math.round(Math.random() * (colors.length - 1))]
+    colors2[Math.round(Math.random() * (colors2.length - 1))]
+    );
+};
+window.onload = function () {
+  document
+    .getElementsByTagName("html")[0]
+    .style.setProperty(
+  "--accent-color-3",
+    colors2[Math.round(Math.random() * (colors2.length - 1))]
     );
 };
 
