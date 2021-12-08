@@ -661,5 +661,6 @@ iframe {
     transition     : .2s;
     text-shadow:0 0 0 var(--black),1px 0 0 var(--black),-1px 0 var(--black),0 -1px var(--black),0 1px var(--black),1px 1px var(--black),1px -1px var(--black),-1px 1px var(--black),-1px -1px var(--black),0 2px var(--black),0 -2px var(--black),2px 0 var(--black),-2px 0  var(--black),1px 2px var(--black),-1px 2px var(--black),1px -2px var(--black),-1px -2px var(--black),2px 2px var(--black),-2px 2px var(--black),2px -2px var(--black),-2px -2px var(--black),0 0 2px var(--black),0 0 2px var(--black),0 0 2px var(--black) ;
 }
-
-/* トップページここまで */
+.lang:hover{
+  transform:scale(1.1) rotateZ(-5deg);
+}
