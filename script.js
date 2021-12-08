@@ -23,7 +23,7 @@ const colors = [
 ];
 
 //色テーブル2
-const colors2 =[
+const colors2 = [
   "#a0739f",
   "#7381a0",
   "#73a091",
@@ -40,18 +40,11 @@ window.onload = function () {
       "--accent-color",
       colors[Math.round(Math.random() * (colors.length - 1))]
     );
-};
-window.onload = function () {
-  document
-    .getElementsByTagName("html")[0]
-    .style.setProperty(
+      .style.setProperty(
   "--accent-color-2",
     colors2[Math.round(Math.random() * (colors2.length - 1))]
     );
-};
-window.onload = function () {
-  document
-    .getElementsByTagName("html")[0]
+      .getElementsByTagName("html")[0]
     .style.setProperty(
   "--accent-color-3",
     colors2[Math.round(Math.random() * (colors2.length - 1))]
