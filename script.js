@@ -22,7 +22,7 @@ const colors = [
   "#e9aaff"
 ];
 
-//色テーブル2
+//色テーブル2-1
 const colors2 = [
   "#a0739f",
   "#7381a0",
@@ -30,7 +30,16 @@ const colors2 = [
   "#93a073",
   "#a09573",
   "#a07381"
-  
+];
+
+//色テーブル2-2
+const colors3 = [
+  "#a0739f",
+  "#7381a0",
+  "#73a091",
+  "#93a073",
+  "#a09573",
+  "#a07381"
 ];
 // ページ読み込み時に実行(色のランダム化)
 window.onload = function () {
@@ -40,14 +49,17 @@ window.onload = function () {
       "--accent-color",
       colors[Math.round(Math.random() * (colors.length - 1))]
     );
-      .style.setProperty(
-  "--accent-color-2",
-    colors2[Math.round(Math.random() * (colors2.length - 1))]
-    );
-      .getElementsByTagName("html")[0]
+	  document
+    .getElementsByTagName("html")[0]
     .style.setProperty(
-  "--accent-color-3",
-    colors2[Math.round(Math.random() * (colors2.length - 1))]
+      "--accent-color-3",
+      colors3[Math.round(Math.random() * (colors3.length - 1))]
+    );
+	  document
+    .getElementsByTagName("html")[0]
+    .style.setProperty(
+      "--accent-color-2",
+      colors2[Math.round(Math.random() * (colors2.length - 1))]
     );
 };
 
