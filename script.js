@@ -12,12 +12,6 @@ const loadSubPage = (name) => {
   document.getElementsByTagName('html')[0].style.setProperty('--accent-color', colors[Math.round(Math.random() * (colors.length - 1))])
 }
 
-// URLコピー
-function copyUrl() {
-  var url = location.href;
-  navigator.clipboard.writeText(url);
-  share.innerHTML = "URL Copied";
-}
 // 色テーブル
 const colors = [
   "#ffaadb",
@@ -29,7 +23,7 @@ const colors = [
 ];
 
 //色テーブル2
-const colors2=[
+const colors2 =[
   "#a0739f",
   "#7381a0",
   "#73a091",
