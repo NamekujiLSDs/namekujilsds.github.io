@@ -28,6 +28,16 @@ const colors = [
   "#e9aaff"
 ];
 
+//色テーブル2
+const colors2=[
+  "#a0739f",
+  "#",
+  "#",
+  "#",
+  "#",
+  "#"
+  
+];
 // ページ読み込み時に実行(色のランダム化)
 window.onload = function () {
   document
@@ -35,6 +45,14 @@ window.onload = function () {
     .style.setProperty(
       "--accent-color",
       colors[Math.round(Math.random() * (colors.length - 1))]
+    );
+};
+window.onload = function () {
+  document
+    .getElementsByTagName("html")[0]
+    .style.setProperty(
+  "--accent-color-2",
+    colors[Math.round(Math.random() * (colors.length - 1))]
     );
 };
 
