@@ -339,7 +339,7 @@ iframe {
     font-size      : 30px;
     text-decoration: unset;
     text-align     : center;
-    background     : linear-gradient(-30deg,var(--nav-color) 0% 50%, var(--accent-color-2) 0% 100%);
+    background     : linear-gradient(-5deg,var(--nav-color) 0% 70%, var(--accent-color-2) 0% 100%);
     transition     : .2s;
     text-shadow:0 0 0 var(--black),1px 0 0 var(--black),-1px 0 var(--black),0 -1px var(--black),0 1px var(--black),1px 1px var(--black),1px -1px var(--black),-1px 1px var(--black),-1px -1px var(--black),0 2px var(--black),0 -2px var(--black),2px 0 var(--black),-2px 0  var(--black),1px 2px var(--black),-1px 2px var(--black),1px -2px var(--black),-1px -2px var(--black),2px 2px var(--black),-2px 2px var(--black),2px -2px var(--black),-2px -2px var(--black),0 0 2px var(--black),0 0 2px var(--black),0 0 2px var(--black) ;
 }
@@ -355,7 +355,7 @@ iframe {
     font-size      : 30px;
     text-decoration: unset;
     text-align     : center;
-    background     : linear-gradient(30deg,var(--nav-color) 0% 50%, var(--accent-color-3) 0% 100%);
+    background     : linear-gradient(5deg,var(--nav-color) 0% 70%, var(--accent-color-3) 0% 100%);
     transition     : .2s;
     text-shadow:0 0 0 var(--black),1px 0 0 var(--black),-1px 0 var(--black),0 -1px var(--black),0 1px var(--black),1px 1px var(--black),1px -1px var(--black),-1px 1px var(--black),-1px -1px var(--black),0 2px var(--black),0 -2px var(--black),2px 0 var(--black),-2px 0  var(--black),1px 2px var(--black),-1px 2px var(--black),1px -2px var(--black),-1px -2px var(--black),2px 2px var(--black),-2px 2px var(--black),2px -2px var(--black),-2px -2px var(--black),0 0 2px var(--black),0 0 2px var(--black),0 0 2px var(--black) ;
 }
