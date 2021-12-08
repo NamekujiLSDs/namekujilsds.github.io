@@ -1,10 +1,10 @@
 :root {
-  --accent-color:#ffaadb ;
-  --accent-color-2: #a0739f ;
-  --accent-color-3: #a0739f ;
-  --bg-color    : #202020;
-  --black:#000;
-  --nav-color   : #404040;
+  --accent-color  : #ffaadb;
+  --accent-color-2: #a0739f;
+  --accent-color-3: #a0739f;
+  --bg-color      : #202020;
+  --black         : #000;
+  --nav-color     : #404040;
 }
 
 /* 基本設定ここから */
@@ -20,9 +20,11 @@
   padding    : 0;
   box-sizing : border-box;
 }
-::-webkit-scrollbar{
-  display:none !important;
+
+::-webkit-scrollbar {
+  display: none !important;
 }
+
 body {
   height    : 100vh;
   background: var(--bg-color);
@@ -52,9 +54,11 @@ body {
   margin-bottom: 20px;
   margin-top   : 10px;
 }
-.box p{
-text-shadow:0 0 0 var(--black),1px 0 0 var(--black),-1px 0 var(--black),0 -1px var(--black),0 1px var(--black),1px 1px var(--black),1px -1px var(--black),-1px 1px var(--black),-1px -1px var(--black),0 2px var(--black),0 -2px var(--black),2px 0 var(--black),-2px 0  var(--black),1px 2px var(--black),-1px 2px var(--black),1px -2px var(--black),-1px -2px var(--black),2px 2px var(--black),-2px 2px var(--black),2px -2px var(--black),-2px -2px var(--black),0 0 2px var(--black),0 0 2px var(--black),0 0 2px var(--black) ;
+
+.box p {
+  text-shadow: 0 0 0 var(--black), 1px 0 0 var(--black), -1px 0 var(--black), 0 -1px var(--black), 0 1px var(--black), 1px 1px var(--black), 1px -1px var(--black), -1px 1px var(--black), -1px -1px var(--black), 0 2px var(--black), 0 -2px var(--black), 2px 0 var(--black), -2px 0 var(--black), 1px 2px var(--black), -1px 2px var(--black), 1px -2px var(--black), -1px -2px var(--black), 2px 2px var(--black), -2px 2px var(--black), 2px -2px var(--black), -2px -2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black);
 }
+
 .box a {
   color          : white;
   text-decoration: unset;
@@ -296,69 +300,72 @@ iframe {
 .navigation ul li:nth-child(5).active~.indicator {
   transform: translatex(calc(100px * 4));
 }
-.changeLang{
-  opacity:1 ;
-  position:fixed;
-  right:0;
-  color:white;
-  bottom:0;
-  padding:20px;
+
+.changeLang {
+  opacity : 1;
+  position: fixed;
+  right   : 0;
+  color   : white;
+  bottom  : 0;
+  padding : 20px;
 }
+
 /* ナビゲーションバーここまで */
 /* トップページここから*/
 .welcome {
-    color      : var(--accent-color);
-    text-shadow: 0 0 5px var(--accent-color);
-    text-align : center;
-    margin-top : 50px;
+  color      : var(--accent-color);
+  text-shadow: 0 0 5px var(--accent-color);
+  text-align : center;
+  margin-top : 50px;
 }
 
 .langChose {
-    color      : var(--accent-color);
-    text-shadow: 0 0 5px var(--accent-color);
-    text-align : center;
-    margin-top : 20px;
+  color      : var(--accent-color);
+  text-shadow: 0 0 5px var(--accent-color);
+  text-align : center;
+  margin-top : 20px;
 }
 
 .langBox {
-    left     : 50%;
-    top      : 60%;
-    transform: translate(-50%, -50%);
-    position : fixed;
-    display  : flex;
+  left     : 50%;
+  top      : 60%;
+  transform: translate(-50%, -50%);
+  position : fixed;
+  display  : flex;
 }
 
 .ja {
-    margin-left    : 30px;
-    margin-right   : 30px;
-    padding        : 0px;
-    width          : 250px;
-    padding-top    : 60px;
-    padding-bottom : 60px;
-    color          : white;
-    font-size      : 30px;
-    text-decoration: unset;
-    text-align     : center;
-    background     : linear-gradient(-5deg,var(--nav-color) 0% 70%, var(--accent-color-2) 0% 100%);
-    transition     : .2s;
-    text-shadow:0 0 0 var(--black),1px 0 0 var(--black),-1px 0 var(--black),0 -1px var(--black),0 1px var(--black),1px 1px var(--black),1px -1px var(--black),-1px 1px var(--black),-1px -1px var(--black),0 2px var(--black),0 -2px var(--black),2px 0 var(--black),-2px 0  var(--black),1px 2px var(--black),-1px 2px var(--black),1px -2px var(--black),-1px -2px var(--black),2px 2px var(--black),-2px 2px var(--black),2px -2px var(--black),-2px -2px var(--black),0 0 2px var(--black),0 0 2px var(--black),0 0 2px var(--black) ;
+  margin-left    : 30px;
+  margin-right   : 30px;
+  padding        : 0px;
+  width          : 250px;
+  padding-top    : 60px;
+  padding-bottom : 60px;
+  color          : white;
+  font-size      : 30px;
+  text-decoration: unset;
+  text-align     : center;
+  background     : linear-gradient(-5deg, var(--nav-color) 0% 70%, var(--accent-color-2) 0% 100%);
+  transition     : .2s;
+  text-shadow    : 0 0 0 var(--black), 1px 0 0 var(--black), -1px 0 var(--black), 0 -1px var(--black), 0 1px var(--black), 1px 1px var(--black), 1px -1px var(--black), -1px 1px var(--black), -1px -1px var(--black), 0 2px var(--black), 0 -2px var(--black), 2px 0 var(--black), -2px 0 var(--black), 1px 2px var(--black), -1px 2px var(--black), 1px -2px var(--black), -1px -2px var(--black), 2px 2px var(--black), -2px 2px var(--black), 2px -2px var(--black), -2px -2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black);
 }
 
 .en {
-    margin-left    : 30px;
-    margin-right   : 30px;
-    padding        : 0px;
-    width          : 250px;
-    padding-top    : 60px;
-    padding-bottom : 60px;
-    color          : white;
-    font-size      : 30px;
-    text-decoration: unset;
-    text-align     : center;
-    background     : linear-gradient(5deg,var(--nav-color) 0% 70%, var(--accent-color-3) 0% 100%);
-    transition     : .2s;
-    text-shadow:0 0 0 var(--black),1px 0 0 var(--black),-1px 0 var(--black),0 -1px var(--black),0 1px var(--black),1px 1px var(--black),1px -1px var(--black),-1px 1px var(--black),-1px -1px var(--black),0 2px var(--black),0 -2px var(--black),2px 0 var(--black),-2px 0  var(--black),1px 2px var(--black),-1px 2px var(--black),1px -2px var(--black),-1px -2px var(--black),2px 2px var(--black),-2px 2px var(--black),2px -2px var(--black),-2px -2px var(--black),0 0 2px var(--black),0 0 2px var(--black),0 0 2px var(--black) ;
+  margin-left    : 30px;
+  margin-right   : 30px;
+  padding        : 0px;
+  width          : 250px;
+  padding-top    : 60px;
+  padding-bottom : 60px;
+  color          : white;
+  font-size      : 30px;
+  text-decoration: unset;
+  text-align     : center;
+  background     : linear-gradient(5deg, var(--nav-color) 0% 70%, var(--accent-color-3) 0% 100%);
+  transition     : .2s;
+  text-shadow    : 0 0 0 var(--black), 1px 0 0 var(--black), -1px 0 var(--black), 0 -1px var(--black), 0 1px var(--black), 1px 1px var(--black), 1px -1px var(--black), -1px 1px var(--black), -1px -1px var(--black), 0 2px var(--black), 0 -2px var(--black), 2px 0 var(--black), -2px 0 var(--black), 1px 2px var(--black), -1px 2px var(--black), 1px -2px var(--black), -1px -2px var(--black), 2px 2px var(--black), -2px 2px var(--black), 2px -2px var(--black), -2px -2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black), 0 0 2px var(--black);
 }
-.lang:hover{
-  transform:scale(1.1) rotateZ(-5deg);
+
+.lang:hover {
+  transform: scale(1.1) rotateZ(-5deg);
 }

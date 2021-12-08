@@ -49,13 +49,13 @@ window.onload = function () {
       "--accent-color",
       colors[Math.round(Math.random() * (colors.length - 1))]
     );
-	  document
+  document
     .getElementsByTagName("html")[0]
     .style.setProperty(
       "--accent-color-3",
       colors3[Math.round(Math.random() * (colors3.length - 1))]
     );
-	  document
+  document
     .getElementsByTagName("html")[0]
     .style.setProperty(
       "--accent-color-2",
