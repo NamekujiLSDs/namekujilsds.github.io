@@ -104,7 +104,10 @@ iframe {
   font-size  : 20px;
   text-align : center;
   font-weight: bolder;
-  text-shadow: 0 0 10px;
+  text-shadow: 0 0 10px var(--accent-color);
+  left       : 50%;
+  position   : absolutes;
+  transform  : translate(-50%);
 }
 
 .hidden_img_1 img,
@@ -142,14 +145,15 @@ iframe {
 /* ダウンロードボタン */
 
 .download {
-  margin     : auto;
-  left       : 50%;
-  right      : 50%;
-  text-align : center;
-  font-weight: bolder;
-  font-size  : 1.1em;
-  text-shadow: 0 0 4px white;
-  cursor     : pointer;
+  left         : 50%;
+  right        : 50%;
+  text-align   : center;
+  font-weight  : bolder;
+  font-size    : 20px;
+  text-shadow  : 0 0 4px var(--accent-color);
+  cursor       : pointer;
+  margin-top   : 30px;
+  margin-bottom: 10px;
 }
 
 /* コンテンツの設定ここまで */
