@@ -674,7 +674,7 @@ iframe {
   100%{
         transform: scale(1);
     }
-
+}
 @keyframes fuwa2 {
     0% {
         transform: scale(1);
