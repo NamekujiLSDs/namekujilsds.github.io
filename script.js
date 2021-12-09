@@ -71,3 +71,8 @@ function activeLink() {
   this.classList.add("active");
 }
 list.forEach((item) => item.addEventListener("click", activeLink));
+
+// 言語設定を保存するやつ
+function selectLang(lang) {
+  localStorage.setItem('lang', lang);
+}

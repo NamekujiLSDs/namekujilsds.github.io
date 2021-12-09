@@ -27,6 +27,17 @@
         }
         gtag('js', new Date());
         gtag('config', 'G-ZY5PW2EZWP');
+
+        // 自動で言語選択
+        const lang = localStorage.getItem('lang');
+        switch(lang) {
+          case 'JP':
+            window.location.href = '/JP';
+            break;
+          case 'EN':
+            window.location.href = '/EN';
+            break;
+        }
     </script>
     <title> TOP PAGE</title>
 </head>
@@ -40,10 +51,10 @@
         言語を選択してください
     </h2>
     <div class="langBox">
-        <a class="lang ja" href="/JP">
+        <a class="lang ja" href="/JP" onclick="selectLang('JP')">
             日本語
         </a>
-        <a class="lang en" href="/EN">
+        <a class="lang en" href="/EN" onclick="selectLang('EN')">
             ENGLISH
         </a>
     </div>
