@@ -170,7 +170,6 @@ iframe {
 
 /* 本体 */
 .navigation {
-  filter         : drop-shadow(0 0 10px var(--accent-color));
   bottom         : 0;
   left           : 50%;
   transform      : translatex(-50%);
@@ -182,6 +181,16 @@ iframe {
   justify-content: center;
   align-content  : center;
   border-radius  : 20px;
+  animation      : shadowBlink 2s ease-in-out infinite alternate forwards
+}
+
+@keyframes shadowBlink {
+  0% {
+    filter         : drop-shadow(0 0 5px var(--accent-color));
+  }
+  100% {
+    filter         : drop-shadow(0 0 20px var(--accent-color));
+  }
 }
 
 /* ５個の選択 */
