@@ -1,3 +1,7 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css2?family=Hachi+Maru+Pop&display=swap');
+
+
 :root {
   --accent-color  : #ffaadb;
   --accent-color-2: #a0739f;
@@ -9,16 +13,13 @@
 
 /* 基本設定ここから */
 
-@font-face {
-  font-family: "JP-Font";
-  src        : url(https://namekujilsds.github.io/font/SourceHanSansJP-Heavy.otf);
-}
 
 * {
-  font-family: "JP-Font";
+  font-family: 'Hachi Maru Pop', cursive;
   margin     : 0;
   padding    : 0;
   box-sizing : border-box;
+  font-weight: bolder;
 }
 
 ::-webkit-scrollbar {
@@ -181,7 +182,7 @@ iframe {
   justify-content: center;
   align-content  : center;
   border-radius  : 20px;
-  animation      : shadowBlink 2s ease-in-out infinite alternate forwards
+  filter:drop-shadow(0 -5px 0 var(--accent-color));
 }
 
 @keyframes shadowBlink {
