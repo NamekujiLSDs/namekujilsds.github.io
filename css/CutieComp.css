@@ -1,3 +1,5 @@
+/* 最終更新 2022 1/31 リロードメッセージの枠の問題を修正 */
+
 @font-face {
     font-family: gamefont;
     src : url(https://namekujilsds.github.io/font/vag-rounded-400.woff2);
@@ -330,10 +332,13 @@ div {
 #reloadMsg {
     position : fixed;
     background: transparent;
-    left : 49%;
-    top : 53%;
-    font-size : 15px;
+    /* left : 50%; */
+    bottom: calc(50% - 80px);
+    font-size : 25px;
     color : red !important;
+    border: unset !important;
+    /* transform: translateX(-50%); */
+    line-height: 20px;
 }
 
 #ammoDisplay {
