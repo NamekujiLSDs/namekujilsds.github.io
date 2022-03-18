@@ -1402,6 +1402,9 @@ div#leaderList .scrollItem {
   align-items   : center;
   flex-wrap     : nowrap;
 }
+option{
+    color:black;
+}
 
 .profileTabs,
 .scrollItemNew {
