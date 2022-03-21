@@ -1,8 +1,11 @@
-/*v1.0.2 21/10/11*/
-/*v1.0.2 Fixed some broken ui*/
+/* v1.0.3 22/03/21 */
+/* Fixed .menuItem */
+
+/* v1.0.2 21/10/11 */
+/* Fixed some broken ui */
 
 /* v1.0.1 21/09/22 */
-/*v1.0.1 : Menu Timer added*/
+/* Menu Timer added */
 
 
 
@@ -77,47 +80,47 @@ div#aHider,
     display: none;
 }
 
-.menuItem[onclick="SOUND.play(`select_0`,0.15);showWindow(5)"] {
+.menuItem[onclick*="showWindow(5)"] {
     left    : 360px;
     position: absolute;
     bottom  : 550px;
 }
 
-.menuItem[onclick="SOUND.play(`select_0`,0.15);showWindow(14)"] {
+.menuItem[onclick*="showWindow(14)"] {
     left    : 450px;
     position: absolute;
     bottom  : 490px;
 }
 
-.menuItem[onclick="SOUND.play(`select_0`,0.15);windows[32].openHome()"] {
+.menuItem[onclick*="windows[32].openHome()"] {
     left    : 520px;
     position: absolute;
     bottom  : 410px;
 }
 
-.menuItem[onclick="SOUND.play(`select_0`,0.15);window.open('/social.html', '_blank')"] {
+.menuItem[onclick*="window.open('/social.html', '_blank')"] {
     position: absolute;
     left    : 560px;
     bottom  : 310px;
 }
 
-.menuItem[onclick="SOUND.play(`select_0`,0.15);window.open('/social.html', '_blank')"] span {
+.menuItem[onclick*="window.open('/social.html', '_blank')"] span {
     color: #0e7811 !important;
 }
 
-.menuItem[onclick="SOUND.play(`select_0`,0.15);showGames()"] {
+.menuItem[onclick*="showGames()"] {
     position: absolute;
     left    : 560px;
     bottom  : 200px;
 }
 
-.menuItem[onclick="SOUND.play(`select_0`,0.15);showWindow(4)"] {
+.menuItem[onclick*="showWindow(4)"] {
     position: absolute;
     left    : 520px;
     bottom  : 100px;
 }
 
-.menuItem[onclick="showWindow(1);SOUND.play(`select_0`,0.15);"] {
+.menuItem[onclick*="showWindow(1);"] {
     position: absolute;
     left    : 450px;
     bottom  : 10px;
