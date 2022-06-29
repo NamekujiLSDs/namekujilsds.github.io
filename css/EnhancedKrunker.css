@@ -40,7 +40,7 @@ div#aHider,.setSugBox2,#rankedSoonTm,#editorBtnM,#seasonLabel,#gameNameHolder,.m
     background: linear-gradient(0deg,var(--accent-color),var(--accent-color));
 }
 
-#chatHolder * {
+.chatMsg {
     color: var(--accent-color-2) !important;
 }
 
