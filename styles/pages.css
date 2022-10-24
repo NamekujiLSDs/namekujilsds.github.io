@@ -106,6 +106,23 @@ header {
   margin-top: -10px;
   font-size: 16px;
   line-height: 25px;
+  /* display: flex; */
+  align-items: center;
+}
+
+#chLink {
+  background: var(--link-bg-2);
+  color: var(--link-color-2);
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 1px 5px;
+  border-radius: 2px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#chLink:hover {
+  background: var(--link-bg-2-hover);
 }
 
 #embed {
@@ -121,7 +138,8 @@ header {
   width: 500px;
 }
 
-#embedTitle {
+#embedTitle,
+#embedTitle a {
   font-size: 18px;
   font-weight: 700;
 }

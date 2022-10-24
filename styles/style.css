@@ -7,6 +7,9 @@
     --color-link: #acff92;
     --embed-color: #fff;
     --user-color: cyan;
+    --link-color-2: #d9e6ff;
+    --link-bg-2: #538dffa4;
+    --link-bg-2-hover: #2c72ffc5;
 }
 
 * {
@@ -34,5 +37,6 @@
 }
 
 a {
-    color: var(--color-link)
+    color: var(--color-link);
+    text-decoration: unset;
 }

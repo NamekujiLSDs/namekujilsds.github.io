@@ -10,20 +10,17 @@
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY5PW2EZWP"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag() { dataLayer.push(arguments); }
-  gtag('js', new Date());
 
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag('js', new Date());
   gtag('config', 'G-ZY5PW2EZWP');
 </script>
-
-
 <body>
   <header>
-    <div id="pageName">
-      #about
-    </div>
-    <div id="spaceV">
-    </div>
+    <div id="pageName"> #about </div>
+    <div id="spaceV"></div>
     <div id="context">This page is for my self-introduction</div>
   </header>
   <div id="body">
@@ -33,50 +30,63 @@
         <div id="userIcon">
           <img src="/img/usericon.png">
         </div>
-        <div id="username">
-          Namekuji
-        </div>
+        <div id="username"> Namekuji </div>
         <div id="date">22/10/24</div>
       </div>
-
-      <div id="msg">
-        Name : Namekuji <br>
-        Age : 18yo. <br>
-        Call : He/Him <br>
-        Sometime writing some trash codes<br>
-        Hope you will enjoy this website! <br>
+      <div id="msg"> Name : Namekuji <br> Age : 18yo. <br> Call : He/Him <br> Sometime writing some trash codes <br> Hope you will enjoy this website! <br>
       </div>
-
     </div>
     <!--ここまで-->
-
     <!--ここから-->
     <div id="cont">
       <div id="user">
         <div id="userIcon">
           <img src="/img/usericon.png">
         </div>
-        <div id="username">
-          Namekuji
-        </div>
+        <div id="username"> Namekuji </div>
         <div id="date">22/10/24</div>
       </div>
-
-      <div id="msg">
-        Coding language <br>
-        ・html <br>
-        ・css <br>
-        ・JavaScript (Learning now)<br>
-
+      <div id="msg"> Coding language <br> ・html <br> ・css <br> ・JavaScript (Learning now) <br>
       </div>
     </div>
     <!--ここまで-->
-
+    <div id="cont">
+      <div id="user">
+        <div id="userIcon">
+          <img src="/img/usericon.png">
+        </div>
+        <div id="username"> Namekuji </div>
+        <div id="date">22/10/24</div>
+      </div>
+      <div id="msg"> I sometimes make extensions. Check <div id="chLink" onclick="extensionClick()">#extension</div> for my extensions
+      </div>
+    </div>
+    <!--ここまで-->
   </div>
 
 
-  <footer>
-    You do not have permission to send messages in this channel.
-  </footer>
-
+  <script>
+    function extensionClick() {
+      //開いてるページ
+      let pageTitle = window.top.document.getElementById("nowPageTitle");
+      //子ページ
+      let about2 = window.top.document.getElementById("aboutMenu");
+      let css2 = window.top.document.getElementById("cssMenu");
+      let mods2 = window.top.document.getElementById("modsMenu");
+      let contact2 = window.top.document.getElementById("contactMenu");
+      let youtube2 = window.top.document.getElementById("youtubeMenu");
+      let twitter2 = window.top.document.getElementById("twitterMenu");
+      let extension2 = window.top.document.getElementById("extensionMenu");
+      let iframe2 = window.top.document.getElementById("iframe");
+      iframe2.setAttribute("src", "./html/extension.html");
+      about2.setAttribute("class", "sbMenu");
+      css2.setAttribute("class", "sbMenu");
+      mods2.setAttribute("class", "sbMenu");
+      contact2.setAttribute("class", "sbMenu");
+      youtube2.setAttribute("class", "sbMenu");
+      twitter2.setAttribute("class", "sbMenu");
+      extension2.setAttribute("class", "sbMenu selected");
+    }
+  </script>
+  <footer> You do not have permission to send messages in this channel. </footer>
 </body>
