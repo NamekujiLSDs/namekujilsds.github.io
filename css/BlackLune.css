@@ -1,0 +1,617 @@
+/* v1.0.3 22/03/21 */
+/* Fixed .menuItem */
+
+/* v1.0.2 21/10/11 */
+/* Fixed some broken ui */
+
+/* v1.0.1 21/09/22 */
+/* Menu Timer added */
+
+
+
+/*Font*/
+@font-face {
+    src        : url(https://fonts.gstatic.com/s/notosansmono/v11/BngrUXNETWXI6LwhGYvaxZikqZqK6fBq6kPvUce2oAZcdthSBUsYck4-_GFJ093dVQ.woff2) format('woff2');
+    font-family: gamefont;
+}
+
+@font-face {
+    font-family: 'JP';
+    src        : url(https://fonts.gstatic.com/s/pressstart2p/v9/e3t4euO8T-267oIAQAu6jDQyK3nbivN04w.woff2) format('woff2');
+}
+
+/*Disable AD*/
+.endAHolder,
+div#aHider,
+#endAMerger {
+    display: none !important;
+}
+
+/*Friend,stream*/
+#tlInfHold {
+    display: none !important;
+}
+
+/*Menu Container*/
+#menuItemContainer {
+    background   : black;
+    border       : solid 20px #ffffff;
+    display      : block;
+    left         : 0;
+    position     : fixed;
+    top          : unset;
+    bottom       : 0px;
+    width        : 600px;
+    height       : 600px;
+    transform    : translateY(30%)translateX(-30%)rotateZ(-35deg);
+    border-radius: 100%;
+
+}
+
+.menuItem span {
+    font-size: 60px !important;
+}
+
+
+.menuItem:hover {
+    filter: drop-shadow(0 0 5px white);
+}
+
+.menuItem {
+    border         : black 10px solid;
+    height         : 80px;
+    background     : white;
+    border-radius  : 50%;
+    display        : flex;
+    width          : 80px;
+    justify-content: center;
+    align-content  : center;
+    align-items    : center;
+    flex-wrap      : nowrap;
+    flex-direction : column;
+}
+
+.menuItem:hover .menBtnIcn {
+    color    : black !important;
+    transform: scale(1.1);
+}
+
+.menuItem .menuItemTitle {
+    display: none;
+}
+
+.menuItem[onclick*="showWindow(5)"] {
+    left    : 360px;
+    position: absolute;
+    bottom  : 550px;
+}
+
+.menuItem[onclick*="showWindow(14)"] {
+    left    : 450px;
+    position: absolute;
+    bottom  : 490px;
+}
+
+.menuItem[onclick*="windows[32].openHome()"] {
+    left    : 520px;
+    position: absolute;
+    bottom  : 410px;
+}
+
+.menuItem[onclick*="window.open('/social.html', '_blank')"] {
+    position: absolute;
+    left    : 560px;
+    bottom  : 310px;
+}
+
+.menuItem[onclick*="window.open('/social.html', '_blank')"] span {
+    color: #0e7811 !important;
+}
+
+.menuItem[onclick*="showGames()"] {
+    position: absolute;
+    left    : 560px;
+    bottom  : 200px;
+}
+
+.menuItem[onclick*="showWindow(4)"] {
+    position: absolute;
+    left    : 520px;
+    bottom  : 100px;
+}
+
+.menuItem[onclick*="showWindow(1);"] {
+    position: absolute;
+    left    : 450px;
+    bottom  : 10px;
+}
+
+#clientExit {
+    display: none !important;
+}
+
+/*Profile top left*/
+#signedInHeaderBar {
+    background: black;
+}
+
+/*Menu timer*/
+#uiBase.onMenu #spectateUI {
+    display  : block !important;
+    position : fixed;
+    bottom   : 48.5%;
+    top      : unset;
+    left     : 50%;
+    right    : unset;
+    transform: translate(-50%, 50%);
+    z-index  : 1;
+    width    : 10px;
+    height   : 10px;
+}
+
+#uiBase.onMenu #spectateHUD {
+    display        : flex;
+    justify-content: center;
+    transform      : unset;
+    left           : unset;
+}
+
+#uiBase.onMenu #specTeam0,
+#uiBase.onMenu #spec0,
+#uiBase.onMenu #spec1,
+#uiBase.onMenu #specNames,
+#uiBase.onMenu #specStats,
+#uiBase.onMenu #specContr,
+#uiBase.onMenu #specKPDContr,
+#uiBase.onMenu #specSus,
+#uiBase.onMenu #specTeam1,
+#uiBase.onMenu #specGMessage,
+#uiBase.onMenu #specGameInfo {
+    display: none !important
+}
+
+#uiBase.onMenu #specTimer:before {
+    content: "Timer: ";
+}
+
+#uiBase.onMenu #specTimer {
+    width           : 300px;
+    display         : block !important;
+    font-size       : 35px;
+    background-color: transparent;
+    color           : rgba(255, 255, 255, .55);
+    min-width       : unset;
+}
+
+/*Customize Menu*/
+#menuClassContainer {
+    right    : unset;
+    display  : unset !important;
+    position : fixed;
+    top      : unset;
+    bottom   : unset;
+    transform: unset;
+}
+
+#bubbleContainer {
+    display: none !important;
+}
+
+div#policeButton img {
+    margin-top   : auto !important;
+    margin-bottom: auto !important
+}
+
+div#policeButton {
+    border  : solid 2px white !important;
+    display : block !important;
+    position: fixed;
+    right   : 0 !important;
+    top     : 70px;
+    right   : unset;
+    margin  : unset;
+    width   : 50px !important;
+    height  : 50px !important;
+}
+
+#menuClassNameTag,
+#menuClassName,
+#menuClassSubtext {
+    display: none !important;
+}
+
+#menuClassContainer,
+#menuClassContainer div,
+#menuClassContainer div div {
+    display : block;
+    position: fixed;
+}
+
+#classPreviewCanvas {
+    right    : 50%;
+    display  : block;
+    position : fixed;
+    transform: translateX(50%);
+    bottom   : 0%;
+    margin   : unset;
+}
+
+#customizeButton {
+    left         : 0;
+    transform    : translate(-30%, 30%);
+    bottom       : 0%;
+    position     : fixed;
+    top          : unset;
+    height       : 400px;
+    width        : 400px;
+    border-radius: 50%;
+    background   : black;
+    border       : 20px solid white !important;
+    font-size    : 0 !important;
+
+}
+
+#customizeButton span.material-icons {
+    position  : absolute;
+    left      : 40%;
+    text-align: center;
+    bottom    : 40%;
+    font-size : 100px !important;
+}
+
+#menuHolder:before {
+    background: black;
+    content   : " ";
+    left      : 0;
+    top       : 0;
+    bottom    : 0;
+    width     : 200px;
+    clip-path : polygon(0 0, 60% 0, 100% 100%, 0% 100%);
+    position  : fixed;
+}
+
+/*Spectate button*/
+#uiBase.onMenu #spectButton span[style="font-size:15px;color:rgba(255,255,255,0.6)"] {
+    display: none;
+}
+
+#uiBase.onMenu #spectButton {
+    position : fixed;
+    bottom   : 40%;
+    left     : 50%;
+    display  : block;
+    right    : unset;
+    top      : unset;
+    transform: unset;
+    z-index  : initial;
+}
+
+.sliderSml {
+    height    : 50px;
+    width     : 50px;
+    background: transparent !important;
+    border    : solid 2px white;
+    padding   : 5px;
+    transform : translateX(-50%);
+}
+
+.sliderSml:before {
+    background : transparent;
+    transform  : unset !important;
+    content    : "visibility_off";
+    font-family: Material Icons;
+    font-size  : 50px;
+    height     : 50px;
+    line-height: 50px;
+    color      : white;
+    width      : auto;
+    left       : unset;
+    bottom     : unset;
+}
+
+input:checked+.sliderSml:before {
+    background   : transparent;
+    transform    : unset !important;
+    content      : "visibility";
+    font-family  : Material Icons;
+    font-size    : 50px;
+    height       : 50px;
+    line-height  : 50px;
+    color        : white;
+    border-radius: 5%;
+    text-align   : center;
+}
+
+/*Host buttons*/
+#braveWarning {
+    display: none !important;
+}
+
+#subLogoButtons {
+    transform     : unset;
+    position      : fixed;
+    display       : flex;
+    left          : 0;
+    top           : 90px;
+    flex-direction: column;
+    align-content : flex-start;
+    align-items   : stretch;
+    flex-wrap     : nowrap;
+}
+
+#subLogoButtons>.button {
+    border       : unset !important;
+    background   : transparent;
+    margin-bottom: 50px;
+    left         : 20px;
+    padding      : unset !important;
+    text-shadow  : 0 0 4px black, 0 0 4px black, 0 0 4px black;
+    border-bottom: 4px solid white !important;
+    width        : 150px;
+}
+
+#subLogoButtons>.button:before,
+#subLogoButtons>.button:after {
+    content: "-";
+}
+
+
+#subLogoButtons>.button[onclick="SOUND.play(`select_0`,0.15);showWindow(2)"] {
+    margin-left: 20px;
+}
+
+#subLogoButtons>.button[onclick="SOUND.play(`select_0`,0.15);showWindow(27)"] {
+    margin-left: 40px;
+}
+
+#subLogoButtons>.button[onclick="SOUND.play(`select_0`,0.15);copyInviteLink()"] {
+    margin-left: 60px;
+
+}
+
+#subLogoButtons>.button[onclick="SOUND.play(`select_0`,0.15);openJoinWindow()"] {
+    margin-left: 80px;
+}
+
+#faceItIconM {
+    display: none !important;
+}
+
+/*Menu Window*/
+div[style="width:105%"] {
+    display       : flex;
+    flex-direction: row;
+    flex-wrap     : wrap;
+    align-content : center;
+    align-items   : center;
+}
+
+#windowHolder.popupWin[style="display: none;"] {
+    display   : block !important;
+    transform : translateX(100%);
+    visibility: hidden;
+    transition: .2s;
+}
+
+#windowHolder.popupWin {
+    background: #0000005c;
+    transform : unset;
+    transition: .2s;
+    visibility: visible;
+}
+
+#windowHolder.popupWin {
+    background     : transparent;
+    backdrop-filter: blur(5px);
+}
+
+#menuWindow.dark {
+    max-height     : unset;
+    top            : 0;
+    bottom         : 0;
+    height         : unset;
+    transform      : unset;
+    right          : 0;
+    left           : unset;
+    width          : 60% !important;
+    border-radius  : unset;
+    background     : rgba(0, 0, 0, .6);
+    backdrop-filter: blur(5px);
+}
+
+.settingsHeader {
+    background: transparent;
+}
+
+
+/*bottom right*/
+div#infoHider {
+    display: none !important;
+}
+
+/*Menu Chat*/
+#uiBase.onMenu #chatHolder {
+    right     : 10px !important;
+    left      : unset;
+    transition: .1s;
+}
+
+.chatTextOutline {
+    text-shadow: unset !important;
+}
+
+#chatList {
+    background: transparent;
+}
+
+#chatList div {
+    background   : linear-gradient(90deg, rgba(0, 0, 0, .6), rgba(0, 0, 0, .1));
+    border-bottom: 2px white solid;
+}
+
+#chatList div div {
+    background : transparent;
+    border     : unset;
+    text-shadow: 0 0 1px black !important;
+    font-weight: bolder;
+}
+
+/*top right*/
+#newsHolder,
+#editorBtnM,
+.imageButton,
+.verticalSeparator {
+    display: none !important;
+}
+
+/*Logo*/
+#gameNameHolder,
+#seasonLabel {
+    display: none;
+}
+
+/*ingame ui*/
+
+#timerVal,
+#ammoVal,
+#healthValue {
+    text-shadow: 2px 2px black, 2px -2px black, -2px 2px black, -2px -2px black;
+}
+
+#ammoDisplay {
+    position        : fixed;
+    bottom          : 47%;
+    left            : calc(50% - 40px);
+    transform       : unset;
+    width           : 80px;
+    padding         : unset !important;
+    height          : 5px;
+    background-color: transparent;
+    background-image: linear-gradient(90deg, white, white)
+}
+
+#ammoVal {
+    position : fixed;
+    bottom   : 30%;
+    right    : 35%;
+    font-size: 50px;
+    color    : #e22fff
+}
+
+#ammoMax,
+#ammoIcon {
+    display: none;
+}
+
+#healthValue {
+    color    : #2ddfff;
+    font-size: 50px;
+    position : fixed;
+    left     : 35%;
+    bottom   : 30%;
+}
+
+#maxHP,
+#challIcon {
+    display: none;
+}
+
+#healthValueHolder {
+    background: transparent;
+}
+
+#reloadMsg {
+    padding-left : unset;
+    padding-right: unset;
+    line-height  : unset;
+    bottom       : 44%;
+    background   : transparent;
+    border       : none;
+    color        : pink;
+}
+
+.healthBarSeg {
+    width        : -webkit-fill-available;
+    margin-right : -1px;
+    border-radius: unset;
+    background   : transparent;
+}
+
+#healthBar {
+    border        : black solid 2px;
+    width         : 300px;
+    height        : 10px;
+    display       : flex;
+    flex-direction: row;
+    background    : transparent;
+    position      : fixed;
+    bottom        : 10px;
+    left          : 50%;
+    transform     : translateX(-50%);
+}
+
+.hpBSeg {
+    border-radius: unset;
+    box-shadow   : unset;
+}
+
+#hudClassIcon {
+    display: none;
+}
+
+#timerDisplay {
+    display   : block !important;
+    background: transparent;
+    left      : 50%;
+    bottom    : 20%;
+    position  : fixed;
+    transform : translateX(-50%);
+}
+
+#timerIcon {
+    display: none;
+}
+
+#timerVal {
+    color    : #5a55ff;
+    font-size: 40px;
+}
+
+#uiBase.onGame #chatHolder {
+    bottom: 20px !important;
+}
+
+#igXPBar {
+    display: none !important;
+}
+
+/*Credit*/
+#seasonLabel {
+    transform     : unset;
+    font-size     : 0;
+    text-shadow   : unset !important;
+    margin-left   : unset;
+    border-radius : unset;
+    padding       : unset;
+    padding-bottom: unset;
+    padding-left  : unset;
+    padding-right : unset;
+    position      : fixed;
+    bottom        : 1px;
+    right         : 5px;
+    left          : unset;
+    top           : unset;
+    height        : auto;
+    display       : block !important;
+}
+
+#seasonLabel:after {
+    font-size  : 15px;
+    content    : "CSS BY NamekujiLSDs#7777";
+    color      : #00ffdf;
+    text-shadow: unset !important;
+}
+
+#rankedSoonTm {
+    display: none;
+}

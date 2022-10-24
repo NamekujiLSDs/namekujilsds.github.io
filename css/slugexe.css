@@ -1,0 +1,372 @@
+/*LastUpdate 2021 11/27 By namekujilsds#7777 */
+@font-face {
+    font-family: gamefont;
+    src        : url("https://namekujilsds.github.io/font/vag-rounded-400.woff2");
+}
+
+/* MENU  */
+#termsInfo,
+#braveWarning,
+#aHider,
+.verticalSeparator,
+.imageButton,
+#editorBtnM,
+.menuSocialB,
+#newsHolder,
+#tlInfHold,
+#gameNameHolder,
+#seasonLabel,
+.setSugBox2,
+.bigMFeatHold {
+    display: none !important;
+}
+
+#menuItemContainer {
+    top            : unset;
+    bottom         : 20px;
+    height         : 100px;
+    width          : 100%;
+    display        : flex;
+    flex-direction : row;
+    align-items    : center;
+    align-content  : center;
+    justify-content: center;
+    flex-wrap      : nowrap;
+    background     : transparent;
+}
+
+.menuItem {
+    height         : 100%;
+    display        : flex;
+    width          : 150px;
+    justify-content: center;
+    align-content  : center;
+    align-items    : center;
+    flex-direction : row;
+    flex-wrap      : nowrap;
+    flex-grow      : unset;
+    margin-left    : 20px;
+    margin-right   : 20px;
+    background     : #0006;
+}
+
+.menuItem:hover .menBtnIcn {
+    transform: unset !important;
+}
+
+.menuItem .menuItemTitle {
+    display: none !important;
+}
+
+#subLogoButtons {
+    bottom: 160px;
+}
+
+#subLogoButtons>.button:hover,
+.menuItem:hover {
+    transform : unset;
+    box-shadow: 0 0 0 5px white !important;
+    transition: .1s;
+}
+
+#subLogoButtons>.button {
+    background     : #0006;
+    height         : 100px;
+    border         : unset !important;
+    border-radius  : unset;
+    width          : -webkit-fill-available;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+}
+
+#subLogoButtons {
+    width  : 50%;
+    display: flex;
+}
+
+#uiBase.onMenu #chatHolder {
+    bottom: 150px !important;
+    left  : 10px !important;
+}
+
+/* Menu Windo*/
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+#menuWindow.dark {
+    background: #fff6;
+}
+
+#selectorContainer,
+.settingsHeader,
+.setBodH,
+.setHed {
+    background: transparent !important;
+    border    : unset !important;
+}
+
+.settName,
+.settNameSmall {
+    color: #000 !important;
+}
+
+/* INGAME */
+#maxHP,
+#rankedSoonTm,
+#igXPBar,
+#timerIcon,
+#hudClassIcon,
+#challIcon,
+#healthBar {
+    display: none !important;
+}
+
+#uiBase.onGame #chatHolder {
+    bottom: 10px !important;
+    left  : 10px !important;
+}
+
+#healthValue,
+#timerVal,
+#ammoVal {
+    text-shadow: 0 0 4px black, 0 0 4px black, 0 0 4px black, 0 0 4px black;
+}
+
+#timerVal {
+    color       : #00a5ff;
+    font-size   : 45px;
+    padding-left: 0;
+    will-change : unset;
+}
+
+#healthValue {
+    color         : #ff0000;
+    font-size     : 40px;
+    letter-spacing: 2px;
+    text-align    : center;
+    margin-top    : 0;
+    will-change   : unset;
+}
+
+#ammoVal {
+    color    : #fa00ff;
+    font-size: 25px;
+}
+
+#timerDisplay {
+    text-align      : center;
+    position        : fixed;
+    transform       : translateX(-50%);
+    bottom          : 35%;
+    left            : 50%;
+    padding         : unset;
+    margin          : unset;
+    border-radius   : 0;
+    background-color: transparent;
+}
+
+#healthValueHolder {
+    background-color: transparent;
+    width           : 125px;
+    height          : 65px;
+    border-radius   : 0;
+    position        : fixed;
+    left            : 40%;
+    bottom          : 35%;
+    padding         : unset;
+    margin          : unset;
+    align-items     : center;
+}
+
+#bottomRight {
+    position: fixed;
+}
+
+#ammoDisplay {
+    display         : block !important;
+    background-color: transparent;
+    background-image: linear-gradient(to right, blue, #ff2f00);
+    position        : fixed;
+    bottom          : 48%;
+    padding         : unset;
+    left            : 50%;
+    transform       : translateX(-50%);
+    width           : 50px;
+    height          : 6px;
+    border-radius   : 100px;
+}
+
+#ammoMax {
+    display: none;
+}
+
+#ammoIcon {
+    display: none;
+}
+
+#reloadMsg {
+    background: transparent;
+    position  : fixed;
+    border    : unset !important;
+    bottom    : 45%;
+    font-size : 20px;
+}
+
+/* Menu Timer */
+#uiBase.onMenu #spectateUI {
+    display  : block !important;
+    position : fixed;
+    bottom   : 48.5%;
+    top      : unset;
+    left     : 50%;
+    right    : unset;
+    transform: translate(-50%, 50%);
+    z-index  : 1;
+    width    : 10px;
+    height   : 10px;
+}
+
+#uiBase.onMenu #spectateHUD {
+    display        : flex;
+    justify-content: center;
+    transform      : unset;
+    left           : unset;
+}
+
+#uiBase.onMenu #specTeam0,
+#uiBase.onMenu #spec0,
+#uiBase.onMenu #spec1,
+#uiBase.onMenu #specNames,
+#uiBase.onMenu #specStats,
+#uiBase.onMenu #specContr,
+#uiBase.onMenu #specKPDContr,
+#uiBase.onMenu #specSus,
+#uiBase.onMenu #specTeam1,
+#uiBase.onMenu #specGMessage,
+#uiBase.onMenu #specGameInfo {
+    display: none !important
+}
+
+#uiBase.onMenu #specTimer {
+    display         : block !important;
+    font-size       : 35px;
+    background-color: transparent;
+    color           : rgba(255, 255, 255, .55)
+}
+
+/* Class Picker */
+#hiddenClasses {
+    display       : flex !important;
+    flex-direction: column;
+    position      : fixed;
+    left          : 10px;
+    bottom        : unset;
+    top           : 50%;
+    transform     : translate(0, -50%);
+    margin-right  : 10px;
+}
+
+#menuClassPicker0[onclick="selectClass(0)"],
+#menuClassPicker1[onclick="selectClass(1)"],
+#menuClassPicker2[onclick="selectClass(2)"],
+#menuClassPicker3[onclick="selectClass(3)"],
+#menuClassPicker4[onclick="selectClass(4)"],
+#menuClassPicker5[onclick="selectClass(5)"],
+#menuClassPicker6[onclick="selectClass(6)"],
+#menuClassPicker7[onclick="selectClass(7)"],
+#menuClassPicker8[onclick="selectClass(8)"],
+#menuClassPicker9[onclick="selectClass(9)"],
+#menuClassPicker10[onclick="selectClass(10)"],
+#menuClassPicker11[onclick="selectClass(11)"],
+#menuClassPicker12[onclick="selectClass(12)"],
+#menuClassPicker13[onclick="selectClass(13)"],
+#menuClassPicker14[onclick="selectClass(14)"] {
+    display        : block;
+    width          : 55px;
+    height         : 55px;
+    pointer-events : auto;
+    image-rendering: pixelated;
+    margin-bottom  : 10px;
+    filter         : saturate(0);
+}
+
+#menuClassPicker0[onclick="selectClass(0)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_0.png);
+}
+
+#menuClassPicker1[onclick="selectClass(1)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_1.png);
+}
+
+#menuClassPicker2[onclick="selectClass(2)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_2.png);
+}
+
+#menuClassPicker3[onclick="selectClass(3)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_3.png);
+}
+
+#menuClassPicker4[onclick="selectClass(4)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_4.png);
+}
+
+#menuClassPicker5[onclick="selectClass(5)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_5.png);
+}
+
+#menuClassPicker6[onclick="selectClass(6)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_6.png);
+}
+
+#menuClassPicker7[onclick="selectClass(7)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_7.png);
+}
+
+#menuClassPicker8[onclick="selectClass(8)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_8.png);
+}
+
+#menuClassPicker9[onclick="selectClass(9)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_9.png);
+}
+
+#menuClassPicker10[onclick="selectClass(10)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_10.png);
+}
+
+#menuClassPicker11[onclick="selectClass(11)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_11.png);
+}
+
+#menuClassPicker12[onclick="selectClass(12)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_12.png);
+}
+
+#menuClassPicker13[onclick="selectClass(13)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_13.png);
+}
+
+#menuClassPicker14[onclick="selectClass(14)"] {
+    content: url(https://assets.krunker.io/textures/classes/icon_14.png);
+}
+
+#menuClassPicker0[onclick="selectClass(0)"]:hover,
+#menuClassPicker1[onclick="selectClass(1)"]:hover,
+#menuClassPicker2[onclick="selectClass(2)"]:hover,
+#menuClassPicker3[onclick="selectClass(3)"]:hover,
+#menuClassPicker4[onclick="selectClass(4)"]:hover,
+#menuClassPicker5[onclick="selectClass(5)"]:hover,
+#menuClassPicker6[onclick="selectClass(6)"]:hover,
+#menuClassPicker7[onclick="selectClass(7)"]:hover,
+#menuClassPicker8[onclick="selectClass(8)"]:hover,
+#menuClassPicker9[onclick="selectClass(9)"]:hover,
+#menuClassPicker10[onclick="selectClass(10)"]:hover,
+#menuClassPicker11[onclick="selectClass(11)"]:hover,
+#menuClassPicker12[onclick="selectClass(12)"]:hover,
+#menuClassPicker13[onclick="selectClass(13)"]:hover,
+#menuClassPicker14[onclick="selectClass(14)"]:hover {
+    cursor: pointer;
+    filter: saturate(1) drop-shadow(0 0 20px red);
+}

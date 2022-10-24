@@ -1,0 +1,159 @@
+:root {
+    --accent-color: #21f3ce;
+    --accent-color-2: #4effb2;
+    --accent-color-3: #00f590;
+}
+
+@font-face {
+    font-family: gamefont;
+    font-weight: bolder !important;
+    src: url(https://fonts.gstatic.com/s/aldrich/v17/MCoTzAn-1s3IGyJMVacY3w.woff2) format('woff2');
+}
+
+div#aHider,.setSugBox2,#rankedSoonTm,#editorBtnM,#seasonLabel,#gameNameHolder,.menuSocialB,.headerBarRight .verticalSeparator,#tlInfHold,#newsHolder {
+    display: none !important;
+}
+
+#menuItemContainer {
+    top: unset;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 120px;
+}
+
+#mapInfoHolder {
+    bottom: 120px;
+}
+
+#uiBase.onMenu #chatHolder {
+    bottom: 150px !important;
+    left: 50px !important;
+}
+
+#uiBase.onMenu #voiceDisplay {
+    bottom: 150px !important;
+    left: 400px !important;
+}
+
+.progressBarInner,.xpBarB {
+    background: linear-gradient(0deg,var(--accent-color),var(--accent-color));
+}
+
+.chatMsg {
+    color: var(--accent-color-2) !important;
+}
+
+.chatItem {
+    font-size: 10px !important;
+}
+
+.chatMsg {
+    font-size: 15px;
+}
+
+.menuItem .menuItemTitle {
+    font-size: 20px !important;
+    margin-top: -20px;
+}
+
+.slider {
+    border-radius: 50px;
+    top: 0px;
+    height: 30px;
+}
+
+.menuItem:hover .menBtnIcn {
+    animation: unset;
+    transform: scale(1);
+}
+
+input:checked+.slider {
+    background: var(--accent-color-3);
+    top: 0;
+    height: 30px;
+    padding: unset;
+    border-radius: 50px;
+}
+
+.slider:before {
+    height: 24px;
+    width: 24px;
+    top: 3px;
+    padding: unset;
+    border-radius: 50%;
+}
+
+.dark .tabANew,.dark .tabANew:hover {
+    border-color: var(--accent-color) !important;
+}
+
+.sliderM {
+    background: #555;
+    height: 12px;
+}
+
+.sliderM::-webkit-slider-thumb {
+    height: 16px;
+    width: 16px;
+    background: var(--accent-color-3);
+}
+
+#healthBar {
+    display: flex;
+    height: 40px;
+    flex-direction: row;
+    width: 150px;
+}
+
+#healthBar * {
+    border-radius: unset;
+    margin-right: 0px;
+    background-color: transparent;
+}
+
+.hpBSeg {
+    box-shadow: inset 0 -15px 0 0 rgb(0 0 0 / 28%);
+}
+
+.inputGrey2 {
+    font-weight: bolder;
+    background: #555;
+    color: white !important;
+}
+
+* {
+    color: unset;
+}
+
+.inputGrey2 option {
+    font-weight: bolder;
+    color: white !imporant;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: var(--accent-color-2);
+}
+
+*::-webkit-scrollbar {
+    border-radius: unset !important;
+    width: 4px !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: #444 !important;
+}
+
+.setHed:hover,.setHed {
+    background: transparent;
+    border: unset;
+    margin: unset;
+}
+
+.setBodH {
+    border-radius: unset;
+}
+
+.menBtnIcn,.menuItem .menBtnIcn[style*="color"]:hover {
+    color: var(--accent-color) !important;
+}
