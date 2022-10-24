@@ -1,3 +1,5 @@
+<html>
+
 <head>
     <link rel="apple-touch-icon" sizes="180x180" href="/img/icon.ico">
     <link rel="icon" href="/img/icon.ico">
@@ -15,49 +17,59 @@
     <meta name="twitter:description" content="Lots of CSS for Krunker here!!" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/img/Tumbnail_2.png" />
-    <link rel="stylesheet" type="text/css" href="/style.css" />
+
     <meta charset="utf-8" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY5PW2EZWP"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag('js', new Date());
-        gtag('config', 'G-ZY5PW2EZWP');
-
-        // 自動で言語選択
-        const lang = localStorage.getItem('lang');
-        switch(lang) {
-          case 'JP':
-            window.location.href = '/JP';
-            break;
-          case 'EN':
-            window.location.href = '/EN';
-            break;
-        }
-    </script>
-    <title> TOP PAGE - Namekuji Krunker CSS </title>
+    <script async="async" src="https://www.googletagmanager.com/gtag/js?id=G-ZY5PW2EZWP"></script>
+    <title id="nowPageTitle">
+        Namekuji - About
+    </title>
 </head>
 
-<body>
-    <h1 class="welcome">
-        Welcome to my website
-        <br>ようこそ
-    </h1>
-    <h2 class="langChose">Choose your language<br>
-        言語を選択してください
-    </h2>
-    <div class="langBox">
-        <a class="lang ja" href="/JP" onclick="selectLang('JP')">
-            日本語
-        </a>
-        <a class="lang en" href="/EN" onclick="selectLang('EN')">
-            ENGLISH
-        </a>
-    </div>
-    <script type="text/javascript" src="/script.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-ZY5PW2EZWP"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
 
+    gtag('config', 'G-ZY5PW2EZWP');
+</script>
+
+<body>
+    <div id="sideBar">
+        <div id="sideBarTitle">
+            Namekuji
+        </div>
+        <div id="sideBarMenu">
+            <div id="aboutMenu" class="sbMenu selected" onclick="aboutMenuClick()">
+                #about
+            </div>
+            <div id="cssMenu" class="sbMenu" onclick="cssMenuClick()">
+                #css
+            </div>
+            <div id="modsMenu" class="sbMenu" onclick="modsMenuClick()">
+                #mods
+            </div>
+            <div id="contactMenu" class="sbMenu" onclick="contactMenuClick()">
+                #contact
+            </div>
+            <div id="youtubeMenu" class="sbMenu" onclick="youtubeMenuClick()">
+                #youtube
+            </div>
+            <div id="twitterMenu" class="sbMenu" onclick="twitterMenuClick()">
+                #twitter
+            </div>
+            <div id="extensionMenu" class="sbMenu" onclick="extensionMenuClick()">
+                #extension
+            </div>
+        </div>
+    </div>
+    <div id="mainContent">
+        <iframe id="iframe" src="./html/about.html" frameborder="0"></iframe>
+    </div>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css" />
+    <link rel="stylesheet" type="text/css" href="/styles/index.css" />
+    <Script src="/script.js"></Script>
 </body>
+
+</html>

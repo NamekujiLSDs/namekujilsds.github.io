@@ -1,17 +1,102 @@
-// 枠組みの中身を書き換えて云々
-const rCont = document.getElementById('content');
+//開いてるページ
+let pageTitle = document.getElementById("nowPageTitle");
 
-// 文字列選択の無効化
-document.ondragstart = function () {
-  return false;
-};
+//子ページ
+let about = document.getElementById("aboutMenu");
+let css = document.getElementById("cssMenu");
+let mods = document.getElementById("modsMenu");
+let contact = document.getElementById("contactMenu");
+let youtube = document.getElementById("youtubeMenu");
+let twitter = document.getElementById("twitterMenu");
+let extension = document.getElementById("extensionMenu");
 
-// ページ切り替え
-const loadSubPage = (name) => {
-  rCont.innerHTML = `<iframe src='${name.toLowerCase()}.html'>`;
-  document.getElementsByTagName('html')[0].style.setProperty('--accent-color', colors[Math.round(Math.random() * (colors.length - 1))])
+let iframe = document.getElementById("iframe");
+
+function aboutMenuClick() {
+  pageTitle.textContent = "Namekuji - About";
+  iframe.setAttribute("src", "./html/about.html");
+
+  about.setAttribute("class", "selected sbMenu");
+  css.setAttribute("class", "sbMenu");
+  mods.setAttribute("class", "sbMenu");
+  contact.setAttribute("class", "sbMenu");
+  youtube.setAttribute("class", "sbMenu");
+  twitter.setAttribute("class", "sbMenu");
+  extension.setAttribute("class", "sbMenu");
+}
+function cssMenuClick() {
+  pageTitle.textContent = "Namekuji - CSS";
+  iframe.setAttribute("src", "./html/css.html");
+
+  about.setAttribute("class", "sbMenu");
+  css.setAttribute("class", "sbMenu selected");
+  mods.setAttribute("class", "sbMenu");
+  contact.setAttribute("class", "sbMenu");
+  youtube.setAttribute("class", "sbMenu");
+  twitter.setAttribute("class", "sbMenu");
+  extension.setAttribute("class", "sbMenu");
+}
+function modsMenuClick() {
+  pageTitle.textContent = "Namekuji - Mods";
+  iframe.setAttribute("src", "./html/mods.html");
+
+  about.setAttribute("class", "sbMenu");
+  css.setAttribute("class", "sbMenu");
+  mods.setAttribute("class", "sbMenu selected");
+  contact.setAttribute("class", "sbMenu");
+  youtube.setAttribute("class", "sbMenu");
+  twitter.setAttribute("class", "sbMenu");
+  extension.setAttribute("class", "sbMenu");
+}
+function contactMenuClick() {
+  pageTitle.textContent = "Namekuji - Contact";
+  iframe.setAttribute("src", "./html/contact.html");
+
+  about.setAttribute("class", "sbMenu");
+  css.setAttribute("class", "sbMenu");
+  mods.setAttribute("class", "sbMenu");
+  contact.setAttribute("class", "sbMenu selected");
+  youtube.setAttribute("class", "sbMenu");
+  twitter.setAttribute("class", "sbMenu");
+  extension.setAttribute("class", "sbMenu");
+}
+function youtubeMenuClick() {
+  pageTitle.textContent = "Namekuji - Youtube";
+  iframe.setAttribute("src", "./html/youtube.html");
+
+  about.setAttribute("class", "sbMenu");
+  css.setAttribute("class", "sbMenu");
+  mods.setAttribute("class", "sbMenu");
+  contact.setAttribute("class", "sbMenu");
+  youtube.setAttribute("class", "sbMenu selected");
+  twitter.setAttribute("class", "sbMenu");
+  extension.setAttribute("class", "sbMenu");
+}
+function twitterMenuClick() {
+  pageTitle.textContent = "Namekuji - Twitter";
+  iframe.setAttribute("src", "./html/twitter.html");
+
+  about.setAttribute("class", "sbMenu");
+  css.setAttribute("class", "sbMenu");
+  mods.setAttribute("class", "sbMenu");
+  contact.setAttribute("class", "sbMenu");
+  youtube.setAttribute("class", "sbMenu");
+  twitter.setAttribute("class", "sbMenu selected");
+  extension.setAttribute("class", "sbMenu");
 }
 
+function extensionMenuClick() {
+  pageTitle.textContent = "Namekuji - Twitter";
+  iframe.setAttribute("src", "./html/extension.html");
+
+  about.setAttribute("class", "sbMenu");
+  css.setAttribute("class", "sbMenu");
+  mods.setAttribute("class", "sbMenu");
+  contact.setAttribute("class", "sbMenu");
+  youtube.setAttribute("class", "sbMenu");
+  twitter.setAttribute("class", "sbMenu");
+  extension.setAttribute("class", "sbMenu selected");
+}
 // 色テーブル
 const colors = [
   "#ffaadb",
@@ -19,60 +104,60 @@ const colors = [
   "#aaffc9",
   "#efffaa",
   "#ffadaa",
-  "#e9aaff"
+  "#e9aaff",
+  "#11B1AB",
+  "#C3776A",
+  "#DEAAAC",
+  "#F414D3",
+  "#32BB31",
+  "#F4A38E",
+  "#981471",
+  "#786580",
+  "#40A734",
+  "#B8E937",
+  "#D5A693",
+  "#9CAA82",
+  "#8A86D2",
+  "#F7E62E",
+  "#96FEB2",
+  "#0B8EB9",
+  "#C56FB0",
+  "#ED6CA2",
+  "#F9622C",
+  "#0656B2",
+  "#8B3ADE",
 ];
 
-//色テーブル2-1
 const colors2 = [
-  "#a0739f",
-  "#7381a0",
-  "#73a091",
-  "#93a073",
-  "#a09573",
-  "#a07381"
+  "#84AFC5",
+  "#4EFD35",
+  "#B8C39A",
+  "#52BFA1",
+  "#D0A45B",
+  "#079A74",
+  "#A865AC",
+  "#9FFE38",
+  "#3584D6",
+  "#D0E05E",
+  "#4C8CA4",
+  "#CAA57B",
+  "#C999D3",
+  "#DA4420",
+  "yellow",
+  "#C6E74D",
 ];
 
-//色テーブル2-2
-const colors3 = [
-  "#7381a0",
-  "#93a073",
-  "#a0739f",
-  "#a09573",
-  "#73a091",
-  "#a07381"
-];
-// ページ読み込み時に実行(色のランダム化)
 window.onload = function () {
   document
     .getElementsByTagName("html")[0]
     .style.setProperty(
-      "--accent-color",
+      "--embed-color",
       colors[Math.round(Math.random() * (colors.length - 1))]
     );
   document
     .getElementsByTagName("html")[0]
     .style.setProperty(
-      "--accent-color-3",
-      colors3[Math.round(Math.random() * (colors3.length - 1))]
-    );
-  document
-    .getElementsByTagName("html")[0]
-    .style.setProperty(
-      "--accent-color-2",
+      "--user-color",
       colors2[Math.round(Math.random() * (colors2.length - 1))]
     );
 };
-
-//ナビゲーションバー
-const list = document.querySelectorAll(".list");
-
-function activeLink() {
-  list.forEach((item) => item.classList.remove("active"));
-  this.classList.add("active");
-}
-list.forEach((item) => item.addEventListener("click", activeLink));
-
-// 言語設定を保存するやつ
-function selectLang(lang) {
-  localStorage.setItem('lang', lang);
-}
