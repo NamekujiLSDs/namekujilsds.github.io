@@ -16,9 +16,12 @@ body {
 #sideBarTitle {
   cursor: pointer;
   color: white;
-  border-bottom: 1px solid black;
-  padding: 10px 20px;
   font-size: 20px;
+  height: 30px;
+  padding: 15px 0px 15px 20px;
+  margin-top: 8px;
+  box-shadow: 0 2px 2px #0005;
+  margin-bottom: 20px
 }
 
 #sideBarTitle:hover {
