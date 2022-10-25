@@ -23,7 +23,6 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: cacl(100% - 20px);
   box-shadow: 0 2px 2px #0005;
   height: 30px;
   padding: 10px 0px 20px 0px;

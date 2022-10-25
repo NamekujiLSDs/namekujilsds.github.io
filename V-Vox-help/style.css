@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&display=swap');
+
+body {
+    margin: unset;
+    padding: unset;
+    background: #252525;
+    color: white;
+    font-family: 'Cabin', sans-serif;
+    display: flex;
+    flex-direction: column;
+
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    padding: unset;
+    margin: unset;
+}
+
+a {
+    color: lightgreen;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    font-size: 40px;
+    border-bottom: 4px white solid;
+    background: #404040;
+    box-shadow: 0 2px 6px black;
+    position: fixed;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 10;
+    cursor: default;
+    display: flex;
+}
+
+#headLogo {
+    cursor: pointer;
+    font-family: 'Architects Daughter', cursive;
+    display: flex;
+    align-content: center;
+    flex-direction: row;
+    align-items: center;
+}
+
+#headLogo img {
+    height: 60px;
+}
+
+#menu {
+    display: flex;
+    margin-left: auto;
+    flex-direction: row;
+    align-items: center;
+    background: rgb(88, 122, 122);
+    ;
+
+}
+
+.menuItem:hover {
+    background: #fff3;
+}
+
+.menuItem {
+    font-size: 26px;
+    cursor: pointer;
+    padding: 15px;
+    padding-right: 20px;
+    padding-left: 20px;
+    color: white;
+    text-decoration: unset;
+}
+
+#vSpace {
+    height: 100%;
+    background: #c9c9c9;
+    width: 2px;
+}
+
+div#contentHolder {
+    z-index: 1;
+    width: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 70px);
+    top: 70px;
+    position: fixed;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0003;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #0005;
+    border-radius: 10px;
+}
+
+h1 {
+    margin: unset;
+    margin-left: 10px;
+    padding-bottom: 10px;
+}
+
+h2 {
+    margin: unset;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.contents {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.contentText {
+    margin: unset;
+    margin-left: 25px;
+    padding-left: 15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-left: 2px solid gray;
+    font-size: 16px;
+    line-height: 30px;
+}
+
+#spacer {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    height: 2px;
+    width: 100%;
+    border-radius: 100%;
+    background-color: #444;
+}
+
+.comment:before {
+    content: "/* ";
+}
+
+.comment::after {
+    content: " */";
+}
+
+.comment {
+    color: gray;
+}
+
+mark {
+    background: #333;
+    padding: 4px;
+    border-radius: 5px;
+    color: white;
+}
+
+.keyComs {
+    margin-left: 10px;
+}

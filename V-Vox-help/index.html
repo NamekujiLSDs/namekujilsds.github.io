@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="icon" href="/img/v-vox-icon.png">
+    <title>VancedVoxiom</title>
+    <link rel="stylesheet" href="./style.css">
+
+</head>
+
+<body>
+    <header>
+        <div id="headLogo"
+            onclick="window.open('https://chrome.google.com/webstore/detail/vanced-voxiom/jdgkkoadgebpplafdfgmneiikoabbojc')">
+            <img src="/img/v-vox-icon.png">
+            <div id="title">ancedVoxiom</div>
+        </div>
+        <div id="menu">
+            <a class="menuItem" href="#about">
+                About
+            </a>
+            <div id="vSpace"></div>
+            <a class="menuItem" href="#help">
+                Help
+            </a>
+            <div id="vSpace"></div>
+            <a class="menuItem" href="#bug">
+                Bug
+            </a>
+            <div id="vSpace"></div>
+            <a class="menuItem" href="https://github.com/NamekujiLSDs/Vanced-Vox" target="_blank">
+                Source
+            </a>
+        </div>
+    </header>
+
+
+    <div id="contentHolder">
+        <div id="about" class="contents">
+            <h1>- About -</h1>
+            <h2>1.What is VancedVoxiom?</h2>
+            <p class="contentText">VancedVoxiom is an extension for voxiom.io. <br>
+                It is a multifunctional and secure extension that can be customized in many ways.</p>
+            <h2>2.What can we do with it?</h2>
+            <p class="contentText">Add custom crosshairs. <br>
+                Change logo and background image. <br>
+                Loading CSS. <br>
+                More features will be added in the future!</p>
+        </div>
+        <div id="spacer"></div>
+
+        <div id="help" class="contents">
+            <h1>- Help - </h1>
+            <h2>0. Reset settings</h2>
+            <p class="contentText">
+                1.Press F12 and open console. <br>
+                2.type <mark>localStorage.removeItem("<em>KeyName</em>");</mark> <br>
+                KeyNames <span class="comment keyComs">values</span> <br>
+                ├ checkBoxSaved <span class="comment keyComs">true / false</span><br>
+                ├ crosshairUrlSaved <span class="comment keyComs">URL</span><br>
+                ├ crosshairHeightSaved <span class="comment keyComs">Num</span><br>
+                ├ crosshairWidthSaved <span class="comment keyComs">Num</span><br>
+                ├ logoUrlSaved <span class="comment keyComs">URL</span><br>
+                ├ logoTextSaved <span class="comment keyComs">TEXT</span> <br>
+                ├ bgStyleSaved <span class="comment keyComs">image / color</span> <br>
+                ├ bgUrlSaved <span class="comment keyComs">URL</span> <br>
+                ├ colorDegSaved <span class="comment keyComs">Num</span><br>
+                ├ color1Saved <span class="comment keyComs">#HEX</span><br>
+                ├ color2Saved <span class="comment keyComs">#HEX</span> <br>
+                ├ color3Saved <span class="comment keyComs">#HEX</span><br>
+                └ cssValSaved <span class="comment keyComs">text</span> <br>
+            </p>
+            <h2>1. Crosshair</h2>
+            <p class="contentText">
+                URL : Enter Crosshair's image URL. <br>
+                W : Width of crosshair <br>
+                H: Height of crosshair <br>
+                <span class="comment">Don't forget to set the crosshair style to None from the in-game settings!</span>
+                <br><span class="comment">You don't need crosshair? Set W and H to 0. </span><br>
+                Auto Default Size : Set to the original size of the input image.
+            </p>
+            <h2>2. Logo and text</h2>
+            <p class="contentText">
+                URL : Enter logo image URL. <br>
+                <span class="comment">Recommended image size is 813*197</span> <br>
+                TEXT : You can change the text under the logo. <br>
+                Image <span class="comment">Entering a space instead of a blank space hides it</span>
+            </p>
+            <h2>3-1. Background Image</h2>
+            <p class="contentText">
+                URL : Enter background image URL <br>
+                <span class="comment">You can reset the image by leaving the URL input field blank</span>
+            </p>
+            <h2>3-2. Background Color</h2>
+            <p class="contentText">
+                Deg : Change the angle of the gradient<br>
+                Color1 : Gradient color 1 <br>
+                Color2 : Gradient color 2 <br>
+                Color3 : Gradient color 3 <br>
+            </p>
+            <h2>4. CSS Loader</h2>
+            <p class="contentText">
+                You can input css directly and reflect it in real time. <br>
+                Don't know how to write CSS? <br> Google it. It's very easy. <br>
+                <a href="https://letmegooglethat.com/?q=How+to+write+css" target="_blank">Let me Google it!</a>
+            </p>
+        </div>
+        <div id="spacer"></div>
+
+        <div id="bug" class="contents">
+            <h1>- Bugs -</h1>
+            <h2>Known Bugs</h2>
+            <p class="contentText">
+                No known bugs now...
+            </p>
+            <h2>Find bug?</h2>
+            <p class="contentText">You find bug? <br>
+                DMs me on discord or twitter <br>
+                - Discord : なめくじ#1053 <br>
+                - Twitter : NamekujiLSDs</p>
+        </div>
+    </div>
+</body>
