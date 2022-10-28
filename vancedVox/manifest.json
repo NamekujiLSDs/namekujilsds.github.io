@@ -15,15 +15,5 @@
   "content_scripts": [{
     "js": ["script.js"],
     "matches": ["*://voxiom.io/*"]
-  }],
-  "web_accessible_resources": [
-    {
-      "resources":  [ "function.js" ,"style.css"],
-      "matches": ["*://voxiom.io/*"]
-      }
-    ],
-    "action": {
-      "default_title":"VancedVox",
-      "default_popup": "index.html"
-  }
+  }]
 }
