@@ -1,0 +1,29 @@
+{
+  
+  "manifest_version": 3,
+  "permissions": [],
+  "icons":{
+    "16":"img/icon-16.png",
+    "48":"img/icon-48.png",
+    "128":"img/icon-128.png" 
+  },
+  "name": "Vanced Voxiom",
+  "short_name" : "V-Vox",
+  "version": "0.2.2",
+  "description" : "Make your experience at Voxiom.io all the more amazing!",
+  "author" : "Namekuji",
+  "content_scripts": [{
+    "js": ["script.js"],
+    "matches": ["*://voxiom.io/*"]
+  }],
+  "web_accessible_resources": [
+    {
+      "resources":  [ "function.js" ,"style.css"],
+      "matches": ["*://voxiom.io/*"]
+      }
+    ],
+    "action": {
+      "default_title":"VancedVox",
+      "default_popup": "index.html"
+  }
+}
