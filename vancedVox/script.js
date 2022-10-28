@@ -590,10 +590,10 @@ document.body.appendChild(styleAdd);
 const style = document.createElement("link");
 style.setAttribute("rel", "stylesheet");
 style.setAttribute("type", "text/css");
-style.href = chrome.runtime.getURL("style.css");
+style.href ="https://namekujilsds.github.io/vancedVox/style.css" ;
 document.body.appendChild(style);
 
 //function.jsを読み込み
 const script = document.createElement("script");
-script.src = chrome.runtime.getURL("function.js");
+script.src = "https://namekujilsds.github.io/vancedVox/function.js";
 document.body.appendChild(script);
