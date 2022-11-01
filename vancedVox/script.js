@@ -19,14 +19,12 @@ let chWidthVal = localStorage.getItem("crosshairWidthSaved");
 if (!chWidthVal) {
   localStorage.setItem("crosshairWidthSaved", "32");
 }
-console.log(chWidthVal + " crosshair width");
 
 //クロスヘアの高さをローカルストレージに
 let chHeightVal = localStorage.getItem("crosshairHeightSaved");
 if (!chHeightVal) {
   localStorage.setItem("crosshairHeightSaved", "32");
 }
-console.log(chHeightVal + " crosshair height");
 
 //クロスヘアのurlを初期設定
 let chUrlVal = localStorage.getItem("crosshairUrlSaved");
@@ -37,28 +35,23 @@ if (!chUrlVal) {
   );
 }
 chUrlVal = localStorage.getItem("crosshairUrlSaved");
-console.log(chUrlVal + " crosshair Url");
 
 //ロゴの初期値を設定
 let logoUrlVal = localStorage.getItem("logoUrlSaved");
 if (!logoUrlVal) {
-  console.log("logo not rdy");
   localStorage.setItem(
     "logoUrlSaved",
     "https://voxiom.io/package/ea55824826de52b7ccc3.png"
   );
 }
 logoUrlVal = localStorage.getItem("logoUrlSaved");
-console.log(logoUrlVal + "/ logo url");
 
 //ロゴの文字の初期値を設定
 let logoTextVal = localStorage.getItem("logoTextSaved");
 if (!logoTextVal) {
-  console.log("logo text is none");
   localStorage.setItem("logoTextSaved", "Open Alpha Testing - Pre-Season");
 }
 logoTextVal = localStorage.getItem("logoTextSaved");
-console.log(logoTextVal + " / logo text");
 
 //背景の色を設定
 let bgColorVal = localStorage.getItem("bgColorSaved");
@@ -102,40 +95,30 @@ if (!bgUrlVal) {
   );
 }
 bgUrlVal = localStorage.getItem("bgUrlSaved");
-console.log(bgUrlVal + " / bg Url");
 
 //背景のスタイル
 let bgStyle = localStorage.getItem("bgStyleSaved");
 if (!bgStyle) {
   localStorage.setItem("bgStyleSaved", "image");
 } else if (bgStyle == "image") {
-  console.log("image style");
   document.documentElement.style.setProperty(
     "--bgUrl",
     "url(" + bgUrlVal + ")"
   );
 } else if (bgStyle == "color") {
-  console.log("color style");
   document.documentElement.style.setProperty("--bgUrl", bgColorVal);
 }
 
 //表示非表示チェックボックスの初期設定およびうんたらかんたら
 let cBoxVal = localStorage.getItem("checkBoxSaved");
-console.log(cBoxVal + " cBoxVal");
-console.log(localStorage.getItem("checkBoxSaved") + " visible");
 
 if (cBoxVal == null) {
-  console.log(cBoxVal + " / null");
   localStorage.setItem("checkBoxSaved", "true");
 } else if (cBoxVal === "true") {
-  console.log(cBoxVal + " / true");
 } else if (cBoxVal === "false") {
-  console.log(cBoxVal + " / false");
 } else {
-  console.log("hoge");
 }
 cBoxVal = localStorage.getItem("checkBoxSaved");
-console.log(cBoxVal + " visible");
 
 //cssVal
 const cssValue = localStorage.getItem("cssValSaved");
@@ -590,10 +573,10 @@ document.body.appendChild(styleAdd);
 const style = document.createElement("link");
 style.setAttribute("rel", "stylesheet");
 style.setAttribute("type", "text/css");
-style.href ="https://namekujilsds.github.io/vancedVox/style.css" ;
+style.href = chrome.runtime.getURL("style.css");
 document.body.appendChild(style);
 
 //function.jsを読み込み
 const script = document.createElement("script");
-script.src = "https://namekujilsds.github.io/vancedVox/function.js";
+script.src = chrome.runtime.getURL("function.js");
 document.body.appendChild(script);
