@@ -12,8 +12,14 @@ let ch5 = document.getElementById("chHold5");
 
 cBoxVal = localStorage.getItem("checkBoxSaved");
 
-//表示非表示チェックボックス
+const inst = localStorage.getItem('inst');
+if(!inst){
+  alert("Join our discord to get updates and support!");
+  window.open('https://discord.gg/qusjZSbXQX');
+  localStorage.setItem('inst','true')
+}
 
+//表示非表示チェックボックス
 function checkBox() {
   const checkbox = document.getElementById("vCheckBox");
   let checktf = checkbox.checked;

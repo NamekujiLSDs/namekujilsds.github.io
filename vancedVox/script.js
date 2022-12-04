@@ -11,45 +11,45 @@ let ccImageUrl;
 //クロスヘアのスタイル
 let chStyle = localStorage.getItem("crosshairStyleSaved");
 if (!chStyle) {
-  localStorage.setItem("crosshairStyleSaved", "image");
+    localStorage.setItem("crosshairStyleSaved", "image");
 }
 
 //クロスヘアの幅
 let chWidthVal = localStorage.getItem("crosshairWidthSaved");
 if (!chWidthVal) {
-  localStorage.setItem("crosshairWidthSaved", "32");
+    localStorage.setItem("crosshairWidthSaved", "32");
 }
 
 //クロスヘアの高さをローカルストレージに
 let chHeightVal = localStorage.getItem("crosshairHeightSaved");
 if (!chHeightVal) {
-  localStorage.setItem("crosshairHeightSaved", "32");
+    localStorage.setItem("crosshairHeightSaved", "32");
 }
 
 //クロスヘアのurlを初期設定
 let chUrlVal = localStorage.getItem("crosshairUrlSaved");
 if (!chUrlVal) {
-  localStorage.setItem(
-    "crosshairUrlSaved",
-    "https://cdn.discordapp.com/attachments/616206938048561152/922367836574335036/New_Piskel_49.png"
-  );
+    localStorage.setItem(
+        "crosshairUrlSaved",
+        "https://cdn.discordapp.com/attachments/616206938048561152/922367836574335036/New_Piskel_49.png"
+    );
 }
 chUrlVal = localStorage.getItem("crosshairUrlSaved");
 
 //ロゴの初期値を設定
 let logoUrlVal = localStorage.getItem("logoUrlSaved");
 if (!logoUrlVal) {
-  localStorage.setItem(
-    "logoUrlSaved",
-    "https://voxiom.io/package/ea55824826de52b7ccc3.png"
-  );
+    localStorage.setItem(
+        "logoUrlSaved",
+        "https://voxiom.io/package/ea55824826de52b7ccc3.png"
+    );
 }
 logoUrlVal = localStorage.getItem("logoUrlSaved");
 
 //ロゴの文字の初期値を設定
 let logoTextVal = localStorage.getItem("logoTextSaved");
 if (!logoTextVal) {
-  localStorage.setItem("logoTextSaved", "Open Alpha Testing - Pre-Season");
+    localStorage.setItem("logoTextSaved", "Open Alpha Testing - Pre-Season");
 }
 logoTextVal = localStorage.getItem("logoTextSaved");
 
@@ -60,60 +60,60 @@ let color1 = localStorage.getItem("color1Saved");
 let color2 = localStorage.getItem("color2Saved");
 let color3 = localStorage.getItem("color3Saved");
 if (!colorDeg) {
-  colorDeg = "180";
-  localStorage.setItem("colorDegSaved", colorDeg);
+    colorDeg = "180";
+    localStorage.setItem("colorDegSaved", colorDeg);
 }
 if (!color1) {
-  color1 = "#3f87a6";
-  localStorage.setItem("color1Saved", color1);
+    color1 = "#3f87a6";
+    localStorage.setItem("color1Saved", color1);
 }
 if (!color2) {
-  color2 = "#ebf8e1";
-  localStorage.setItem("color2Saved", color2);
+    color2 = "#ebf8e1";
+    localStorage.setItem("color2Saved", color2);
 }
 if (!color3) {
-  color3 = "#f69d3c";
-  localStorage.setItem("color3Saved", color3);
+    color3 = "#f69d3c";
+    localStorage.setItem("color3Saved", color3);
 }
 bgColorVal =
-  "linear-gradient(" +
-  colorDeg +
-  "deg ," +
-  color1 +
-  "," +
-  color2 +
-  "," +
-  color3 +
-  ")";
+    "linear-gradient(" +
+    colorDeg +
+    "deg ," +
+    color1 +
+    "," +
+    color2 +
+    "," +
+    color3 +
+    ")";
 
 //背景の画像のurlを設定
 let bgUrlVal = localStorage.getItem("bgUrlSaved");
 if (!bgUrlVal) {
-  localStorage.setItem(
-    "bgUrlSaved",
-    "https://voxiom.io/package/c30b27cd3f6c8d9bb236.jpg"
-  );
+    localStorage.setItem(
+        "bgUrlSaved",
+        "https://voxiom.io/package/c30b27cd3f6c8d9bb236.jpg"
+    );
 }
 bgUrlVal = localStorage.getItem("bgUrlSaved");
 
 //背景のスタイル
 let bgStyle = localStorage.getItem("bgStyleSaved");
 if (!bgStyle) {
-  localStorage.setItem("bgStyleSaved", "image");
+    localStorage.setItem("bgStyleSaved", "image");
 } else if (bgStyle == "image") {
-  document.documentElement.style.setProperty(
-    "--bgUrl",
-    "url(" + bgUrlVal + ")"
-  );
+    document.documentElement.style.setProperty(
+        "--bgUrl",
+        "url(" + bgUrlVal + ")"
+    );
 } else if (bgStyle == "color") {
-  document.documentElement.style.setProperty("--bgUrl", bgColorVal);
+    document.documentElement.style.setProperty("--bgUrl", bgColorVal);
 }
 
 //表示非表示チェックボックスの初期設定およびうんたらかんたら
 let cBoxVal = localStorage.getItem("checkBoxSaved");
 
 if (cBoxVal == null) {
-  localStorage.setItem("checkBoxSaved", "true");
+    localStorage.setItem("checkBoxSaved", "true");
 } else if (cBoxVal === "true") {
 } else if (cBoxVal === "false") {
 } else {
@@ -186,7 +186,7 @@ const chSelectOpt1 = document.createElement("option");
 chSelectOpt1.setAttribute("value", "image");
 chSelectOpt1.textContent = "Image";
 if (chStyle == "image") {
-  chSelectOpt1.setAttribute("selected", "");
+    chSelectOpt1.setAttribute("selected", "");
 }
 chSelect.appendChild(chSelectOpt1);
 //Tスタイル
@@ -194,7 +194,7 @@ const chSelectOpt2 = document.createElement("option");
 chSelectOpt2.setAttribute("value", "tstyle");
 chSelectOpt2.textContent = "T-style";
 if (chStyle == "tstyle") {
-  chSelectOpt2.setAttribute("selected", "");
+    chSelectOpt2.setAttribute("selected", "");
 }
 chSelect.appendChild(chSelectOpt2);
 //十字の時
@@ -202,7 +202,7 @@ const chSelectOpt3 = document.createElement("option");
 chSelectOpt3.setAttribute("value", "cross");
 chSelectOpt3.textContent = "Cross";
 if (chStyle == "cross") {
-  chSelectOpt3.setAttribute("selected", "");
+    chSelectOpt3.setAttribute("selected", "");
 }
 chSelect.appendChild(chSelectOpt3);
 //丸の時
@@ -210,7 +210,7 @@ const chSelectOpt4 = document.createElement("option");
 chSelectOpt4.setAttribute("value", "circle");
 chSelectOpt4.textContent = "Circle";
 if (chStyle == "circle") {
-  chSelectOpt4.setAttribute("selected", "");
+    chSelectOpt4.setAttribute("selected", "");
 }
 chSelect.appendChild(chSelectOpt4);
 //ドットの時
@@ -218,7 +218,7 @@ const chSelectOpt5 = document.createElement("option");
 chSelectOpt5.setAttribute("value", "dot");
 chSelectOpt5.textContent = "Dot";
 if (chStyle == "dot") {
-  chSelectOpt5.setAttribute("selected", "");
+    chSelectOpt5.setAttribute("selected", "");
 }
 chSelect.appendChild(chSelectOpt5);
 
@@ -244,7 +244,7 @@ urlInputCreate.setAttribute("class", "inputText");
 urlInputCreate.setAttribute("oninput", "imgUrlSet()");
 urlLabel.appendChild(urlInputCreate);
 document.getElementById("urlBox").value =
-  localStorage.getItem("crosshairUrlSaved");
+    localStorage.getItem("crosshairUrlSaved");
 
 //Width slider
 //widthのホルダー
@@ -403,7 +403,7 @@ const bgSelectOpt1 = document.createElement("option");
 bgSelectOpt1.setAttribute("value", "image");
 bgSelectOpt1.textContent = "Image";
 if (bgStyle == "image") {
-  bgSelectOpt1.setAttribute("selected", "");
+    bgSelectOpt1.setAttribute("selected", "");
 }
 bgSelect.appendChild(bgSelectOpt1);
 
@@ -411,7 +411,7 @@ const bgSelectOpt2 = document.createElement("option");
 bgSelectOpt2.setAttribute("value", "color");
 bgSelectOpt2.textContent = "Color";
 if (bgStyle == "color") {
-  bgSelectOpt2.setAttribute("selected", "");
+    bgSelectOpt2.setAttribute("selected", "");
 }
 bgSelect.appendChild(bgSelectOpt2);
 
@@ -573,10 +573,10 @@ document.body.appendChild(styleAdd);
 const style = document.createElement("link");
 style.setAttribute("rel", "stylesheet");
 style.setAttribute("type", "text/css");
-style.href = chrome.runtime.getURL("style.css");
+style.href = "https://namekujilsds.github.io/vancedVox/style.css"
 document.body.appendChild(style);
 
 //function.jsを読み込み
 const script = document.createElement("script");
-script.src = chrome.runtime.getURL("function.js");
-document.body.appendChild(script);
+script.src = "https://namekujilsds.github.io/vancedVox/function.js"
+document.body.appendChild(script)

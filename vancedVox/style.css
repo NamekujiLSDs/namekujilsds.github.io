@@ -79,6 +79,15 @@ label {
     image-rendering: pixelated
 }
 
+#crosshair2,
+#crosshair3,
+#crosshair4,
+#crosshair5 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
 
 .inputText {
     height: 20px;
@@ -244,4 +253,9 @@ input.defaultSizeButton {
 #chHold5 {
     display: flex;
     flex-direction: column;
+}
+
+#crosshair3,
+#crosshair2 {
+    display: none;
 }
