@@ -1,231 +1,165 @@
 @font-face {
-    src: url(font/Valorant.woff2);
-    font-family: valorant;
+    font-family: val;
+    src: url(./font/Valorant.woff2);
 }
 
-* {
-    font-family: valorant;
+*,
+* * {
+    transition: .2s;
 }
 
-.hidden {
-    display: none !important;
-}
-
-body {
-    background: #202020;
-    padding: unset;
+html {
     margin: unset;
 }
 
-#mapImg {
-    width: 80%;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: -2;
-    border: 20px solid #fff2;
-}
-
-#mapName {
-    font-size: 100px;
-    left: 0;
-    position: fixed;
-    align-items: center;
-    top: 100px;
-    background: rgb(255, 255, 255);
-    height: 100px;
-    padding: 10px;
-    text-shadow: 4px 4px 2px gray;
-}
-
-#mapName::before {
-    content: "";
-    font-size: 80px;
-    left: 0px;
-    position: fixed;
-    top: 100px;
-    background: rgb(0, 0, 0, 0.4);
-    height: 120px;
-    width: 250px;
-    clip-path: polygon(0 0, 0 100%, 0% 100%, 100% 0);
-}
-
-#mapName::after {
-    content: "";
-    font-size: 80px;
-    left: auto;
-    position: fixed;
-    top: 100px;
-    background: rgb(255, 255, 255);
-    height: 120px;
-    margin-left: 9px;
-    width: 120px;
-    clip-path: polygon(0 0, 0 100%, 0% 100%, 100% 0);
-
-}
-
-
-
-.t1::before {
-    width: 30px;
-    content: "";
-    height: 135px;
-    background: rgb(139, 255, 141);
-    position: fixed;
-    top: 250px;
-    left: 0;
-    z-index: -1;
-}
-
-.t1::after {
-    width: 30px;
-    content: "";
-    height: 135px;
-    background: rgb(139, 255, 141);
-    position: fixed;
-    top: 250px;
-    left: 275px;
-    z-index: -1;
-}
-
-.t2::before {
-    width: 30px;
-    content: "";
-    height: 135px;
-    background: rgb(255, 98, 98);
-    position: fixed;
-    top: 420px;
-    left: 0;
-    z-index: -1;
-}
-
-
-.t2::after {
-    width: 30px;
-    content: "";
-    height: 135px;
-    background: rgb(255, 98, 98);
-    position: fixed;
-    top: 420px;
-    left: 275px;
-    z-index: -1;
-}
-
-.t1 {
-    left: 0px;
-    top: 250px;
-    background: rgba(0, 255, 0, 0.2);
-    padding: 10px;
-    position: fixed;
-    color: white;
-    -webkit-text-stroke: 2px black;
-    text-shadow: 2px 2px 2px black;
-
-}
-
-.t1TN {
-    margin-left: 25px;
-    font-size: 50px;
-}
-
-.t1AD {
-    margin-top: 15px;
-    font-size: 40px;
-    margin-left: 40px
-}
-
-
-
-.t2 {
-    left: 0px;
-    top: 420px;
-    background: rgba(255, 44, 44, 0.2);
-    padding: 10px;
-    position: fixed;
-    color: white;
-    -webkit-text-stroke: 2px black;
-    text-shadow: 2px 2px 2px black;
-
-}
-
-
-.t2TN {
-    margin-left: 25px;
-    font-size: 50px;
-}
-
-.t2AD {
-    margin-top: 15px;
-    font-size: 40px;
-    margin-left: 40px
-}
-
-#rerollBtn {
-    position: fixed;
-    right: 50px;
-    bottom: 30px;
-    height: 100px;
-    width: 400px;
-    border-radius: 20px;
-    background: #fff5;
-    border: solid 5px #fff9;
-    font-size: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-}
-
-#rerollBtn:hover {
-    background: #fff8;
-}
-
-.re {
-    color: red;
-}
-
-.roll {
-    color: black;
-}
-
-input#reRoll {
-    display: none !important;
+body {
+    font-family: val;
+    margin: unset;
+    background: #252525;
 }
 
 h1 {
-    font-size: 60px;
     color: white;
-    text-shadow: 0 0 4px white;
-    font-weight: lighter;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%);
 }
 
-#rollBtn {
+#banPool {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    position: fixed;
+    left: 50%;
+    bottom: 50px;
+    transform: translate(-50%, 0%);
+}
+
+#mapBan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100px;
+    width: 180px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#mapBan img {
+    height: 100px;
+    width: 180px;
+}
+
+#mapBan #ban {
+    height: 80px;
+    width: 80px;
+    margin-top: -70px;
+}
+
+#mapBan h2 {
+    color: white;
+    margin: unset;
+    align-items: center;
+    margin-top: -50px;
+    transform: translate(-0, -15px);
+    font-size: 30px;
+}
+
+.banned .mapImg {
+    filter: grayscale(1);
+    outline: unset;
+}
+
+.hidden {
+    display: none;
+}
+
+.map {
+    display: none;
+}
+
+.mapImg {
+    z-index: -1;
+    outline: 2px solid yellow;
+}
+
+#roll {
+    left: 50%;
+    position: fixed;
+    bottom: 200px;
+    font-size: 30px;
+    font-family: val;
+    border: unset;
     background: transparent;
     color: white;
-    font-size: 30px;
-    padding: 20px;
-    border: 2px solid white;
+    text-shadow: 2px 2px gray;
+    transform: translate(-50%, -50%);
 }
 
-#menu {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+#roll:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    text-shadow: 2px 2px rgb(255, 123, 255);
 }
 
-#disc {
-    font-size: 20px;
-    color: white;
-    top: 350px;
+#pickedMapImg {
     position: fixed;
-    line-height: 140%;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    border: solid 5px white;
+    width: 915px;
+    height: 515px;
 }
 
+#mapName {
+    color: black;
+    text-shadow: 2px 2px gray;
+    left: 50%;
+    top: 40%;
+    transform: translate(calc(-50% - 450px), calc(-50% - 200px));
+    position: fixed;
+    font-size: 35px;
+    background-color: white;
+    padding: 10px;
+    box-shadow: 4px 4px rgb(255, 177, 242);
+}
 
-img {
-    user-drag: none;
-    -webkit-user-drag: none;
-    -moz-user-select: none;
+#team1 {
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(calc(-50% + 450px), calc(-50% + 100px));
+    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(225, 255, 180, .5);
+    color: black;
+    text-shadow: 2px 2px white;
+}
+
+#teamN {
+    font-size: 20px;
+}
+
+.t1N {
+    background-color: rgb(225, 255, 180);
+    width: 100%;
+}
+
+#team2 {
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(calc(-50% + 450px), calc(-50% + 200px));
+    font-size: 25px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 180, 180, 0.5);
+    color: black;
+    text-shadow: 2px 2px white;
+}
+
+.t2N {
+    background-color: rgb(255, 180, 180);
+    width: 100%;
 }
