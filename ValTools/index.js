@@ -14,7 +14,7 @@ function load() {
     let val3 = Math.floor(Math.random() * 10 + 0);
     document.body.setAttribute(
         "style",
-        `background-image: url('/img/bg/bg_${val3}.webp');`
+        `background-image: url('img/bg/bg_${val3}.webp');`
     );
 }
 
