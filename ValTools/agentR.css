@@ -1,0 +1,219 @@
+@font-face {
+    src: url(font/Valorant.woff2);
+    font-family: valorant;
+}
+
+* {
+    font-family: valorant;
+    cursor: default;
+}
+
+body {
+    background-position: center;
+    background-size: cover;
+}
+
+
+body::before {
+    content: '';
+    background-color: rgba(0, 0, 0, .7);
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+h1 {
+    color: white;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%);
+    font-size: 60px;
+    top: 200px
+}
+
+#rollBtn {
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%, 50%);
+    font-size: 40px;
+    top: 50%;
+    background: white;
+    padding: 10px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#agent {
+    height: calc(900px/1.5);
+    width: calc(587px/1.5);
+    display: flex;
+    position: fixed;
+    color: white;
+    flex-direction: column;
+}
+
+#agentName {
+    font-size: 50px;
+    margin-top: -50px;
+    display: flex;
+    justify-content: center;
+    text-shadow: 4px 4px black;
+    z-index: 4;
+}
+
+#agentImg {
+    height: calc(900px/1.5);
+    width: calc(587px/1.5);
+    display: flex;
+    justify-content: center;
+}
+
+.a3 {
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.1);
+    top: calc(50% + 50px);
+    z-index: 3;
+}
+
+.a2 {
+    left: calc(50% - 300px);
+    transform: translate(-50%, -50%);
+    top: 50%;
+    z-index: 2;
+}
+
+.a1 {
+    left: calc(50% - 550px);
+    transform: translate(-50%, -50%);
+    top: calc(50% - 100px);
+    z-index: 1;
+}
+
+.a4 {
+    right: calc(50% - 300px);
+    transform: translate(50%, -50%);
+    top: 50%;
+    z-index: 2;
+}
+
+.a5 {
+    right: calc(50% - 550px);
+    transform: translate(50%, -50%);
+    top: calc(50% - 100px);
+    z-index: 1;
+}
+
+#urTeam {
+    top: 50px;
+}
+
+#reroll {
+    bottom: 30px;
+    left: 50%;
+    position: fixed;
+    transform: translate(-50%);
+    border: unset;
+    background: #fff3;
+    font-size: 40px;
+    color: white;
+    padding: 5px;
+    text-shadow: 2px 2px gray;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#reroll:hover {
+    background: #fff6;
+    text-shadow: 4px 4px black;
+}
+
+img {
+    user-drag: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+}
+
+img[name="Astra"] {
+    filter: drop-shadow(0 0 6px rgba(243, 111, 255, 0.5));
+}
+
+img[name="Brimstone"] {
+    filter: drop-shadow(0 0 6px rgba(255, 145, 0, 0.5));
+}
+
+img[name="Breach"] {
+    filter: drop-shadow(0 0 6px rgba(255, 166, 0, 0.5));
+}
+
+img[name="Chamber"] {
+    filter: drop-shadow(0 0 6px rgba(255, 160, 97, 0.5));
+}
+
+img[name="Cypher"] {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.5));
+}
+
+img[name="Fade"] {
+    filter: drop-shadow(0 0 6px rgba(99, 0, 0, 0.5));
+}
+
+img[name="Harbor"] {
+    filter: drop-shadow(0 0 6px rgba(0, 102, 255, 0.5));
+}
+
+img[name="Jett"] {
+    filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.5));
+}
+
+img[name="KAYO"] {
+    filter: drop-shadow(0 0 6px rgba(55, 0, 255, 0.5));
+}
+
+img[name="Killjoy"] {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 0, 0.5));
+}
+
+img[name="Neon"] {
+    filter: drop-shadow(0 0 6px rgba(0, 102, 255, 0.5));
+}
+
+img[name="Omen"] {
+    filter: drop-shadow(0 0 6px rgba(89, 0, 255, 0.5));
+}
+
+img[name="Phoenix"] {
+    filter: drop-shadow(0 0 6px rgba(255, 51, 0, 0.5));
+}
+
+img[name="Raze"] {
+    filter: drop-shadow(0 0 6px rgba(255, 123, 0, 0.5));
+}
+
+img[name="Reyna"] {
+    filter: drop-shadow(0 0 6px rgba(195, 0, 255, 0.5));
+}
+
+img[name="Sage"] {
+    filter: drop-shadow(0 0 6px rgba(0, 255, 157, 0.5));
+}
+
+img[name="Skye"] {
+    filter: drop-shadow(0 0 6px rgba(72, 255, 0, 0.5));
+}
+
+img[name="Sova"] {
+    filter: drop-shadow(0 0 6px rgba(0, 214, 230, 0.5));
+}
+
+img[name="Viper"] {
+    filter: drop-shadow(0 0 6px rgba(30, 255, 0, 0.5));
+}
+
+img[name="Yoru"] {
+    filter: drop-shadow(0 0 6px rgba(0, 26, 255, 0.5));
+}

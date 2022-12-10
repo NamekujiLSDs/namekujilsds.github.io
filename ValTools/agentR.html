@@ -1,0 +1,54 @@
+<html>
+
+<head>
+    <title>
+        Random Agent Picker
+    </title>
+    <link rel="stylesheet" href="agentR.css">
+</head>
+
+<body style="background-image:url(./img/bg/bg_8.webp) ;">
+    <div id="menu">
+        <h1>Agent Random Picker</h1>
+        <input type="button" value="ROLL" id="rollBtn" onclick="agentRoll()">
+    </div>
+
+    <div id="agentHolder" class="hidden">
+        <h1 id="urTeam">Your Team</h1>
+        <div id="agent" class="a1">
+            <img id="agentImg" class="a1Img" src="./img/agent_body/Astra.png">
+            <div id="agentName" class="a1N">
+                Killjoy
+            </div>
+        </div>
+        <div id="agent" class="a2">
+            <img id="agentImg" class="a2Img" src="./img/agent_body/Breach.png">
+            <div id="agentName" class="a2N">
+                Brimstone
+            </div>
+        </div>
+        <div id="agent" class="a3">
+            <img id="agentImg" class="a3Img" src="./img/agent_body/Cypher.png">
+            <div id="agentName" class="a3N">
+                Killjoy
+            </div>
+        </div>
+        <div id="agent" class="a4">
+            <img id="agentImg" class="a4Img" src="./img/agent_body/Jett.png">
+            <div id="agentName" class="a4N">
+                Killjoy
+            </div>
+        </div>
+        <div id="agent" class="a5">
+            <img id="agentImg" class="a5Img" src="./img/agent_body/Skye.png">
+            <div id="agentName" class="a5N">
+                Killjoy
+            </div>
+        </div>
+
+        <input type="button" value="REROLL" id="reroll" onclick="reroll()">
+    </div>
+    <script src="agentR.js"></script>
+</body>
+
+</html>

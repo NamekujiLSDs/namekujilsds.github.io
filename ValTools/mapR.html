@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        Random MAP Picker
+    </title>
+    <link rel="stylesheet" href="mapR.css">
+</head>
+
+<body>
+    <div id="menu" class="visible">
+        <h1>RANDOM MAP PICKER</h1>
+        <input type="button" id="rollBtn" value="ROLL" onclick="startRoll()">
+        <div id="disc">Automatic random selection of one map and offense and defense <br>
+            <br> ↓[MAP POOL]↓ <br>
+            - ASCENT<br>
+            - BIND<br>
+            - BREEZE<br>
+            - FRACTURE<br>
+            - HAVEN<br>
+            - ICEBOX<br>
+            - PEARL<br>
+            - SPLIT
+        </div>
+    </div>
+    <div id="result" class="hidden">
+        <img id="mapImg">
+        <div id="mapName">MAP NAME</div>
+        <div id="teamHolder" class="t1">
+            <div id="teamName" class="t1TN">TEAM 1</div>
+            <div id="AorD" class="t1AD"></div>
+        </div>
+        <div id="teamHolder" class="t2">
+            <div id="teamName" class="t2TN">TEAM 2</div>
+            <div id="AorD" class="t2AD"></div>
+        </div>
+        <label id="rerollBtn">
+            <div class="re">Re</div>
+            <div class="roll">ROLL</div>
+            <input id="reRoll" onclick="startRoll()" type="button" class="hidden">
+        </label>
+    </div>
+    <script src="./mapR.js"></script>
+</body>
+
+</html>

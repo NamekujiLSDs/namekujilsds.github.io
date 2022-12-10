@@ -1,0 +1,231 @@
+@font-face {
+    src: url(font/Valorant.woff2);
+    font-family: valorant;
+}
+
+* {
+    font-family: valorant;
+}
+
+.hidden {
+    display: none !important;
+}
+
+body {
+    background: #202020;
+    padding: unset;
+    margin: unset;
+}
+
+#mapImg {
+    width: 80%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -2;
+    border: 20px solid #fff2;
+}
+
+#mapName {
+    font-size: 100px;
+    left: 0;
+    position: fixed;
+    align-items: center;
+    top: 100px;
+    background: rgb(255, 255, 255);
+    height: 100px;
+    padding: 10px;
+    text-shadow: 4px 4px 2px gray;
+}
+
+#mapName::before {
+    content: "";
+    font-size: 80px;
+    left: 0px;
+    position: fixed;
+    top: 100px;
+    background: rgb(0, 0, 0, 0.4);
+    height: 120px;
+    width: 250px;
+    clip-path: polygon(0 0, 0 100%, 0% 100%, 100% 0);
+}
+
+#mapName::after {
+    content: "";
+    font-size: 80px;
+    left: auto;
+    position: fixed;
+    top: 100px;
+    background: rgb(255, 255, 255);
+    height: 120px;
+    margin-left: 9px;
+    width: 120px;
+    clip-path: polygon(0 0, 0 100%, 0% 100%, 100% 0);
+
+}
+
+
+
+.t1::before {
+    width: 30px;
+    content: "";
+    height: 135px;
+    background: rgb(139, 255, 141);
+    position: fixed;
+    top: 250px;
+    left: 0;
+    z-index: -1;
+}
+
+.t1::after {
+    width: 30px;
+    content: "";
+    height: 135px;
+    background: rgb(139, 255, 141);
+    position: fixed;
+    top: 250px;
+    left: 275px;
+    z-index: -1;
+}
+
+.t2::before {
+    width: 30px;
+    content: "";
+    height: 135px;
+    background: rgb(255, 98, 98);
+    position: fixed;
+    top: 420px;
+    left: 0;
+    z-index: -1;
+}
+
+
+.t2::after {
+    width: 30px;
+    content: "";
+    height: 135px;
+    background: rgb(255, 98, 98);
+    position: fixed;
+    top: 420px;
+    left: 275px;
+    z-index: -1;
+}
+
+.t1 {
+    left: 0px;
+    top: 250px;
+    background: rgba(0, 255, 0, 0.2);
+    padding: 10px;
+    position: fixed;
+    color: white;
+    -webkit-text-stroke: 2px black;
+    text-shadow: 2px 2px 2px black;
+
+}
+
+.t1TN {
+    margin-left: 25px;
+    font-size: 50px;
+}
+
+.t1AD {
+    margin-top: 15px;
+    font-size: 40px;
+    margin-left: 40px
+}
+
+
+
+.t2 {
+    left: 0px;
+    top: 420px;
+    background: rgba(255, 44, 44, 0.2);
+    padding: 10px;
+    position: fixed;
+    color: white;
+    -webkit-text-stroke: 2px black;
+    text-shadow: 2px 2px 2px black;
+
+}
+
+
+.t2TN {
+    margin-left: 25px;
+    font-size: 50px;
+}
+
+.t2AD {
+    margin-top: 15px;
+    font-size: 40px;
+    margin-left: 40px
+}
+
+#rerollBtn {
+    position: fixed;
+    right: 50px;
+    bottom: 30px;
+    height: 100px;
+    width: 400px;
+    border-radius: 20px;
+    background: #fff5;
+    border: solid 5px #fff9;
+    font-size: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+}
+
+#rerollBtn:hover {
+    background: #fff8;
+}
+
+.re {
+    color: red;
+}
+
+.roll {
+    color: black;
+}
+
+input#reRoll {
+    display: none !important;
+}
+
+h1 {
+    font-size: 60px;
+    color: white;
+    text-shadow: 0 0 4px white;
+    font-weight: lighter;
+}
+
+#rollBtn {
+    background: transparent;
+    color: white;
+    font-size: 30px;
+    padding: 20px;
+    border: 2px solid white;
+}
+
+#menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#disc {
+    font-size: 20px;
+    color: white;
+    top: 350px;
+    position: fixed;
+    line-height: 140%;
+}
+
+
+img {
+    user-drag: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+}
