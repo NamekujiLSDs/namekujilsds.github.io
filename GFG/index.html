@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MK9KNPDEY9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-MK9KNPDEY9');
+    </script>
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="format-detection" content="address=no, email=no">
+    <meta name="description" content="GodFieldのカードのような画像を簡単に作成できるサイトです!!">
+
+    <meta property="og:title" content="GodField Card Generator">
+    <meta property="og:description" content="GodFieldのカードのような画像を簡単に作成できるサイトです!!">
+    <meta property="og:site_name" content="GFG">
+    <meta property="og:url" content="https://namekujilsds.github.io/GFG">
+    <meta property="og:image" content="./images/download.png">
+    <meta property="og:locale" content="ja_JP">
+    <meta property="og:type" content="ジェネレーター">
+    <meta name="twitter:card" content="summary_large_image">
+
+
+    <title>GodField Card Generator</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div id="capture">
+        <div class="cardImageHolder"><img class="cardImage" src="./images/icon.png"></div>
+        <div class="cardTitleHolder">
+            <div class="cardTitle" name="noElement">カード作成</div>
+        </div>
+        <div class="effectBg"></div>
+        <div class="elementIconHolder"><img class="elementIcon" name="noElement"></div>
+        <div class="effectText" name="noElement">完全無料！</div>
+        <div class="effectAlt" name="noElement">広告なし！</div>
+        <div class="money" name="none">\777</div>
+        <div class="mana" name="none">
+            <div class="mana1">消費</div>
+            <div class="mana2">MP200</div>
+        </div>
+    </div>
+    <div id="userInterface"> <label for="imgInput">画像 <input id="imgInput" name="imgInput" type="file" accept="image/*"
+                autocomplete="off"> </label> <label for="cardTitleInput">カードの名前 <input type="text" value="カード作成"
+                class="cardTitleInput" name="cardTitleInput" autocomplete="off"> </label> <label
+            for="elementIconInput">属性 <select name="elementIconInput" class="elementIconInput">
+                <option value="noElement">無し</option>
+                <option value="fireElement">火</option>
+                <option value="waterElement">水</option>
+                <option value="stoneElement">石</option>
+                <option value="woodElement">木</option>
+                <option value="lightElement">光</option>
+                <option value="darknessElement">闇</option>
+            </select> </label> <label for="effectTextInput">効果 <input type="text" value="完全無料！" class="effectTextInput"
+                name="effectTextInput" autocomplete="off"> </label> <label for="effectAltInput">効果2 <input type="text"
+                value="広告なし！" class="effectAltInput" name="effectAltInput" autocomplete="off"> </label> <label
+            for="cardTypeList">種類 <select name="cardTypeList" class="cardTypeList">
+                <option value="none">取引</option>
+                <option value="money">武具・防具等</option>
+                <option value="mana">奇跡</option>
+            </select> </label> <label for="cardTypeValue">数値 <input type="number" value="0" class="cardTypeValue"
+                name="cardTypeValue" autocomplete="off"> </label> <img id="dlBtn" type="button"
+            onclick="imageDownload()" src="./images/download.png"></div>
+    <div id="bottom">
+        <div id="holder"> GodField作者様Twitter <div id="guujiTwitter"
+                onclick="window.open('https://x.com/guuji','_blank')"><img class="Logo" src="./images/twitter.png">
+                @guuji </div>
+        </div>
+        <div id="holder"> GodField <div id="gfLink" onclick="window.open('https://godfield.net/','_blank')"><img
+                    class="Logo" src="./images/god-sword.png"> Play </div>
+        </div>
+    </div>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</body>
+
+</html>

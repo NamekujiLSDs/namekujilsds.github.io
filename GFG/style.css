@@ -1,0 +1,333 @@
+:root {
+    --mp-use-bg: rgb(119, 119, 255);
+    --mp-use-color: rgb(238, 238, 255);
+    --money-sell-bg: rgb(255, 255, 170);
+    --money-sell-border: rgb(221, 221, 136);
+    --border-color: rgb(85, 187, 153);
+    --water-color: rgb(102, 102, 255);
+    --fire-color: rgb(255, 102, 102);
+    --wood-color: rgb(255, 153, 0);
+    --stone-color: rgb(102, 136, 170);
+    --light-color: rgb(197, 197, 0);
+    --darkness-color: rgb(170, 85, 204);
+    --kaze-color: rgb(102, 136, 170);
+    --kiri-color: rgb(102, 102, 255);
+    --senko-color: rgb(197, 197, 0);
+    --netubyo-color: rgb(255, 102, 102);
+    --jigokubyo-color: rgb(79, 79, 79);
+    --yume-color: rgb(255, 153, 0);
+    --tengokubyo-color: rgb(79, 79, 79);
+    --annunn-color: rgb(170, 85, 204);
+    --background-color: rgb(221, 255, 204);
+}
+
+* {
+    font-family: sans-serif;
+}
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-image: url(./images/menu.png);
+}
+
+canvas {
+    display: none;
+}
+
+#capture {
+    background-color: var(--border-color);
+    height: 180px;
+    width: 600px;
+    border-radius: 10px;
+    margin-top: 20px;
+    margin: auto;
+    position: relative;
+}
+
+.cardImageHolder {
+    position: absolute;
+    height: 160px;
+    width: 160px;
+    top: 10px;
+    left: 10px;
+}
+
+.cardImage,
+.elementIcon {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cardTitleHolder {
+    position: absolute;
+    border-top-right-radius: 10px;
+    background-color: var(--background-color);
+    height: 66px;
+    width: 410px;
+    left: 180px;
+    top: 10px
+}
+
+.cardTitle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: 60px;
+    width: 404px;
+    border-top-right-radius: 10px;
+    border: 1px solid var(--border-color);
+    font-size: 40px;
+}
+
+.effectBg {
+    position: absolute;
+    top: 78px;
+    width: 410px;
+    left: 180px;
+    height: 92px;
+    background-color: var(--background-color);
+    border-bottom-right-radius: 10px;
+}
+
+.effectText {
+    position: absolute;
+    left: 236px;
+    top: 84px;
+    font-size: 40px;
+    line-height: 40px;
+}
+
+.effectAlt {
+    position: absolute;
+    top: 134px;
+    width: 310px;
+    left: 190px;
+    font-size: 30px;
+    line-height: 3 0px;
+}
+
+div[name="noElement"] {
+    color: var(--jigokubyo-color)
+}
+
+div[name="fireElement"] {
+    color: var(--fire-color)
+}
+
+div[name="waterElement"] {
+    color: var(--water-color)
+}
+
+div[name="stoneElement"] {
+    color: var(--stone-color)
+}
+
+div[name="woodElement"] {
+    color: var(--wood-color)
+}
+
+div[name="lightElement"] {
+    color: var(--light-color)
+}
+
+div[name="darknessElement"] {
+    color: var(--darkness-color)
+}
+
+img[name="noElement"] {
+    display: none;
+}
+
+img[name="fireElement"] {
+    background-image: url(./images/fire.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+img[name="waterElement"] {
+    background-image: url(./images/water.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+img[name="stoneElement"] {
+    background-image: url(./images/stone.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+img[name="woodElement"] {
+    background-image: url(./images/wood.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+img[name="lightElement"] {
+    background-image: url(./images/light.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+img[name="darknessElement"] {
+    background-image: url(./images/darkness.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+
+.money {
+    width: 80px;
+    height: 80px;
+    top: 80px;
+    left: 500px;
+    border-radius: 44px;
+    background-color: var(--money-sell-bg);
+    border: 2px solid var(--money-sell-border);
+    position: absolute;
+    display: flex;
+    font-size: 36px;
+    align-items: center;
+    justify-content: center;
+}
+
+.money[name="none"] {
+    display: none;
+}
+
+.money[name="mana"] {
+    display: none;
+}
+
+.money[name="money"] {
+    display: flex;
+}
+
+.mana {
+    position: absolute;
+    left: 486px;
+    top: 82px;
+    width: 100px;
+    height: 84px;
+    background-color: var(--mp-use-bg);
+    border-radius: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    font-size: 30px;
+    color: var(--mp-use-color)
+}
+
+.mana[name="none"] {
+    display: none;
+}
+
+.mana[name="money"] {
+    display: none;
+}
+
+.mana[name="mana"] {
+    display: flex;
+}
+
+.elementIconHolder {
+    width: 40px;
+    height: 40px;
+    top: 84px;
+    left: 186px;
+    position: absolute;
+}
+
+#userInterface {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: auto;
+}
+
+label {
+    display: flex;
+    justify-content: space-between;
+}
+
+#dlBtn {
+    height: 100%;
+    width: 300px;
+    cursor: pointer;
+    margin: auto;
+}
+
+#userInterface>label {
+    margin: 5px;
+}
+
+#bottom {
+    display: flex;
+    width: 400px;
+    margin: auto;
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+#holder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#guujiTwitter {
+    background-color: #00a1f6;
+    color: white;
+    width: 150px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 10px;
+    border: 5px solid white;
+    outline: 2px black solid;
+}
+
+#gfLink {
+    background-color: var(--border-color);
+    color: white;
+    width: 150px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+
+    font-size: 20px;
+    font-weight: bolder;
+    border-radius: 10px;
+    border: 5px solid white;
+    outline: 2px black solid;
+}
+
+#gfLink:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+}
+
+#guujiTwitter:hover {
+    filter: brightness(1.1);
+    cursor: pointer;
+}
+
+.Logo {
+    height: 40px;
+
+}
