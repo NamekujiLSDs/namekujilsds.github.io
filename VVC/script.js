@@ -1,20 +1,17 @@
 console.log("LOAD TEST")
-console.log("LOAD TEST")
-let releases = ""
-let ver = ""
-async function releaseCheck() {
-    let url = "https://github.com/NamekujiLSDs/VancedVoxiomClient/refs?type=tag";
-    let response = await fetch(url, {
-        method: "GET",
-        mode: "cors"
-    });
-    releases = await response.json();
-    console.log(releases.refs[0])
-    ver = releases.refs[0]
-    version()
-}
 
-const version = () => {
 
-}
-document.addEventListener('DOMContentLoaded', releaseCheck())
+const owner = 'NamekujiLSDs'; // GitHubのユーザー名または組織名
+const repo = 'VancedVoxiomClient'; // リポジトリ名
+
+fetch(`https://api.github.com/repos/${owner}/${repo}/releases/latest`)
+    .then(response => response.json())
+    .then(data => {
+        const latestRelease = data.tag_name; // 最新のリリースタグ名
+        const downloadLink = data.assets[0].browser_download_url; // ダウンロードリンク
+
+        // ダウンロードリンクをHTMLに反映させる
+        console.log(latestRelease)
+        console.log(downloadLink)
+    })
+    .catch(error => console.error('Error fetching latest release', error));
