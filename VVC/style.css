@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Josefin Sans', sans-serif;
+    height: 100%;
+    width: 100%;
+    color: white;
+}
+
+body {
+    background-color: #333;
+}
+
+header {
+    background: #3f4491;
+    height: 3em;
+    display: flex;
+    color: white;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#title {
+    margin-left: 15px;
+    font-size: 1.5em;
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    height: 1.5em;
+    margin-right: 0.4em;
+    transition: .2s;
+    transform: translateZ(0deg)
+}
+
+.icon:hover {
+    transition: .2s;
+    animation: kurukuru 2s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55)
+}
+
+
+@keyframes kurukuru {
+    from {
+        transform: rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(360deg);
+    }
+
+}
+
+#menu {
+    display: flex;
+    margin-right: 20px;
+}
+
+.disc {
+    font-size: 18px;
+    margin-left: 15px;
+    border-left: 2px solid;
+    padding: 10px;
+    border-bottom-left-radius: 20px;
+}
+
+.tit {
+    font-size: 30px;
+}
+
+#topImg {
+    width: 100%;
+}
+
+#box {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    margin-left: auto;
+    margin-top: 50px;
+}
+
+.line {
+    height: 2px;
+    background: #fff2;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
+a {
+    color: cyan;
+    text-decoration: none;
+}
+
+a:hover {
+    text-shadow: 0 0 4px rgb(124, 255, 255);
+}
+
+.vline {
+    width: 2px;
+    background: #fff2;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#downloadBtn {
+    border: 2px solid white;
+    width: 250px;
+    height: 100px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #222;
+    font-size: 20px;
+    margin: auto;
+}
+
+.cau {
+    margin: auto;
+    margin-top: 10px
+}
