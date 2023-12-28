@@ -14,6 +14,12 @@ body {
     background-color: #333;
 }
 
+::selection {
+    background-color: #00ffb393;
+    padding: 2px;
+    text-shadow: 0 0 4px black;
+}
+
 header {
     background: #3f4491;
     height: 3em;
@@ -43,7 +49,6 @@ header {
     animation: kurukuru 2s infinite cubic-bezier(0.68, -0.55, 0.27, 1.55)
 }
 
-
 @keyframes kurukuru {
     from {
         transform: rotateZ(0deg);
@@ -52,20 +57,11 @@ header {
     to {
         transform: rotateZ(360deg);
     }
-
 }
 
 #menu {
     display: flex;
     margin-right: 20px;
-}
-
-.disc {
-    font-size: 18px;
-    margin-left: 15px;
-    border-left: 2px solid;
-    padding: 10px;
-    border-bottom-left-radius: 20px;
 }
 
 .tit {
@@ -112,18 +108,124 @@ a:hover {
 
 #downloadBtn {
     border: 2px solid white;
-    width: 250px;
-    height: 100px;
-    border-radius: 20px;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #222;
+    background: #2225;
     font-size: 20px;
     margin: auto;
 }
 
-.cau {
+#downloadBtn:hover {
+    box-shadow: 0 0 10px white;
+}
+
+#downloadManualBtn {
+    border: 1px solid #fff2;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #2225;
+    font-size: 20px;
     margin: auto;
-    margin-top: 10px
+}
+
+#downloadManualBtn:hover {
+    box-shadow: 0 0 10px #fff3;
+}
+
+#card {
+    width: 90%;
+    background: #fff2;
+    border-radius: 10px;
+    border-top: 10px solid;
+    height: auto;
+    box-shadow: 5px 5px 5px #0005;
+    margin: 20px;
+    padding: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cardTitle {
+    font-size: 30px;
+    margin-bottom: 20px;
+    border-bottom: 2px #fff2 solid;
+    padding-bottom: 10px;
+}
+
+.cardDisc {
+    font-size: 20px;
+    line-height: 26px;
+}
+
+#cardHolder {
+    width: 100%;
+    display: grid;
+    grid-template-areas: "six" "manual" "one" "two" "three" "four" "five";
+}
+
+@media screen and (min-width:1000px) {
+    #cardHolder {
+        margin-right: auto;
+        margin-left: auto;
+        width: 1000px;
+        display: grid;
+        grid-template-areas: "one six" "one two" "three two" "three four" "five four" "five manual";
+    }
+
+    #card {
+        width: 400px;
+        height: auto;
+    }
+
+    .manual {
+        display: unset !important;
+    }
+}
+
+.manual {
+    grid-area: manual;
+    border-color: aquamarine;
+    /* display: none; */
+}
+
+.one {
+    border-color: purple !important;
+    grid-area: one;
+}
+
+.two {
+    border-color: lime !important;
+    grid-area: two;
+}
+
+.three {
+    border-color: cyan !important;
+    grid-area: three;
+}
+
+.four {
+    border-color: orangered !important;
+    grid-area: four;
+}
+
+.five {
+    border-color: pink !important;
+    grid-area: five;
+}
+
+.six {
+    border-color: mediumspringgreen;
+    grid-area: six;
+}
+
+#myIcon {
+    height: 64px;
 }

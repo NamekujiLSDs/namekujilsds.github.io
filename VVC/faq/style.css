@@ -1,0 +1,12 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background: black;
+    color: red;
+    text-shadow: 0 0 10px red;
+    font-size: 100px;
+}
