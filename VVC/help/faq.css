@@ -1,0 +1,110 @@
+html,
+body {
+    margin: unset;
+    padding: unset;
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+body {
+    background-color: #222;
+    color: white;
+}
+
+header {
+    height: 40px;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    background: #333;
+    align-items: center;
+}
+
+#mainContent {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#cat {
+    /* border: 1px solid; */
+    margin: 10px;
+    padding: 10px;
+}
+
+#catTitle {
+    font-size: 30px;
+    font-weight: 700;
+}
+
+#content {
+    padding-left: 60px;
+    margin-left: 60px;
+    border-left: 2px solid #999;
+    border-bottom-left-radius: 10px;
+    border-bottom: 1px solid #999;
+}
+
+#contentBoxTitle {
+    font-size: 20px;
+}
+
+#contentBoxBody {
+    margin-left: 5%;
+}
+
+#contentBoxBody {
+    margin-bottom: 4px;
+    color: #aaa;
+}
+
+#longContent {
+    height: auto;
+    overflow-y: scroll;
+    mask-image: linear-gradient(black, black);
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 20px;
+}
+
+#longContent:has(#fileListCheck:checked) {
+    height: 100px;
+    overflow-y: hidden;
+    mask-image: linear-gradient(black, transparent);
+    margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5%;
+}
+
+#fileListLabel {
+    width: fit-content;
+    padding: 5px;
+    margin: 3px;
+    background: gray;
+}
+
+#fileListCheck {
+    display: none;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    background: #333;
+    align-items: center;
+}

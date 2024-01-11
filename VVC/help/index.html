@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="shortcut icon" href="../icon.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VVC - FaQ</title>
     <link rel="stylesheet" href="faq.css">
@@ -34,9 +35,6 @@
                 <div id="contentBoxBody">The background of the menu screen can be changed. <br> Use the URL of the image
                     you want to use for the background. <br>If you want to use an offline file, convert it to BASE64 or
                     use imgur or Discord etc.</div>
-                <div id="contentBoxTitle">Custom game logo image</div>
-                <div id="contentBoxBody">You can change the "VOXIOM" logo on the menu screen. <br> Please insert the URL
-                    of the image you want to use</div>
                 <div id="contentBoxTitle">Custom game logo image</div>
                 <div id="contentBoxBody">You can change the "VOXIOM" logo on the menu screen. <br> Please insert the URL
                     of the image you want to use</div>
@@ -115,7 +113,93 @@
 
         <div id="cat">
             <div id="catTitle">How to use Resource Swapper</div>
+            <div id="content">
+                <div id="contentBoxTitle">What is Resource Swapper?</div>
+                <div id="contentBoxBody">The resource swapper can change the sounds in the Voxiom and change the
+                    player skin.</div>
+
+                <div id="contentBoxTitle">How to use Resource Swapper</div>
+                <div id="contentBoxBody">There is a folder named VVC-Swapper in Documents folder
+                    (C:\Users\USERNAME\Documents). <br>You can swap by putting a file with the corresponding name in it.
+                    <br>
+                </div>
+                <div id="contentBoxTitle">What is corresponding name?</div>
+                <div id="contentBoxBody">The following names are supported by default
+                    <div id="longContent">
+                        <label id="fileListLabel" for="fileListCheck"> ↓FILE NAME LIST↓<input type="checkbox"
+                                name="List" id="fileListCheck" checked></label> <br>
+                        - C-AR.mp3
+                        <br>- T-AR.mp3
+                        <br>- S-AR.mp3
+                        <br>- E-AR.mp3
+                        <br>- H-SR.mp3
+                        <br>- L-SR.mp3
+                        <br>- L-SMG.mp3
+                        <br>- C-SMG.mp3
+                        <br>- BURST.mp3
+                        <br>- PISTOL.mp3
+                        <br>- MAGNUM.mp3
+                        <br>- KILL.mp3
+                        <br>- HIT.mp3
+                        <br>- HIT-HEAD.mp3
+                        <br>- COUNTDOWN.mp3
+                        <br>- DAMAGE.mp3
+                        <br>- GRASS.mp3
+                        <br>- SAND.mp3
+                        <br>- LEAF.mp3
+                        <br>- WOOD.mp3
+                        <br>- DIRT.mp3
+                        <br>- STONE-BRICK.mp3
+                        <br>- STONE.mp3
+                        <br>- WATER-1.mp3
+                        <br>- WATER-2.mp3
+                        <br>- CRATE.mp3
+                        <br>- GAMEEND.mp3
+                        <br>- DENIED.mp3
+                        <br>- SPRAY.mp3
+                        <br>- TNT-FIRE.mp3
+                        <br>- TNT-BOOM.mp3
+                        <br>- DROP-COLLECT.mp3
+                        <br>- SOLDIER.png
+                        <br>- RED.png
+                        <br>- BLUE.png
+                        <br>- INDICATOR.png
+                        <br>- LOGO-SPRAY.png
+                        <br>- TEXTURE.png
+                    </div>
+                </div>
+                <div id="contentBoxTitle">How to use additional swap rule?</div>
+                <div id="contentBoxBody">Join the official Discord server and check the #share-json-settings channel for
+                    pinned posts. <br>Download the swapperConfig.json in that post and put it in your swapper
+                    folder. <br>You may edit this JSON according to the following writing rules
+                    "URL": "FILENAME.ext" <br></div>
+            </div>
         </div>
+
+        <div id="cat">
+            <div id="catTitle">How to use Request Rejecter</div>
+            <div id="content">
+                <div id="contentBoxTitle">What is Request Rejecter</div>
+                <div id="contentBoxBody">This client still has the ability to block web requests, although it is still
+                    WIP. <br>
+                    This feature can be used well to block various advertisements.</div>
+                <div id="contentBoxTitle">How to use Request Rejecter</div>
+                <div id="contentBoxBody">Join the official Discord server and check the #share-json-settings channel for
+                    pinned posts. <br>Download the rejectConfig.json in that post and put it in your swapper
+                    folder. <br> You can edit the JSON file as follows<br> <br>
+                    { "reject":[ <br>
+                    "STRING OR URL",<br>
+                    ]} <br>
+                    <br>
+                    For example, entering "voxiom.io" will block all URLs containing string "voxiom.io".
+                    <br>If you type "A", all URLs containing string "A" will be blocked. <br>
+                    We recommend writing something like <u>"://example.com/libs"</u> <br>
+                    <strong>Use with caution!</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer> <small>© 2023- Namekuji</small> </footer>
 </body>
 
 </html>
