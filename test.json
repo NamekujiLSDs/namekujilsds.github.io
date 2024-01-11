@@ -1,0 +1,21 @@
+{
+    "reject": [
+        "fastlane.rubiconproject.com",
+        "elb.the-ozone-project.com",
+        "ib.adnxs.com",
+        "script.4dex.io",
+        "server.cpmstar.com",
+        "tlx.3lift.com",
+        "hb.yellowblue.io",
+        "htlb.casalemedia.com",
+        "ib.adnxs.com",
+        "onetag-sys.com",
+        "hbopenbid.pubmatic.com",
+        "targeting.unrulymedia.com",
+        "rtb.openx.net",
+        "elb.the-ozone-project.com",
+        "mp.4dex.io",
+        "hbopenbid.pubmatic.com",
+        "googlesyndication.com"
+    ]
+}
