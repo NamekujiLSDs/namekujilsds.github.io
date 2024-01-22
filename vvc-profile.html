@@ -5,34 +5,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 </head>
 
 <body>
     <div id="profileBox">
-        <div id="name">Namekuji</div>
-        <div id="lv">43</div>
-        <div id="xp">
-            2234/5461
-            <div id="xpInner" style="width:40%">
+        <div id="head">
+            <img id="icon" src="https://namekujilsds.github.io/VVC/icon.ico">
+            <div id="name">VancedVoxiomClientTest</div>
+            <div id="clan">[TEST]</div>
+            <div id="lv">999</div>
+            <div id="xp">
+                <div id="xpVal">2234/5461</div>
+                <div id="xpInner" style="width:40%;">
+                </div>
+            </div>
+            <div id="gem">
+                <div id="gemTitle">Gems</div>
+                <div id="gemValue">999999</div>
             </div>
         </div>
-        <div id="stat" class="brPlay"></div>
-        <div id="stat" class="brWinR"></div>
-        <div id="stat" class="brKills"></div>
-        <div id="stat" class="brDeath"></div>
-        <div id="stat" class="brKdr"></div>
-        <div id="stat" class="brScore"></div>
-
-        <div id="stat" class="ctgPlay"></div>
-        <div id="stat" class="ctgWinR"></div>
-        <div id="stat" class="ctgKills"></div>
-        <div id="stat" class="ctgDeath"></div>
-        <div id="stat" class="ctgKdr"></div>
-        <div id="stat" class="ctgScore"></div>
-
-
+        <div id="bodyBR">
+            <div id="bodyBRTitle">Battle Royale</div>
+            <div id="stat" class="brPlay">
+                <div id="statTitle">Plays</div>
+                <div id="statVal">999999</div>
+            </div>
+            <div id="stat" class="brWinR">
+                <div id="statTitle">WinRate</div>
+                <div id="statVal">99.99%</div>
+            </div>
+            <div id="stat" class="brKills">
+                <div id="statTitle">Kills</div>
+                <div id="statVal">99999</div>
+            </div>
+            <div id="stat" class="brDeath">
+                <div id="statTitle">Deaths</div>
+                <div id="statVal">99999</div>
+            </div>
+            <div id="stat" class="brKdr">
+                <div id="statTitle">K/D</div>
+                <div id="statVal">999999</div>
+            </div>
+            <div id="stat" class="brSpk">
+                <div id="statTitle">SPK</div>
+                <div id="statVal">1000/K</div>
+            </div>
+            <div id="stat" class="brScore">
+                <div id="statTitle">Score</div>
+                <div id="statVal">999999</div>
+            </div>
+            <div id="stat" class="brTime">
+                <div id="statTitle">Survival Time</div>
+                <div id="statVal">999h59m59s</div>
+            </div>
+        </div>
+        <div id="bodyCTG">
+            <div id="bodyCTGTitle">Capture the Gem</div>
+            <div id="stat" class="ctgPlay">
+                <div id="statTitle">Plays</div>
+                <div id="statVal">99999</div>
+            </div>
+            <div id="stat" class="ctgWinR">
+                <div id="statTitle">Win Rate</div>
+                <div id="statVal">99.99%</div>
+            </div>
+            <div id="stat" class="ctgKills">
+                <div id="statTitle">Kills</div>
+                <div id="statVal">99999999</div>
+            </div>
+            <div id="stat" class="ctgDeath">
+                <div id="statTitle">Deaths</div>
+                <div id="statVal">9999999</div>
+            </div>
+            <div id="stat" class="ctgKdr">
+                <div id="statTitle">K/D</div>
+                <div id="statVal">999999</div>
+            </div>
+            <div id="stat" class="ctgSpk">
+                <div id="statTitle">SPK</div>
+                <div id="statVal">1000/K</div>
+            </div>
+            <div id="stat" class="ctgScore">
+                <div id="statTitle">Score</div>
+                <div id="statVal">9999999</div>
+            </div>
+            <div id="stat" class="ctgCapture">
+                <div id="statTitle">Captures</div>
+                <div id="statVal">9999999</div>
+            </div>
+        </div>
+        <div id="foot">
+            <div id="accGen">Account Since : 2024-Jan-22</div>
+            <div id="vvcName">Vanced Voxiom Client</div>
+        </div>
     </div>
 
+    <link rel="stylesheet" href="vvcpfp.css">
+    <input type="button" value="Download" onclick="genCanvas()">
 </body>
+
+<script>
+    const genCanvas = async () => {
+        await html2canvas(document.getElementById("profileBox"), {
+            height: 578,
+            width: 838,
+            backgroundColor: null,
+            useCORS: true,
+            x: 0
+        }).then((canvas) => {
+            canvas.setAttribute("style", "display:none")
+            canvas.setAttribute("id", "pfpCanvas")
+            document.body.appendChild(canvas)
+        }).then(() => {
+            const now = new Date();
+            const month = ('0' + (now.getMonth() + 1)).slice(-2);
+            const date = ('0' + now.getDate()).slice(-2);
+            const hours = ('0' + now.getHours()).slice(-2);
+            const minutes = ('0' + now.getMinutes()).slice(-2);
+            const seconds = ('0' + now.getSeconds()).slice(-2);
+            const formattedDateTime = `${month}${date}${hours}${minutes}${seconds}`;
+            let canvas = document.getElementById("pfpCanvas")
+            let link = document.createElement("a")
+            link.href = canvas.toDataURL("image/png")
+            link.download = "profile" + formattedDateTime + ".png"
+            link.click()
+        })
+    }
+</script>
 
 </html>
