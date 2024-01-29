@@ -20,7 +20,7 @@
 #head {
     display: grid;
     grid-template-areas:
-        "icon name name clan gems"
+        "icon name name name gems"
         "icon levl prog prog gems";
     grid-template-columns: 100px 40px 340px 180px auto;
     grid-gap: 5px;
@@ -50,13 +50,17 @@
 }
 
 #clan {
-    grid-area: clan;
     font-size: 30px;
+    margin-left: 10px;
 }
 
 #name {
-    grid-area: name;
     font-size: 30px;
+}
+
+#nameHolder {
+    grid-area: name;
+    display: flex;
 }
 
 #lv {
