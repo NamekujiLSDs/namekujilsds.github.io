@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>連番とか前後につけたりとか</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div id="inoutZone">
+    <div id="ioBox">
+      <h2>入力</h2>
+      <textarea name="stringInput" id="inp" autofocus oninput="doProcess()"></textarea>
+      <div id="count">
+        <div id="inpLetterNum">文字数 : 0</div>
+        <div id="inpColNum">行数 : 1</div>
+      </div>
+
+    </div>
+    <div id="ioBox">
+      <h2>出力</h2>
+      <input type="button" onclick="copyOutput()" value="結果をクリップボードにコピーする"> <br>
+      </button>
+      <textarea name="stringOutput" id="outp"></textarea>
+      <div id="count">
+        <div id="outpLetterNum">文字数 : 0</div>
+        <div id="outpColNum">行数 : 1</div>
+      </div>
+
+    </div>
+  </div>
+  <div id="settingZone">
+    <h2>設定ズ</h2>
+    <div class="setB">
+      <label for="joinBefore">
+        <input type="checkbox" name="joinBefore" id="joinBefore" oninput="doProcess()">
+        各行の先頭に文字列を挿入する
+      </label>
+      <input type="text" name="joinBeforeString" id="joinBeforeString" class="settingInput" oninput="doProcess()"
+        placeholder="挿入する文字列" autocomplete="off">
+    </div>
+    <div class="setB">
+      <label for="joinAfter">
+        <input type="checkbox" name="joinAfter" id="joinAfter" oninput="doProcess()">
+        各行の終端に文字列を挿入する
+      </label>
+      <input type="text" name="joinAfterString" id="joinAfterString" class="settingInput" oninput="doProcess()"
+        placeholder="挿入する文字列" autocomplete="off">
+    </div>
+    <div class="setB">
+      <label>
+        <input type="checkbox" name="joinColBefore" id="joinColBeforeCheck" oninput="doProcess()">
+        各行の前に行を挿入する
+      </label>
+      <textarea type="text" name="joinColBefore" id="joinColBefore" class="settingInput" oninput="doProcess()"
+        placeholder="挿入する文字列"></textarea>
+    </div>
+    <div class="setB">
+      <label>
+        <input type="checkbox" name="joinColAfter" id="joinColAfterCheck" oninput="doProcess()">
+        各行の後に行を挿入する
+      </label>
+      <textarea type="text" name="joinColAfter" id="joinColAfter" class="settingInput" oninput="doProcess()"
+        placeholder="挿入する文字列"></textarea>
+    </div>
+    <div class="setB">
+      連番の始まりの数字
+      <input type="number" name="" value=1 id="serialStart" oninput="doProcess()" autocomplete="off">
+    </div>
+    <div class="setB">
+      連番の増加量
+      <input type="number" name="" value=1 id="serialInc" oninput="doProcess()" autocomplete="off">
+    </div>
+    <div class="setB">
+      <input type="button" onclick="settingReset()" class="settingReset" value="設定をリセットする">
+    </div>
+
+  </div>
+  <!-- <div id="tips">
+    <h2>つかえる構文</h2>
+    <li>${1_num} - 1から始まる連番</li>
+    <li>${0_num+2} - 0から始まり2ずつ増える連番</li>
+  </div> -->
+  <script src="script.js"></script>
+</body>
+
+</html>

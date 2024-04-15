@@ -1,0 +1,11 @@
+body{
+    background:#333;
+    color:white;
+}
+
+a{
+    color:rgb(0, 255, 128)
+}
+*::selection{
+    background-color: rgba(89, 0, 255, 0.288);
+}

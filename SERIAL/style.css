@@ -1,0 +1,64 @@
+body{
+    background:#444;
+    color:White;
+    display: flex;
+    flex-direction:row;
+}
+
+*{
+    /* border:red 1px solid;    */
+}
+#inp{
+    width:600px;
+    height:350px;
+    resize:unset;
+}
+#outp{
+    width: 600px;
+    height:350px;
+    resize: unset;
+    margin-top:5px;
+}
+#inoutZone{
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+
+    margin-left:50px;
+}
+#settingZone{
+    display: flex;
+    flex-direction: column;
+    width:400px;    
+}
+h2{
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+.settingInput{
+    margin-left: 30px;
+    width:300px
+}
+.settingReset{
+    float:right
+}
+#count{
+    flex-direction: row;
+    display: flex;
+    color:rgb(184, 184, 184)
+}
+#count *{
+    margin-right: 10px;
+}
+textarea,input[type="text"]{
+    background: rgb(95, 95, 95);
+    color:white;
+    border:#aaa solid 1px
+}
+*:focus{
+    outline:1px solid white ;
+    box-shadow: 0 0 5px white;
+}
+*::-webkit-input-placeholder{
+    color:lightgray
+}
