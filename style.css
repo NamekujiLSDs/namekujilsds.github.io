@@ -1,6 +1,8 @@
 body{
     background:#333;
     color:white;
+    margin: unset;
+    padding: unset;
 }
 
 a{
@@ -8,4 +10,12 @@ a{
 }
 *::selection{
     background-color: rgba(89, 0, 255, 0.288);
+}
+header{
+    background:#afb0ff;
+    height:60px;
+}
+#title{
+    font-size:30px;
+    align-self: center;
 }

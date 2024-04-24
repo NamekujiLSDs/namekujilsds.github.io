@@ -31,59 +31,63 @@
 
     </div>
   </div>
-  <div id="settingZone">
-    <h2>設定ズ</h2>
-    <div class="setB">
-      <label for="joinBefore">
-        <input type="checkbox" name="joinBefore" id="joinBefore" oninput="doProcess()">
-        各行の先頭に文字列を挿入する
-      </label>
-      <input type="text" name="joinBeforeString" id="joinBeforeString" class="settingInput" oninput="doProcess()"
-        placeholder="挿入する文字列" autocomplete="off">
-    </div>
-    <div class="setB">
-      <label for="joinAfter">
-        <input type="checkbox" name="joinAfter" id="joinAfter" oninput="doProcess()">
-        各行の終端に文字列を挿入する
-      </label>
-      <input type="text" name="joinAfterString" id="joinAfterString" class="settingInput" oninput="doProcess()"
-        placeholder="挿入する文字列" autocomplete="off">
-    </div>
-    <div class="setB">
-      <label>
-        <input type="checkbox" name="joinColBefore" id="joinColBeforeCheck" oninput="doProcess()">
-        各行の前に行を挿入する
-      </label>
-      <textarea type="text" name="joinColBefore" id="joinColBefore" class="settingInput" oninput="doProcess()"
-        placeholder="挿入する文字列"></textarea>
-    </div>
-    <div class="setB">
-      <label>
-        <input type="checkbox" name="joinColAfter" id="joinColAfterCheck" oninput="doProcess()">
-        各行の後に行を挿入する
-      </label>
-      <textarea type="text" name="joinColAfter" id="joinColAfter" class="settingInput" oninput="doProcess()"
-        placeholder="挿入する文字列"></textarea>
-    </div>
-    <div class="setB">
-      連番の始まりの数字
-      <input type="number" name="" value=1 id="serialStart" oninput="doProcess()" autocomplete="off">
-    </div>
-    <div class="setB">
-      連番の増加量
-      <input type="number" name="" value=1 id="serialInc" oninput="doProcess()" autocomplete="off">
-    </div>
-    <div class="setB">
-      <input type="button" onclick="settingReset()" class="settingReset" value="設定をリセットする">
-    </div>
+  <div>
+    <div id="settingZone">
+      <h2>設定ズ</h2>
+      <div class="setB">
+        <label for="joinBefore">
+          <input type="checkbox" name="joinBefore" id="joinBefore" oninput="doProcess()">
+          各行の先頭に文字列を挿入する
+        </label>
+        <input type="text" name="joinBeforeString" id="joinBeforeString" class="settingInput" oninput="doProcess()"
+          placeholder="挿入する文字列" autocomplete="off">
+      </div>
+      <div class="setB">
+        <label for="joinAfter">
+          <input type="checkbox" name="joinAfter" id="joinAfter" oninput="doProcess()">
+          各行の終端に文字列を挿入する
+        </label>
+        <input type="text" name="joinAfterString" id="joinAfterString" class="settingInput" oninput="doProcess()"
+          placeholder="挿入する文字列" autocomplete="off">
+      </div>
+      <div class="setB">
+        <label>
+          <input type="checkbox" name="joinColBefore" id="joinColBeforeCheck" oninput="doProcess()">
+          各行の前に行を挿入する
+        </label>
+        <textarea type="text" name="joinColBefore" id="joinColBefore" class="settingInput" oninput="doProcess()"
+          placeholder="挿入する文字列"></textarea>
+      </div>
+      <div class="setB">
+        <label>
+          <input type="checkbox" name="joinColAfter" id="joinColAfterCheck" oninput="doProcess()">
+          各行の後に行を挿入する
+        </label>
+        <textarea type="text" name="joinColAfter" id="joinColAfter" class="settingInput" oninput="doProcess()"
+          placeholder="挿入する文字列"></textarea>
+      </div>
+      <div class="setB">
+        連番の始まりの数字
+        <input type="number" name="" value=1 id="serialStart" oninput="doProcess()" autocomplete="off">
+      </div>
+      <div class="setB">
+        連番の増加量
+        <input type="number" name="" value=1 id="serialInc" oninput="doProcess()" autocomplete="off">
+      </div>
+      <div class="setB">
+        <input type="button" onclick="settingReset()" class="settingReset" value="設定をリセットする">
+      </div>
 
-  </div>
-  <!-- <div id="tips">
-    <h2>つかえる構文</h2>
-    <li>${1_num} - 1から始まる連番</li>
-    <li>${0_num+2} - 0から始まり2ずつ増える連番</li>
-  </div> -->
-  <script src="script.js"></script>
+    </div>
+    <div id="tips">
+      <h2>おヒント</h2>
+      <li>{num} - 連番</li>
+      <li>文字数カウント - 改行記号と絵文字はカウント壊れる
+      </li>
+    </div>
+</body>
+</div>
+<script src="script.js"></script>
 </body>
 
 </html>

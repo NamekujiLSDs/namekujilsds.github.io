@@ -18,12 +18,12 @@ const joinColAfterString = document.getElementById("joinColAfter")
 const copyOutput = () => {
     let outputZone = document.getElementById("outp")
     let outputVal = outputZone.value
-    console.log(outputVal)
+    // console.log(outputVal)
     navigator.clipboard.writeText(outputVal)
 }
 const doProcess = () => {
     const valList = stringInput.value.split("\n")
-    console.log(valList)
+    // console.log(valList)
     let joinABList = []
     let finalList = []
     let finalStrings = ``
@@ -43,7 +43,7 @@ const doProcess = () => {
             str = str.replace("{num}", count)
             v = v + str
         }
-        console.log(v)
+        // console.log(v)
         joinABList.push(v)
         count = count + (document.getElementById("serialInc").value - 0)
     }
@@ -62,14 +62,36 @@ const doProcess = () => {
         }
         count = count + (document.getElementById("serialInc").value - 0)
     }
-    console.log(finalList)
+    // console.log(finalList)
     for (val of finalList) {
         finalStrings = finalStrings + val + "\n"
     }
     stringOutput.value = finalStrings
+    letterCount()
 }
 
 
+const letterCount = () => {
+    let inpLC = ""
+    let outpLC = ""
+    let inpL = stringInput.value.split("\n")
+    for (let val of inpL) {
+        inpLC = inpLC + val
+    }
+    inpLC = inpLC.length
+    let outpL = stringOutput.value.split("\n")
+    for (let val of outpL) {
+        outpLC = outpLC + val
+    }
+    outpLC = outpLC.length
+
+    let inpCC = "";
+    let outpCC = "";
+    let inpC = stringInput.value.split("\n")
+    let outpC = stringOutput.value.split("\n")
+    inpCC = inpC.length
+    outpCC = outpC.length
+}
 
 const test = () => {
     let anal = 1
