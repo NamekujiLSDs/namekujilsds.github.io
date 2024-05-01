@@ -1,0 +1,103 @@
+{
+    "crosshair": [
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-green.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-aqua.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-magenta.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-orange.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-pink.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-purple.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-red.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-white.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Cross-yellow.png"
+        }
+    ]
+}
