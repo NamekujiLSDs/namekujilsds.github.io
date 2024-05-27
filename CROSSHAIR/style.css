@@ -1,4 +1,134 @@
-#narrowDown{
-    display: flex;
-    flex-direction: column;
+body {
+  background-color: #222;
+}
+
+#narrowDown {
+  color: white;
+  width: 150px;
+}
+#contents {
+  background: gray;
+  border: 2px white solid;
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+#crosshairBox {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-in;
+}
+label#colorPicker {
+  display: flex;
+}
+#copy,
+#download {
+  background: white;
+  display: flex;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  margin: 0 5px;
+  border: 4px solid #333;
+}
+#crosshairInfo {
+  display: flex;
+  flex-direction: row;
+  height: 24px;
+  width: 174px;
+  align-items: center;
+  justify-content: center;
+}
+img {
+  max-width: 160px;
+}
+#zoomedImg {
+  max-width: unset;
+  image-rendering: pixelated;
+}
+
+#closer {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  animation: appi 0.5s;
+}
+@keyframes appi {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+#bgSelect {
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+#settingBox {
+  display: flex;
+  width: 500px;
+  justify-content: space-between;
+}
+#narrowDown label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#narrowDown input[type='checkbox'] {
+  transition: 0.2s;
+  appearance: unset;
+  background: rgba(255, 86, 86, 0.747);
+  width: 30px;
+  height: 6px;
+}
+#narrowDown input[type='checkbox']:checked {
+  transition: 0.2s;
+  appearance: unset;
+  background: rgba(86, 230, 255, 0.747);
+  width: 30px;
+  height: 6px;
+}
+#narrowDown input[type='checkbox']:checked::after {
+  transition: 0.2s;
+  content: ' ';
+  height: 14px;
+  width: 14px;
+  margin-top: -4px;
+  margin-left: 16px;
+  background-color: rgb(255, 255, 255);
+  display: block;
+}
+#narrowDown input[type='checkbox']::after {
+  transition: 0.2s;
+  content: ' ';
+  height: 14px;
+  width: 14px;
+  margin-top: -4px;
+  /* margin-left:16px; */
+  background-color: rgb(255, 255, 255);
+  display: block;
+}
+#zoomBgChange {
+  position: fixed;
+  bottom: 0;
+  left: 0;
 }

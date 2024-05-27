@@ -9,6 +9,17 @@
             "haveOutline": true,
             "animated": false,
             "funny": false,
+            "url": "img/Cross-aqua.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
             "url": "img/Cross-green.png"
         },
         {
@@ -20,7 +31,7 @@
             "haveOutline": true,
             "animated": false,
             "funny": false,
-            "url": "img/Cross-aqua.png"
+            "url": "img/Cross-lime.png"
         },
         {
             "cross": true,
@@ -98,6 +109,347 @@
             "animated": false,
             "funny": false,
             "url": "img/Cross-yellow.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-aqua.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-green.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-lime.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-magenta.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-orange.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-pink.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-purple.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-red.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-white.png"
+        },
+        {
+            "cross": false,
+            "tType": true,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/CrossT-yellow.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-aqua.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-green.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-lime.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-magenta.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-orange.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-pink.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-purple.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-red.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-white.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": true,
+            "scope": false,
+            "haveOutline": true,
+            "animated": false,
+            "funny": false,
+            "url": "img/Dot-yellow.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/scope.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": true,
+            "funny": false,
+            "url": "img/smooth_by_Vixj.gif"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/icon_15.png"
+        },
+        {
+            "cross": true,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": false,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/Glow_complicated_crosshair_white.webp"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/undcycsco.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/purpl_2.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/PKEIJUHY.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/New_Project_1.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/undChSc.png"
+        },
+        {
+            "cross": false,
+            "tType": false,
+            "cycle": false,
+            "dot": false,
+            "scope": true,
+            "haveOutline": false,
+            "animated": false,
+            "funny": false,
+            "url": "img/Scope1.png"
         }
-    ]
+    ],
+    "sankou": {
+        "cross": true,
+        "tType": false,
+        "cycle": false,
+        "dot": false,
+        "scope": false,
+        "haveOutline": true,
+        "animated": false,
+        "funny": false,
+        "url": "img/names.png"
+    }
 }

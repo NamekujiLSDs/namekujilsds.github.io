@@ -12,35 +12,69 @@
 </head>
 
 <body>
-    <div id="narrowDown">
-        <label for="cross">Cross
-            <input type="checkbox" name="cross" id="cross" checked>
-        </label>
-        <label for="tType">T style
-            <input type="checkbox" name="tType" id="tType" checked>
-        </label>
-        <label for="cycle">Cycle
-            <input type="checkbox" name="cycle" id="cycle" checked>
-        </label>
-        <label for="dot">Dot
-            <input type="checkbox" name="dot" id="dot" checked>
-        </label>
-        <label for="scope">Scope
-            <input type="checkbox" name="scope" id="scope" checked>
-        </label>
-        <label for="haveOutline">Have Outline
-            <input type="checkbox" name="haveOutline" id="haveOutline" checked>
-        </label>
-        <label for="animated">Animated
-            <input type="checkbox" name="animated" id="animated" checked>
-        </label>
-        <label for="funny">Fun
-            <input type="checkbox" name="funny" id="funny" checked>
-        </label>
+    <div id="settingBox">
+        <div id="narrowDown">
+            <strong>Narrow Down</strong>
+            <label for="cross">Cross
+                <input type="checkbox" name="cross" id="cross" checked onclick="changeNarrow(this)">
+            </label>
+            <label for="tType">T style
+                <input type="checkbox" name="tType" id="tType" checked onclick="changeNarrow(this)">
+            </label>
+            <label for="cycle">Cycle
+                <input type="checkbox" name="cycle" id="cycle" checked onclick="changeNarrow(this)">
+            </label>
+            <label for="dot">Dot
+                <input type="checkbox" name="dot" id="dot" checked onclick="changeNarrow(this)">
+            </label>
+            <label for="scope">Scope
+                <input type="checkbox" name="scope" id="scope" checked onclick="changeNarrow(this)">
+            </label>
+            <label for="haveOutline">Have Outline
+                <input type="checkbox" name="haveOutline" id="haveOutline" checked onclick="changeNarrow(this)">
+            </label>
+            <label for="animated">Animated
+                <input type="checkbox" name="animated" id="animated" checked onclick="changeNarrow(this)">
+            </label>
+            <label for="funny">Fun
+                <input type="checkbox" name="funny" id="funny" checked onclick="changeNarrow(this)">
+            </label>
+        </div>
+        <div id="bgSelect">
+            <strong>Crosshair Background</strong>
+            <label id="colorPicker">
+                <div id="colDisplay">#808080</div>
+                <input type="color" name="" id="colorPicker" value="#808080" oninput="pickCol(this.value)">
+            </label>
+            <strong>Zoomed Background </strong>
+            <label id="colorPicker2">
+                <div id="colDisplay2">#FFFFFF</div>
+                <input type="color" name="" id="colorPicker2" value="#808080" oninput="pickCol2(this.value)">
+            </label>
+        </div>
+    </div>
+
+    <div id="zoom" onclick="exitZoom(this)">
+        <div id="closer">
+            <img id="zoomedImg" src="img/BubblesOrange.webp" value="100">
+
+        </div>
+    </div>
     </div>
     <div id="crosshairs">
-
     </div>
+
+    <style id="crossCss"></style>
+    <style id="tTypeCss"></style>
+    <style id="cycleCss"></style>
+    <style id="dotCss"></style>
+    <style id="scopeCss"></style>
+    <style id="haveOutlineCss"></style>
+    <style id="animatedCss"></style>
+    <style id="funnyCss"></style>
+    <style id="pageSize"></style>
+    <style id="crosshairBgSet"></style>
+    <style id="zoomColor"></style>
 </body>
 
 </html>
