@@ -267,4 +267,5 @@ const clearRanking = v => {
 }
 document.addEventListener("DOMContentLoaded", () => {
     generateDoms()
+    ranking()
 })
