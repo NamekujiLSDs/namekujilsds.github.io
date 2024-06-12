@@ -1,5 +1,3 @@
-@-moz-document domain("voxiom.io") {
-/* [0] */
 @font-face {
     font-family: 'M PLUS Rounded 1c';
     font-style: normal;
@@ -1145,5 +1143,4 @@
 }
 *:has( > *[id*=google_ads]) {
     display: none!important
-}
 }
