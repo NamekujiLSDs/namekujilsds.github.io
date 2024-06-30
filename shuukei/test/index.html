@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const characters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
+        const random = () => {
+            for (i = 0; i < 10; i++) {
+                console.log(Math.floor(Math.random() * characters.length - 0))
+            }
+        }
+        document.addEventListener("DOMContentLoaded", random)
+    </script>
+</body>
+
+</html>
