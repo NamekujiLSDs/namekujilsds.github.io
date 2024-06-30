@@ -1,0 +1,50 @@
+body {
+    background: #222;
+}
+
+#startBtn {
+    background: rgb(83, 140, 167);
+    font-size: 40px;
+    color: white;
+    width: 500px;
+    padding: 50px;
+    border-radius: 15px;
+    cursor: pointer;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: unset;
+}
+
+#count {
+    color: white;
+    width: 500px;
+    padding: 50px;
+    border-radius: 15px;
+    cursor: pointer;
+    position: fixed;
+    font-size: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+#count div {
+    animation: count .2s;
+}
+
+@keyframes count {
+    0% {
+        font-size: 0;
+    }
+
+    100% {
+        font-size: 200px;
+    }
+}
+
+.hide {
+    display: none !important;
+}
