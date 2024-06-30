@@ -14,5 +14,6 @@ body {
     text-align: center;
     align-content: center;
     font-size: 50px;
-    color: #fff4
+    color: #fff4;
+    border: #aaa 4px dashed
 }

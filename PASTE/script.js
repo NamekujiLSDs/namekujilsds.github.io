@@ -6,7 +6,6 @@ document.addEventListener('paste', async (event) => {
         if (item.kind === 'file' && item.type.startsWith('image/')) {
             const blob = item.getAsFile();
             const url = URL.createObjectURL(blob);
-
             const date = new Date();
             const year = String(date.getFullYear()).slice(2);
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -15,7 +14,6 @@ document.addEventListener('paste', async (event) => {
             const minute = String(date.getMinutes()).padStart(2, '0');
             const second = String(date.getSeconds()).padStart(2, '0');
             const fileName = `${year}${month}${day}${hour}${minute}${second}.${blob.type.split('/')[1]}`;
-
             const a = document.createElement('a');
             a.href = url;
             a.download = fileName;
