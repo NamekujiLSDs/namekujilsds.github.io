@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>color picker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <div id="colorSelector">
+        <div id="picker">
+            <div id="pickerTitle">
+                Black
+            </div>
+            <input type="color" name="black" id="pickBlack" oninput="pickColor('blackD',this.value)">
+        </div>
+        <div id="picker">
+            <div id="pickerTitle">
+                White
+            </div>
+            <input type="color" name="black" id="pickWhite" oninput="pickColor('whiteD',this.value)">
+        </div>
+        <div id="picker">
+            <div id="pickerTitle">
+                Accent
+            </div>
+            <label for="pm">
+                増減設定
+                <input type="number" name="pm" id="pm" value="30" oninput="saveVal('pm',this.value)">
+            </label>
+            <input type="button" value="自動計算" onclick="setDarkAndLight()">
+            <input type="color" name="black" id="pickAccent" oninput="pickColor('accentD',this.value)">
+        </div>
+        <div id="picker">
+            <div id="pickerTitle">
+                Dark Accent
+            </div>
+            <input type="color" name="black" id="pickDarkAccent" oninput="pickColor('d-accentD',this.value)">
+        </div>
+        <div id="picker">
+            <div id="pickerTitle">
+                Light Accent
+            </div>
+            <input type="color" name="black" id="pickLightAccent" oninput="pickColor('l-accentD',this.value)">
+        </div>
+    </div>
+
+    <div id="colorDisplay">
+        <div id="display" class="blackD">
+            <div id="colorName">BLACK</div>
+        </div>
+        <div id="display" class="whiteD">
+            <div id="colorName">WHITE</div>
+        </div>
+        <div id="display" class="accentD">
+            <div id="colorName">ACCENT</div>
+        </div>
+        <div id="display" class="d-accentD">
+            <div id="colorName">DARK ACCENT</div>
+        </div>
+        <div id="display" class="l-accentD">
+            <div id="colorName">LIGHT ACCENT</div>
+        </div>
+    </div>
+</body>
+
+</html>
