@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoxMate</title>
+    <link rel="stylesheet" href="../style.css">
+    <script src="./script.js"></script>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <h1>VoxMate</h1>
+            <h3 id="versionDisplay">${version}</h3>
+        </div>
+    </header>
+
+    <main>
+        <section id="Download">
+            <div class="container">
+                <h2>Download</h2>
+                <p>Please agree to the <a href="../pp.html" target="_blank">Privacy Policy</a> and <a href="../tos.html"
+                        target="_blank">Terms of Use</a> before downloading.</p>
+                <br>
+                <a onclick="dls()" id="downloadButton">Download
+                    <span id="ver">versionDisplay</span></a>
+            </div>
+            <div id="downloadStart" class="container"></div>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Namekuji. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

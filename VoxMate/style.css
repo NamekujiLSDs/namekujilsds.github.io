@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap');
+
+body {
+    font-family: "Quicksand", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* グローバルスタイル */
+body {
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    color: #ddd;
+    background-color: #252525;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ヘッダー */
+header {
+    background: #333;
+    color: #ddd;
+    padding: 1rem 0;
+}
+
+header h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 3rem;
+}
+
+header nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1rem 0 0;
+}
+
+header nav ul li a {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* セクション */
+section {
+    margin: 2rem 0;
+    padding: 1rem;
+    background: #444;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+section h2 {
+    margin-top: 0;
+    color: #fdfdfd;
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+/* フォーム */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+form label {
+    font-weight: bold;
+}
+
+form input,
+form textarea,
+form button {
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+form button {
+    background: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
+form button:hover {
+    background: #555;
+}
+
+/* フッター */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+}
+
+/* Discorのバナー */
+#discordbanner {
+    height: 100px;
+}
+
+#discordbanner:hover {
+    filter: drop-shadow(0 0 2px blue);
+}
+
+/* urlの色 */
+a {
+    color: rgb(139, 255, 255);
+}
+
+#downloadLink {
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 20px;
+    background: #51a9af;
+}
+
+#tutorialLink {
+    color: white;
+    font-weight: bolder;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 20px;
+    background: hsl(152, 37%, 50%);
+}
+
+#versionDisplay {
+    text-align: center;
+}
+
+#downloadButton {
+    text-align: center;
+    padding: 20px;
+    color: white;
+    background: #61ff96;
+    border-radius: 20px;
+    font-weight: bolder;
+    cursor: pointer;
+    text-shadow: 0 0 5px black;
+    transition: .2s;
+    margin: 20px;
+}
+
+#downloadButton:hover {
+    background: #2cbd5c;
+    transition: .2s;
+}
+
+#downloadStart {
+    margin-top: 30px;
+}
