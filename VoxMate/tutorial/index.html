@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VoxMate - Tutorial</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 
 <body>
@@ -25,81 +27,287 @@
                 Join Discord
             </div>
         </nav>
-
         <!-- メインコンテンツ -->
         <main class="content">
             <section id="quick" class="settingBody">
                 <h2>Quick Setting</h2>
-                <p>Turn VoxMate settings on or off with a single click! </p>
+                <div id="divP">Turn VoxMate settings on or off with a single click! </div>
                 <div class="settingContents">
                     <h3>Enable Custom Crosshair</h3>
-                    <p>Turn on/off custom crosshair display. <br>
-                        For more details : <a href="#crosshair">#Crosshair</a></p>
+                    <div id="divP">Turn on/off custom crosshair display. <br>
+                        For more details : <a href="#crosshair">#Crosshair</a></div>
                 </div>
                 <div class="settingContents">
                     <h3>Enable Custom CSS</h3>
-                    <p>Turn on/off custom css. <br>
-                        For more details : <a href="#css">#css</a></p>
+                    <div id="divP">Turn on/off custom css. <br>
+                        For more details : <a href="#css">#css</a></div>
                 </div>
                 <div class="settingContents">
                     <h3>Enable Custom Resource Swapper</h3>
-                    <p>Turn on/off resource swapper. <br>
+                    <div id="divP">Turn on/off resource swapper. <br>
                         Require restart client <br>
-                        For more details : <a href="#swapper">#Swapper</a> </p>
+                        For more details : <a href="#swapper">#Swapper</a> </div>
                 </div>
                 <div class="settingContents">
                     <h3>Enable Ad Blocker</h3>
-                    <p>Turn on/off Ad Blocker. <br>
+                    <div id="divP">Turn on/off Ad Blocker. <br>
                         Require restart client <br>
-                        For more details : <a href="#adblocker">#Ad Blocker</a> </p>
+                        For more details : <a href="#adblocker">#Ad Blocker</a> </div>
                 </div>
                 <div class="settingContents">
                     <h3>Enable Unlimited FPS</h3>
-                    <p>Turn on/off unlimited FPS. <br>
+                    <div id="divP">Turn on/off unlimited FPS. <br>
                         Require restart client
-                        For more details : <a href="#advanced">#Advanced</a></p>
+                        For more details : <a href="#advanced">#Advanced</a></div>
                 </div>
             </section>
             <section id="crosshair" class="settingBody">
                 <h2>Crosshair</h2>
-                <p>You can apply any crosshair image of your choice. <br>
-                    If necessary, switch the in-game crosshair setting to “NONE”.</p>
+                <div id="divP">You can apply any crosshair image of your choice. <br>
+                    If necessary, switch the in-game crosshair setting to “NONE”.</div>
                 <div class="settingContents">
                     <h3>Enable Custom Crosshair</h3>
-                    <p>Turn on/off custom crosshair display. <br>
-                        It is enabled by default. </p>
+                    <div id="divP">Turn on/off custom crosshair display. <br>
+                        It is enabled by default. </div>
                 </div>
                 <div class="settingContents">
                     <h3>Crosshair Type</h3>
-                    <p>
-                        ・URL<br>
-                        <span class="indent">
-                            Load an image from a URL.
-                        </span> <br>
-                        <span class="indent">
+                    <div id="divP">
+                        <b>・URL</b>
+                        <div class="indent">
+                            Load an crosshair image from a URL.
+                        </div>
+                        <div class="indent">
                             png,gif is recommended.
-                        </span> <br>
-                        ・Local<br>
-                        ・List<br>
-                    </p>
+                        </div>
+                        <b>・Local</b><br>
+                        <div class="indent">Load an crosshair image from local file.</div>
+                        <b>・List</b><br>
+                        <div class="indent">Select crosshair image from a crosshair folder in swapper folder.
+                            <br>
+                        </div>
+                        <div class="indent">More info in <a href="#swapper">#Swapper</a>.
+                        </div>
+                    </div>
                 </div>
                 <div class="settingContents">
-                    <h3>Enable Custom Resource Swapper</h3>
-                    <p>Turn on/off resource swapper. <br>
-                        Require restart client <br>
-                        For more details : <a href="#swapper">#Swapper</a> </p>
+                    <h3>Crosshair URL</h3>
+                    <div id="divP">Set the URL for the crosshair. <br>
+                        It is recommended to use imgur or similar.</div>
                 </div>
                 <div class="settingContents">
-                    <h3>Enable Ad Blocker</h3>
-                    <p>Turn on/off Ad Blocker. <br>
-                        Require restart client <br>
-                        For more details : <a href="#adblocker">#Ad Blocker</a> </p>
+                    <h3>Local Crosshair File</h3>
+                    <div id="divP">Locally stored crosshair files can be selected. <br>
+                        Only png,gif,apng can be used</div>
+                </div>
+                <div class="settingContents">
+                    <h3>Local Crosshair List</h3>
+                    <div id="divP">You can select crosshairs in the Swapper folder. <br>
+                        More info in <a href="#swapper">#Swapper</a>.
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Auto Set Size</h3>
+                    <div id="divP">Obtains the native size of the image used for crosshairs and sets it automatically
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Crosshair Width</h3>
+                    <div id="divP">Sets the width of the crosshairs.
+                        <br>1px-1024px
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Crosshair Height</h3>
+                    <div id="divP">Sets the height of the crosshairs.
+                        <br>1px-1024px
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Crosshair Opacity</h3>
+                    <div id="divP">Sets the transparency of the crosshairs. <br>
+                        0 is completely transparent and 1 is opaque.</div>
+                </div>
+                <div class="settingContents">
+                    <h3>Crosshair Rendering Method</h3>
+                    <div id="divP">Sets the algorithm for scaling images when displaying crosshair images. <br>
+                        <b>・Pixelated</b> <br>
+                        <div class="indent">The image is scaled with the "nearest neighbor" or similar algorithm to the
+                            nearest integer multiple of the original image size, then uses smooth interpolation to bring
+                            the image to the final desired size. This is intended to preserve a "pixelated" look without
+                            introducing scaling artifacts when the upscaled resolution isn't an integer multiple of the
+                            original.</div> <br>
+                        <b>・Crisp Edges </b><br>
+                        <div class="indent">
+                            The image is scaled with an algorithm such as "nearest neighbor" that preserves contrast and
+                            edges in the image. Generally intended for images such as pixel art or line drawings, no
+                            blurring or color smoothing occurs.
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="css" class="settingBody">
+                <h2>CSS</h2>
+                <div id="divP">User-created CSS can be reflected</div>
+                <div class="settingContents">
+                    <h3>Enable Custom CSS</h3>
+                    <div id="divP">Turning custom CSS on and off. </div>
+                </div>
+                <div class="settingContents">
+                    <h3>CSS Type</h3>
+                    <div id="divP">
+                        <b>・URL</b>
+                        <div class="indent">You can load CSS from a URL. <br>
+                            You must have a link to CSS that is compatible with CORS (such as those published via
+                            GithubPages.)</div>
+                        <b>・Local File</b>
+                        <div class="indent">Load locally stored CSS. <br>
+                            You must select local CSS from the “Local CSS File” section.</div>
+                        <b>・List</b>
+                        <div class="indent">You can select CSS from the list of CSS files placed in the swapper folder.
+                            <br>
+                            More info in <a href="#swapper">#Swapper</a>.
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="swapper" class="settingBody">
+                <h2>Swapper</h2>
+                <div id="divP">Explanation of resource swappers and other resources. <br>
+                    Please ask questions on Discord if you have difficulty understanding any part. <br>
+                    <strong>*Basically, the client needs to be restarted.</strong>
+                </div>
+                <div class="settingContents">
+                    <h3>About Swapper Folder</h3>
+                    <div id="divP">The swapper folder is located in <span id="path">documents/vmc-swap</span> <br>
+                        You can also open it by pressing <span id="path">Windows + R</span> and enter
+                        <span id="path">%userprofile%\documents\vmc-swap</span> <br><br>
+                        <b>About CSS and Crosshair List</b>
+                        <br>
+                        <div class="indent">
+                            If you have run VoxMate at least once, the folders “css” and “crosshair” are created in the
+                            swapper folder. <br>(If they do not exist, please create them.) <br>
+                            Place your CSS and image files in those folders and they will appear in the “List”.
+                        </div>
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Use Default Swapper List</h3>
+                    <div id="divP">Use the swap list that is included by default. <br>
+                        Default listing details: <a href="./swapper-default.json" target="_blank"><span
+                                class="material-symbols-outlined">
+                                open_in_new
+                            </span>swapper-default.json</a>
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Use User Swapper List</h3>
+                    <div id="divP">Enable User-created swapper list. <br>
+                        The swapper list must be named <span id="path">swapper-user.json</span> and located in the <span
+                            id="path">C:\Users\{username}\Documents\vmc-swap</span> folder. <br>
+                        The structure of the list should be as follows: <br>
+                        <pre><code>{
+    "https://voxiom.io/example.jpg" : "FileName1.jpg",
+    "https://voxiom.io/sound.ogg" : "FileName2.ogg", 
+    "https://voxiom.io/logo.png" : "Folder/FileName3.png"
+}</code></pre> <br>
+                        If the user list and the default list contain the same URL and both are valid, the user list
+                        takes precedence.
+                    </div>
+                </div>
+            </section>
+            <section id="adblocker" class="settingBody">
+                <h2>Ad Blocker</h2>
+                <div id="divP">Block ads.</div>
+                <div class="settingContents">
+                    <h3>About Ad Blocker</h3>
+                    <div id="divP">Adblocker blocks all those requests if the URLs specified in the block list are
+                        included in the web request. <br>
+                        If you are trying to work with something you do not know what you are doing, DO NOT TOUCH IT.
+
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Use Default Block List</h3>
+                    <div id="divP">Use the block list that is included by default. <br>
+                        Default list details: <a href="./adblock-default.json" target="_blank"><span
+                                class="material-symbols-outlined">
+                                open_in_new
+                            </span>adblock-default.json</a>
+                    </div>
+                </div>
+                <div class="settingContents">
+                    <h3>Use User Block List</h3>
+                    <div id="divP">User user-created adblock list, <br>
+                        The name of the block list must be <span id="path">adblock-user.json</span> and must be placed
+                        directly under <span id="path">C:\Users\{username}\Documents\vmc-swap</span>. <br>
+                        The structure of the list should be as follows:
+                        <pre><code>
+{
+    "urls":[
+        "example.com",
+        "ads.com",
+        "adserver.com
+    ]
+}</code></pre>
+                    </div>
+                </div>
+            </section>
+            <section id="advanced" class="settingBody">
+                <h2>Advanced</h2>
+                <div id="divP"><strong>If you do not understand, do not touch.</strong>
                 </div>
                 <div class="settingContents">
                     <h3>Enable Unlimited FPS</h3>
-                    <p>Turn on/off unlimited FPS. <br>
-                        Require restart client
-                        For more details : <a href="#advanced">#Advanced</a></p>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Enable Discord RPC</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Disable GPU Vsync</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Change Angle Backend</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Enable in-process GPU</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Enable QUIC</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Enable GPU Rasterzation</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Enable Pointer Lock Options</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Enable Heavy Ad Intervention</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Ignore GPU Blocklist</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Enable Zero Copy</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Clear Cache</h3>
+                    <div id="divP"></div>
+                </div>
+                <div class="settingContents">
+                    <h3>Reset All Data</h3>
+                    <div id="divP"></div>
                 </div>
             </section>
         </main>

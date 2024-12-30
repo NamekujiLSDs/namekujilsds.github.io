@@ -23,7 +23,7 @@ body {
 
 /* サイドバー */
 .sidebar {
-    width: 250px;
+    width: 400px;
     background-color: #333;
     color: white;
     padding: 20px;
@@ -101,7 +101,7 @@ body {
     border-radius: 10px;
 }
 
-.settingContents p {
+.settingContents #divP {
     margin: 10px;
     margin-left: 20px;
     padding-left: 10px;
@@ -109,9 +109,52 @@ body {
 }
 
 .settingContents a {
-    color: #ff9efa;
+    padding: 1px;
+    border-radius: 5px;
+    background: #255d91;
+    color: white;
+    text-decoration: none;
+}
+
+.settingContents a:hover {
+    background: #4c8cc9;
 }
 
 .settingContents .indent {
+    margin-left: 30px;
+}
+
+h3 {
+    text-shadow: 0 0 3px rgb(168, 168, 168);
+}
+
+b {
+    color: rgb(225, 255, 200);
+}
+
+strong {
+    color: rgb(255, 127, 127);
+}
+
+#path {
+    background: #222;
+    color: #aaa;
+    padding: 2px;
+    border-radius: 2px;
+    font-family: monospace;
+}
+
+pre {
+    background: rgb(43, 43, 43);
+    padding: 5px;
+    border-radius: 10px;
+
+}
+
+#divP .material-symbols-outlined {
+    font-size: 14px;
+}
+
+.settingBody>#divP {
     margin-left: 20px;
 }
