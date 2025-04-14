@@ -4,128 +4,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Selection Screen</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        h1 {
-            color: #333;
-        }
-
-        .container {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-            text-align: center;
-            width: 300px;
-        }
-
-        .section {
-            margin-bottom: 20px;
-        }
-
-        .section h2 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-
-        .section ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .section ul li {
-            margin: 5px 0;
-            padding: 5px;
-            background: #eaeaea;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .section ul li:hover {
-            background: #d6d6d6;
-        }
-
-        .join-game {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .join-game input {
-            padding: 8px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .join-game button {
-            padding: 10px;
-            font-size: 1rem;
-            background: #007BFF;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .join-game button:hover {
-            background: #0056b3;
-        }
-    </style>
+    <title>VoxMate - Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap" rel="stylesheet">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Game Selection</h1>
+    <div id="bg"></div>
+    <div id="container">
+        <div id="header">
+            <div id="clientName">
+                <img src="./logo.png">
+                Vox <br>Mate
+            </div>
+            <div id="links">
+                <a href="./news">News</a>
+                <div id="separater"></div>
+                <a href="#about">About</a>
+                <div id="separater"></div>
+                <a href="#download">Download</a>
+            </div>
+            <div id="social">
+                <a href="http://x.com/namekujilsds" target="_blank">
+                    <img src="./x-logo.png">
+                </a>
+                <a href="https://discord.gg/yeJ393zA2j" target="_blank">
+                    <img src="./DiscordBanner.png">
+                </a>
+            </div>
 
-        <div class="section">
-            <h2>Select Game Mode</h2>
-            <ul>
-                <li>TDM</li>
-                <li>BR</li>
-                <li>FFA</li>
-                <li>Survival</li>
-            </ul>
         </div>
 
-        <div class="section">
-            <h2>Select Server</h2>
-            <ul>
-                <li>USE</li>
-                <li>USW</li>
-                <li>RU</li>
-                <li>Asia</li>
-            </ul>
-        </div>
+        <div id="hero-body">
+            <div id="column">
+                <div id="hero-title">
+                    VoxMate
+                </div>
+                <div id="hero-desc">
+                    An open source Voxiom.io client. <br>
+                    Secure and lightweight, the best choice
+                </div>
+            </div>
+            <div id="hero-img">
+                <img src="./heroimg.png">
+            </div>
 
-        <div class="join-game">
-            <input type="text" placeholder="Enter Game Code" id="game-code">
-            <button id="join-button">OK</button>
         </div>
     </div>
-
-    <script>
-        document.getElementById('join-button').addEventListener('click', () => {
-            const gameCode = document.getElementById('game-code').value;
-            if (gameCode) {
-                alert(`Joining game with code: ${gameCode}`);
-            } else {
-                alert('Please enter a game code!');
-            }
-        });
-    </script>
 </body>
 
 </html>
