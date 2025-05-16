@@ -1,0 +1,233 @@
+body,
+html {
+    padding: unset;
+    margin: unset;
+    background-color: #333;
+    font-family: "Noto Sans JP", sans-serif;
+    color: #aaa;
+}
+
+a {
+    color: lightskyblue
+}
+
+header {
+    left: 0;
+    right: 0;
+    height: 50px;
+    background: lightblue;
+    font-size: 20px;
+    font-weight: 900;
+    color: white;
+    text-align: center;
+    align-content: center;
+    text-shadow: 2px 2px darkcyan;
+}
+
+#contentHolder,
+#editor,
+#output {
+    width: 800px;
+    border-radius: 20px;
+    background: #fff2;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    padding: 30px;
+}
+
+#contentTitle {
+    font-size: 15px;
+    color: white;
+    font-weight: 600;
+}
+
+#apiInputHolder {
+    display: flex;
+    gap: 5px;
+}
+
+#apiUrl {
+    width: 90%;
+    background-color: transparent;
+    border: unset;
+    border-bottom: 1px solid white;
+    outline: unset;
+    color: white;
+}
+
+.blur {
+    filter: blur(5px);
+}
+
+.material-symbols-outlined {
+    color: white;
+    align-self: center;
+}
+
+.toggleVis {
+    cursor: pointer;
+}
+
+#apiHelp {
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+#openJson {
+    margin-top: 10px;
+}
+
+#openJson::-webkit-file-upload-button {
+    background-color: lightblue;
+    border: unset;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#startButton {
+    margin-top: 10px;
+    background-color: lightblue;
+    border: unset;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+input[type="button"] {
+    cursor: pointer;
+}
+
+.translateItems {
+    padding: 5px;
+    color: black;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+#filterErr {
+    appearance: none;
+    width: 40px;
+    height: 24px;
+    border-radius: 30px;
+    background: transparent;
+    border: 2px solid;
+    border-color: #aaaaaa;
+    cursor: pointer;
+    position: relative;
+}
+
+#filterErr::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 2px;
+    transform: translate(0%, -50%);
+    transition: .2s;
+    background: #aaaaaa;
+    border-radius: 30px;
+}
+
+#filterErr:checked {
+    border-color: rgba(60, 255, 0);
+}
+
+#filterErr:checked::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    top: 50%;
+    left: 16px;
+    transform: translate(0, -50%);
+    transition: .2s;
+    background: #3cff00;
+    border-radius: 30px;
+}
+
+.success {
+    background: lightgreen;
+}
+
+.success .solved {
+    display: none;
+}
+
+.error {
+    background: lightcoral
+}
+
+.hidden {
+    display: none !important;
+}
+
+.filterContent {
+    display: flex;
+}
+
+.translateItems input[type="text"] {
+    width: 700px;
+}
+
+footer {
+    margin-top: 30px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: lightblue;
+    font-size: 20px;
+    text-align: center;
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px #333;
+}
+
+#progress {
+    display: block;
+    position: relative;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#progressDisplay {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0)
+}
+
+#progressBar {
+    width: 500px;
+    height: 25px;
+    border: 1px black solid;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#progressBarInner {
+    height: 25px;
+    background-color: lightskyblue;
+    width: 0;
+    transition: .1s;
+}
+
+#log::-webkit-scrollbar {
+    background: transparent;
+    width: 5px;
+    padding: 5px;
+    margin: 5px;
+}
+
+#log::-webkit-scrollbar-thumb {
+    background: #fff4;
+    width: 3px;
+    border-radius: 10px;
+    height: 4px;
+}
+
+#log {
+    max-height: 500px;
+    overflow-y: scroll;
+}

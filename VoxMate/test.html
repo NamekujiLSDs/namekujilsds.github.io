@@ -1,58 +1,1928 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+    <style data-rc-order="prependQueue" data-rc-priority="-999" data-css-hash="44dbs9" data-token-hash="20tov7">
+        .css-1i0052b a {
+            color: #1668dc;
+            text-decoration: none;
+            background-color: transparent;
+            outline: none;
+            cursor: pointer;
+            transition: color 0.3s;
+            -webkit-text-decoration-skip: objects;
+        }
+
+        .css-1i0052b a:hover {
+            color: #15417e;
+        }
+
+        .css-1i0052b a:active {
+            color: #1554ad;
+        }
+
+        .css-1i0052b a:active,
+        .css-1i0052b a:hover {
+            text-decoration: none;
+            outline: 0;
+        }
+
+        .css-1i0052b a:focus {
+            text-decoration: none;
+            outline: 0;
+        }
+
+        .css-1i0052b a[disabled] {
+            color: rgba(255, 255, 255, 0.25);
+            cursor: not-allowed;
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-rc-priority="-999" data-css-hash="x7t6ef" data-token-hash="20tov7">
+        .css-1i0052b[class^="glarity---modal"],
+        .css-1i0052b[class*=" glarity---modal"] {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+
+        .css-1i0052b[class^="glarity---modal"]::before,
+        .css-1i0052b[class*=" glarity---modal"]::before,
+        .css-1i0052b[class^="glarity---modal"]::after,
+        .css-1i0052b[class*=" glarity---modal"]::after {
+            box-sizing: border-box;
+        }
+
+        .css-1i0052b[class^="glarity---modal"] [class^="glarity---modal"],
+        .css-1i0052b[class*=" glarity---modal"] [class^="glarity---modal"],
+        .css-1i0052b[class^="glarity---modal"] [class*=" glarity---modal"],
+        .css-1i0052b[class*=" glarity---modal"] [class*=" glarity---modal"] {
+            box-sizing: border-box;
+        }
+
+        .css-1i0052b[class^="glarity---modal"] [class^="glarity---modal"]::before,
+        .css-1i0052b[class*=" glarity---modal"] [class^="glarity---modal"]::before,
+        .css-1i0052b[class^="glarity---modal"] [class*=" glarity---modal"]::before,
+        .css-1i0052b[class*=" glarity---modal"] [class*=" glarity---modal"]::before,
+        .css-1i0052b[class^="glarity---modal"] [class^="glarity---modal"]::after,
+        .css-1i0052b[class*=" glarity---modal"] [class^="glarity---modal"]::after,
+        .css-1i0052b[class^="glarity---modal"] [class*=" glarity---modal"]::after,
+        .css-1i0052b[class*=" glarity---modal"] [class*=" glarity---modal"]::after {
+            box-sizing: border-box;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-wrap-rtl {
+            direction: rtl;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-centered {
+            text-align: center;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-centered::before {
+            display: inline-block;
+            width: 0;
+            height: 100%;
+            vertical-align: middle;
+            content: "";
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-centered .glarity---modal {
+            top: 0;
+            display: inline-block;
+            padding-bottom: 0;
+            text-align: start;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 767) {
+            .css-1i0052b.glarity---modal-root .glarity---modal {
+                max-width: calc(100vw - 16px);
+                margin: 4 auto;
+            }
+
+            .css-1i0052b.glarity---modal-root .glarity---modal-centered .glarity---modal {
+                flex: 1;
+            }
+        }
+
+        .css-1i0052b.glarity---modal {
+            box-sizing: border-box;
+            margin: 0 auto;
+            padding: 0;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 12px;
+            line-height: 1.6666666666666667;
+            list-style: none;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+            pointer-events: none;
+            position: relative;
+            top: 100px;
+            width: auto;
+            max-width: calc(100vw - 16px);
+            padding-bottom: 16px;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-title {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.5714285714285714;
+            word-wrap: break-word;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-content {
+            position: relative;
+            background-color: #1f1f1f;
+            background-clip: padding-box;
+            border: 0;
+            border-radius: 8px;
+            box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+            pointer-events: auto;
+            padding: 16px 16px;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-close {
+            position: absolute;
+            top: 9px;
+            inset-inline-end: 9px;
+            z-index: 1010;
+            padding: 0;
+            color: rgba(255, 255, 255, 0.45);
+            font-weight: 600;
+            line-height: 1;
+            text-decoration: none;
+            background: transparent;
+            border-radius: 4px;
+            width: 20px;
+            height: 20px;
+            border: 0;
+            outline: 0;
+            cursor: pointer;
+            transition: color 0.2s, background-color 0.2s;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-close-x {
+            display: flex;
+            font-size: 14px;
+            font-style: normal;
+            line-height: 20px;
+            justify-content: center;
+            text-transform: none;
+            text-rendering: auto;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-close:hover {
+            color: rgba(255, 255, 255, 0.85);
+            background-color: rgba(255, 255, 255, 0.12);
+            text-decoration: none;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-close:active {
+            background-color: rgba(255, 255, 255, 0.18);
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-close:focus-visible {
+            outline: 4px solid #15325b;
+            outline-offset: 1px;
+            transition: outline-offset 0s, outline 0s;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-header {
+            color: rgba(255, 255, 255, 0.85);
+            background: #1f1f1f;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 4px;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-body {
+            font-size: 12px;
+            line-height: 1.6666666666666667;
+            word-wrap: break-word;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-footer {
+            text-align: end;
+            background: transparent;
+            margin-top: 8px;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-footer .glarity---btn+.glarity---btn:not(.glarity---dropdown-trigger) {
+            margin-bottom: 0;
+            margin-inline-start: 4px;
+        }
+
+        .css-1i0052b.glarity---modal .glarity---modal-open {
+            overflow: hidden;
+        }
+
+        .css-1i0052b.glarity---modal-pure-panel {
+            top: auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .css-1i0052b.glarity---modal-pure-panel .glarity---modal-content,
+        .css-1i0052b.glarity---modal-pure-panel .glarity---modal-body,
+        .css-1i0052b.glarity---modal-pure-panel .glarity---modal-confirm-body-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex: auto;
+        }
+
+        .css-1i0052b.glarity---modal-pure-panel .glarity---modal-confirm-body {
+            margin-bottom: auto;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-wrap-rtl {
+            direction: rtl;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-wrap-rtl .glarity---modal-confirm-body {
+            direction: rtl;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal.glarity---zoom-enter,
+        .css-1i0052b.glarity---modal-root .glarity---modal.glarity---zoom-appear {
+            transform: none;
+            opacity: 0;
+            animation-duration: 0.3s;
+            user-select: none;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal.glarity---zoom-leave .glarity---modal-content {
+            pointer-events: none;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-mask {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.45);
+            pointer-events: none;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-mask .glarity---modal-hidden {
+            display: none;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-wrap {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            overflow: auto;
+            outline: 0;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---modal-wrap:has(.glarity---modal.glarity---zoom-enter),
+        .css-1i0052b.glarity---modal-root .glarity---modal-wrap:has(.glarity---modal.glarity---zoom-appear) {
+            pointer-events: none;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---fade-enter,
+        .css-1i0052b.glarity---modal-root .glarity---fade-appear {
+            animation-duration: 0.2s;
+            animation-fill-mode: both;
+            animation-play-state: paused;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---fade-leave {
+            animation-duration: 0.2s;
+            animation-fill-mode: both;
+            animation-play-state: paused;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---fade-enter.glarity---fade-enter-active,
+        .css-1i0052b.glarity---modal-root .glarity---fade-appear.glarity---fade-appear-active {
+            animation-name: css-1i0052b-antFadeIn;
+            animation-play-state: running;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---fade-leave.glarity---fade-leave-active {
+            animation-name: css-1i0052b-antFadeOut;
+            animation-play-state: running;
+            pointer-events: none;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---fade-enter,
+        .css-1i0052b.glarity---modal-root .glarity---fade-appear {
+            opacity: 0;
+            animation-timing-function: linear;
+        }
+
+        .css-1i0052b.glarity---modal-root .glarity---fade-leave {
+            animation-timing-function: linear;
+        }
+
+        .css-1i0052b.glarity---zoom-enter,
+        .css-1i0052b.glarity---zoom-appear {
+            animation-duration: 0.2s;
+            animation-fill-mode: both;
+            animation-play-state: paused;
+        }
+
+        .css-1i0052b.glarity---zoom-leave {
+            animation-duration: 0.2s;
+            animation-fill-mode: both;
+            animation-play-state: paused;
+        }
+
+        .css-1i0052b.glarity---zoom-enter.glarity---zoom-enter-active,
+        .css-1i0052b.glarity---zoom-appear.glarity---zoom-appear-active {
+            animation-name: css-1i0052b-antZoomIn;
+            animation-play-state: running;
+        }
+
+        .css-1i0052b.glarity---zoom-leave.glarity---zoom-leave-active {
+            animation-name: css-1i0052b-antZoomOut;
+            animation-play-state: running;
+            pointer-events: none;
+        }
+
+        .css-1i0052b.glarity---zoom-enter,
+        .css-1i0052b.glarity---zoom-appear {
+            transform: scale(0);
+            opacity: 0;
+            animation-timing-function: cubic-bezier(0.08, 0.82, 0.17, 1);
+        }
+
+        .css-1i0052b.glarity---zoom-enter-prepare,
+        .css-1i0052b.glarity---zoom-appear-prepare {
+            transform: none;
+        }
+
+        .css-1i0052b.glarity---zoom-leave {
+            animation-timing-function: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-rc-priority="-999" data-css-hash="_effect-css-1i0052b-antFadeIn">
+        @keyframes css-1i0052b-antFadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-rc-priority="-999" data-css-hash="_effect-css-1i0052b-antFadeOut">
+        @keyframes css-1i0052b-antFadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-rc-priority="-999" data-css-hash="_effect-css-1i0052b-antZoomIn">
+        @keyframes css-1i0052b-antZoomIn {
+            0% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-rc-priority="-999" data-css-hash="_effect-css-1i0052b-antZoomOut">
+        @keyframes css-1i0052b-antZoomOut {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(0.2);
+                opacity: 0;
+            }
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-css-hash="1kaik7t" data-token-hash="20tov7">
+        .glarity---icon-- {
+            display: inline-flex;
+            align-items: center;
+            color: inherit;
+            font-style: normal;
+            line-height: 0;
+            text-align: center;
+            text-transform: none;
+            vertical-align: -0.125em;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .glarity---icon-->* {
+            line-height: 1;
+        }
+
+        .glarity---icon-- svg {
+            display: inline-block;
+        }
+
+        .glarity---icon-- .glarity---icon-- .glarity---icon---icon {
+            display: block;
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-css-hash="onc7rf" data-token-hash="1oopk4d">
+        .glarity---icon-- {
+            display: inline-flex;
+            align-items: center;
+            color: inherit;
+            font-style: normal;
+            line-height: 0;
+            text-align: center;
+            text-transform: none;
+            vertical-align: -0.125em;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .glarity---icon-->* {
+            line-height: 1;
+        }
+
+        .glarity---icon-- svg {
+            display: inline-block;
+        }
+
+        .glarity---icon-- .glarity---icon-- .glarity---icon---icon {
+            display: block;
+        }
+    </style>
+    <style data-rc-order="prependQueue" data-css-hash="jebofo" data-token-hash="1oopk4d">
+        .anticon {
+            display: inline-flex;
+            align-items: center;
+            color: inherit;
+            font-style: normal;
+            line-height: 0;
+            text-align: center;
+            text-transform: none;
+            vertical-align: -0.125em;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .anticon>* {
+            line-height: 1;
+        }
+
+        .anticon svg {
+            display: inline-block;
+        }
+
+        .anticon .anticon .anticon-icon {
+            display: block;
+        }
+    </style>
+    <style>
+        nav {
+            padding: .5em;
+            overflow: auto;
+            display: flex;
+            justify-content: center;
+            background-color: var(--background);
+            border-radius: 0 0 1em 1em
+        }
+
+        .main-menu {
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap
+        }
+
+        .links,
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            flex-wrap: wrap
+        }
+
+        .social-links i {
+            font-size: 1.75em;
+            margin: .25em;
+            color: var(--primary-text)
+        }
+
+        .social-links i:hover {
+            color: var(--link);
+            cursor: pointer
+        }
+
+        .links .button {
+            margin: .25em
+        }
+
+        .navbar {
+            flex-direction: column
+        }
+
+        .navbar a {
+            display: flex;
+            align-items: center
+        }
+
+        .nav-item {
+            display: inline-block;
+            font-size: 1.2em;
+            margin: .5em
+        }
+
+        .nav-item a {
+            color: var(--primary-text);
+            text-decoration: none
+        }
+
+        .nav-item-active {
+            font-weight: 700;
+            font-size: 1.25em
+        }
+
+        .hero {
+            position: relative;
+            color: #fff;
+            z-index: 0
+        }
+
+        .hero-description {
+            color: #fff
+        }
+
+        .hero-title {
+            font-size: 3em
+        }
+
+        header .container {
+            flex-direction: column
+        }
+
+        header .links {
+            flex-direction: column
+        }
+
+        @media (min-width:64em) {
+            nav {
+                justify-content: space-between
+            }
+
+            .navbar {
+                flex-direction: row
+            }
+
+            header .container {
+                flex-direction: row
+            }
+
+            header .links {
+                flex-direction: row
+            }
+        }
+
+        code[class*=language-],
+        pre[class*=language-] {
+            font-size: 14px;
+            line-height: 1.375;
+            direction: ltr;
+            text-align: left;
+            white-space: pre;
+            word-spacing: normal;
+            word-break: normal;
+            -moz-tab-size: 2;
+            -o-tab-size: 2;
+            tab-size: 2;
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            -ms-hyphens: none;
+            hyphens: none;
+            background: var(--code)
+        }
+
+        :not(pre)>code[class*=language-] {
+            padding: .1em;
+            border-radius: .3em
+        }
+
+        .token.cdata,
+        .token.comment,
+        .token.doctype,
+        .token.prolog {
+            color: #75715e
+        }
+
+        .token.punctuation {
+            color: #f8f8f2
+        }
+
+        .token.namespace {
+            opacity: .7
+        }
+
+        .token.boolean,
+        .token.number,
+        .token.operator {
+            color: #fd971f
+        }
+
+        .token.property {
+            color: #f4bf75
+        }
+
+        .token.tag {
+            color: #66d9ef
+        }
+
+        .token.string {
+            color: #a1efe4
+        }
+
+        .token.selector {
+            color: #ae81ff
+        }
+
+        .token.attr-name {
+            color: #fd971f
+        }
+
+        .language-css .token.string,
+        .style .token.string,
+        .token.entity,
+        .token.url {
+            color: #a1efe4
+        }
+
+        .token.attr-value,
+        .token.control,
+        .token.directive,
+        .token.keyword,
+        .token.unit {
+            color: #a6e22e
+        }
+
+        .token.atrule,
+        .token.regex,
+        .token.statement {
+            color: #a1efe4
+        }
+
+        .token.placeholder,
+        .token.variable {
+            color: #66d9ef
+        }
+
+        .token.deleted {
+            text-decoration: line-through
+        }
+
+        .token.inserted {
+            border-bottom: 1px dotted #f9f8f5;
+            text-decoration: none
+        }
+
+        .token.italic {
+            font-style: italic
+        }
+
+        .token.bold,
+        .token.important {
+            font-weight: 700
+        }
+
+        .token.important {
+            color: #f92672
+        }
+
+        .token.entity {
+            cursor: help
+        }
+
+        pre>code.highlight {
+            outline: .4em solid #f92672;
+            outline-offset: 0.4em
+        }
+
+        @media (prefers-color-scheme:light) {
+            .token.punctuation {
+                color: #cf222e
+            }
+
+            .token.boolean,
+            .token.number,
+            .token.operator {
+                color: #c07016
+            }
+
+            .token.string {
+                color: #0a338e
+            }
+
+            .language-css .token.string,
+            .style .token.string,
+            .token.entity,
+            .token.url {
+                color: #0a338e
+            }
+
+            .token.attr-value,
+            .token.control,
+            .token.directive,
+            .token.keyword,
+            .token.unit {
+                color: #cf222e
+            }
+
+            .token.placeholder,
+            .token.variable {
+                color: #00afd2
+            }
+        }
+
+        .wiki-content h1,
+        .wiki-content h2 {
+            border-bottom: 2px solid var(--primary-text-muted)
+        }
+
+        .wiki-content.wiki-content {
+            border-radius: 1em 1em 0 0
+        }
+
+        .wiki-content {
+            margin-top: 1em
+        }
+
+        .wiki-toc {
+            padding: 1em 0 1em 1em;
+            background-color: var(--accent);
+            border-radius: 0 0 1em 1em;
+            font-size: 1em;
+            flex: 1
+        }
+
+        .wiki-toc ul {
+            list-style: none;
+            padding: 0
+        }
+
+        .wiki-toc [href] {
+            color: var(--primary-text-muted)
+        }
+
+        .wiki-toc>ul>li:nth-child(3n+1) {
+            --toc-header-rainbow: var(--primary)
+        }
+
+        .wiki-toc>ul>li:nth-child(3n+2) {
+            --toc-header-rainbow: var(--danger)
+        }
+
+        .wiki-toc>ul>li:nth-child(3n+3) {
+            --toc-header-rainbow: var(--warn)
+        }
+
+        .wiki-toc>ul>li:nth-child(3n+4) {
+            --toc-header-rainbow: var(--success)
+        }
+
+        .wiki-toc>ul>li:nth-child(3n+5) {
+            --toc-header-rainbow: var(--link)
+        }
+
+        .wiki-toc>ul>li:nth-child(3n+6) {
+            --toc-header-rainbow: var(--info)
+        }
+
+        .wiki-toc>ul>li.section [href],
+        .wiki-toc>ul>li.toggle>details>summary [href] {
+            color: var(--toc-header-rainbow);
+            font-weight: 700
+        }
+
+        .toggle>details>summary,
+        .wiki-toc .section {
+            padding: .6em;
+            border-radius: 1em 0 0 1em
+        }
+
+        summary {
+            position: relative;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--primary-text-muted)
+        }
+
+        .toggle:not(.wiki-toc-active)>details[open]>summary {
+            background-color: var(--accent-light)
+        }
+
+        .wiki-toc-list {
+            margin: 0
+        }
+
+        .wiki-toc-list ul {
+            padding-bottom: 0;
+            padding-left: .625rem
+        }
+
+        .wiki-toc-list a {
+            text-decoration: none
+        }
+
+        .wiki-toc-list>li {
+            flex-grow: 1;
+            flex-basis: 14.375rem
+        }
+
+        .wiki-toc-active.section,
+        .wiki-toc-active.toggle>details>summary {
+            background-color: var(--background)
+        }
+
+        .section:hover,
+        .toggle summary:hover {
+            background-color: var(--accent-light)
+        }
+
+        .wiki-toc-list li.wiki-toc-active>ul,
+        .wiki-toc-list ul.wiki-toc-active {
+            display: block
+        }
+
+        .inlinelist {
+            padding: 0
+        }
+
+        .inlinelist-no-nest ol,
+        .inlinelist-no-nest ul {
+            display: none
+        }
+
+        .wiki-tag {
+            display: inline
+        }
+
+        .wiki-tag a {
+            display: inline-flex;
+            padding: .3em .3em;
+            margin: .5em .5em .5em 0;
+            color: var(--link);
+            background-color: var(--accent);
+            border-radius: .25em;
+            text-decoration: none;
+            line-height: 1.8
+        }
+
+        .wiki-tag:hover a {
+            text-decoration: underline
+        }
+
+        .wiki-tag-active a {
+            font-weight: 700;
+            text-decoration: underline
+        }
+
+        @media (min-width:64em) {
+            .wiki-content {
+                width: 80%
+            }
+
+            .wiki-content.wiki-content {
+                border-radius: 0 1em 1em 0
+            }
+
+            .wiki-toc {
+                border-radius: 1em 0 0 1em;
+                margin-top: 1em
+            }
+        }
+
+        .download-tab-list {
+            list-style: none;
+            display: flex;
+            justify-content: flex-start;
+            list-style: none;
+            padding: 0;
+            margin-bottom: 0;
+            border-radius: 1em 1em 0 0;
+            background-color: var(--accent);
+            flex-wrap: wrap;
+            overflow: hidden
+        }
+
+        .download-tab-list li {
+            flex-grow: 1;
+            display: block
+        }
+
+        .download-tab-list a {
+            color: var(--primary-text);
+            font-size: 1.2em;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            padding: .75em .5em
+        }
+
+        .download-tab-list a:hover {
+            background-color: var(--accent-light)
+        }
+
+        .download-tab-list i {
+            color: var(--primary-text);
+            font-size: 1.2em;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            margin-right: .25em
+        }
+
+        .download-tab-active a {
+            background-color: var(--background)
+        }
+
+        .download-content {
+            background-color: var(--background);
+            padding: 1em;
+            border-radius: 0 0 1em 1em
+        }
+
+        .download-content .column div {
+            width: 100%
+        }
+
+        .download-content .button {
+            width: 100%;
+            display: block;
+            margin-bottom: 1em;
+            margin-left: 0
+        }
+
+        @media (min-width:64em) {
+            .download-tab-list a {
+                border-radius: 1rem 1rem 0 0
+            }
+
+            .download-content .column div {
+                width: 80%
+            }
+        }
+
+        .postlist {
+            list-style: none;
+            padding: 0
+        }
+
+        .postlist-item {
+            background-color: var(--background);
+            border-radius: 1em;
+            padding: 1em;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            counter-increment: start-from -1;
+            line-height: 1.8
+        }
+
+        .postlist :first-child {
+            margin-top: 0
+        }
+
+        .postlist {
+            margin-top: 0
+        }
+
+        .postlist-item:before {
+            display: inline-block;
+            pointer-events: none;
+            content: "" counter(start-from, decimal-leading-zero) ". ";
+            line-height: 100%;
+            text-align: right
+        }
+
+        .postlist-date,
+        .postlist-item:before {
+            font-size: .8125em;
+            color: var(--darkgray)
+        }
+
+        .postlist-item:not(:first-child) {
+            margin-top: 2em
+        }
+
+        .postlist-date {
+            word-spacing: -0.5px
+        }
+
+        .postlist-link {
+            font-size: 1.2em;
+            padding-left: .25em;
+            padding-right: 1em;
+            text-underline-position: from-font;
+            text-underline-offset: 0;
+            text-decoration-thickness: 1px
+        }
+
+        .postlist-item-active .postlist-link {
+            font-weight: 500
+        }
+
+        .postlist-description {
+            width: 100%;
+            border-left: var(--primary) .25em solid;
+            padding: .5em;
+            margin-top: .33em
+        }
+
+        .tmpl-home .postlist-link {
+            font-size: 1.1875em;
+            font-weight: 700
+        }
+
+        .post-tag {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            font-size: .75em;
+            padding: .08333333333333em .3333333333333em;
+            margin-left: 1em;
+            color: var(--primary-text);
+            border: 1px solid var(--accent);
+            border-radius: .25em;
+            text-decoration: none;
+            line-height: 1.8
+        }
+
+        a.post-tag,
+        a.post-tag:visited {
+            color: inherit
+        }
+
+        a.post-tag:focus,
+        a.post-tag:hover {
+            background-color: var(--lightgray)
+        }
+
+        .postlist-item>.post-tag {
+            align-self: center
+        }
+
+        .user-list {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: space-around;
+            list-style: none;
+            padding: 0
+        }
+
+        .user-info {
+            position: relative;
+            margin: .5em;
+            width: 10em;
+            border-radius: 1em;
+            overflow: hidden;
+            background-color: var(--background);
+            text-decoration: none;
+            color: var(--primary-text);
+            max-height: 10em
+        }
+
+        .user-contrib {
+            width: 3em;
+            background-color: var(--accent)
+        }
+
+        .user-contrib:hover {
+            border: .2em solid var(--primary)
+        }
+
+        .user-info img {
+            display: block;
+            width: 100%;
+            height: auto
+        }
+
+        .user-name {
+            color: #fff;
+            font-size: 1.2em;
+            overflow-wrap: break-word;
+            text-align: center
+        }
+
+        .user-info-overlay {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            transition: .3s ease;
+            background-color: var(--primary)
+        }
+
+        .user-info:hover .user-info-overlay {
+            opacity: 1
+        }
+
+        :root {
+            --primary-text: #fff;
+            --primary-text-muted: #aaa;
+            --grad-primary: #df6277ff;
+            --background: #15181c;
+            --accent: #21242b;
+            --accent-light: #313540;
+            --code: #313540;
+            --code-fg: #ffffff;
+            --inline-code: #313540;
+            --inline-code-fg: #ffffff;
+            --table-border: #484848;
+            --disabled: #666;
+            --primary: hsl(350, 66%, 63%);
+            --link: hsl(214, 46%, 52%);
+            --info: hsl(274, 32%, 42%);
+            --success: hsl(145, 27%, 59%);
+            --warn: hsl(49, 85%, 69%);
+            --danger: hsl(17, 95%, 70%);
+            --primary-dark: hsl(350, 66%, 55%);
+            --link-dark: hsl(214, 46%, 42%);
+            --info-dark: hsl(274, 32%, 32%);
+            --success-dark: hsl(145, 27%, 49%);
+            --warn-dark: hsl(49, 85%, 60%);
+            --danger-dark: hsl(17, 95%, 65%);
+            --primary-light: hsl(350, 66%, 70%);
+            --link-light: hsl(214, 46%, 67%);
+            --info-light: hsl(274, 32%, 56%);
+            --success-light: hsl(145, 27%, 67%);
+            --warn-light: hsl(49, 85%, 79%);
+            --danger-light: hsl(17, 95%, 80%);
+            background-color: var(--background);
+            color-scheme: dark
+        }
+
+        @media (prefers-color-scheme:light) {
+            :root {
+                --code: #F6F8FA;
+                --primary-text: #333;
+                --primary-text-muted: #666;
+                --background: #ffffff;
+                --accent: #e0e0e0;
+                --accent-light: #d0d0d0;
+                --inline-code: #eff1f3;
+                --inline-code-fg: #24292f;
+                --table-border: #d9d9d9;
+                background-color: var(--background);
+                color-scheme: light
+            }
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body,
+        html {
+            padding: 0;
+            margin: 0;
+            font-family: Inter, -apple-system, system-ui, sans-serif;
+            color: var(--primary-text)
+        }
+
+        .bg {
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            background-image: linear-gradient(rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)), url('/img/background/prism-background.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        p:last-child {
+            margin-bottom: 0
+        }
+
+        .tmpl-post li,
+        iframe,
+        img,
+        p {
+            max-width: min(100%)
+        }
+
+        .tmpl-post li,
+        p {
+            line-height: 1.45
+        }
+
+        a {
+            color: var(--link)
+        }
+
+        table {
+            margin: 1em 0;
+            border-collapse: collapse
+        }
+
+        table td,
+        table th {
+            padding: .3em;
+            border: 1px solid var(--table-border)
+        }
+
+        blockquote {
+            border-left: var(--primary) .25em solid;
+            padding: .5em;
+            margin: 0
+        }
+
+        code {
+            font-family: Consolas, Menlo, Monaco, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", "Courier New", Courier, monospace;
+            line-height: 1.5
+        }
+
+        pre {
+            border-radius: 1em
+        }
+
+        :not(pre)>code {
+            border-radius: 4px;
+            padding: .2em .4em;
+            color: var(--inline-code-fg);
+            background-color: var(--inline-code)
+        }
+
+        .top {
+            margin-top: 1em
+        }
+
+        pre {
+            font-size: 14px;
+            line-height: 1.375;
+            direction: ltr;
+            text-align: left;
+            white-space: pre;
+            word-spacing: normal;
+            word-break: normal;
+            -moz-tab-size: 2;
+            -o-tab-size: 2;
+            tab-size: 2;
+            -webkit-hyphens: none;
+            -moz-hyphens: none;
+            -ms-hyphens: none;
+            hyphens: none;
+            padding: 1em;
+            margin: .5em 0;
+            background-color: var(--code);
+            color: #fff;
+            overflow: auto
+        }
+
+        code {
+            word-break: break-all;
+            color: var(--code-fg);
+            background-color: var(--code)
+        }
+
+        :not(pre)>code {
+            padding: .18em
+        }
+
+        @media (prefers-color-scheme:light) {
+            code {
+                color: #1f2328
+            }
+        }
+
+        .highlight-line {
+            display: block;
+            padding: .125em 1em;
+            text-decoration: none;
+            color: inherit
+        }
+
+        .highlight-line:empty:before {
+            content: " "
+        }
+
+        .highlight-line+br {
+            display: none
+        }
+
+        .highlight-line-isdir {
+            color: #b00808;
+            background-color: #222
+        }
+
+        .highlight-line-active {
+            background-color: #444;
+            background-color: hsla(0, 0%, 27%, .8)
+        }
+
+        .highlight-line-add {
+            background-color: #45844b
+        }
+
+        .highlight-line-remove {
+            background-color: #902f2f
+        }
+
+        .container {
+            max-width: 90em;
+            margin: 0 auto;
+            position: relative
+        }
+
+        .content {
+            background-color: var(--background);
+            border-radius: 1em;
+            padding: 1em
+        }
+
+        .content.compact {
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto
+        }
+
+        .center {
+            text-align: center;
+            margin: auto
+        }
+
+        .infobox {
+            background-color: var(--accent);
+            padding: 1em;
+            border-radius: 1em
+        }
+
+        .button {
+            display: inline-block;
+            border: none;
+            position: relative;
+            color: #fff;
+            padding: .5em 1.5em;
+            list-style: none;
+            font-size: 1.2em;
+            font-family: Inter, sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            background-color: var(--primary);
+            border-radius: .365em;
+            transition: .2s ease;
+            background-position-x: 100%;
+            cursor: pointer
+        }
+
+        .button[disabled] {
+            opacity: .5;
+            pointer-events: none
+        }
+
+        .button:hover {
+            background-color: var(--primary-dark)
+        }
+
+        .button.type-link {
+            background-color: var(--link)
+        }
+
+        .button.type-link:hover {
+            background-color: var(--link-dark)
+        }
+
+        .button.type-info {
+            background-color: var(--info)
+        }
+
+        .button.type-info:hover {
+            background-color: var(--info-dark)
+        }
+
+        .button.type-success {
+            background-color: var(--success)
+        }
+
+        .button.type-success:hover {
+            background-color: var(--success-dark)
+        }
+
+        .button.type-warn {
+            background-color: var(--warn);
+            color: #000
+        }
+
+        .button.type-warn:hover {
+            background-color: var(--warn-dark);
+            color: #000
+        }
+
+        .button.type-danger {
+            background-color: var(--danger)
+        }
+
+        .button.type-danger:hover {
+            background-color: var(--danger-dark)
+        }
+
+        .button.size-large {
+            font-size: 1.5em
+        }
+
+        .button.size-small {
+            font-size: 1em
+        }
+
+        .button.fullwidth {
+            width: 100%
+        }
+
+        .blog-image {
+            width: 80%
+        }
+
+        @media(width >=48rem) {
+            .blog-image {
+                width: 40%
+            }
+        }
+
+        .direct-link {
+            text-decoration: none;
+            font-style: normal;
+            margin-left: .1em
+        }
+
+        a.direct-link,
+        a.direct-link:visited {
+            color: transparent
+        }
+
+        :hover>a.direct-link,
+        :hover>a.direct-link:visited,
+        a.direct-link:focus,
+        a.direct-link:focus:visited {
+            color: #aaa
+        }
+
+        .download-links {
+            padding: 0
+        }
+
+        .download-links li {
+            display: inline;
+            margin: .25em
+        }
+
+        .row {
+            display: flex;
+            flex-direction: column
+        }
+
+        .row.corporate-sponsors {
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem
+        }
+
+        .row.corporate-sponsors img {
+            max-width: 256px
+        }
+
+        .column {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1em;
+            text-align: center
+        }
+
+        .column img {
+            height: auto
+        }
+
+        .subtitle {
+            font-size: 1.5em;
+            text-align: center
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 1em
+        }
+
+        .card {
+            flex: 1;
+            padding: 1em;
+            text-align: center;
+            background-color: var(--accent)
+        }
+
+        .card .button {
+            width: 100%;
+            margin: 0
+        }
+
+        .notification {
+            border-radius: 1em;
+            position: relative;
+            padding: 1em;
+            margin-bottom: 1em;
+            color: #fff
+        }
+
+        .notification.type-primary {
+            background-color: var(--primary)
+        }
+
+        .notification.type-link {
+            background-color: var(--link)
+        }
+
+        .notification.type-info {
+            background-color: var(--info)
+        }
+
+        .notification.type-success {
+            background-color: var(--success)
+        }
+
+        .notification.type-warn {
+            background-color: var(--warn);
+            color: #000
+        }
+
+        .notification.type-danger {
+            background-color: var(--danger)
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2em;
+            color: #fff
+        }
+
+        @media (min-width:64em) {
+            .row {
+                flex-direction: row
+            }
+
+            .row-reverse {
+                flex-direction: row-reverse
+            }
+
+            .column {
+                flex: 50%
+            }
+
+            .wiki-content {
+                padding-left: 1em
+            }
+
+            .cards {
+                flex-direction: row;
+                justify-content: space-between
+            }
+
+            .card {
+                align-self: flex-start
+            }
+        }
+    </style>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoxMate - Home</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Special+Gothic+Condensed+One&display=swap" rel="stylesheet">
+    <title>Prism Launcher - Home</title>
+    <meta name="description"
+        content="An Open Source Minecraft launcher with the ability to manage multiple instances, accounts and mods. Focused on user freedom and free redistributability.">
+    <link rel="alternate" href="/feed/feed.xml" type="application/atom+xml" title="Prism Launcher">
+    <link rel="alternate" href="/feed/feed.json" type="application/json" title="Prism Launcher">
+    <link rel="icon" type="image/png" sizes="96x96" href="/img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/inter/index.css">
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/inter/600.css">
+    <link rel="stylesheet" type="text/css" href="/assets/fonts/inter/700.css">
+    <link rel="stylesheet" href="/assets/forkawesome/css/fork-awesome.min.css">
+    <!-- incredibly based web app to make mod lists at https://moddermore.vercel.app -->
 </head>
 
-<body>
-    <div id="bg"></div>
-    <div id="container">
-        <div id="header">
-            <div id="clientName">
-                <img src="./logo.png">
-                Vox <br>Mate
-            </div>
-            <div id="links">
-                <a href="./news">News</a>
-                <div id="separater"></div>
-                <a href="#about">About</a>
-                <div id="separater"></div>
-                <a href="#download">Download</a>
-            </div>
-            <div id="social">
-                <a href="http://x.com/namekujilsds" target="_blank">
-                    <img src="./x-logo.png">
+<body class="vsc-initialized">
+    <header>
+        <div class="bg"></div>
+        <nav class="container">
+            <div class="navbar">
+                <a class="home" href="/" aria-label="Prism Launcher">
+                    <picture>
+                        <source srcset="/img/logo-text-darkmode.svg" media="(prefers-color-scheme: dark)">
+                        <img src="/img/logo-text.svg" alt="Prism Launcher logo" style="height: 4em; width: 12em">
+                    </picture>
                 </a>
-                <a href="https://discord.gg/yeJ393zA2j" target="_blank">
-                    <img src="./DiscordBanner.png">
-                </a>
+                <ul class="main-menu">
+                    <li class="nav-item">
+                        <a href="/news/">News</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/about/">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/wiki/">Wiki</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/#get-involved">Community</a>
+                    </li>
+                </ul>
             </div>
+            <div class="links">
+                <div class="social-links">
+                    <a href="https://floss.social/@PrismLauncher" target="_blank" aria-label="Mastodon" rel="me"><i
+                            class="fa fa-mastodon"></i></a>
+                    <a href="https://bsky.app/profile/prismlauncher.org" target="_blank" aria-label="Bluesky"
+                        rel="me"><i class="fa fa-square"></i></a>
+                    <a href="https://discord.gg/ArX2nafFz2" target="_blank" aria-label="Discord"><i
+                            class="fa fa-discord"></i></a>
+                    <a href="https://matrix.to/#/#prismlauncher:matrix.org" target="_blank" aria-label="Matrix"><i
+                            class="fa fa-matrix-org"></i></a>
+                    <a href="https://www.reddit.com/r/PrismLauncher/" target="_blank" aria-label="Reddit"><i
+                            class="fa fa-reddit"></i></a>
+                    <a href="https://github.com/PrismLauncher/PrismLauncher" target="_blank" aria-label="GitHub"><i
+                            class="fa fa-github"></i></a>
+                    <a href="mailto:contact@prismlauncher.org" target="_blank" aria-label="Email"><i
+                            class="fa fa-envelope-square"></i></a>
+                </div>
+                <div>
+                    <a class="button" href="/download/?from=button">Download</a>
+                    <a class="button type-link" href="https://opencollective.com/prismlauncher"
+                        target="_blank">Donate</a>
+                </div>
+            </div>
+        </nav>
 
+
+        <div class="hero-body">
+            <div class="row container">
+                <div class="column">
+                    <div class="hero-description">
+                        <h1 class="hero-title">Prism Launcher</h1>
+                        <p class="subtitle">An Open Source Minecraft launcher with the ability to manage multiple
+                            instances, accounts and mods. Focused on user freedom and free redistributability.</p>
+                        <br>
+                        <a class="button size-large" href="/download?from=button">Download Now</a>
+                    </div>
+                </div>
+                <div class="column">
+                    <picture>
+                        <source type="image/webp" srcset="/img/built/w2wXVC7rR1-1030.webp 1030w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/png" srcset="/img/built/w2wXVC7rR1-1030.png 1030w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/webp" srcset="/img/built/1yCsNU_Ipb-1030.webp 1030w" sizes="100vw">
+                        <source type="image/png" srcset="/img/built/1yCsNU_Ipb-1030.png 1030w" sizes="100vw">
+                        <img class="undefined" src="/img/built/1yCsNU_Ipb-1030.png" width="1030" height="764"
+                            alt="Prism Launcher" loading="lazy" decoding="async">
+                    </picture>
+                </div>
+            </div>
         </div>
 
-        <div id="hero-body">
-            <div id="column">
-                <div id="hero-title">
-                    VoxMate
-                </div>
-                <div id="hero-desc">
-                    An open source Voxiom.io client. <br>
-                    Secure and lightweight, the best choice
-                </div>
-            </div>
-            <div id="hero-img">
-                <img src="./heroimg.png">
-            </div>
+    </header>
 
+
+    <main class="container tmpl-home">
+        <div class="content">
+            <div class="row row-reverse">
+                <div class="column">
+                    <div>
+                        <h1>Modpack Management</h1>
+                        <div class="subtitle">
+                            Install and launch modpacks easily, while keeping them clean.
+                            No longer do you need to manually install them, and easily update modpacks, Prism Launcher
+                            can do these tasks for you, without installing tons of separate launchers.
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <picture>
+                        <source type="image/webp" srcset="/img/built/jOnevDy8HH-1126.webp 1126w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/png" srcset="/img/built/jOnevDy8HH-1126.png 1126w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/webp" srcset="/img/built/xHuExHF4rZ-1126.webp 1126w" sizes="100vw">
+                        <source type="image/png" srcset="/img/built/xHuExHF4rZ-1126.png 1126w" sizes="100vw">
+                        <img class="undefined" src="/img/built/xHuExHF4rZ-1126.png" width="1126" height="850"
+                            alt="Modpack Installer" loading="lazy" decoding="async">
+                    </picture>
+                    <picture>
+                        <source type="image/webp" srcset="/img/built/24j5QErITr-930.webp 930w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/png" srcset="/img/built/24j5QErITr-930.png 930w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/webp" srcset="/img/built/RTpnre2cYL-930.webp 930w" sizes="100vw">
+                        <source type="image/png" srcset="/img/built/RTpnre2cYL-930.png 930w" sizes="100vw">
+                        <img class="undefined" src="/img/built/RTpnre2cYL-930.png" width="930" height="677"
+                            alt="Mod Installer" loading="lazy" decoding="async">
+                    </picture>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div>
+                        <h1>Download &amp; Update Mods</h1>
+                        <div class="subtitle">
+                            <p>Are you sick of finding and adding that one mod you need? Prism Launcher is able to
+                                download &amp; update individual mods from outside of modpacks using Modrinth and
+                                CurseForge.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <picture>
+                        <source type="image/webp" srcset="/img/built/D0UaL_M1fr-848.webp 848w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/png" srcset="/img/built/D0UaL_M1fr-848.png 848w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/webp" srcset="/img/built/P1H4DXTh0--848.webp 848w" sizes="100vw">
+                        <source type="image/png" srcset="/img/built/P1H4DXTh0--848.png 848w" sizes="100vw">
+                        <img class="undefined" src="/img/built/P1H4DXTh0--848.png" width="848" height="558"
+                            alt="Mod Installer" loading="lazy" decoding="async">
+                    </picture>
+                    <picture>
+                        <source type="image/webp" srcset="/img/built/1GhEeMEyln-860.webp 860w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/png" srcset="/img/built/1GhEeMEyln-860.png 860w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/webp" srcset="/img/built/UKMig8gCWO-860.webp 860w" sizes="100vw">
+                        <source type="image/png" srcset="/img/built/UKMig8gCWO-860.png 860w" sizes="100vw">
+                        <img class="undefined" src="/img/built/UKMig8gCWO-860.png" width="860" height="748"
+                            alt="Mod Installer" loading="lazy" decoding="async">
+                    </picture>
+                </div>
+            </div>
+            <div class="row row-reverse">
+                <div class="column">
+                    <div>
+                        <h1>Minecraft Instance Management </h1>
+                        <div class="subtitle">
+                            <p>Did your settings ever reset after launching an older version? Did you ever accidentally
+                                break a world because you opened it in an old version?
+                                Are you tired of manually switching mods for different versions, installing modloaders?
+                            </p>
+                            <p>
+                            </p>
+                            <p>Prism Launcher can help. Each Minecraft instance has its own folder, with separate mods,
+                                resource packs and other things.</p>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+                <div class="column">
+                    <picture>
+                        <source type="image/webp" srcset="/img/built/HBZg_bOREW-960.webp 960w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/png" srcset="/img/built/HBZg_bOREW-960.png 960w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/webp" srcset="/img/built/FUM6EYzLEB-960.webp 960w" sizes="100vw">
+                        <source type="image/png" srcset="/img/built/FUM6EYzLEB-960.png 960w" sizes="100vw">
+                        <img class="undefined" src="/img/built/FUM6EYzLEB-960.png" width="960" height="659"
+                            alt="Instance Settings" loading="lazy" decoding="async">
+                    </picture>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <div>
+                        <h1>Lightweight &amp; Customizable</h1>
+                        <div class="subtitle">
+                            You don't need an embedded web browser as a game launcher. Prism Launcher uses the Qt
+                            toolkit, which requires little system resources. Prism Launcher also lets you customize the
+                            menu and supports <a
+                                href="https://prismlauncher.org/wiki/getting-started/change-themes/">custom themes</a>.
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <picture>
+                        <source type="image/webp" srcset="/img/built/NFG46DPsUP-1040.webp 1040w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/png" srcset="/img/built/NFG46DPsUP-1040.png 1040w" sizes="100vw"
+                            media="(prefers-color-scheme: dark)">
+                        <source type="image/webp" srcset="/img/built/KsZP5qjIv4-1040.webp 1040w" sizes="100vw">
+                        <source type="image/png" srcset="/img/built/KsZP5qjIv4-1040.png 1040w" sizes="100vw">
+                        <img class="undefined" src="/img/built/KsZP5qjIv4-1040.png" width="1040" height="752"
+                            alt="Mod Installer" loading="lazy" decoding="async">
+                    </picture>
+                </div>
+            </div>
         </div>
+        <div class="infobox top">
+            <h1 id="get-involved" tabindex="-1">Get involved <a class="direct-link" href="#get-involved"
+                    aria-hidden="true">#</a></h1>
+            <hr>
+            <h2 id="reddit" tabindex="-1">Reddit <a class="direct-link" href="#reddit" aria-hidden="true">#</a></h2>
+            <p><a class="button type-link size-small" href="https://www.reddit.com/r/PrismLauncher/"
+                    target="_blank">r/PrismLauncher</a></p>
+            <h2 id="discord" tabindex="-1">Discord <a class="direct-link" href="#discord" aria-hidden="true">#</a></h2>
+            <p>To talk directly to us and get involved with development:</p>
+            <p><a class="button type-link size-small" href="https://discord.gg/ArX2nafFz2" target="_blank">Prism
+                    Launcher Discord</a></p>
+            <h2 id="matrix" tabindex="-1">Matrix <a class="direct-link" href="#matrix" aria-hidden="true">#</a></h2>
+            <p>For people who don't want to use Discord, we have a Matrix Space:</p>
+            <p><a class="button type-link size-small" href="https://matrix.to/#/#prismlauncher:matrix.org"
+                    target="_blank">Prism Launcher Space</a></p>
+            <h1 id="sponsors" tabindex="-1">Sponsors <a class="direct-link" href="#sponsors" aria-hidden="true">#</a>
+            </h1>
+            <p>We thank all the wonderful backers over at Open Collective! Support Prism Launcher by <a
+                    href="https://opencollective.com/prismlauncher">becoming a backer</a>.</p>
+            <p><a href="https://opencollective.com/prismlauncher#backers"><img
+                        src="https://opencollective.com/prismlauncher/backers.svg?width=890&amp;limit=1000"
+                        alt="OpenCollective Backers"></a></p>
+            <p>We also have many wonderful companies who help us keep the lights on</p>
+            <div class="row corporate-sponsors">
+                <a href="https://www.jetbrains.com/opensource/">
+                    <img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg"
+                        alt="JetBrains">
+                </a>
+                <a href="https://hosted.weblate.org/engage/prismlauncher/">
+                    <img src="https://hosted.weblate.org/widgets/prismlauncher/-/open-graph.png"
+                        alt="Weblate translation status">
+                </a>
+                <a href="https://www.macstadium.com">
+                    <img src="https://uploads-ssl.webflow.com/5ac3c046c82724970fc60918/5c019d917bba312af7553b49_MacStadium-developerlogo.png"
+                        alt="Powered by MacStadium" width="300">
+                </a>
+                <a href="https://www.netlify.com">
+                    <img src="https://www.netlify.com/v3/img/components/netlify-color-accent.svg"
+                        alt="Deploys by Netlify">
+                </a>
+                <a href="https://tuta.com">
+                    <img src="/img/tuta-logo.png" alt="Mail provided by Tuta">
+                </a>
+            </div>
+            <h1 id="source-code" tabindex="-1">Source code <a class="direct-link" href="#source-code"
+                    aria-hidden="true">#</a></h1>
+            <hr>
+            <p>Prism Launcher is focused on user freedom and free redistributability. All code is available on <a
+                    href="https://github.com/PrismLauncher/PrismLauncher/">the GitHub</a> under the GPL-3 license.</p>
+            <p><a href="https://github.com/PrismLauncher/prismlauncher.org">Source for this website</a> is hosted under
+                the AGPL-3 License.</p>
+            <p>The logo and related assets are under the CC BY-SA 4.0 license.</p>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="footer">
+            <div class="container">
+                <a href="https://github.com/PrismLauncher/prismlauncher.org/edit/main/./src/index.md"
+                    class="elv-externalexempt button type-link size-small">Edit this page</a>
+                © 2022-2025 Prism Launcher Contributors
+
+                <div>
+                    <p><a href="mailto:contact@prismlauncher.org">Need to contact us?</a></p>
+                </div>
+            </div>
+        </div>
+
+    </footer>
+
+
+
+    <div class="glarity-error-modal-root notranslate" style="margin-right: 8px;">
+        <div class="glarity--theme-page__dark"> </div>
     </div>
+    <div class="notranslate glarity--selection__menu" style="z-index: 1999999999;"></div>
+    <div class="notranslate glarity--screenshot" style="z-index: 1999999999;"></div>
+    <section class="glarity--summary notranslate" style="pointer-events: none;"></section>
+    <div class="glarity-translate-tooltip notranslate" style="position: relative; z-index: 99999999;"></div><textarea
+        tab-index="-1" aria-hidden="true" style="letter-spacing:normal;line-height:23.3333px;padding-top:0px;padding-bottom:0px;font-family:-apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, &quot;Noto Sans&quot;, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;, &quot;Noto Color Emoji&quot;;font-weight:400;font-size:14px;font-variant:normal;text-rendering:auto;text-transform:none;width:100%;text-indent:0px;padding-left:0px;padding-right:60px;border-width:0px;box-sizing:border-box;word-break:normal;white-space:pre-wrap;
+  min-height:0 !important;
+  max-height:none !important;
+  height:0 !important;
+  visibility:hidden !important;
+  overflow:hidden !important;
+  position:absolute !important;
+  z-index:-1000 !important;
+  top:0 !important;
+  right:0 !important;
+  pointer-events: none !important;
+"></textarea>
 </body>
 
 </html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="jp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Mod翻訳ツール</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <script src="./index.js"></script>
+</head>
+
+<body>
+    <header>Minecraft Mod翻訳ツール</header>
+    <div id="contentHolder">
+        <div id="contentTitle">1. APIを設定する</div>
+        <div id="content">
+            <div id="apiInputHolder">
+                <span id="toggleV" class="material-symbols-outlined toggleVis"
+                    onclick="toggleVisible()">visibility</span>
+                <input type="url" name="apiUrl" class="" id="apiUrl" onchange="apiUrlUpdate(this.value)"
+                    placeholder="https://script.google.com/macros/s/TOKEN/exec" />
+            </div>
+            <div id="apiHelp">
+                URLの取得方法はこちら (外部サイトにジャンプします)<br>
+                記事 <a href="https://qiita.com/satto_sann/items/be4177360a0bc3691fdf" target="_blank">Qiita</a><br>
+                動画 <a href="http://" target="_blank">Youtube</a>
+            </div>
+        </div>
+    </div>
+    <div id="contentHolder">
+        <div id="contentTitle">2. 言語のJsonファイルを開く(en_us.json等)</div>
+        <div id="content">
+            <input type="file" name="openJson" id="openJson" accept=".json" />
+        </div>
+    </div>
+    <div id="contentHolder">
+        <div id="contentTitle">3. 言語を設定する</div>
+        <div id="content">
+            元の言語 <select name="inputLang" id="inputLang">
+                <option value="en" selected>英語</option>
+                <option value="ja">日本語</option>
+                <option value="ko">韓国語</option>
+                <option value="ru">ロシア語</option>
+                <option value="yue">広東語</option>
+                <option value="zh-CN">中国語（簡体）</option>
+                <option value="zh-TW">中国語（繁体）</option>
+            </select> <br>
+            出力先言語
+            <select name="outputLang" id="outputLang">
+                <option value="en">英語</option>
+                <option value="ja" selected>日本語</option>
+                <option value="ko">韓国語</option>
+                <option value="ru">ロシア語</option>
+                <option value="yue">広東語</option>
+                <option value="zh-CN">中国語（簡体）</option>
+                <option value="zh-TW">中国語（繁体）</option>
+            </select>
+        </div>
+    </div>
+    <div id="contentHolder">
+        <div id="contentTitle">4. 実行する</div>
+        <div id="content">
+            <input type="button" onclick="startCheck()" id="startButton" value="実行">
+        </div>
+    </div>
+    <div id="editor">
+        <div id="contentTitle">5. 確認、修正する</div>
+        <div id="filter">
+            <span class="filterContent">エラーのみを表示する<label for="filterErr">
+                    <input type="checkbox" name="filterErr" id="filterErr" onclick="filterErr(this.checked)">
+                </label>
+            </span>
+        </div>
+        <div id="progress" class="hidden">
+            <div id="progressDisplay">
+                <span id="current">100</span>/
+                <span id="max">100</span>
+            </div>
+            <div id="progressBar">
+                <div id="progressBarInner" style="width:0%"></div>
+            </div>
+        </div>
+        <div id="log">
+        </div>
+    </div>
+    <div id="output">
+        <div id="contentTitle">6. ダウンロードする</div>
+        <input type="button" id="downloadBtn" onclick="download()" value="ダウンロード">
+    </div>
+    <footer>2025@NamekujiLSDs</footer>
+</body>
+
+</html>
