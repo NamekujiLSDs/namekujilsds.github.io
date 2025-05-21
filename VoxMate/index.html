@@ -1,135 +1,276 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
-    <meta property="og:title" content="VoxMate Client">
-    <meta property="og:description" content="The Best Custom Client for Voxiom.io">
-    <meta property="og:image" content="https://namekujilsds.github.io/VoxMate/voxmate.png">
-    <meta property="og:url" content="https://namekujilsds.github.io/VoxMate/">
-    <meta property="og:type" content="website">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:site_name" content="VoxMate Client">
-    <meta property="og:locale" content="en_US">
-    <meta property="og:card" content="large_image">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@namekujilsds" />
-    <title>VoxMate</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>VoxMate - Voxiom Client</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a202c;
+            /* Dark Gray */
+            color: #e2e8f0;
+            /* Light Gray */
+        }
+
+        .hero-section {
+            background: linear-gradient(rgba(26, 32, 44, 0.8), rgba(26, 32, 44, 0.9)), url('./voxmatebg.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .card {
+            background-color: #2d3748;
+            /* Slightly Lighter Dark Gray */
+            border-radius: 0.5rem;
+            /* 8px */
+            padding: 1.5rem;
+            /* 24px */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            /* 12px 24px */
+            border-radius: 0.375rem;
+            /* 6px */
+            font-weight: 600;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #4299e1;
+            /* Blue */
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #3182ce;
+            /* Darker Blue */
+        }
+
+        .btn-secondary {
+            background-color: #4a5568;
+            /* Gray */
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #2d3748;
+            /* Darker Gray */
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            /* 36px */
+            font-weight: 700;
+            margin-bottom: 2rem;
+            /* 32px */
+            text-align: center;
+            color: #63b3ed;
+            /* Light Blue */
+        }
+
+        .feature-icon {
+            width: 3rem;
+            /* 48px */
+            height: 3rem;
+            /* 48px */
+            margin-bottom: 1rem;
+            /* 16px */
+            color: #4299e1;
+            /* Blue */
+        }
+
+        nav a {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        nav a:hover {
+            background-color: #4a5568;
+            color: #e2e8f0;
+        }
+    </style>
 </head>
 
 <body>
-    <header>
-        <div class="container">
-            <h1>VoxMate</h1>
-            <nav>
-                <ul>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#download">Download</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#safety">Safety</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+    <nav class="bg-gray-900 p-4 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-blue-400">VoxMate</a>
+            <div class="space-x-4">
+                <a href="#home" class="text-gray-300 hover:text-white">Home</a>
+                <a href="#features" class="text-gray-300 hover:text-white">Features</a>
+                <a href="#download" class="text-gray-300 hover:text-white">Download</a>
+                <a href="https://github.com/NamekujiLSDs/VoxMate" target="_blank" rel="noopener noreferrer"
+                    class="text-gray-300 hover:text-white">GitHub</a>
+            </div>
         </div>
-    </header>
+    </nav>
 
-    <main>
-        <section id="about">
-            <div class="container">
-                <h2>What is VoxMate?</h2>
-                <p>VoxMate is a custom client for those who play Voxiom.io.　<br>
-                    It is the official successor port of the Vanced Voxiom Client and you get a variety of features and
-                    good performance. <br>
-                    It also has the most user-friendly UI possible, making it easy for everyone to use!
-            </div>
-        </section>
+    <section id="home" class="hero-section py-20 md:py-32">
+        <div class="container mx-auto text-center px-4">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">VoxMate</h1>
+            <p class="text-xl md:text-2xl mb-8 text-gray-300">The successor to Vanced Voxiom Client.<br
+                    class="md:hidden"> Bringing you a better Voxiom experience.</p>
+            <a href="#download" class="btn btn-primary text-lg">Download Now</a>
+        </div>
+    </section>
 
-        <section id="download">
-            <div class="container">
-                <h2>Download</h2>
-                <p>Download the latest version of VoxMate from the link below.</p>
-                <a id="downloadLink" href="./download">Download</a>
+    <section id="features" class="py-16 md:py-24 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">Key Features of VoxMate</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card text-center">
+                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+                        </path>
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Enhanced Utilities</h3>
+                    <p class="text-gray-400">Provides useful tools and features to assist gameplay.</p>
+                </div>
+                <div class="card text-center">
+                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
+                        </path>
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Performance Improvements</h3>
+                    <p class="text-gray-400">Aims for a smoother, more responsive gaming experience through
+                        optimization.</p>
+                </div>
+                <div class="card text-center">
+                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Customization Options</h3>
+                    <p class="text-gray-400">Planned features to allow tweaking the interface and settings to your
+                        liking.</p>
+                </div>
+                <div class="card text-center">
+                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z">
+                        </path>
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Open Source</h3>
+                    <p class="text-gray-400">Developed on GitHub, allowing anyone to contribute or review the code.</p>
+                </div>
+                <div class="card text-center">
+                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Successor to Vanced Voxiom Client</h3>
+                    <p class="text-gray-400">Developed as the successor to the popular Vanced Voxiom Client.</p>
+                </div>
+                <div class="card text-center">
+                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Lightweight Design</h3>
+                    <p class="text-gray-400">Aims for minimal resource consumption and swift performance.</p>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="features">
-            <div class="container">
-                <h2>Features</h2>
-                <ul>
-                    <li>Unlimited FPS</li>
-                    <li>Custom Crosshair</li>
-                    <li>Custom CSS Loader</li>
-                    <li>Advanced Resource Swapper</li>
-                    <li>Ad Blocker</li>
-                </ul>
-                <p>More info at Tutorial page</p>
-                <a href="./tutorial" id="tutorialLink">Tutorial</a>
-            </div>
-        </section>
-        <section id="safety">
-            <div class="container">
-                <h2>Client Safety</h2>
-                To ensure client safety and transparency, we do the following <br>
-                <ul>
-                    <li>Using Electron
-                        <ul>
-                            <li>Electron is a platform that combines Chromium and Node.js and includes industry standard
-                                security features.</li>
-                            <li>Sandboxing the web page execution environment, restricting and controlling access to the
-                                system.</li>
-                            <li>The web page eTxecution environment and the system execution environment are separated.
-                                m
-                            </li>
-                        </ul>
-                    </li>
-                    <li>Open Source Transparency
-                        <ul>
-                            <li>All code (except secret key) is available on the Github project.</li>
-                            <li>Anyone can review the code and verify that it is secure enough.</li>
-                            <li>All libraries use reliable open source libraries.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        User Data Protection
-                        <ul>
-                            <li>All user data is stored locally and is not accessed remotely by the developer.</li>
-                            <li>I am not acquiring any user data.</li>
-                        </ul>
-                    </li>
-                    <li>
-                        Features to improve user safety
-                        <ul>
-                            <li>Automatic updates can be retrieved and patches applied at startup. </li>
-                            <li>Sandboxing to isolate and process unknown files and data.</li>
-                            <li>Thorough code review to prevent bugs and vulnerabilities.</li>
-                        </ul>
-                    </li>
-                </ul>
-                Link to client source code : <a href="https://github.com/NamekujiLSDs/VoxMate/" target="_blank">LINK</a>
-            </div>
-        </section>
-        <section id="contact">
-            <div class="container">
-                <h2>Contact</h2>
-                <p>Have a question, found a bug, or have feedback? <br>
-                    Join our Discord at the link below!</p>
-                <a id="discordLink" href="https://discord.gg/yeJ393zA2j" target="_blank">
-                    <img id="discordbanner" src="./DiscordBanner.png" alt="" srcset="">
+    <section id="download" class="py-16 md:py-24 bg-gray-900">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="section-title">Get VoxMate</h2>
+            <p class="text-lg mb-8 text-gray-400">The latest version of VoxMate can be downloaded from the GitHub
+                releases page.</p>
+            <div class="max-w-md mx-auto card">
+                <h3 class="text-2xl font-semibold mb-4 text-blue-300">Latest Release</h3>
+                <p class="text-gray-400 mb-6">
+                    Get the newest version with bug fixes and new features.
+                    Please check the GitHub repository's README for installation instructions and details.
+                </p>
+                <a href="https://github.com/NamekujiLSDs/VoxMate/releases" target="_blank" rel="noopener noreferrer"
+                    class="btn btn-primary w-full md:w-auto text-lg">
+                    Go to GitHub Releases
                 </a>
-                <p>Need other contacts? <br>
-                    Send them to me via gmail.</p>
-                <a href="mailto:namekujilsds@gmail.com">namekujilsds@gmail.com </a>
+                <p class="mt-6 text-sm text-gray-500">
+                    VoxMate is developed in JavaScript.
+                    Follow the project's instructions for usage (e.g., installation via a user script manager like
+                    Tampermonkey).
+                </p>
             </div>
-        </section>
-    </main>
-    <footer>
-        <div class="container">
-            <p>&copy; 2024-2025 Namekuji. All Rights Reserved.</p>
+
+            <div class="mt-12">
+                <h3 class="text-xl font-semibold mb-4 text-blue-300">Important Notes</h3>
+                <ul class="list-disc list-inside text-gray-400 max-w-lg mx-auto text-left">
+                    <li>VoxMate is a third-party client. Use at your own risk.</li>
+                    <li>Please adhere to Voxiom's terms of service.</li>
+                    <li>Always download and install software from trusted sources.</li>
+                </ul>
+            </div>
         </div>
+    </section>
+
+    <section id="preview" class="py-16 md:py-24 bg-gray-800">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="section-title">Gallery</h2>
+            <p class="text-lg mb-8 text-gray-400">See VoxMate in action (replace with actual screenshots)</p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card">
+                    <img src="https://placehold.co/600x400/2d3748/e2e8f0?text=VoxMate+UI+Screenshot+1"
+                        alt="VoxMate UI Screenshot 1" class="rounded-md shadow-lg mx-auto"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/718096/e2e8f0?text=Image+Not+Found';">
+                    <p class="mt-2 text-gray-400">Example of the main interface.</p>
+                </div>
+                <div class="card">
+                    <img src="https://placehold.co/600x400/2d3748/e2e8f0?text=VoxMate+Feature+Screenshot+2"
+                        alt="VoxMate Feature Screenshot 2" class="rounded-md shadow-lg mx-auto"
+                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/718096/e2e8f0?text=Image+Not+Found';">
+                    <p class="mt-2 text-gray-400">Image of an enhanced feature in use.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="bg-gray-900 text-center py-8">
+        <p class="text-gray-500">&copy; 2024-2025 VoxMate Project. All rights reserved.</p>
+        <p class="text-gray-500">
+            Developed by <a href="https://github.com/NamekujiLSDs" target="_blank" rel="noopener noreferrer"
+                class="text-blue-400 hover:text-blue-300">NamekujiLSDs</a>.
+        </p>
+        <p class="text-gray-500 mt-2 text-sm">
+            VoxMate is an unofficial client for Voxiom.
+        </p>
     </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>
