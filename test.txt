@@ -30,3 +30,4 @@
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/ab*
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/summon*attack*
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/summon*damage*
+||prd-game-a-granbluefantasy.akamaized.net/assets/img_low/sp/result/bg_hell_count*
