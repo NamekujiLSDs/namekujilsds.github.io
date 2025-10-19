@@ -1,0 +1,30 @@
+! Title: URL Blocker for Granblue Fantasy Assets
+! Description: Blocks specified assets based on the provided list.
+! Version: 20251019
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/rlc
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/enemy_*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/assets/summon/cutin*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/ykt
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/ab_all_*.png
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/assets/npc/quest/*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/npc/*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/raid/bg/*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/assets/npc/raid_normal/*.jpg
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/phit_*.png
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/*_me_*.png
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/npc*.png
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/*_sw_*.png
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/mu*.png
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img/sp/assets/stamp/*/*.png
+||prd-game-a-granbluefantasy.akamaized.net/assets/img_low/sp/assets/stamp/full/*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/guild/custom/bg/*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/treasure
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/item_get*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/item*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_mo*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/nsp_
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_effect
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/ehit
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_appear
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_union_summon.png
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/assets/summon*
