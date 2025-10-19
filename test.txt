@@ -27,4 +27,3 @@
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/ehit
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_appear
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_union_summon.png
-||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/assets/summon*
