@@ -28,3 +28,5 @@
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_appear
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/raid_union_summon.png
 ||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/ab*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/summon*attack*
+||prd-game-a1-granbluefantasy.akamaized.net/assets/img_low/sp/cjs/summon*damage*
