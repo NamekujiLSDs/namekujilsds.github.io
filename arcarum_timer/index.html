@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Element Timer UI - Persist</title>
+    <style>
+        /* --- ベース変数 --- */
+        :root {
+            --theme-color: #ffd700;
+            --theme-bg: radial-gradient(circle, #333, #111);
+        }
+
+        body {
+            background-color: #1a1625;
+            color: #fff;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            user-select: none;
+        }
+
+        /* --- メインカード --- */
+        .card {
+            background-color: #1e1b29;
+            border: 2px solid #3a3548;
+            border-radius: 15px;
+            width: 180px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            margin-bottom: 20px;
+        }
+
+        .card.active {
+            border-color: var(--theme-color);
+            box-shadow: 0 0 20px var(--theme-color);
+        }
+
+        /* --- アイコンエリア --- */
+        .icon-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .icon-wrapper:active {
+            transform: scale(0.95);
+        }
+
+        .progress-ring {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(-90deg);
+            pointer-events: none;
+        }
+
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s, stroke 0.3s;
+            transform-origin: 50% 50%;
+            stroke: var(--theme-color);
+        }
+
+        .element-icon {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid #cba472;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.8);
+            background: var(--theme-bg);
+            overflow: hidden;
+        }
+
+        .element-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        #upIcon{
+            position: absolute;
+            width: 42px;
+            height: 42px;
+            bottom: 10px;
+            right: 0px;
+            z-index: 1;
+        }
+
+        /* --- ステータス表示 --- */
+        .status-box {
+            background-color: #0c0b11;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 8px;
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .status-text {
+            font-size: 14px;
+            color: #aaa;
+            font-weight: bold;
+        }
+
+        .timer-text {
+            font-size: 16px;
+            color: var(--theme-color);
+            font-weight: bold;
+            display: none;
+        }
+
+        .card.active .status-text {
+            display: none;
+        }
+
+        .card.active .timer-text {
+            display: block;
+        }
+
+        .bottom-deco {
+            margin-top: 10px;
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 3px;
+        }
+
+        /* --- 設定開閉スイッチ --- */
+        .menu-toggle-area {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: background 0.2s;
+            margin-bottom: 10px;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .menu-toggle-area:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-label {
+            font-size: 12px;
+            color: #aaa;
+            letter-spacing: 1px;
+        }
+
+        .menu-arrow {
+            font-size: 10px;
+            color: #aaa;
+            transition: transform 0.3s;
+        }
+
+        .menu-toggle-area.closed .menu-arrow {
+            transform: rotate(-90deg);
+        }
+
+        /* --- 設定パネル全体 --- */
+        .settings-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            overflow: hidden;
+            max-height: 300px;
+            opacity: 1;
+            transition: max-height 0.4s ease, opacity 0.4s ease;
+        }
+
+        .settings-panel.hidden {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 手動設定エリア */
+        .controls-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            background: #2a2635;
+            padding: 10px 20px;
+            border-radius: 30px;
+        }
+
+        .time-input {
+            background: #111;
+            border: 1px solid #555;
+            color: #fff;
+            width: 40px;
+            padding: 5px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .set-btn {
+            background: #444;
+            color: #fff;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .set-btn:hover {
+            background: #666;
+        }
+
+        /* アイコン選択メニュー */
+        .menu-container {
+            display: flex;
+            gap: 15px;
+            background: #1e1b29;
+            padding: 15px;
+            border-radius: 15px;
+            border: 1px solid #3a3548;
+        }
+
+        .menu-item {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid #333;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            transition: transform 0.2s;
+            background-color: #000;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .menu-item img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.1);
+        }
+
+        .menu-item.selected {
+            border-color: #fff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card" id="mainCard">
+        <div class="icon-wrapper" id="timerBtn">
+            <svg class="progress-ring" width="120" height="120">
+                <circle class="progress-ring__bg" stroke="#333" stroke-width="6" fill="transparent" r="54" cx="60"
+                    cy="60" />
+                <circle class="progress-ring__circle" stroke-width="6" fill="transparent" r="54" cx="60" cy="60" />
+            </svg>
+                <img src="./img/up.png" id="upIcon" />
+            <div class="element-icon">
+                <img id="mainIconImg" src="" alt="icon" />
+            </div>
+        </div>
+
+        <div class="status-box">
+            <span class="status-text">未発動</span>
+            <span class="timer-text">残り<br /><span id="timeVal">00:00:00</span></span>
+        </div>
+    </div>
+
+    <div class="menu-toggle-area closed" onclick="toggleSettings()" id="settingsToggle">
+        <span class="menu-label">SETTINGS</span>
+        <span class="menu-arrow">▼</span>
+    </div>
+
+    <div class="settings-panel hidden" id="settingsPanel">
+        <div class="controls-area">
+            <input type="number" id="inputH" class="time-input" placeholder="時" min="0" value="0" />
+            :
+            <input type="number" id="inputM" class="time-input" placeholder="分" min="0" max="59" value="0" />
+            :
+            <input type="number" id="inputS" class="time-input" placeholder="秒" min="0" max="59" value="0" />
+            <button class="set-btn" onclick="manualSet()">SET</button>
+        </div>
+
+        <div class="menu-container" id="menuContainer"></div>
+    </div>
+
+    <script>
+        // --- 設定データ ---
+        const themes = {
+            fire: {
+                img: './img/1.png',
+                color: '#ff5555',
+                bg: 'radial-gradient(circle, #5a1e1e, #2b1010)'
+            },
+            water: {
+                img: './img/2.png',
+                color: '#4facfe',
+                bg: 'radial-gradient(circle, #1e3c5a, #101d2b)'
+            },
+            earth: {
+                img: './img/3.png',
+                color: '#d4a045',
+                bg: 'radial-gradient(circle, #5a461e, #2b2210)'
+            },
+            wind: {
+                img: './img/4.png',
+                color: '#6bff8e',
+                bg: 'radial-gradient(circle, #1e5a2f, #102b18)'
+            },
+            light: {
+                img: './img/5.png',
+                color: '#fffacd',
+                bg: 'radial-gradient(circle, #5a5a1e, #2b2b10)'
+            },
+            dark: {
+                img: './img/6.png',
+                color: '#d86bff',
+                bg: 'radial-gradient(circle, #3a1e5a, #1d102b)'
+            }
+        }
+
+        let currentTheme = 'fire'
+        let endTime = null // 終了時刻 (ミリ秒)
+        const oneHour = 60 * 60 * 1000
+
+        // LocalStorageのキー
+        const LS_KEY_TIME = 'elementTimer_endTime'
+        const LS_KEY_THEME = 'elementTimer_theme'
+
+        // SVG設定
+        const circle = document.querySelector('.progress-ring__circle')
+        const radius = 54
+        const circumference = 2 * Math.PI * radius
+        circle.style.strokeDasharray = `${circumference} ${circumference}`
+        circle.style.strokeDashoffset = circumference
+
+        // メニュー生成
+        const menuContainer = document.getElementById('menuContainer')
+        Object.keys(themes).forEach(key => {
+            const item = document.createElement('div')
+            item.className = 'menu-item'
+            item.dataset.theme = key
+            item.innerHTML = `<img src="${themes[key].img}">`
+            item.onclick = () => switchTheme(key)
+            menuContainer.appendChild(item)
+        })
+
+        // --- 保存・読み込み機能 ---
+
+        function saveData() {
+            // テーマの保存
+            localStorage.setItem(LS_KEY_THEME, currentTheme)
+
+            // 時間の保存
+            if (endTime) {
+                localStorage.setItem(LS_KEY_TIME, endTime.toString())
+            } else {
+                localStorage.removeItem(LS_KEY_TIME)
+            }
+        }
+
+        function loadData() {
+            // テーマの読み込み
+            const savedTheme = localStorage.getItem(LS_KEY_THEME)
+            if (savedTheme && themes[savedTheme]) {
+                switchTheme(savedTheme, false) // false = 保存処理をスキップ（無限ループ防止）
+            } else {
+                switchTheme('fire', false)
+            }
+
+            // 時間の読み込み
+            const savedTime = localStorage.getItem(LS_KEY_TIME)
+            if (savedTime) {
+                const parsedTime = parseInt(savedTime, 10)
+                const now = new Date().getTime()
+
+                // 現在時刻より未来ならセット、過去なら期限切れ扱い
+                if (parsedTime > now) {
+                    endTime = parsedTime
+                } else {
+                    endTime = null
+                    localStorage.removeItem(LS_KEY_TIME) // 期限切れデータを掃除
+                }
+            }
+            updateUI()
+        }
+
+        // --- 機能関数 ---
+
+        function switchTheme(themeKey, save = true) {
+            currentTheme = themeKey
+            const theme = themes[themeKey]
+            const root = document.documentElement
+
+            document.getElementById('mainIconImg').src = theme.img
+            root.style.setProperty('--theme-color', theme.color)
+            root.style.setProperty('--theme-bg', theme.bg)
+
+            document.querySelectorAll('.menu-item').forEach(el => {
+                el.classList.remove('selected')
+                if (el.dataset.theme === themeKey) el.classList.add('selected')
+            })
+
+            if (save) saveData()
+        }
+
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel')
+            const toggleBtn = document.getElementById('settingsToggle')
+            panel.classList.toggle('hidden')
+            toggleBtn.classList.toggle('closed')
+        }
+
+        // タイマーボタン操作
+        const timerBtn = document.getElementById('timerBtn')
+        timerBtn.addEventListener('click', e => addTime(1))
+        timerBtn.addEventListener('contextmenu', e => {
+            e.preventDefault()
+            addTime(-1)
+        })
+
+        function addTime(hours) {
+            const now = new Date().getTime()
+            const msToAdd = hours * oneHour
+
+            if (!endTime || endTime < now) {
+                if (hours > 0) endTime = now + msToAdd
+            } else {
+                endTime += msToAdd
+            }
+
+            // マイナスになったらクリア
+            if (endTime && endTime < now) endTime = null
+
+            saveData() // 変更を保存
+            updateUI()
+        }
+
+        function manualSet() {
+            const h = parseInt(document.getElementById('inputH').value) || 0
+            const m = parseInt(document.getElementById('inputM').value) || 0
+            const s = parseInt(document.getElementById('inputS').value) || 0
+            const totalMs = (h * 3600 + m * 60 + s) * 1000
+
+            if (totalMs > 0) {
+                const now = new Date().getTime()
+                endTime = now + totalMs
+            } else {
+                endTime = null
+            }
+            saveData() // 変更を保存
+            updateUI()
+        }
+
+        function updateUI() {
+            const now = new Date().getTime()
+            const card = document.getElementById('mainCard')
+            const timeVal = document.getElementById('timeVal')
+
+            if (endTime && endTime > now) {
+                card.classList.add('active')
+                const diff = endTime - now
+                const h = Math.floor(diff / (1000 * 60 * 60))
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
+                const s = Math.floor((diff % (1000 * 60)) / 1000)
+
+                const mStr = String(m).padStart(2, '0')
+                const sStr = String(s).padStart(2, '0')
+
+                if (h > 0) {
+                    timeVal.innerHTML = `${h}時間${mStr}分`
+                } else {
+                    timeVal.innerHTML = `${mStr}分${sStr}秒`
+                }
+
+                let percentage = diff / oneHour
+                if (percentage > 1) percentage = 1
+                const offset = circumference - percentage * circumference
+                circle.style.strokeDashoffset = offset
+            } else {
+                card.classList.remove('active')
+                circle.style.strokeDashoffset = circumference
+                // ここではendTimeをnullにしない（リロード時の判定のため）
+                // ただし表示上は停止状態
+            }
+        }
+
+        // 初期ロード実行
+        loadData()
+
+        // 毎秒更新
+        setInterval(updateUI, 1000)
+    </script>
+</body>
+
+</html>
