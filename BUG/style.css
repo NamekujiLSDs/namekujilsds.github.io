@@ -1,0 +1,119 @@
+body {
+    font-family: "Inter", sans-serif;
+    background-color: #000;
+    color: #fff;
+    scroll-behavior: smooth;
+    padding: unset;
+    margin: unset;
+}
+
+#bg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: -1;
+    transform: translate(-50%, -50%);
+    opacity: 0.05;
+}
+
+.content {
+    background: linear-gradient(#6665, #0000);
+}
+
+.header {
+    height: 50px;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    padding: 8px 6px;
+}
+
+.titleHolder {
+    display: flex !important;
+    flex-direction: row !important;
+    width: fit-content;
+}
+
+.titleHolder img {
+    height: 2rem;
+    margin-right: 5px;
+}
+
+.titleHolder img:hover {
+    filter: drop-shadow(0 0 4px white);
+    animation: spin infinite 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateZ(360deg);
+    }
+
+}
+
+.headerLinks {
+    display: flex;
+    gap: 8px;
+    padding: 6px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-gradient {
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+}
+
+.card-blur {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.card-blur:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transform: translateY(-5px);
+}
+
+.btn-primary {
+    background-color: #fff;
+    color: #000;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #ccc;
+    transform: scale(1.05);
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* ダークテーマ対応：基本が黒なのでアクセントを調整 */
+::selection {
+    background: #fff;
+    color: #000;
+}
+
+.discord:hover {
+    background: #554dcb !important
+}
+
+#andmore {
+    display: flex;
+    padding: 10px;
+    margin-top: 20px;
+    justify-content: center;
+    font-size: 3em;
+    font-weight: 900;
+    font-style: italic;
+    color: #fff4;
+}

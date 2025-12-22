@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUG Client - Basic Utility Gear for Krunker</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+</head>
+
+<body class="overflow-x-hidden">
+    <img src="./BG.png" alt="" id="bg">
+    <nav
+        class="header fixed w-full z-50 px-8 py-6 flex items-center bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="titleHolder">
+            <img src="./icon.png">
+            <div class="title text-2xl font-black tracking-tighter">
+                BUG CLIENT
+            </div>
+        </div>
+    </nav>
+
+    <section class="content min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20">
+        <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter italic">
+            BASIC UTILITY GEAR
+        </h1>
+        <p class="max-w-2xl text-gray-400 text-lg md:text-xl mb-10 font-light leading-relaxed">
+            idkrとLaFの血を継ぐ<br>
+            - 最後の日本製Krunkerクライアント -
+        </p>
+        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
+            <a href="https://github.com/NamekujiLSDs/BUG-Client/releases/latest"
+                class="download btn-primary px-10 py-4 rounded-full font-bold text-sm uppercase"
+                target="_blank">DOWNLOAD</a>
+            <a href="https://discord.gg/aKwcJ6ETUW" target="_blank"
+                class="discord border border-white/20 hover:bg-white hover:text-000 px-10 py-4 rounded-full font-bold text-sm uppercase transition">Join
+                Discord</a>
+        </div>
+    </section>
+
+    <section id="features" class="py-24 px-8 max-w-7xl mx-auto">
+        <h2 class="text-4xl font-black mb-16 tracking-tighter uppercase border-l-4 border-white pl-6">Core Features</h2>
+        <div class="feature-grid">
+            <div class="card-blur p-8 rounded-2xl">
+                <h3 class="text-xl font-bold mb-4 uppercase tracking-wider text-gray-300">General</h3>
+                <ul class="text-gray-500 space-y-2 text-sm">
+                    <li>• AdBlocker</li>
+                    <li>• Resource Swapper</li>
+                    <li>• AltManager</li>
+                    <li>• Menu Timer</li>
+                    <li>• Easy CSS</li>
+                </ul>
+            </div>
+            <div class="card-blur p-8 rounded-2xl">
+                <h3 class="text-xl font-bold mb-4 uppercase tracking-wider text-gray-300">Graphics</h3>
+                <ul class="text-gray-500 space-y-2 text-sm">
+                    <li>• Unlimited FPS</li>
+                    <li>• Angle Backend</li>
+                    <li>• GPU Rasterizing</li>
+                </ul>
+            </div>
+            <div class="card-blur p-8 rounded-2xl">
+                <h3 class="text-xl font-bold mb-4 uppercase tracking-wider text-gray-300">Flags</h3>
+                <ul class="text-gray-500 space-y-2 text-sm">
+                    <li>• Disable Useless Flag</li>
+                    <li>• Better Flag Settings</li>
+                    <li>• Well Optimized Flaglist</li>
+                </ul>
+            </div>
+        </div>
+        <div id="andmore">AND TOO MANY BUGS...</div>
+    </section>
+
+    <footer class="py-12 border-t border-white/5 px-8">
+        <div
+            class="max-w-7xl mx-auto flex flex-col md:row justify-between items-center opacity-40 text-[10px] uppercase tracking-widest">
+            <p>&copy; 2025 Namekuji. ALL RIGHTS RESERVED.</p>
+            <div class="flex space-x-6 mt-4 md:mt-0">
+                <a href="https://discord.gg/aKwcJ6ETUW" target="_blank" class="hover:text-white transition">Discord</a>
+                <a href="https://github.com/NamekujiLSDs/BUG-Client" target="_blank"
+                    class="hover:text-white transition">GitHub</a>
+                <a href="https://www.gnu.org/licenses/agpl-3.0.en.html#license-text" class="hover:text-white transition"
+                    target="_blank">License (AGPL-3.0)</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>
