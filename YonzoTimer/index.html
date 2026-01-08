@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>四象ボーナスタイム計測器</title>
+    <style>
+        :root {
+            --bg-color: #1a1a1d;
+            --text-color: #e0e0e0;
+            --g1-color: #ff4d4d;
+            /* Group 1: 火 (朱雀) */
+            --g2-color: #4d94ff;
+            /* Group 2: 水 (玄武) */
+            --g3-color: #d4a017;
+            /* Group 3: 土 (白虎) */
+            --g4-color: #50c878;
+            /* Group 4: 風 (青竜) */
+            --card-bg: #2d2d30;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .status-label {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .current-group {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .time-remaining {
+            font-size: 2.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .next-info {
+            border-top: 1px solid #444;
+            padding-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Group Colors */
+        .group1 {
+            color: var(--g1-color);
+        }
+
+        .group2 {
+            color: var(--g2-color);
+        }
+
+        .group3 {
+            color: var(--g3-color);
+        }
+
+        .group4 {
+            color: var(--g4-color);
+        }
+
+        /* Hidden Source Data */
+        #source-data {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>四象降臨 ボーナスタイム</h1>
+
+    <div class="container">
+        <div class="status-label">現在のボーナス (AT)</div>
+        <div id="current-group-display" class="current-group">---</div>
+
+        <div class="status-label">終了まで</div>
+        <div id="timer-display" class="time-remaining">--:--:--</div>
+
+        <div class="next-info">
+            次は <span id="next-group-name">---</span><br>
+            <span id="next-time-range">--:--</span> 開始
+        </div>
+    </div>
+
+    <div id="source-data">
+        <div class="prt-list">
+            <div class="prt-day" data-day-index="2日目：1/8">
+                <div class="prt-schedule group1 past">
+                    <div class="txt-schedule">00:00 ～ 01:59</div>
+                </div>
+                <div class="prt-schedule group2 past">
+                    <div class="txt-schedule">02:00 ～ 03:59</div>
+                </div>
+                <div class="prt-schedule group3 past">
+                    <div class="txt-schedule">04:00 ～ 05:59</div>
+                </div>
+                <div class="prt-schedule group4 past">
+                    <div class="txt-schedule">06:00 ～ 07:59</div>
+                </div>
+                <div class="prt-schedule group1 past">
+                    <div class="txt-schedule">08:00 ～ 09:59</div>
+                </div>
+                <div class="prt-schedule group2 past">
+                    <div class="txt-schedule">10:00 ～ 11:59</div>
+                </div>
+                <div class="prt-schedule group3 past">
+                    <div class="txt-schedule">12:00 ～ 13:59</div>
+                </div>
+                <div class="prt-schedule group4 past">
+                    <div class="txt-schedule">14:00 ～ 15:59</div>
+                </div>
+                <div class="prt-schedule group1 past">
+                    <div class="txt-schedule">16:00 ～ 17:59</div>
+                </div>
+                <div class="prt-schedule group2 current">
+                    <div class="txt-schedule">18:00 ～ 19:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">20:00 ～ 21:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">22:00 ～ 23:59</div>
+                </div>
+            </div>
+            <div class="prt-day" data-day-index="3日目：1/9">
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">00:00 ～ 01:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">02:00 ～ 03:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">04:00 ～ 05:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">06:00 ～ 07:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">08:00 ～ 09:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">10:00 ～ 11:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">12:00 ～ 13:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">14:00 ～ 15:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">16:00 ～ 17:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">18:00 ～ 19:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">20:00 ～ 21:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">22:00 ～ 23:59</div>
+                </div>
+            </div>
+            <div class="prt-day" data-day-index="4日目：1/10">
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">00:00 ～ 01:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">02:00 ～ 03:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">04:00 ～ 05:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">06:00 ～ 07:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">08:00 ～ 09:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">10:00 ～ 11:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">12:00 ～ 13:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">14:00 ～ 15:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">16:00 ～ 17:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">18:00 ～ 19:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">20:00 ～ 21:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">22:00 ～ 23:59</div>
+                </div>
+            </div>
+            <div class="prt-day" data-day-index="5日目：1/11">
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">00:00 ～ 01:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">02:00 ～ 03:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">04:00 ～ 05:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">06:00 ～ 07:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">08:00 ～ 09:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">10:00 ～ 11:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">12:00 ～ 13:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">14:00 ～ 15:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">16:00 ～ 17:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">18:00 ～ 19:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">20:00 ～ 21:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">22:00 ～ 23:59</div>
+                </div>
+            </div>
+            <div class="prt-day" data-day-index="6日目：1/12">
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">00:00 ～ 01:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">02:00 ～ 03:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">04:00 ～ 05:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">06:00 ～ 07:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">08:00 ～ 09:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">10:00 ～ 11:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">12:00 ～ 13:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">14:00 ～ 15:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">16:00 ～ 17:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">18:00 ～ 19:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">20:00 ～ 21:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">22:00 ～ 23:59</div>
+                </div>
+            </div>
+            <div class="prt-day" data-day-index="7日目：1/13">
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">00:00 ～ 01:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">02:00 ～ 03:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">04:00 ～ 05:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">06:00 ～ 07:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">08:00 ～ 09:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">10:00 ～ 11:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">12:00 ～ 13:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">14:00 ～ 15:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">16:00 ～ 17:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">18:00 ～ 19:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">20:00 ～ 21:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">22:00 ～ 23:59</div>
+                </div>
+            </div>
+            <div class="prt-day" data-day-index="8日目：1/14">
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">00:00 ～ 01:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">02:00 ～ 03:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">04:00 ～ 05:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">06:00 ～ 07:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">08:00 ～ 09:59</div>
+                </div>
+                <div class="prt-schedule group4">
+                    <div class="txt-schedule">10:00 ～ 11:59</div>
+                </div>
+                <div class="prt-schedule group1">
+                    <div class="txt-schedule">12:00 ～ 13:59</div>
+                </div>
+                <div class="prt-schedule group2">
+                    <div class="txt-schedule">14:00 ～ 15:59</div>
+                </div>
+                <div class="prt-schedule group3">
+                    <div class="txt-schedule">16:00 ～ 16:59</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 四象の名称定義
+        const GROUP_NAMES = {
+            'group1': '朱雀 (火)',
+            'group2': '玄武 (水)',
+            'group3': '白虎 (土)',
+            'group4': '青竜 (風)'
+        };
+
+        let scheduleData = [];
+
+        // HTMLからスケジュールを解析する関数
+        function parseSchedule() {
+            const container = document.getElementById('source-data');
+            const dayDivs = container.querySelectorAll('.prt-day');
+            const currentYear = new Date().getFullYear();
+
+            dayDivs.forEach(dayDiv => {
+                const dayIndexStr = dayDiv.getAttribute('data-day-index');
+                // "2日目：1/8" から "1/8" を抽出
+                const dateMatch = dayIndexStr.match(/(\d{1,2})\/(\d{1,2})/);
+
+                if (!dateMatch) return;
+
+                const month = parseInt(dateMatch[1], 10);
+                const day = parseInt(dateMatch[2], 10);
+
+                const schedules = dayDiv.querySelectorAll('.prt-schedule');
+                schedules.forEach(sch => {
+                    const txt = sch.querySelector('.txt-schedule').innerText;
+                    // "00:00 ～ 01:59" を抽出
+                    const timeMatch = txt.match(/(\d{2}):(\d{2})\s*～\s*(\d{2}):(\d{2})/);
+
+                    if (timeMatch) {
+                        let groupClass = '';
+                        if (sch.classList.contains('group1')) groupClass = 'group1';
+                        if (sch.classList.contains('group2')) groupClass = 'group2';
+                        if (sch.classList.contains('group3')) groupClass = 'group3';
+                        if (sch.classList.contains('group4')) groupClass = 'group4';
+
+                        const startH = parseInt(timeMatch[1], 10);
+                        const startM = parseInt(timeMatch[2], 10);
+                        const endH = parseInt(timeMatch[3], 10);
+                        const endM = parseInt(timeMatch[4], 10);
+
+                        // 日付オブジェクト作成
+                        const startTime = new Date(currentYear, month - 1, day, startH, startM, 0);
+                        let endTime = new Date(currentYear, month - 1, day, endH, endM, 59);
+
+                        // 年跨ぎの簡易対応 (1月で現在月が12月の場合など) - 今回は簡易的に現在年固定
+
+                        scheduleData.push({
+                            start: startTime,
+                            end: endTime,
+                            group: groupClass,
+                            text: txt
+                        });
+                    }
+                });
+            });
+
+            // 日付順にソート
+            scheduleData.sort((a, b) => a.start - b.start);
+        }
+
+        function updateDisplay() {
+            const now = new Date();
+            const groupDisplay = document.getElementById('current-group-display');
+            const timerDisplay = document.getElementById('timer-display');
+            const nextNameDisplay = document.getElementById('next-group-name');
+            const nextTimeDisplay = document.getElementById('next-time-range');
+
+            // 現在進行中のスケジュールを探す
+            let currentSlot = null;
+            let nextSlot = null;
+
+            for (let i = 0; i < scheduleData.length; i++) {
+                if (now >= scheduleData[i].start && now <= scheduleData[i].end) {
+                    currentSlot = scheduleData[i];
+                    nextSlot = scheduleData[i + 1];
+                    break;
+                }
+            }
+
+            // 現在スケジュールがない場合（次の開始前）
+            if (!currentSlot) {
+                // 未来の最初のスロットを探す
+                nextSlot = scheduleData.find(s => s.start > now);
+                if (nextSlot) {
+                    groupDisplay.innerText = "待機中";
+                    groupDisplay.className = "current-group";
+
+                    const diff = nextSlot.start - now;
+                    const hours = Math.floor(diff / (1000 * 60 * 60));
+                    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                    timerDisplay.innerText = `開始まで ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                    nextNameDisplay.innerText = GROUP_NAMES[nextSlot.group];
+                    nextNameDisplay.className = nextSlot.group;
+                    nextTimeDisplay.innerText = nextSlot.text.split('～')[0]; // 開始時間だけ表示
+                    return;
+                } else {
+                    groupDisplay.innerText = "全日程終了";
+                    timerDisplay.innerText = "--:--:--";
+                    return;
+                }
+            }
+
+            // 現在進行中の表示更新
+            groupDisplay.innerText = GROUP_NAMES[currentSlot.group];
+            groupDisplay.className = "current-group " + currentSlot.group;
+
+            // 残り時間計算
+            const diff = currentSlot.end - now;
+            if (diff > 0) {
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                timerDisplay.innerText = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            } else {
+                timerDisplay.innerText = "00:00:00";
+            }
+
+            // 次回情報の更新
+            if (nextSlot) {
+                nextNameDisplay.innerText = GROUP_NAMES[nextSlot.group];
+                nextNameDisplay.className = nextSlot.group;
+                // 時間部分だけ抽出して表示
+                const timeText = nextSlot.text.split('～')[0];
+                nextTimeDisplay.innerText = timeText + " ～";
+            } else {
+                nextNameDisplay.innerText = "なし";
+                nextNameDisplay.className = "";
+                nextTimeDisplay.innerText = "";
+            }
+        }
+
+        // 初期化と実行
+        parseSchedule();
+        updateDisplay();
+        setInterval(updateDisplay, 1000);
+
+    </script>
+</body>
+
+</html>
