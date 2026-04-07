@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>古戦場貢献度ランキング</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {}
+      }
+    }
+  </script>
+
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin {
+      animation: spin 1s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#18181b] text-[#e4e4e7] min-h-screen p-4 md:p-8 font-sans selection:bg-[#3b82f6] selection:text-white">
+  
+  <div class="max-w-5xl mx-auto space-y-6">
+    
+    <header class="bg-[#27272a] rounded-lg shadow-lg p-6 border border-[#3f3f46]">
+      <h1 class="text-2xl font-bold flex items-center gap-2 text-[#e4e4e7]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        古戦場貢献度ランキング
+      </h1>
+      <p class="text-[#a1a1aa] text-sm mt-2">
+        入力されたプレイヤーの最新の貢献度を取得し、10万位ボーダーと共にランキング形式で表示します。
+      </p>
+    </header>
+
+    <section class="bg-[#27272a] rounded-lg shadow-lg p-5 border border-[#3f3f46]">
+      <div class="flex flex-col md:flex-row gap-4 items-stretch">
+        <div class="flex-1">
+          <input
+            type="text"
+            id="inputIds"
+            class="w-full bg-[#18181b] border border-[#3f3f46] text-[#e4e4e7] rounded p-3 text-sm focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] outline-none transition-colors font-mono"
+            placeholder="プレイヤーID (カンマ区切り)"
+          />
+        </div>
+        <button
+          id="analyzeBtn"
+          class="bg-[#3b82f6] hover:bg-[#2563eb] disabled:bg-[#1e3a8a] disabled:text-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded transition-colors flex items-center justify-center gap-2 whitespace-nowrap"
+        >
+          <svg id="loadingIcon" class="hidden animate-spin" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+          </svg>
+          <span id="btnText">データ取得</span>
+        </button>
+      </div>
+
+      <div id="errorContainer" class="hidden mt-4 p-3 bg-red-900/30 text-red-400 rounded flex items-center gap-2 text-sm border border-red-800/50">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
+          <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <p id="errorMsg"></p>
+      </div>
+    </section>
+
+    <section id="resultSection" class="hidden bg-[#27272a] rounded-lg shadow-lg border border-[#3f3f46] overflow-hidden">
+      <div class="p-4 bg-[#18181b] border-b border-[#3f3f46] flex justify-between items-center">
+        <h2 class="font-bold text-[#e4e4e7]">最新ランキング</h2>
+        <span id="lastUpdate" class="text-xs text-[#71717a]"></span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left whitespace-nowrap">
+          <thead class="bg-[#18181b] text-[#a1a1aa] border-b border-[#3f3f46]">
+            <tr>
+              <th class="px-5 py-3 font-medium w-16">順位</th>
+              <th class="px-5 py-3 font-medium">プレイヤー</th>
+              <th class="px-5 py-3 font-medium text-right">貢献度</th>
+              <th class="px-5 py-3 font-medium text-right">時速</th>
+              <th class="px-5 py-3 font-medium text-right">ボーダー差</th>
+              <th class="px-5 py-3 font-medium text-right">更新日時</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody" class="divide-y divide-[#3f3f46]">
+            </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // --- 定数定義 ---
+    const CURRENT_RAID_ID = 'teamraid082';
+    const BORDER_RANK = 100000;
+
+    // --- ユーティリティ関数 ---
+    const formatPoint = (num) => {
+      if (num === undefined || num === null || isNaN(num)) return '-';
+      if (num >= 100000000) return (num / 100000000).toFixed(4) + '億';
+      if (num >= 10000) return (num / 10000).toFixed(1) + '万';
+      return Math.round(num).toLocaleString();
+    };
+
+    const formatTime = (unixSec) => {
+      if (!unixSec) return '-';
+      const d = new Date(unixSec * 1000);
+      return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+    };
+
+    // 前の時間と今の時間のデータから時速を計算する関数
+    const calculateSpeedPerHour = (latest, prev) => {
+      if (!latest || !prev) return null;
+      const dt = latest.updatetime - prev.updatetime; // 秒単位の差分
+      const dp = latest.point - prev.point;
+      if (dt <= 0) return 0; // ゼロ除算防止
+      return (dp / dt) * 3600; // 1時間あたりの増加量に変換
+    };
+
+    const fetchData = async (url) => {
+      try {
+        const res = await fetch(url);
+        if (res.ok) {
+          const json = await res.json();
+          if (json.type === 'success') return json.data;
+        }
+      } catch (e) {
+        console.warn('Direct fetch failed, trying proxy...', url);
+      }
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      const res = await fetch(proxyUrl);
+      if (!res.ok) throw new Error(`通信エラー: ${res.status}`);
+      const json = await res.json();
+      if (json.type !== 'success') throw new Error('APIからエラーが返却されました');
+      return json.data;
+    };
+
+    // URLのクエリパラメータを更新する関数
+    const updateUrlParams = (ids) => {
+      const url = new URL(window.location);
+      if (ids && ids.length > 0) {
+        url.searchParams.set('id', ids.join(','));
+      } else {
+        url.searchParams.delete('id');
+      }
+      window.history.pushState({}, '', url);
+    };
+
+    // URLのクエリパラメータからIDを取得する関数
+    const getIdsFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const idParam = params.get('id');
+      if (idParam) {
+        return idParam.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      }
+      return [];
+    };
+
+    // --- DOM要素の取得 ---
+    const inputIdsEl = document.getElementById('inputIds');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const loadingIcon = document.getElementById('loadingIcon');
+    const btnText = document.getElementById('btnText');
+    const errorContainer = document.getElementById('errorContainer');
+    const errorMsg = document.getElementById('errorMsg');
+    const resultSection = document.getElementById('resultSection');
+    const tableBody = document.getElementById('tableBody');
+    const lastUpdateEl = document.getElementById('lastUpdate');
+
+    // --- メインロジック ---
+    const handleAnalyze = async () => {
+      const inputVal = inputIdsEl.value;
+      if (!inputVal.trim()) {
+        showError('プレイヤーIDを入力してください。');
+        updateUrlParams([]); // 空の場合はパラメータ削除
+        return;
+      }
+
+      setLoading(true);
+
+      const ids = inputVal.split(/[, ]+/).map(s => s.trim()).filter(s => s.length > 0);
+      
+      // クエリパラメータを更新
+      updateUrlParams(ids);
+      
+      try {
+        // ボーダーデータの取得
+        const currentBorderReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK}`);
+
+        // ユーザーデータの取得
+        const userReqs = ids.map(async (id) => {
+          try {
+            const userRes = await fetchData(`https://gbf.pub/api/client/gw/user?userid=${id}`);
+            const pointRes = await fetchData(`https://gbf.pub/api/client/gw/point?teamraidid=${CURRENT_RAID_ID}&type=user&id=${id}`);
+            const userInfo = userRes.length > 0 ? userRes[0] : { name: `ID:${id}`, id };
+            return { id, name: userInfo.name, points: pointRes || [] };
+          } catch (e) {
+            return { id, name: `ID:${id} (取得失敗)`, points: [], error: true };
+          }
+        });
+
+        const results = await Promise.all([currentBorderReq, ...userReqs]);
+        const currentBorder = results[0];
+        const usersData = results.slice(1);
+
+        if (!currentBorder || currentBorder.length === 0) {
+          throw new Error('現在のボーダーデータが取得できませんでした。イベントが開始されていない可能性があります。');
+        }
+
+        const validUsers = usersData.filter(u => !u.error && u.points.length > 0);
+
+        // ボーダーの時速計算
+        const latestBorderData = currentBorder[currentBorder.length - 1];
+        const prevBorderData = currentBorder.length > 1 ? currentBorder[currentBorder.length - 2] : null;
+        const latestBorderPoint = latestBorderData.point;
+        const borderSpeed = calculateSpeedPerHour(latestBorderData, prevBorderData);
+
+        const newTableData = [];
+
+        // ボーダー行
+        newTableData.push({
+          id: 'border',
+          name: '10万位ボーダー',
+          point: latestBorderPoint,
+          speed: borderSpeed,
+          isBorder: true,
+          isReached: true,
+          diff: null,
+          updatetime: latestBorderData.updatetime
+        });
+
+        // ユーザー行
+        validUsers.forEach(u => {
+          const latestUserData = u.points[u.points.length - 1];
+          const prevUserData = u.points.length > 1 ? u.points[u.points.length - 2] : null;
+          const userSpeed = calculateSpeedPerHour(latestUserData, prevUserData);
+          
+          const latestPoint = latestUserData.point;
+          newTableData.push({
+            id: u.id,
+            name: u.name,
+            point: latestPoint,
+            speed: userSpeed,
+            isBorder: false,
+            isReached: latestPoint >= latestBorderPoint,
+            diff: latestPoint - latestBorderPoint,
+            updatetime: latestUserData.updatetime
+          });
+        });
+
+        // 降順ソート
+        newTableData.sort((a, b) => b.point - a.point);
+
+        renderTable(newTableData);
+        
+        lastUpdateEl.textContent = `取得時刻: ${new Date().toLocaleTimeString()}`;
+        resultSection.classList.remove('hidden');
+
+      } catch (err) {
+        console.error(err);
+        showError(err.message || 'データの取得または処理中にエラーが発生しました。');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // --- UI操作ヘルパー ---
+    const setLoading = (isLoading) => {
+      analyzeBtn.disabled = isLoading;
+      if (isLoading) {
+        loadingIcon.classList.remove('hidden');
+        btnText.textContent = '';
+        errorContainer.classList.add('hidden');
+        resultSection.classList.add('hidden');
+      } else {
+        loadingIcon.classList.add('hidden');
+        btnText.textContent = 'データ取得';
+      }
+    };
+
+    const showError = (message) => {
+      errorMsg.textContent = message;
+      errorContainer.classList.remove('hidden');
+    };
+
+    const renderTable = (data) => {
+      tableBody.innerHTML = ''; // クリア
+
+      data.forEach((row, idx) => {
+        const tr = document.createElement('tr');
+        
+        // スタイル決定
+        let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
+        let nameHTML = `<div class="font-medium text-[#e4e4e7]">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
+        let pointClass = "font-mono text-[#e4e4e7]";
+        let speedHTML = "-";
+        let diffHTML = "-";
+
+        // 時速の表示生成
+        if (row.speed !== null) {
+          speedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.speed)}/時</span>`;
+        }
+
+        if (row.isBorder) {
+          rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
+          nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
+          pointClass = "font-mono font-bold text-[#60a5fa]";
+          if (row.speed !== null) {
+             speedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.speed)}/時</span>`;
+          }
+          diffHTML = `<span class="text-[#71717a]">-</span>`;
+        } else {
+          if (!row.isReached) {
+            rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
+            nameHTML = `<div class="font-medium text-red-400">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
+          }
+          
+          if (row.diff !== null) {
+            const diffClass = row.diff >= 0 ? 'text-emerald-400' : 'text-red-500 font-bold';
+            const sign = row.diff >= 0 ? '+' : '';
+            diffHTML = `<span class="${diffClass}">${sign}${formatPoint(row.diff)}</span>`;
+          }
+        }
+
+        tr.className = rowClass;
+        tr.innerHTML = `
+          <td class="px-5 py-4 font-mono text-[#71717a]">${idx + 1}</td>
+          <td class="px-5 py-4">${nameHTML}</td>
+          <td class="px-5 py-4 text-right ${pointClass}">${formatPoint(row.point)}</td>
+          <td class="px-5 py-4 text-right font-mono text-xs">${speedHTML}</td>
+          <td class="px-5 py-4 text-right font-mono text-xs">${diffHTML}</td>
+          <td class="px-5 py-4 text-right font-mono text-xs text-[#a1a1aa]">${formatTime(row.updatetime)}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    };
+
+    // --- 初期化処理 ---
+    const init = () => {
+      const idsFromUrl = getIdsFromUrl();
+      if (idsFromUrl.length > 0) {
+        inputIdsEl.value = idsFromUrl.join(', ');
+        handleAnalyze(); // URLにIDがあれば自動実行
+      }
+    };
+
+    // --- イベントリスナー ---
+    analyzeBtn.addEventListener('click', handleAnalyze);
+    inputIdsEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleAnalyze();
+    });
+
+    // ページ読み込み時に初期化処理を実行
+    window.addEventListener('DOMContentLoaded', init);
+
+  </script>
+</body>
+</html>
