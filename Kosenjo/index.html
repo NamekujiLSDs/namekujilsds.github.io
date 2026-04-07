@@ -81,7 +81,8 @@
               <th class="px-5 py-3 font-medium w-16">順位</th>
               <th class="px-5 py-3 font-medium">プレイヤー</th>
               <th class="px-5 py-3 font-medium text-right">貢献度</th>
-              <th class="px-5 py-3 font-medium text-right">時速</th>
+              <th class="px-5 py-3 font-medium text-right">実測時速<span class="text-xs text-[#71717a] block font-normal">(1h前比)</span></th>
+              <th class="px-5 py-3 font-medium text-right">予測時速<span class="text-xs text-[#71717a] block font-normal">(20m前比)</span></th>
               <th class="px-5 py-3 font-medium text-right">ボーダー差</th>
               <th class="px-5 py-3 font-medium text-right">更新日時</th>
             </tr>
@@ -113,12 +114,30 @@
       return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
     };
 
-    // 前の時間と今の時間のデータから時速を計算する関数
-    const calculateSpeedPerHour = (latest, prev) => {
-      if (!latest || !prev) return null;
-      const dt = latest.updatetime - prev.updatetime; // 秒単位の差分
-      const dp = latest.point - prev.point;
+    // 過去の指定秒数前のデータと比較して時速を計算する関数
+    const calculateSpeedFromPast = (points, targetSeconds) => {
+      if (!points || points.length < 2) return null;
+      const latest = points[points.length - 1];
+      
+      let pastPoint = null;
+      for (let i = points.length - 2; i >= 0; i--) {
+        // targetSeconds以上離れた最初のデータを採用
+        if (latest.updatetime - points[i].updatetime >= targetSeconds) {
+          pastPoint = points[i];
+          break;
+        }
+      }
+      
+      // データ期間が指定秒数に満たない場合は、一番古いデータを採用
+      if (!pastPoint) {
+         pastPoint = points[0];
+      }
+
+      const dt = latest.updatetime - pastPoint.updatetime; // 秒単位の差分
+      const dp = latest.point - pastPoint.point;
+      
       if (dt <= 0) return 0; // ゼロ除算防止
+      
       return (dp / dt) * 3600; // 1時間あたりの増加量に変換
     };
 
@@ -216,9 +235,10 @@
 
         // ボーダーの時速計算
         const latestBorderData = currentBorder[currentBorder.length - 1];
-        const prevBorderData = currentBorder.length > 1 ? currentBorder[currentBorder.length - 2] : null;
         const latestBorderPoint = latestBorderData.point;
-        const borderSpeed = calculateSpeedPerHour(latestBorderData, prevBorderData);
+        
+        const realBorderSpeed = calculateSpeedFromPast(currentBorder, 3600); // 1時間前(3600秒)
+        const predictBorderSpeed = calculateSpeedFromPast(currentBorder, 1200); // 20分前(1200秒)
 
         const newTableData = [];
 
@@ -227,7 +247,8 @@
           id: 'border',
           name: '10万位ボーダー',
           point: latestBorderPoint,
-          speed: borderSpeed,
+          realSpeed: realBorderSpeed,
+          predictSpeed: predictBorderSpeed,
           isBorder: true,
           isReached: true,
           diff: null,
@@ -237,15 +258,17 @@
         // ユーザー行
         validUsers.forEach(u => {
           const latestUserData = u.points[u.points.length - 1];
-          const prevUserData = u.points.length > 1 ? u.points[u.points.length - 2] : null;
-          const userSpeed = calculateSpeedPerHour(latestUserData, prevUserData);
-          
           const latestPoint = latestUserData.point;
+          
+          const userRealSpeed = calculateSpeedFromPast(u.points, 3600);
+          const userPredictSpeed = calculateSpeedFromPast(u.points, 1200);
+          
           newTableData.push({
             id: u.id,
             name: u.name,
             point: latestPoint,
-            speed: userSpeed,
+            realSpeed: userRealSpeed,
+            predictSpeed: userPredictSpeed,
             isBorder: false,
             isReached: latestPoint >= latestBorderPoint,
             diff: latestPoint - latestBorderPoint,
@@ -298,20 +321,27 @@
         let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
         let nameHTML = `<div class="font-medium text-[#e4e4e7]">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
         let pointClass = "font-mono text-[#e4e4e7]";
-        let speedHTML = "-";
+        let realSpeedHTML = "-";
+        let predictSpeedHTML = "-";
         let diffHTML = "-";
 
         // 時速の表示生成
-        if (row.speed !== null) {
-          speedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.speed)}/時</span>`;
+        if (row.realSpeed !== null) {
+          realSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.realSpeed)}/時</span>`;
+        }
+        if (row.predictSpeed !== null) {
+          predictSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.predictSpeed)}/時</span>`;
         }
 
         if (row.isBorder) {
           rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
           nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
           pointClass = "font-mono font-bold text-[#60a5fa]";
-          if (row.speed !== null) {
-             speedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.speed)}/時</span>`;
+          if (row.realSpeed !== null) {
+             realSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.realSpeed)}/時</span>`;
+          }
+          if (row.predictSpeed !== null) {
+             predictSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.predictSpeed)}/時</span>`;
           }
           diffHTML = `<span class="text-[#71717a]">-</span>`;
         } else {
@@ -332,7 +362,8 @@
           <td class="px-5 py-4 font-mono text-[#71717a]">${idx + 1}</td>
           <td class="px-5 py-4">${nameHTML}</td>
           <td class="px-5 py-4 text-right ${pointClass}">${formatPoint(row.point)}</td>
-          <td class="px-5 py-4 text-right font-mono text-xs">${speedHTML}</td>
+          <td class="px-5 py-4 text-right font-mono text-xs">${realSpeedHTML}</td>
+          <td class="px-5 py-4 text-right font-mono text-xs">${predictSpeedHTML}</td>
           <td class="px-5 py-4 text-right font-mono text-xs">${diffHTML}</td>
           <td class="px-5 py-4 text-right font-mono text-xs text-[#a1a1aa]">${formatTime(row.updatetime)}</td>
         `;
