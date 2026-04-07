@@ -142,8 +142,12 @@
     };
 
     const fetchData = async (url) => {
+      // キャッシュを強制的に回避するためのタイムスタンプパラメータを追加
+      const separator = url.includes('?') ? '&' : '?';
+      const urlWithBuster = `${url}${separator}_=${new Date().getTime()}`;
+
       try {
-        const res = await fetch(url);
+        const res = await fetch(urlWithBuster, { cache: 'no-store' });
         if (res.ok) {
           const json = await res.json();
           if (json.type === 'success') return json.data;
@@ -151,8 +155,8 @@
       } catch (e) {
         console.warn('Direct fetch failed, trying proxy...', url);
       }
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-      const res = await fetch(proxyUrl);
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(urlWithBuster)}`;
+      const res = await fetch(proxyUrl, { cache: 'no-store' });
       if (!res.ok) throw new Error(`通信エラー: ${res.status}`);
       const json = await res.json();
       if (json.type !== 'success') throw new Error('APIからエラーが返却されました');
