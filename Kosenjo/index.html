@@ -36,7 +36,7 @@
         古戦場貢献度ランキング
       </h1>
       <p class="text-[#a1a1aa] text-sm mt-2">
-        入力されたプレイヤーの最新の貢献度を取得し、10万位ボーダーと共にランキング形式で表示します。
+        入力されたプレイヤーの最新の貢献度を取得し、2000位・10万位ボーダーと共にランキング形式で表示します。
       </p>
     </header>
 
@@ -83,7 +83,7 @@
               <th class="px-5 py-3 font-medium text-right">貢献度</th>
               <th class="px-5 py-3 font-medium text-right">実測時速<span class="text-xs text-[#71717a] block font-normal">(1h前比)</span></th>
               <th class="px-5 py-3 font-medium text-right">予測時速<span class="text-xs text-[#71717a] block font-normal">(20m前比)</span></th>
-              <th class="px-5 py-3 font-medium text-right">ボーダー差</th>
+              <th class="px-5 py-3 font-medium text-right">10万位差</th>
               <th class="px-5 py-3 font-medium text-right">更新日時</th>
             </tr>
           </thead>
@@ -98,7 +98,8 @@
   <script>
     // --- 定数定義 ---
     const CURRENT_RAID_ID = 'teamraid082';
-    const BORDER_RANK = 100000;
+    const BORDER_RANK_100K = 100000;
+    const BORDER_RANK_2K = 2000;
 
     // --- ユーティリティ関数 ---
     const formatPoint = (num) => {
@@ -213,7 +214,9 @@
       
       try {
         // ボーダーデータの取得
-        const currentBorderReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK}`);
+        const border100kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK_100K}`);
+        // 2000位は序盤データがない可能性があるためエラーを無視する
+        const border2kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK_2K}`).catch(() => null);
 
         // ユーザーデータの取得
         const userReqs = ids.map(async (id) => {
@@ -227,55 +230,64 @@
           }
         });
 
-        const results = await Promise.all([currentBorderReq, ...userReqs]);
-        const currentBorder = results[0];
-        const usersData = results.slice(1);
+        const results = await Promise.all([border100kReq, border2kReq, ...userReqs]);
+        const currentBorder100k = results[0];
+        const currentBorder2k = results[1];
+        const usersData = results.slice(2);
 
-        if (!currentBorder || currentBorder.length === 0) {
+        if (!currentBorder100k || currentBorder100k.length === 0) {
           throw new Error('現在のボーダーデータが取得できませんでした。イベントが開始されていない可能性があります。');
         }
 
         const validUsers = usersData.filter(u => !u.error && u.points.length > 0);
-
-        // ボーダーの時速計算
-        const latestBorderData = currentBorder[currentBorder.length - 1];
-        const latestBorderPoint = latestBorderData.point;
-        
-        const realBorderSpeed = calculateSpeedFromPast(currentBorder, 3600); // 1時間前(3600秒)
-        const predictBorderSpeed = calculateSpeedFromPast(currentBorder, 1200); // 20分前(1200秒)
-
         const newTableData = [];
 
-        // ボーダー行
+        // 10万位ボーダー行
+        const latestBorder100kData = currentBorder100k[currentBorder100k.length - 1];
+        const point100k = latestBorder100kData.point;
+        
         newTableData.push({
-          id: 'border',
+          id: 'border_100k',
           name: '10万位ボーダー',
-          point: latestBorderPoint,
-          realSpeed: realBorderSpeed,
-          predictSpeed: predictBorderSpeed,
+          point: point100k,
+          realSpeed: calculateSpeedFromPast(currentBorder100k, 3600),
+          predictSpeed: calculateSpeedFromPast(currentBorder100k, 1200),
           isBorder: true,
           isReached: true,
           diff: null,
-          updatetime: latestBorderData.updatetime
+          updatetime: latestBorder100kData.updatetime
         });
+
+        // 2000位ボーダー行 (データが存在する場合のみ)
+        if (currentBorder2k && currentBorder2k.length > 0) {
+          const latestBorder2kData = currentBorder2k[currentBorder2k.length - 1];
+          newTableData.push({
+            id: 'border_2k',
+            name: '2000位ボーダー',
+            point: latestBorder2kData.point,
+            realSpeed: calculateSpeedFromPast(currentBorder2k, 3600),
+            predictSpeed: calculateSpeedFromPast(currentBorder2k, 1200),
+            isBorder: true,
+            isReached: true,
+            diff: null,
+            updatetime: latestBorder2kData.updatetime
+          });
+        }
 
         // ユーザー行
         validUsers.forEach(u => {
           const latestUserData = u.points[u.points.length - 1];
           const latestPoint = latestUserData.point;
           
-          const userRealSpeed = calculateSpeedFromPast(u.points, 3600);
-          const userPredictSpeed = calculateSpeedFromPast(u.points, 1200);
-          
           newTableData.push({
             id: u.id,
             name: u.name,
             point: latestPoint,
-            realSpeed: userRealSpeed,
-            predictSpeed: userPredictSpeed,
+            realSpeed: calculateSpeedFromPast(u.points, 3600),
+            predictSpeed: calculateSpeedFromPast(u.points, 1200),
             isBorder: false,
-            isReached: latestPoint >= latestBorderPoint,
-            diff: latestPoint - latestBorderPoint,
+            isReached: latestPoint >= point100k,
+            diff: latestPoint - point100k, // 10万位との差を固定で計算
             updatetime: latestUserData.updatetime
           });
         });
@@ -329,31 +341,36 @@
         let predictSpeedHTML = "-";
         let diffHTML = "-";
 
-        // 時速の表示生成
-        if (row.realSpeed !== null) {
-          realSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.realSpeed)}/時</span>`;
-        }
-        if (row.predictSpeed !== null) {
-          predictSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.predictSpeed)}/時</span>`;
-        }
-
         if (row.isBorder) {
-          rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
-          nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
-          pointClass = "font-mono font-bold text-[#60a5fa]";
-          if (row.realSpeed !== null) {
-             realSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.realSpeed)}/時</span>`;
-          }
-          if (row.predictSpeed !== null) {
-             predictSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.predictSpeed)}/時</span>`;
+          // ボーダー行の専用スタイル
+          if (row.id === 'border_2k') {
+            rowClass = "bg-[#4c1d95]/20 hover:bg-[#4c1d95]/40 transition-colors border-y border-[#8b5cf6]/50";
+            nameHTML = `<div class="font-bold text-[#a78bfa]">${row.name}</div>`;
+            pointClass = "font-mono font-bold text-[#a78bfa]";
+            if (row.realSpeed !== null) realSpeedHTML = `<span class="text-[#a78bfa]">${formatPoint(row.realSpeed)}/時</span>`;
+            if (row.predictSpeed !== null) predictSpeedHTML = `<span class="text-[#a78bfa]">${formatPoint(row.predictSpeed)}/時</span>`;
+          } else {
+            rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
+            nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
+            pointClass = "font-mono font-bold text-[#60a5fa]";
+            if (row.realSpeed !== null) realSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.realSpeed)}/時</span>`;
+            if (row.predictSpeed !== null) predictSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.predictSpeed)}/時</span>`;
           }
           diffHTML = `<span class="text-[#71717a]">-</span>`;
         } else {
+          // ユーザー行のスタイル
           if (!row.isReached) {
             rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
             nameHTML = `<div class="font-medium text-red-400">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
           }
           
+          if (row.realSpeed !== null) {
+            realSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.realSpeed)}/時</span>`;
+          }
+          if (row.predictSpeed !== null) {
+            predictSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.predictSpeed)}/時</span>`;
+          }
+
           if (row.diff !== null) {
             const diffClass = row.diff >= 0 ? 'text-emerald-400' : 'text-red-500 font-bold';
             const sign = row.diff >= 0 ? '+' : '';
