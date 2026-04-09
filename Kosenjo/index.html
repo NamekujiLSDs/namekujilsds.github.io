@@ -24,7 +24,7 @@
     }
   </style>
 </head>
-<body class="bg-[#18181b] text-[#e4e4e7] min-h-screen p-4 md:p-8 font-sans selection:bg-[#3b82f6] selection:text-white">
+<body class="bg-[#18181b] text-[#e4e4e7] min-h-screen p-4 md:p-8 font-sans selection:bg-[#3b82f6] selection:text-white relative">
   
   <div class="max-w-5xl mx-auto space-y-6">
     
@@ -81,8 +81,8 @@
               <th class="px-5 py-3 font-medium w-16">順位</th>
               <th class="px-5 py-3 font-medium">プレイヤー</th>
               <th class="px-5 py-3 font-medium text-right">貢献度</th>
-              <th class="px-5 py-3 font-medium text-right">当日増加量<span class="text-xs text-[#71717a] block font-normal">(朝7時起点)</span></th>
               <th class="px-5 py-3 font-medium text-right">時速<span class="text-xs text-[#71717a] block font-normal">1h (20m予測)</span></th>
+              <th class="px-5 py-3 font-medium text-right">当日増加量</th>
               <th class="px-5 py-3 font-medium text-right">10万位差</th>
               <th class="px-5 py-3 font-medium text-right">更新日時</th>
             </tr>
@@ -93,6 +93,14 @@
       </div>
     </section>
 
+  </div>
+
+  <!-- コピー通知用のToast -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-[#27272a] border border-[#3f3f46] text-[#e4e4e7] px-5 py-3 rounded-lg shadow-2xl transition-opacity duration-300 opacity-0 pointer-events-none z-50 text-sm flex items-center gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="20 6 9 17 4 12"></polyline>
+    </svg>
+    <span id="toastMsg"></span>
   </div>
 
   <script>
@@ -109,10 +117,9 @@
       return Math.round(num).toLocaleString();
     };
 
-    // 時速などの表示で桁数を減らすためのフォーマッタ
     const formatSpeed = (num) => {
       if (num === undefined || num === null || isNaN(num)) return '-';
-      if (num >= 100000000) return (num / 100000000).toFixed(2) + '億'; // 桁数を減らす
+      if (num >= 100000000) return (num / 100000000).toFixed(2) + '億';
       if (num >= 10000) return (num / 10000).toFixed(1) + '万';
       return Math.round(num).toLocaleString();
     };
@@ -123,27 +130,23 @@
       return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
     };
 
-    // 古戦場の日付変更線(朝7:00)を計算する
     const getTodayStartTime = (currentUnixTime) => {
       const d = new Date(currentUnixTime * 1000);
       const hours = d.getHours();
-      
       const targetDate = new Date(d);
       if (hours < 7) {
-        // 0:00 ~ 6:59 の間は、前日の朝7:00が基準
         targetDate.setDate(targetDate.getDate() - 1);
       }
       targetDate.setHours(7, 0, 0, 0);
       return Math.floor(targetDate.getTime() / 1000);
     };
 
-    // 朝7時を起点とした当日増加量を計算する関数
     const calculateTodayIncrease = (points) => {
       if (!points || points.length === 0) return null;
       const latest = points[points.length - 1];
       const todayStartTime = getTodayStartTime(latest.updatetime);
 
-      let basePoint = points[0].point; // 初期値は一番古いデータ(イベント開始時など)
+      let basePoint = points[0].point;
       for (let i = points.length - 1; i >= 0; i--) {
         if (points[i].updatetime <= todayStartTime) {
           basePoint = points[i].point;
@@ -153,35 +156,30 @@
       return latest.point - basePoint;
     };
 
-    // 過去の指定秒数前のデータと比較して時速を計算する関数
     const calculateSpeedFromPast = (points, targetSeconds) => {
       if (!points || points.length < 2) return null;
       const latest = points[points.length - 1];
       
       let pastPoint = null;
       for (let i = points.length - 2; i >= 0; i--) {
-        // targetSeconds以上離れた最初のデータを採用
         if (latest.updatetime - points[i].updatetime >= targetSeconds) {
           pastPoint = points[i];
           break;
         }
       }
       
-      // データ期間が指定秒数に満たない場合は、一番古いデータを採用
       if (!pastPoint) {
          pastPoint = points[0];
       }
 
-      const dt = latest.updatetime - pastPoint.updatetime; // 秒単位の差分
+      const dt = latest.updatetime - pastPoint.updatetime;
       const dp = latest.point - pastPoint.point;
       
-      if (dt <= 0) return 0; // ゼロ除算防止
-      
-      return (dp / dt) * 3600; // 1時間あたりの増加量に変換
+      if (dt <= 0) return 0;
+      return (dp / dt) * 3600;
     };
 
     const fetchData = async (url) => {
-      // キャッシュを強制的に回避するためのタイムスタンプパラメータを追加
       const separator = url.includes('?') ? '&' : '?';
       const urlWithBuster = `${url}${separator}_=${new Date().getTime()}`;
 
@@ -202,7 +200,6 @@
       return json.data;
     };
 
-    // URLのクエリパラメータを更新する関数
     const updateUrlParams = (ids) => {
       const url = new URL(window.location);
       if (ids && ids.length > 0) {
@@ -213,7 +210,6 @@
       window.history.pushState({}, '', url);
     };
 
-    // URLのクエリパラメータからIDを取得する関数
     const getIdsFromUrl = () => {
       const params = new URLSearchParams(window.location.search);
       const idParam = params.get('id');
@@ -221,6 +217,37 @@
         return idParam.split(',').map(s => s.trim()).filter(s => s.length > 0);
       }
       return [];
+    };
+
+    // --- IDコピー機能とトースト通知 ---
+    window.copyId = function(id) {
+      const textArea = document.createElement("textarea");
+      textArea.value = id;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = 0;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast(`ID: ${id} をコピーしました`);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    };
+
+    let toastTimeout;
+    const showToast = (message) => {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = message;
+      toast.classList.remove('opacity-0');
+      
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('opacity-0');
+      }, 2500);
     };
 
     // --- DOM要素の取得 ---
@@ -239,24 +266,19 @@
       const inputVal = inputIdsEl.value;
       if (!inputVal.trim()) {
         showError('プレイヤーIDを入力してください。');
-        updateUrlParams([]); // 空の場合はパラメータ削除
+        updateUrlParams([]);
         return;
       }
 
       setLoading(true);
 
       const ids = inputVal.split(/[, ]+/).map(s => s.trim()).filter(s => s.length > 0);
-      
-      // クエリパラメータを更新
       updateUrlParams(ids);
       
       try {
-        // ボーダーデータの取得
         const border100kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK_100K}`);
-        // 2000位は序盤データがない可能性があるためエラーを無視する
         const border2kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK_2K}`).catch(() => null);
 
-        // ユーザーデータの取得
         const userReqs = ids.map(async (id) => {
           try {
             const userRes = await fetchData(`https://gbf.pub/api/client/gw/user?userid=${id}`);
@@ -280,7 +302,6 @@
         const validUsers = usersData.filter(u => !u.error && u.points.length > 0);
         const newTableData = [];
 
-        // 10万位ボーダー行
         const latestBorder100kData = currentBorder100k[currentBorder100k.length - 1];
         const point100k = latestBorder100kData.point;
         
@@ -297,7 +318,6 @@
           updatetime: latestBorder100kData.updatetime
         });
 
-        // 2000位ボーダー行 (データが存在する場合のみ)
         if (currentBorder2k && currentBorder2k.length > 0) {
           const latestBorder2kData = currentBorder2k[currentBorder2k.length - 1];
           newTableData.push({
@@ -314,7 +334,6 @@
           });
         }
 
-        // ユーザー行
         validUsers.forEach(u => {
           const latestUserData = u.points[u.points.length - 1];
           const latestPoint = latestUserData.point;
@@ -328,12 +347,11 @@
             predictSpeed: calculateSpeedFromPast(u.points, 1200),
             isBorder: false,
             isReached: latestPoint >= point100k,
-            diff: latestPoint - point100k, // 10万位との差を固定で計算
+            diff: latestPoint - point100k,
             updatetime: latestUserData.updatetime
           });
         });
 
-        // 降順ソート
         newTableData.sort((a, b) => b.point - a.point);
 
         renderTable(newTableData);
@@ -369,14 +387,13 @@
     };
 
     const renderTable = (data) => {
-      tableBody.innerHTML = ''; // クリア
+      tableBody.innerHTML = ''; 
 
       data.forEach((row, idx) => {
         const tr = document.createElement('tr');
         
-        // スタイル決定
         let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
-        let nameHTML = `<div class="font-medium text-[#e4e4e7]">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
+        let nameHTML = "";
         let pointClass = "font-mono text-[#e4e4e7]";
         let speedHTML = "-";
         let todayIncHTML = "-";
@@ -390,7 +407,6 @@
         }
 
         if (row.isBorder) {
-          // ボーダー行の専用スタイル
           if (row.id === 'border_2k') {
             rowClass = "bg-[#4c1d95]/20 hover:bg-[#4c1d95]/40 transition-colors border-y border-[#8b5cf6]/50";
             nameHTML = `<div class="font-bold text-[#a78bfa]">${row.name}</div>`;
@@ -406,11 +422,20 @@
           }
           diffHTML = `<span class="text-[#71717a]">-</span>`;
         } else {
-          // ユーザー行のスタイル
+          // 一般プレイヤー行（クリックでIDコピー可能）
+          const nameColorClass = row.isReached ? "text-[#e4e4e7]" : "text-red-400";
           if (!row.isReached) {
-            rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
-            nameHTML = `<div class="font-medium text-red-400">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
+             rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
           }
+          nameHTML = `
+            <div onclick="copyId('${row.id}')" class="cursor-pointer group select-none" title="クリックしてIDをコピー">
+              <div class="font-medium ${nameColorClass} group-hover:text-[#3b82f6] transition-colors">${row.name}</div>
+              <div class="text-xs text-[#71717a] font-mono mt-0.5 group-hover:text-[#3b82f6]/80 transition-colors flex items-center gap-1">
+                ID: ${row.id}
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              </div>
+            </div>
+          `;
           
           speedHTML = `<div class="text-[#a1a1aa]">${realSpdStr}/時</div><div class="text-[#71717a]">(${predSpdStr})</div>`;
 
@@ -422,12 +447,13 @@
         }
 
         tr.className = rowClass;
+        // 列の順序を変更：貢献度 -> 時速 -> 当日増加量 -> 10万位差
         tr.innerHTML = `
           <td class="px-5 py-4 font-mono text-[#71717a]">${idx + 1}</td>
           <td class="px-5 py-4">${nameHTML}</td>
           <td class="px-5 py-4 text-right ${pointClass}">${formatPoint(row.point)}</td>
-          <td class="px-5 py-4 text-right font-mono text-[#e4e4e7]">${todayIncHTML}</td>
           <td class="px-5 py-4 text-right font-mono text-xs">${speedHTML}</td>
+          <td class="px-5 py-4 text-right font-mono text-[#e4e4e7]">${todayIncHTML}</td>
           <td class="px-5 py-4 text-right font-mono text-xs">${diffHTML}</td>
           <td class="px-5 py-4 text-right font-mono text-xs text-[#a1a1aa]">${formatTime(row.updatetime)}</td>
         `;
@@ -440,7 +466,7 @@
       const idsFromUrl = getIdsFromUrl();
       if (idsFromUrl.length > 0) {
         inputIdsEl.value = idsFromUrl.join(', ');
-        handleAnalyze(); // URLにIDがあれば自動実行
+        handleAnalyze();
       }
     };
 
@@ -450,7 +476,6 @@
       if (e.key === 'Enter') handleAnalyze();
     });
 
-    // ページ読み込み時に初期化処理を実行
     window.addEventListener('DOMContentLoaded', init);
 
   </script>
