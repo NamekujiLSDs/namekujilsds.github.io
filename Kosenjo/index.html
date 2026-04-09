@@ -81,8 +81,8 @@
               <th class="px-5 py-3 font-medium w-16">順位</th>
               <th class="px-5 py-3 font-medium">プレイヤー</th>
               <th class="px-5 py-3 font-medium text-right">貢献度</th>
-              <th class="px-5 py-3 font-medium text-right">実測時速<span class="text-xs text-[#71717a] block font-normal">(1h前比)</span></th>
-              <th class="px-5 py-3 font-medium text-right">予測時速<span class="text-xs text-[#71717a] block font-normal">(20m前比)</span></th>
+              <th class="px-5 py-3 font-medium text-right">当日増加量<span class="text-xs text-[#71717a] block font-normal">(朝7時起点)</span></th>
+              <th class="px-5 py-3 font-medium text-right">時速<span class="text-xs text-[#71717a] block font-normal">1h (20m予測)</span></th>
               <th class="px-5 py-3 font-medium text-right">10万位差</th>
               <th class="px-5 py-3 font-medium text-right">更新日時</th>
             </tr>
@@ -109,10 +109,48 @@
       return Math.round(num).toLocaleString();
     };
 
+    // 時速などの表示で桁数を減らすためのフォーマッタ
+    const formatSpeed = (num) => {
+      if (num === undefined || num === null || isNaN(num)) return '-';
+      if (num >= 100000000) return (num / 100000000).toFixed(2) + '億'; // 桁数を減らす
+      if (num >= 10000) return (num / 10000).toFixed(1) + '万';
+      return Math.round(num).toLocaleString();
+    };
+
     const formatTime = (unixSec) => {
       if (!unixSec) return '-';
       const d = new Date(unixSec * 1000);
       return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+    };
+
+    // 古戦場の日付変更線(朝7:00)を計算する
+    const getTodayStartTime = (currentUnixTime) => {
+      const d = new Date(currentUnixTime * 1000);
+      const hours = d.getHours();
+      
+      const targetDate = new Date(d);
+      if (hours < 7) {
+        // 0:00 ~ 6:59 の間は、前日の朝7:00が基準
+        targetDate.setDate(targetDate.getDate() - 1);
+      }
+      targetDate.setHours(7, 0, 0, 0);
+      return Math.floor(targetDate.getTime() / 1000);
+    };
+
+    // 朝7時を起点とした当日増加量を計算する関数
+    const calculateTodayIncrease = (points) => {
+      if (!points || points.length === 0) return null;
+      const latest = points[points.length - 1];
+      const todayStartTime = getTodayStartTime(latest.updatetime);
+
+      let basePoint = points[0].point; // 初期値は一番古いデータ(イベント開始時など)
+      for (let i = points.length - 1; i >= 0; i--) {
+        if (points[i].updatetime <= todayStartTime) {
+          basePoint = points[i].point;
+          break;
+        }
+      }
+      return latest.point - basePoint;
     };
 
     // 過去の指定秒数前のデータと比較して時速を計算する関数
@@ -250,6 +288,7 @@
           id: 'border_100k',
           name: '10万位ボーダー',
           point: point100k,
+          todayInc: calculateTodayIncrease(currentBorder100k),
           realSpeed: calculateSpeedFromPast(currentBorder100k, 3600),
           predictSpeed: calculateSpeedFromPast(currentBorder100k, 1200),
           isBorder: true,
@@ -265,6 +304,7 @@
             id: 'border_2k',
             name: '2000位ボーダー',
             point: latestBorder2kData.point,
+            todayInc: calculateTodayIncrease(currentBorder2k),
             realSpeed: calculateSpeedFromPast(currentBorder2k, 3600),
             predictSpeed: calculateSpeedFromPast(currentBorder2k, 1200),
             isBorder: true,
@@ -283,6 +323,7 @@
             id: u.id,
             name: u.name,
             point: latestPoint,
+            todayInc: calculateTodayIncrease(u.points),
             realSpeed: calculateSpeedFromPast(u.points, 3600),
             predictSpeed: calculateSpeedFromPast(u.points, 1200),
             isBorder: false,
@@ -337,9 +378,16 @@
         let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
         let nameHTML = `<div class="font-medium text-[#e4e4e7]">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
         let pointClass = "font-mono text-[#e4e4e7]";
-        let realSpeedHTML = "-";
-        let predictSpeedHTML = "-";
+        let speedHTML = "-";
+        let todayIncHTML = "-";
         let diffHTML = "-";
+
+        const realSpdStr = row.realSpeed !== null ? formatSpeed(row.realSpeed) : '-';
+        const predSpdStr = row.predictSpeed !== null ? formatSpeed(row.predictSpeed) : '-';
+        
+        if (row.todayInc !== null) {
+          todayIncHTML = formatPoint(row.todayInc);
+        }
 
         if (row.isBorder) {
           // ボーダー行の専用スタイル
@@ -347,14 +395,14 @@
             rowClass = "bg-[#4c1d95]/20 hover:bg-[#4c1d95]/40 transition-colors border-y border-[#8b5cf6]/50";
             nameHTML = `<div class="font-bold text-[#a78bfa]">${row.name}</div>`;
             pointClass = "font-mono font-bold text-[#a78bfa]";
-            if (row.realSpeed !== null) realSpeedHTML = `<span class="text-[#a78bfa]">${formatPoint(row.realSpeed)}/時</span>`;
-            if (row.predictSpeed !== null) predictSpeedHTML = `<span class="text-[#a78bfa]">${formatPoint(row.predictSpeed)}/時</span>`;
+            speedHTML = `<div class="text-[#a78bfa]">${realSpdStr}/時</div><div class="text-[#a78bfa]/70">(${predSpdStr})</div>`;
+            todayIncHTML = `<span class="text-[#a78bfa]">${formatPoint(row.todayInc)}</span>`;
           } else {
             rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
             nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
             pointClass = "font-mono font-bold text-[#60a5fa]";
-            if (row.realSpeed !== null) realSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.realSpeed)}/時</span>`;
-            if (row.predictSpeed !== null) predictSpeedHTML = `<span class="text-[#60a5fa]">${formatPoint(row.predictSpeed)}/時</span>`;
+            speedHTML = `<div class="text-[#60a5fa]">${realSpdStr}/時</div><div class="text-[#60a5fa]/70">(${predSpdStr})</div>`;
+            todayIncHTML = `<span class="text-[#60a5fa]">${formatPoint(row.todayInc)}</span>`;
           }
           diffHTML = `<span class="text-[#71717a]">-</span>`;
         } else {
@@ -364,12 +412,7 @@
             nameHTML = `<div class="font-medium text-red-400">${row.name}</div><div class="text-xs text-[#71717a] font-mono mt-0.5">ID: ${row.id}</div>`;
           }
           
-          if (row.realSpeed !== null) {
-            realSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.realSpeed)}/時</span>`;
-          }
-          if (row.predictSpeed !== null) {
-            predictSpeedHTML = `<span class="text-[#a1a1aa]">${formatPoint(row.predictSpeed)}/時</span>`;
-          }
+          speedHTML = `<div class="text-[#a1a1aa]">${realSpdStr}/時</div><div class="text-[#71717a]">(${predSpdStr})</div>`;
 
           if (row.diff !== null) {
             const diffClass = row.diff >= 0 ? 'text-emerald-400' : 'text-red-500 font-bold';
@@ -383,8 +426,8 @@
           <td class="px-5 py-4 font-mono text-[#71717a]">${idx + 1}</td>
           <td class="px-5 py-4">${nameHTML}</td>
           <td class="px-5 py-4 text-right ${pointClass}">${formatPoint(row.point)}</td>
-          <td class="px-5 py-4 text-right font-mono text-xs">${realSpeedHTML}</td>
-          <td class="px-5 py-4 text-right font-mono text-xs">${predictSpeedHTML}</td>
+          <td class="px-5 py-4 text-right font-mono text-[#e4e4e7]">${todayIncHTML}</td>
+          <td class="px-5 py-4 text-right font-mono text-xs">${speedHTML}</td>
           <td class="px-5 py-4 text-right font-mono text-xs">${diffHTML}</td>
           <td class="px-5 py-4 text-right font-mono text-xs text-[#a1a1aa]">${formatTime(row.updatetime)}</td>
         `;
