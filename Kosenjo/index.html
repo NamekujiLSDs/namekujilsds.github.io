@@ -25,6 +25,14 @@
     .animate-spin {
       animation: spin 1s linear infinite;
     }
+    /* スクロールバー非表示用ユーティリティ */
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
   </style>
 </head>
 <body class="bg-[#18181b] text-[#e4e4e7] min-h-screen p-4 md:p-8 font-sans selection:bg-[#3b82f6] selection:text-white relative">
@@ -321,6 +329,7 @@
 
       const latestBorder = globalEventData.currentBorder100k[globalEventData.currentBorder100k.length - 1];
       const latestElapsedH = (latestBorder.updatetime - currentStartTime) / 3600;
+      const latestUnixMs = latestBorder.updatetime * 1000; // 初期表示タブの特定用
 
       const inflationRate = calcInflationRate(globalEventData.currentBorder100k, activityCurve, latestElapsedH);
       
@@ -370,7 +379,7 @@
         }
       }
 
-      renderChartjs(userId, targetUser, borderData, userData, currentStartTime);
+      renderChartjs(userId, targetUser, borderData, userData, currentStartTime, latestUnixMs);
       
       const modal = document.getElementById('chartModal');
       modal.classList.remove('hidden');
@@ -393,15 +402,18 @@
       if (e.target.id === 'chartModal') closeChartModal();
     });
 
-    const renderChartjs = (userId, targetUser, borderData, userData, currentStartTime) => {
+    const renderChartjs = (userId, targetUser, borderData, userData, currentStartTime, latestUnixMs) => {
       const ctx = document.getElementById('detailChart').getContext('2d');
       const tabsContainer = document.getElementById('modalDateTabs');
       tabsContainer.innerHTML = '';
       
-      // 日程タブの生成
+      // 日程タブの生成（朝7時区切り）
       const currentTabs = [{ label: '全期間', min: null, max: null }];
       let currentDay = new Date(currentStartTime * 1000);
-      currentDay.setHours(0,0,0,0);
+      if (currentDay.getHours() < 7) {
+        currentDay.setDate(currentDay.getDate() - 1);
+      }
+      currentDay.setHours(7,0,0,0);
       
       for (let i = 0; i <= 7; i++) {
         const dayStart = new Date(currentDay);
@@ -419,7 +431,7 @@
 
       currentTabs.forEach((tab, i) => {
         const btn = document.createElement('button');
-        btn.className = `px-4 py-2 text-sm rounded font-medium transition-colors whitespace-nowrap border ${i===0 ? 'border-[#3b82f6] bg-[#3b82f6]/20 text-[#60a5fa]' : 'border-[#3f3f46] text-[#a1a1aa] hover:bg-[#3f3f46]/50 bg-[#18181b]'}`;
+        btn.className = `px-4 py-2 text-sm rounded font-medium transition-colors whitespace-nowrap border border-[#3f3f46] text-[#a1a1aa] hover:bg-[#3f3f46]/50 bg-[#18181b]`;
         btn.textContent = tab.label;
         btn.onclick = () => {
           Array.from(tabsContainer.children).forEach(c => {
@@ -429,11 +441,17 @@
           
           if (myChart) {
             if (tab.min) {
+              // 特定の日付を選択した場合
               myChart.options.scales.x.min = tab.min;
               myChart.options.scales.x.max = tab.max;
+              // 点を表示
+              myChart.data.datasets.forEach(ds => ds.pointRadius = ds.label.includes('自分') ? 3 : 2);
             } else {
+              // 全期間を選択した場合
               delete myChart.options.scales.x.min;
               delete myChart.options.scales.x.max;
+              // 点を非表示にする
+              myChart.data.datasets.forEach(ds => ds.pointRadius = 0);
             }
             myChart.update();
           }
@@ -531,6 +549,22 @@
           }
         }
       });
+
+      // 最新のデータが含まれる「当日」タブを特定して初期選択
+      let defaultTabIndex = 0; // 見つからなければ「全期間」
+      if (latestUnixMs) {
+        const foundIdx = currentTabs.findIndex(t => t.min !== null && t.min <= latestUnixMs && latestUnixMs <= t.max);
+        if (foundIdx !== -1) {
+          defaultTabIndex = foundIdx;
+        }
+      }
+
+      // 該当のタブボタンをシミュレートクリックして表示・pointRadiusの設定を反映
+      const tabButtons = Array.from(tabsContainer.children);
+      if (tabButtons[defaultTabIndex]) {
+        tabButtons[defaultTabIndex].click();
+        tabButtons[defaultTabIndex].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      }
     };
 
     // --- IDコピー機能とトースト通知 ---
