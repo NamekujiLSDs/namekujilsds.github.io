@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ja" class="dark">
 <head>
@@ -15,7 +16,6 @@
     }
   </script>
 
-  <!-- グラフ描画用 Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
@@ -90,8 +90,8 @@
         <table class="w-full text-sm text-left whitespace-nowrap">
           <thead class="bg-[#18181b] text-[#a1a1aa] border-b border-[#3f3f46]">
             <tr>
-              <th class="px-5 py-3 font-medium w-16 cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('rank')" title="順位で並び替え">
-                <div class="flex items-center gap-1">順位 <span id="sort-icon-rank" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
+              <th class="px-5 py-3 font-medium w-24 cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('rank')" title="全体順位で並び替え">
+                <div class="flex items-center gap-1">全体順位 <span id="sort-icon-rank" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
               </th>
               <th class="px-5 py-3 font-medium">プレイヤー</th>
               <th class="px-5 py-3 font-medium text-right cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('point')" title="貢献度で並び替え">
@@ -118,28 +118,23 @@
 
   </div>
 
-  <!-- グラフ用ポップアップ（モーダル） -->
   <div id="chartModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-2 sm:p-4 opacity-0 transition-opacity duration-300">
     <div class="bg-[#27272a] rounded-xl shadow-2xl border border-[#3f3f46] w-full max-w-5xl h-[85vh] sm:h-[70vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
       
-      <!-- モーダルヘッダー (タブと閉じるボタン) -->
       <div class="p-4 border-b border-[#3f3f46] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div id="modalDateTabs" class="flex gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0 scrollbar-hide">
-          <!-- JSで日程タブを生成 -->
-        </div>
+          </div>
         <button onclick="closeChartModal()" class="text-[#a1a1aa] hover:text-white transition-colors p-1 bg-[#18181b] rounded-md border border-[#3f3f46]">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </div>
       
-      <!-- チャート描画領域 -->
       <div class="p-4 flex-1 min-h-0 relative bg-[#1c1c1e]">
         <canvas id="detailChart"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- コピー通知用のToast -->
   <div id="toast" class="fixed bottom-6 right-6 bg-[#27272a] border border-[#3f3f46] text-[#e4e4e7] px-5 py-3 rounded-lg shadow-2xl transition-opacity duration-300 opacity-0 pointer-events-none z-50 text-sm flex items-center gap-2">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="20 6 9 17 4 12"></polyline>
@@ -166,8 +161,8 @@
       tableData: [] // テーブルのベースデータ
     };
     let myChart = null; // Chart.jsインスタンス
-    let currentSortKey = 'rank';
-    let currentSortOrder = 'asc';
+    let currentSortKey = 'point'; // 初期ソートキーは貢献度
+    let currentSortOrder = 'desc';
 
     // --- ユーティリティ関数 ---
     const formatPoint = (num) => {
@@ -254,26 +249,17 @@
     };
 
     // --- 古戦場の日程と休戦期間判定 ---
-    // イベント開始からの経過時間(h)を元に、休戦期間（貢献度が増えない時間）かどうかを判定
     const isRestTimeByElapsed = (elapsedH) => {
-      // 予選終了後〜インターバル開始前: 29h(Day2 24:00) ~ 36h(Day3 07:00)
       if (elapsedH >= 29 && elapsedH < 36) return true;
-      // インターバル終了〜本戦1日目開始前: 53h(Day3 24:00) ~ 60h(Day4 07:00)
       if (elapsedH >= 53 && elapsedH < 60) return true;
-      // 本戦1日目終了〜本戦2日目開始前: 77h(Day4 24:00) ~ 84h(Day5 07:00)
       if (elapsedH >= 77 && elapsedH < 84) return true;
-      // 本戦2日目終了〜本戦3日目開始前: 101h(Day5 24:00) ~ 108h(Day6 07:00)
       if (elapsedH >= 101 && elapsedH < 108) return true;
-      // 本戦3日目終了〜本戦4日目開始前: 125h(Day6 24:00) ~ 132h(Day7 07:00)
       if (elapsedH >= 125 && elapsedH < 132) return true;
-      // 本戦4日目終了以降: 149h(Day7 24:00) ~
       if (elapsedH >= 149) return true;
       return false;
     };
 
     // --- 予測ロジック用の関数群 ---
-
-    // 指定時間のポイントを線形補間で取得
     const getInterpolatedPoint = (points, startUnix, targetElapsedH) => {
       if (!points || points.length === 0) return 0;
       const targetUnix = startUnix + targetElapsedH * 3600;
@@ -291,12 +277,11 @@
       return p1.point + (p2.point - p1.point) * ((targetUnix - p1.updatetime) / (p2.updatetime - p1.updatetime));
     };
 
-    // 過去3回のデータから1時間ごとの「波（アクティビティ）」を抽出
     const calculateActivityCurve = (pastDataArrays, maxHours) => {
       const curve = new Map();
       for (let h = 0; h < maxHours; h++) {
         if (isRestTimeByElapsed(h)) {
-          curve.set(h, 0); // 休戦期間は増加量0
+          curve.set(h, 0); 
           continue;
         }
         let speedSum = 0; let count = 0;
@@ -314,7 +299,6 @@
       return curve;
     };
 
-    // 現在のイベント全体のインフレ率を算出（直近12時間の推移を過去平均と比較）
     const calcInflationRate = (currentBorder, activityCurve, latestElapsedH) => {
       const compareHours = 12;
       const elapsedInt = Math.floor(latestElapsedH);
@@ -332,12 +316,11 @@
     };
 
     // --- グラフ描画機能 ---
-
     window.openChartModal = function(userId) {
       if (!globalEventData.currentBorder100k || globalEventData.currentBorder100k.length === 0) return;
 
       const currentStartTime = globalEventData.currentBorder100k[0].updatetime;
-      const maxElapsed = 150; // イベント終了の目安(約150h)
+      const maxElapsed = 150; 
       
       if (!globalEventData.activityCurve100k) {
         globalEventData.activityCurve100k = calculateActivityCurve(globalEventData.pastBorders100k, maxElapsed + 1);
@@ -348,7 +331,7 @@
 
       const latestBorder = globalEventData.currentBorder100k[globalEventData.currentBorder100k.length - 1];
       const latestElapsedH = (latestBorder.updatetime - currentStartTime) / 3600;
-      const latestUnixMs = latestBorder.updatetime * 1000; // 初期表示タブの特定用
+      const latestUnixMs = latestBorder.updatetime * 1000; 
 
       const inflation100k = calcInflationRate(globalEventData.currentBorder100k, curve100k, latestElapsedH);
       const inflation2k = (globalEventData.currentBorder2k && globalEventData.currentBorder2k.length > 0)
@@ -358,14 +341,11 @@
       let targetUser = null;
       let is2kTier = false;
 
-      // 対象ユーザーと、比較基準となるボーダー層の決定
       if (userId !== 'border_100k' && userId !== 'border_2k') {
         targetUser = globalEventData.users[userId];
         if (targetUser) {
            const uLatestPoint = targetUser.points[targetUser.points.length-1].point;
            const border100kLatestPoint = latestBorder.point;
-           
-           // 現在の貢献度が10万位の2倍以上あれば上位層とみなし、2000位のカーブを参考にする
            if (uLatestPoint > border100kLatestPoint * 2) {
                is2kTier = true;
            }
@@ -374,13 +354,11 @@
           is2kTier = true;
       }
 
-      // 基準とするボーダーの情報をセット
       const refBorderName = is2kTier ? '2000位ボーダー' : '10万位ボーダー';
       const refBorderDataRaw = (is2kTier && globalEventData.currentBorder2k.length > 0) ? globalEventData.currentBorder2k : globalEventData.currentBorder100k;
       const refCurve = is2kTier ? curve2k : curve100k;
       const refInflation = is2kTier ? inflation2k : inflation100k;
 
-      // 個人のペース係数算出（直近12時間の増加量の、基準ボーダーに対する比率）
       let userPace = 1.0;
       if (targetUser) {
           const compareHours = 12;
@@ -402,12 +380,10 @@
       let currentBorderPred = 0;
       let currentUserPred = 0;
 
-      // 0h から 150h まで1時間ごとにプロットを生成
       for (let h = 0; h <= maxElapsed; h++) {
         const unixMs = (currentStartTime + h * 3600) * 1000;
         
         if (h <= latestElapsedH) {
-          // 実績
           currentBorderPred = getInterpolatedPoint(refBorderDataRaw, currentStartTime, h);
           borderData.push({ x: unixMs, y: currentBorderPred, isPredict: false });
           
@@ -420,9 +396,8 @@
             }
           }
         } else {
-          // 予測
           if (isRestTimeByElapsed(h)) {
-            // 休戦期間中は増加しない (前回から+0)
+            // 休戦
           } else {
             const baseSpeed = refCurve.get(h - 1) || 10000;
             const borderSpeed = baseSpeed * refInflation;
@@ -464,10 +439,9 @@
       const tabsContainer = document.getElementById('modalDateTabs');
       tabsContainer.innerHTML = '';
       
-      // 日程タブの生成（0:00区切り）
       const currentTabs = [{ label: '全期間', min: null, max: null }];
       let currentDay = new Date(currentStartTime * 1000);
-      currentDay.setHours(0,0,0,0); // イベント開始日の0:00
+      currentDay.setHours(0,0,0,0); 
       
       for (let i = 0; i <= 7; i++) {
         const dayStart = new Date(currentDay);
@@ -672,10 +646,8 @@
       if (!globalEventData.tableData || globalEventData.tableData.length === 0) return;
 
       if (currentSortKey === key) {
-        // 同じキーなら昇順・降順を切り替え
         currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
       } else {
-        // 異なるキーならキーを変更し、順位は昇順、他は降順をデフォルトにする
         currentSortKey = key;
         currentSortOrder = key === 'rank' ? 'asc' : 'desc';
       }
@@ -684,7 +656,6 @@
         const valA = a[key];
         const valB = b[key];
         
-        // null値は常に一番下にする
         if (valA === null && valB !== null) return 1;
         if (valB === null && valA !== null) return -1;
         if (valA === null && valB === null) return 0;
@@ -742,7 +713,6 @@
       updateUrlParams(ids);
       
       try {
-        // 過去データの取得（10万位と2000位の両方をフェッチ）
         if (globalEventData.pastBorders100k.length === 0) {
           const pastReqs100k = PAST_RAID_IDS.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(()=>[]));
           const pastReqs2k = PAST_RAID_IDS.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(()=>[]));
@@ -790,6 +760,7 @@
         newTableData.push({
           id: 'border_100k',
           name: '10万位ボーダー',
+          rank: BORDER_RANK_100K,
           point: point100k,
           todayInc: calculateTodayIncrease(currentBorder100k),
           realSpeed: calculateSpeedFromPast(currentBorder100k, 3600),
@@ -805,6 +776,7 @@
           newTableData.push({
             id: 'border_2k',
             name: '2000位ボーダー',
+            rank: BORDER_RANK_2K,
             point: latestBorder2kData.point,
             todayInc: calculateTodayIncrease(currentBorder2k),
             realSpeed: calculateSpeedFromPast(currentBorder2k, 3600),
@@ -823,6 +795,7 @@
           newTableData.push({
             id: u.id,
             name: u.name,
+            rank: latestUserData.rank,
             point: latestPoint,
             todayInc: calculateTodayIncrease(u.points),
             realSpeed: calculateSpeedFromPast(u.points, 3600),
@@ -834,20 +807,14 @@
           });
         });
 
-        // 初期ソート（貢献度降順）を行い、順位を割り当て
         newTableData.sort((a, b) => b.point - a.point);
-        newTableData.forEach((row, idx) => {
-          row.rank = idx + 1;
-        });
-
         globalEventData.tableData = newTableData;
         
         lastUpdateEl.textContent = `取得時刻: ${new Date().toLocaleTimeString()}`;
         resultSection.classList.remove('hidden');
 
-        // デフォルト表示のソート反映とアイコン更新
-        currentSortKey = 'rank';
-        currentSortOrder = 'asc';
+        currentSortKey = 'point';
+        currentSortOrder = 'desc';
         renderTable([...globalEventData.tableData]);
         updateSortIcons();
 
@@ -884,6 +851,7 @@
         const tr = document.createElement('tr');
         
         let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
+        let rankClass = "font-mono text-[#71717a]";
         let nameHTML = "";
         let pointClass = "font-mono text-[#e4e4e7]";
         let speedHTML = "-";
@@ -893,16 +861,20 @@
         const realSpdStr = row.realSpeed !== null ? formatSpeed(row.realSpeed) : '-';
         const predSpdStr = row.predictSpeed !== null ? formatSpeed(row.predictSpeed) : '-';
         if (row.todayInc !== null) todayIncHTML = formatPoint(row.todayInc);
+        
+        const rankStr = row.rank ? row.rank.toLocaleString() + '位' : '-';
 
         if (row.isBorder) {
           if (row.id === 'border_2k') {
             rowClass = "bg-[#4c1d95]/20 hover:bg-[#4c1d95]/40 transition-colors border-y border-[#8b5cf6]/50";
+            rankClass = "font-mono font-bold text-[#a78bfa]";
             nameHTML = `<div class="font-bold text-[#a78bfa]">${row.name}</div>`;
             pointClass = "font-mono font-bold text-[#a78bfa]";
             speedHTML = `<div class="text-[#a78bfa]">${realSpdStr}/時</div><div class="text-[#a78bfa]/70">(${predSpdStr})</div>`;
             todayIncHTML = `<span class="text-[#a78bfa]">${formatPoint(row.todayInc)}</span>`;
           } else {
             rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
+            rankClass = "font-mono font-bold text-[#60a5fa]";
             nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
             pointClass = "font-mono font-bold text-[#60a5fa]";
             speedHTML = `<div class="text-[#60a5fa]">${realSpdStr}/時</div><div class="text-[#60a5fa]/70">(${predSpdStr})</div>`;
@@ -939,7 +911,7 @@
         const clickAction = `onclick="openChartModal('${row.id}')" title="グラフを表示"`;
 
         tr.innerHTML = `
-          <td class="px-5 py-4 font-mono text-[#71717a]">${row.rank}</td>
+          <td class="px-5 py-4 ${rankClass}">${rankStr}</td>
           <td class="px-5 py-4">${nameHTML}</td>
           <td class="px-5 py-4 text-right ${pointClass} ${clickableCell}" ${clickAction}>${formatPoint(row.point)}</td>
           <td class="px-5 py-4 text-right font-mono text-xs ${clickableCell}" ${clickAction}>${speedHTML}</td>
@@ -969,3 +941,6 @@
   </script>
 </body>
 </html>
+
+
+```
