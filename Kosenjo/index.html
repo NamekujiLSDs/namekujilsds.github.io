@@ -90,11 +90,22 @@
         <table class="w-full text-sm text-left whitespace-nowrap">
           <thead class="bg-[#18181b] text-[#a1a1aa] border-b border-[#3f3f46]">
             <tr>
-              <th class="px-5 py-3 font-medium w-16">順位</th>
+              <th class="px-5 py-3 font-medium w-16 cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('rank')" title="順位で並び替え">
+                <div class="flex items-center gap-1">順位 <span id="sort-icon-rank" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
+              </th>
               <th class="px-5 py-3 font-medium">プレイヤー</th>
-              <th class="px-5 py-3 font-medium text-right">貢献度</th>
-              <th class="px-5 py-3 font-medium text-right">時速<span class="text-xs text-[#71717a] block font-normal">1h (20m予測)</span></th>
-              <th class="px-5 py-3 font-medium text-right">当日増加量</th>
+              <th class="px-5 py-3 font-medium text-right cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('point')" title="貢献度で並び替え">
+                <div class="flex items-center justify-end gap-1">貢献度 <span id="sort-icon-point" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
+              </th>
+              <th class="px-5 py-3 font-medium text-right cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('realSpeed')" title="時速で並び替え">
+                <div class="flex flex-col items-end">
+                  <div class="flex items-center justify-end gap-1">時速 <span id="sort-icon-realSpeed" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
+                  <span class="text-xs text-[#71717a] font-normal block">1h (20m予測)</span>
+                </div>
+              </th>
+              <th class="px-5 py-3 font-medium text-right cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('todayInc')" title="当日増加量で並び替え">
+                <div class="flex items-center justify-end gap-1">当日増加量 <span id="sort-icon-todayInc" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
+              </th>
               <th class="px-5 py-3 font-medium text-right">10万位差</th>
               <th class="px-5 py-3 font-medium text-right">更新日時</th>
             </tr>
@@ -151,9 +162,12 @@
       currentBorder2k: [],
       users: {},
       activityCurve100k: null,
-      activityCurve2k: null
+      activityCurve2k: null,
+      tableData: [] // テーブルのベースデータ
     };
     let myChart = null; // Chart.jsインスタンス
+    let currentSortKey = 'rank';
+    let currentSortOrder = 'asc';
 
     // --- ユーティリティ関数 ---
     const formatPoint = (num) => {
@@ -635,6 +649,55 @@
       }, 2500);
     };
 
+    // --- ソート機能の実装 ---
+    const updateSortIcons = () => {
+      const keys = ['rank', 'point', 'realSpeed', 'todayInc'];
+      keys.forEach(k => {
+        const iconEl = document.getElementById(`sort-icon-${k}`);
+        if (iconEl) {
+          if (currentSortKey === k) {
+            iconEl.textContent = currentSortOrder === 'asc' ? '▲' : '▼';
+            iconEl.classList.remove('opacity-0', 'group-hover:opacity-50');
+            iconEl.classList.add('opacity-100');
+          } else {
+            iconEl.textContent = '▼';
+            iconEl.classList.remove('opacity-100');
+            iconEl.classList.add('opacity-0', 'group-hover:opacity-50');
+          }
+        }
+      });
+    };
+
+    window.handleSort = function(key) {
+      if (!globalEventData.tableData || globalEventData.tableData.length === 0) return;
+
+      if (currentSortKey === key) {
+        // 同じキーなら昇順・降順を切り替え
+        currentSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+      } else {
+        // 異なるキーならキーを変更し、順位は昇順、他は降順をデフォルトにする
+        currentSortKey = key;
+        currentSortOrder = key === 'rank' ? 'asc' : 'desc';
+      }
+
+      const sortedData = [...globalEventData.tableData].sort((a, b) => {
+        const valA = a[key];
+        const valB = b[key];
+        
+        // null値は常に一番下にする
+        if (valA === null && valB !== null) return 1;
+        if (valB === null && valA !== null) return -1;
+        if (valA === null && valB === null) return 0;
+        
+        if (valA < valB) return currentSortOrder === 'asc' ? -1 : 1;
+        if (valA > valB) return currentSortOrder === 'asc' ? 1 : -1;
+        return 0;
+      });
+
+      renderTable(sortedData);
+      updateSortIcons();
+    };
+
     // --- メイン解析ロジック ---
     const updateUrlParams = (ids) => {
       const url = new URL(window.location);
@@ -771,12 +834,22 @@
           });
         });
 
+        // 初期ソート（貢献度降順）を行い、順位を割り当て
         newTableData.sort((a, b) => b.point - a.point);
+        newTableData.forEach((row, idx) => {
+          row.rank = idx + 1;
+        });
 
-        renderTable(newTableData);
+        globalEventData.tableData = newTableData;
         
         lastUpdateEl.textContent = `取得時刻: ${new Date().toLocaleTimeString()}`;
         resultSection.classList.remove('hidden');
+
+        // デフォルト表示のソート反映とアイコン更新
+        currentSortKey = 'rank';
+        currentSortOrder = 'asc';
+        renderTable([...globalEventData.tableData]);
+        updateSortIcons();
 
       } catch (err) {
         console.error(err);
@@ -866,7 +939,7 @@
         const clickAction = `onclick="openChartModal('${row.id}')" title="グラフを表示"`;
 
         tr.innerHTML = `
-          <td class="px-5 py-4 font-mono text-[#71717a]">${idx + 1}</td>
+          <td class="px-5 py-4 font-mono text-[#71717a]">${row.rank}</td>
           <td class="px-5 py-4">${nameHTML}</td>
           <td class="px-5 py-4 text-right ${pointClass} ${clickableCell}" ${clickAction}>${formatPoint(row.point)}</td>
           <td class="px-5 py-4 text-right font-mono text-xs ${clickableCell}" ${clickAction}>${speedHTML}</td>
