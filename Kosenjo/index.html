@@ -176,11 +176,8 @@
 
     const getTodayStartTime = (currentUnixTime) => {
       const d = new Date(currentUnixTime * 1000);
-      const hours = d.getHours();
-      const targetDate = new Date(d);
-      if (hours < 7) targetDate.setDate(targetDate.getDate() - 1);
-      targetDate.setHours(7, 0, 0, 0);
-      return Math.floor(targetDate.getTime() / 1000);
+      d.setHours(0, 0, 0, 0); // 1日の区切りは0:00
+      return Math.floor(d.getTime() / 1000);
     };
 
     const calculateTodayIncrease = (points) => {
@@ -240,6 +237,22 @@
       return json.data;
     };
 
+    // --- 古戦場の日程と休戦期間判定 ---
+    // イベント開始からの経過時間(h)を元に、休戦期間（貢献度が増えない時間）かどうかを判定
+    const isRestTimeByElapsed = (elapsedH) => {
+      // 予選終了後〜インターバル開始前: 29h(Day2 24:00) ~ 36h(Day3 07:00)
+      if (elapsedH >= 29 && elapsedH < 36) return true;
+      // 本戦1日目終了〜本戦2日目開始前: 77h(Day4 24:00) ~ 84h(Day5 07:00)
+      if (elapsedH >= 77 && elapsedH < 84) return true;
+      // 本戦2日目終了〜本戦3日目開始前: 101h(Day5 24:00) ~ 108h(Day6 07:00)
+      if (elapsedH >= 101 && elapsedH < 108) return true;
+      // 本戦3日目終了〜本戦4日目開始前: 125h(Day6 24:00) ~ 132h(Day7 07:00)
+      if (elapsedH >= 125 && elapsedH < 132) return true;
+      // 本戦4日目終了以降: 149h(Day7 24:00) ~
+      if (elapsedH >= 149) return true;
+      return false;
+    };
+
     // --- 予測ロジック用の関数群 ---
 
     // 指定時間のポイントを線形補間で取得
@@ -264,6 +277,10 @@
     const calculateActivityCurve = (pastDataArrays, maxHours) => {
       const curve = new Map();
       for (let h = 0; h < maxHours; h++) {
+        if (isRestTimeByElapsed(h)) {
+          curve.set(h, 0); // 休戦期間は増加量0
+          continue;
+        }
         let speedSum = 0; let count = 0;
         pastDataArrays.forEach(points => {
           if (!points || points.length === 0) return;
@@ -368,12 +385,19 @@
           }
         } else {
           // 予測 (波 × レートを加算)
-          const baseSpeed = activityCurve.get(h - 1) || 10000;
-          currentBorderPred += baseSpeed * inflationRate;
+          if (isRestTimeByElapsed(h)) {
+            // 休戦期間中は増加しない
+            currentBorderPred += 0;
+            if (targetUser) currentUserPred += 0;
+          } else {
+            const baseSpeed = activityCurve.get(h - 1) || 10000;
+            currentBorderPred += baseSpeed * inflationRate;
+            if (targetUser) currentUserPred += baseSpeed * userPace;
+          }
+
           borderData.push({ x: unixMs, y: currentBorderPred, isPredict: true });
           
           if (targetUser) {
-            currentUserPred += baseSpeed * userPace;
             userData.push({ x: unixMs, y: currentUserPred, isPredict: true });
           }
         }
@@ -407,13 +431,10 @@
       const tabsContainer = document.getElementById('modalDateTabs');
       tabsContainer.innerHTML = '';
       
-      // 日程タブの生成（朝7時区切り）
+      // 日程タブの生成（0:00区切り）
       const currentTabs = [{ label: '全期間', min: null, max: null }];
       let currentDay = new Date(currentStartTime * 1000);
-      if (currentDay.getHours() < 7) {
-        currentDay.setDate(currentDay.getDate() - 1);
-      }
-      currentDay.setHours(7,0,0,0);
+      currentDay.setHours(0,0,0,0); // イベント開始日の0:00
       
       for (let i = 0; i <= 7; i++) {
         const dayStart = new Date(currentDay);
@@ -529,6 +550,10 @@
                 color: '#a1a1aa',
                 callback: function(value) {
                   const d = new Date(value);
+                  const isAllPeriod = myChart && !myChart.options.scales.x.min;
+                  if (isAllPeriod) {
+                    return `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}時`;
+                  }
                   return `${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
                 },
                 maxTicksLimit: 12
