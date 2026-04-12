@@ -45,10 +45,16 @@
         </svg>
         古戦場貢献度ランキング
       </h1>
-      <p class="text-[#a1a1aa] text-sm mt-2">
-        入力されたプレイヤーの最新の貢献度を取得し、2000位・10万位ボーダーと共にランキング形式で表示します。<br>
-        <span class="text-[#e4e4e7] font-medium border-b border-[#3f3f46]">各プレイヤーの「貢献度・時速・当日増加量」セルをタップすると、グラフと予測が表示されます。</span>
-      </p>
+      <div class="mt-3">
+        <p class="text-[#a1a1aa] text-sm mb-2">団員一覧を取得するブックマークレット（グラブルの騎空団ページで実行してください）</p>
+        <div class="flex items-center gap-2 bg-[#18181b] border border-[#3f3f46] rounded p-2">
+          <code class="text-xs text-[#a1a1aa] font-mono overflow-x-auto whitespace-nowrap flex-1 scrollbar-hide">javascript:(async()=>{u=JSON.parse(document.getElementById("server-props").textContent).userId;v=window.Game.version;r=await Promise.all([1,2,3].map(i=>fetch(`/guild_main/guild_member_list/${i}?uid=${u}`,{headers:{"X-Requested-With":"XMLHttpRequest","X-VERSION":v}}).then(r=>r.json())));navigator.clipboard.writeText(r.flatMap(j=>j.list.map(m=>m.id)).join(","));})()</code>
+          <button onclick="copyBookmarklet()" class="shrink-0 bg-[#3f3f46] hover:bg-[#52525b] text-[#e4e4e7] px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1" title="クリップボードにコピー">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            コピー
+          </button>
+        </div>
+      </div>
     </header>
 
     <section class="bg-[#27272a] rounded-lg shadow-lg p-5 border border-[#3f3f46]">
@@ -607,6 +613,24 @@
       try {
         document.execCommand('copy');
         showToast(`ID: ${id} をコピーしました`);
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      document.body.removeChild(textArea);
+    };
+
+    window.copyBookmarklet = function() {
+      const code = 'javascript:(async()=>{u=JSON.parse(document.getElementById("server-props").textContent).userId;v=window.Game.version;r=await Promise.all([1,2,3].map(i=>fetch(`/guild_main/guild_member_list/${i}?uid=${u}`,{headers:{"X-Requested-With":"XMLHttpRequest","X-VERSION":v}}).then(r=>r.json())));navigator.clipboard.writeText(r.flatMap(j=>j.list.map(m=>m.id)).join(","));})()';
+      const textArea = document.createElement("textarea");
+      textArea.value = code;
+      textArea.style.position = "fixed";
+      textArea.style.opacity = 0;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showToast('ブックマークレットをコピーしました');
       } catch (err) {
         console.error('Copy failed', err);
       }
