@@ -46,7 +46,7 @@
         古戦場貢献度ランキング
       </h1>
       <div class="mt-3">
-        <p class="text-[#a1a1aa] text-sm mb-2">団員一覧を取得するブックマークレット（グラブルの騎空団ページで実行してください）</p>
+        <p class="text-[#a1a1aa] text-sm mb-2">団員ID一覧で取得するブックマークレット</p>
         <div class="flex items-center gap-2 bg-[#18181b] border border-[#3f3f46] rounded p-2">
           <code class="text-xs text-[#a1a1aa] font-mono overflow-x-auto whitespace-nowrap flex-1 scrollbar-hide">javascript:(async()=>{u=JSON.parse(document.getElementById("server-props").textContent).userId;v=window.Game.version;r=await Promise.all([1,2,3].map(i=>fetch(`/guild_main/guild_member_list/${i}?uid=${u}`,{headers:{"X-Requested-With":"XMLHttpRequest","X-VERSION":v}}).then(r=>r.json())));navigator.clipboard.writeText(r.flatMap(j=>j.list.map(m=>m.id)).join(","));})()</code>
           <button onclick="copyBookmarklet()" class="shrink-0 bg-[#3f3f46] hover:bg-[#52525b] text-[#e4e4e7] px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1" title="クリップボードにコピー">
