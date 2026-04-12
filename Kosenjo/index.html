@@ -45,10 +45,19 @@
         </svg>
         古戦場貢献度ランキング
       </h1>
+      <p class="text-[#a1a1aa] text-sm mt-2">
+        入力されたプレイヤーの最新の貢献度を取得し、2000位・10万位ボーダーと共にランキング形式で表示します。<br>
+        <span class="text-[#e4e4e7] font-medium border-b border-[#3f3f46]">各プレイヤーの「貢献度・時速・当日増加量」セルをタップすると、グラフと予測が表示されます。</span>
+      </p>
     </header>
 
     <section class="bg-[#27272a] rounded-lg shadow-lg p-5 border border-[#3f3f46]">
       <div class="flex flex-col md:flex-row gap-4 items-stretch">
+        <div>
+          <select id="raidSelect" class="h-full bg-[#18181b] border border-[#3f3f46] text-[#e4e4e7] rounded p-3 text-sm focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] outline-none transition-colors cursor-pointer" title="開催回を選択">
+            <!-- JSで生成 -->
+          </select>
+        </div>
         <div class="flex-1">
           <input
             type="text"
@@ -139,13 +148,12 @@
 
   <script>
     // --- 定数定義 ---
-    const CURRENT_RAID_ID = 'teamraid082';
-    const PAST_RAID_IDS = ['teamraid081', 'teamraid080', 'teamraid079'];
     const BORDER_RANK_100K = 100000;
     const BORDER_RANK_2K = 2000;
 
     // --- グローバル状態管理 ---
     let globalEventData = {
+      loadedRaidNum: null,
       pastBorders100k: [], // 10万位の過去データ
       pastBorders2k: [],   // 2000位の過去データ
       currentBorder100k: [],
@@ -693,6 +701,26 @@
     const resultSection = document.getElementById('resultSection');
     const tableBody = document.getElementById('tableBody');
     const lastUpdateEl = document.getElementById('lastUpdate');
+    const raidSelectEl = document.getElementById('raidSelect');
+
+    let currentRaidNum = parseInt(localStorage.getItem('selectedRaidNum')) || 82;
+
+    // 開催回セレクトボックスの初期化（第70回〜第100回まで生成）
+    for (let i = 100; i >= 70; i--) {
+      const option = document.createElement('option');
+      option.value = i;
+      option.textContent = `第${i}回`;
+      if (i === currentRaidNum) option.selected = true;
+      raidSelectEl.appendChild(option);
+    }
+
+    raidSelectEl.addEventListener('change', (e) => {
+      currentRaidNum = parseInt(e.target.value);
+      localStorage.setItem('selectedRaidNum', currentRaidNum);
+      if (inputIdsEl.value.trim()) {
+        handleAnalyze();
+      }
+    });
 
     const handleAnalyze = async () => {
       const inputVal = inputIdsEl.value;
@@ -707,22 +735,33 @@
       const ids = inputVal.split(/[, ]+/).map(s => s.trim()).filter(s => s.length > 0);
       updateUrlParams(ids);
       
+      const currentRaidId = `teamraid${String(currentRaidNum).padStart(3, '0')}`;
+      const pastRaidIds = [
+        `teamraid${String(currentRaidNum - 1).padStart(3, '0')}`,
+        `teamraid${String(currentRaidNum - 2).padStart(3, '0')}`,
+        `teamraid${String(currentRaidNum - 3).padStart(3, '0')}`
+      ];
+
       try {
-        if (globalEventData.pastBorders100k.length === 0) {
-          const pastReqs100k = PAST_RAID_IDS.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(()=>[]));
-          const pastReqs2k = PAST_RAID_IDS.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(()=>[]));
+        // 開催回が変わった場合はキャッシュを無視して過去データを再取得する
+        if (globalEventData.pastBorders100k.length === 0 || globalEventData.loadedRaidNum !== currentRaidNum) {
+          const pastReqs100k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(()=>[]));
+          const pastReqs2k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(()=>[]));
           
           globalEventData.pastBorders100k = await Promise.all(pastReqs100k);
           globalEventData.pastBorders2k = await Promise.all(pastReqs2k);
+          globalEventData.loadedRaidNum = currentRaidNum;
+          globalEventData.activityCurve100k = null;
+          globalEventData.activityCurve2k = null;
         }
 
-        const border100kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK_100K}`);
-        const border2kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${CURRENT_RAID_ID}&type=user&rank=${BORDER_RANK_2K}`).catch(() => null);
+        const border100kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_100K}`);
+        const border2kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_2K}`).catch(() => null);
 
         const userReqs = ids.map(async (id) => {
           try {
             const userRes = await fetchData(`https://gbf.pub/api/client/gw/user?userid=${id}`);
-            const pointRes = await fetchData(`https://gbf.pub/api/client/gw/point?teamraidid=${CURRENT_RAID_ID}&type=user&id=${id}`);
+            const pointRes = await fetchData(`https://gbf.pub/api/client/gw/point?teamraidid=${currentRaidId}&type=user&id=${id}`);
             const userInfo = userRes.length > 0 ? userRes[0] : { name: `ID:${id}`, id };
             return { id, name: userInfo.name, points: pointRes || [] };
           } catch (e) {
