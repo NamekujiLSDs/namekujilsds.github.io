@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ultimate Mobile JSON</title>
+    <style>
+        :root {
+            --bg: #f0f2f5; --card: #ffffff; --text: #1c1e21; --border: #dddfe2;
+            --primary: #007bff; --danger: #dc3545; --accent: #28a745; --header-bg: #ffffff;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #18191a; --card: #242526; --text: #e4e6eb; --border: #3e4042;
+                --primary: #4599ff; --header-bg: #242526;
+            }
+        }
+        body.dark-theme {
+            --bg: #18191a; --card: #242526; --text: #e4e6eb; --border: #3e4042;
+            --primary: #4599ff; --header-bg: #242526;
+        }
+        body.light-theme {
+            --bg: #f0f2f5; --card: #ffffff; --text: #1c1e21; --border: #dddfe2;
+            --primary: #007bff; --header-bg: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg); color: var(--text);
+            margin: 0; padding-top: 60px; padding-bottom: 80px;
+            transition: background 0.3s;
+        }
+
+        /* Header logic */
+        header {
+            position: absolute; top: 0; left: 0; right: 0; height: 55px;
+            background: var(--header-bg); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 15px; z-index: 1000;
+        }
+        header.sticky { position: fixed; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 10px; }
+
+        /* Tree UI */
+        .json-node {
+            margin-left: 10px; border-left: 1px dashed var(--border);
+            padding-left: 10px; margin-top: 8px; position: relative;
+        }
+        .item-row {
+            display: flex; align-items: center; gap: 4px;
+            background: var(--card); padding: 8px; border-radius: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        .collapsed > .json-node { display: none; }
+
+        input, select {
+            background: var(--bg); color: var(--text); border: 1px solid var(--border);
+            border-radius: 4px; padding: 8px; font-size: 14px; min-width: 0;
+        }
+        .node-key { flex: 1.5; font-weight: bold; }
+        .node-value { flex: 2; }
+
+        .btn {
+            border: none; border-radius: 6px; padding: 8px 12px;
+            font-weight: bold; cursor: pointer; color: white;
+        }
+        .btn-sm { padding: 4px 8px; font-size: 12px; }
+        .btn-primary { background: var(--primary); }
+        .btn-danger { background: var(--danger); }
+        .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+
+        /* Output Area */
+        #json-output-container {
+            margin-top: 20px; background: var(--card); padding: 10px;
+            border-radius: 8px; border: 1px solid var(--border); display: none;
+        }
+        #json-output-container.show { display: block; }
+        #output-text { width: 100%; height: 200px; font-family: monospace; font-size: 12px; margin-bottom: 10px; }
+
+        /* Settings Modal */
+        .modal {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 2000; align-items: center; justify-content: center;
+        }
+        .modal-content { background: var(--card); padding: 20px; border-radius: 12px; width: 90%; max-width: 400px; }
+
+        .controls {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background: var(--header-bg); padding: 12px;
+            display: flex; gap: 8px; border-top: 1px solid var(--border); z-index: 1000;
+        }
+    </style>
+</head>
+<body class="">
+
+<header id="main-header">
+    <div style="font-weight:bold">JSON Editor Pro</div>
+    <button class="btn btn-ghost btn-sm" onclick="toggleModal('settings-modal')">⚙️ 設定</button>
+</header>
+
+<div class="container">
+    <div id="editor-root"></div>
+    
+    <div id="json-output-container">
+        <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
+            <strong>Result JSON</strong>
+            <button class="btn btn-ghost btn-sm" onclick="copyToClipboard()">Copy</button>
+        </div>
+        <textarea id="output-text" readonly></textarea>
+    </div>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+    <button class="btn btn-primary" style="flex:2" onclick="generateJSON()">生成/更新</button>
+    <button class="btn btn-ghost" style="flex:1" onclick="toggleModal('import-modal')">読込</button>
+</div>
+
+<!-- Settings Modal -->
+<div id="settings-modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content">
+        <h3>エディタ設定</h3>
+        <label><input type="checkbox" id="setting-sticky" onchange="updateSettings()"> ヘッダーを固定</label><br><br>
+        <label><input type="checkbox" id="setting-output" onchange="updateSettings()"> JSONプレビューを表示</label><br><br>
+        <label>テーマ: 
+            <select id="setting-theme" onchange="updateSettings()">
+                <option value="auto">システム設定に従う</option>
+                <option value="light">ライト</option>
+                <option value="dark">ダーク</option>
+            </select>
+        </label><br><br>
+        <button class="btn btn-danger" onclick="resetAll()">全データリセット</button>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div id="import-modal" class="modal" onclick="closeModal(event)">
+    <div class="modal-content">
+        <h3>JSON読み込み</h3>
+        <textarea id="import-area" style="width:100%; height:150px;" placeholder='{"key": "value"} を貼り付け'></textarea>
+        <div style="margin-top:10px; display:flex; gap:10px;">
+            <button class="btn btn-primary" onclick="importJSON()">インポート</button>
+            <button class="btn btn-ghost" onclick="toggleModal('import-modal')">閉じる</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STORAGE_KEY = 'm_json_data_v2';
+    const SETTINGS_KEY = 'm_json_settings';
+    let editorRoot = document.getElementById('editor-root');
+
+    function toggleModal(id) {
+        const m = document.getElementById(id);
+        m.style.display = (m.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function closeModal(e) { if(e.target.className === 'modal') e.target.style.display = 'none'; }
+
+    function updateSettings() {
+        const settings = {
+            sticky: document.getElementById('setting-sticky').checked,
+            showOutput: document.getElementById('setting-output').checked,
+            theme: document.getElementById('setting-theme').value
+        };
+        localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+        applySettings(settings);
+    }
+
+    function applySettings(s) {
+        const header = document.getElementById('main-header');
+        s.sticky ? header.classList.add('sticky') : header.classList.remove('sticky');
+        
+        const out = document.getElementById('json-output-container');
+        s.showOutput ? out.classList.add('show') : out.classList.remove('show');
+
+        document.body.className = s.theme === 'auto' ? '' : s.theme + '-theme';
+        
+        document.getElementById('setting-sticky').checked = s.sticky;
+        document.getElementById('setting-output').checked = s.showOutput;
+        document.getElementById('setting-theme').value = s.theme;
+    }
+
+    function createNode(key = '', value = '', type = 'string') {
+        const node = document.createElement('div');
+        node.className = 'json-node';
+        
+        const isComplex = (type === 'object' || type === 'array');
+        
+        node.innerHTML = `
+            <div class="item-row">
+                <button class="btn btn-ghost btn-sm collapse-btn" style="display:${isComplex?'block':'none'}" onclick="this.parentElement.parentElement.classList.toggle('collapsed')">▼</button>
+                <input type="text" class="node-key" placeholder="Key" value="${key}">
+                <select class="type-select" onchange="changeNodeType(this)">
+                    <option value="string" ${type==='string'?'selected':''}>Text</option>
+                    <option value="number" ${type==='number'?'selected':''}>Num</option>
+                    <option value="object" ${type==='object'?'selected':''}>Obj</option>
+                    <option value="array" ${type==='array'?'selected':''}>Arr</option>
+                    <option value="boolean" ${type==='boolean'?'selected':''}>Bool</option>
+                </select>
+                <input type="text" class="node-value" placeholder="Value" value="${isComplex?'':value}" style="display:${isComplex?'none':'block'}">
+                <button class="btn btn-primary btn-sm add-btn" style="display:${isComplex?'block':'none'}" onclick="addChildren(this)">+</button>
+                <button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove(); autoSave();">×</button>
+            </div>
+        `;
+        
+        node.querySelector('.node-key').oninput = autoSave;
+        node.querySelector('.node-value').oninput = autoSave;
+        return node;
+    }
+
+    function changeNodeType(sel) {
+        const type = sel.value;
+        const row = sel.parentElement;
+        const isComplex = (type === 'object' || type === 'array');
+        row.querySelector('.node-value').style.display = isComplex ? 'none' : 'block';
+        row.querySelector('.add-btn').style.display = isComplex ? 'block' : 'none';
+        row.querySelector('.collapse-btn').style.display = isComplex ? 'block' : 'none';
+        autoSave();
+    }
+
+    function addChildren(btn) {
+        btn.parentElement.parentElement.appendChild(createNode('', '', 'string'));
+        autoSave();
+    }
+
+    function autoSave() {
+        const data = parseUI(editorRoot.firstChild);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function parseUI(node) {
+        if (!node) return null;
+        const row = node.querySelector('.item-row');
+        const key = row.querySelector('.node-key').value;
+        const type = row.querySelector('.type-select').value;
+        const value = row.querySelector('.node-value').value;
+        const children = Array.from(node.children)
+            .filter(c => c.classList.contains('json-node'))
+            .map(c => parseUI(c));
+        return { key, type, value, children };
+    }
+
+    function generateJSON() {
+        const data = parseUI(editorRoot.firstChild);
+        const convert = (d) => {
+            if (d.type === 'object') {
+                const obj = {};
+                d.children.forEach(c => obj[c.key] = convert(c));
+                return obj;
+            } else if (d.type === 'array') {
+                return d.children.map(c => convert(c));
+            } else if (d.type === 'number') return Number(d.value);
+            else if (d.type === 'boolean') return d.value.toLowerCase() === 'true';
+            return d.value;
+        };
+        document.getElementById('output-text').value = JSON.stringify(convert(data), null, 2);
+    }
+
+    function importJSON() {
+        const text = document.getElementById('import-area').value;
+        try {
+            const json = JSON.parse(text);
+            editorRoot.innerHTML = '';
+            editorRoot.appendChild(reconstruct('root', json));
+            toggleModal('import-modal');
+            autoSave();
+        } catch (e) {
+            alert('JSONの形式が正しくありません');
+        }
+    }
+
+    function reconstruct(key, val) {
+        let type = typeof val;
+        if (Array.isArray(val)) type = 'array';
+        else if (val === null) type = 'string';
+        
+        const node = createNode(key, (type === 'object' || type === 'array') ? '' : val, type);
+        if (type === 'object') {
+            for (let k in val) node.appendChild(reconstruct(k, val[k]));
+        } else if (type === 'array') {
+            val.forEach(item => node.appendChild(reconstruct('', item)));
+        }
+        return node;
+    }
+
+    function resetAll() {
+        if (confirm('すべてのデータと設定を消去しますか？')) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    function copyToClipboard() {
+        const txt = document.getElementById('output-text');
+        txt.select();
+        document.execCommand('copy');
+        alert('Copied!');
+    }
+
+    // Initialize
+    const savedSet = localStorage.getItem(SETTINGS_KEY);
+    applySettings(savedSet ? JSON.parse(savedSet) : { sticky: true, showOutput: true, theme: 'auto' });
+
+    const savedData = localStorage.getItem(STORAGE_KEY);
+    if (savedData) {
+        const d = JSON.parse(savedData);
+        const build = (data) => {
+            const n = createNode(data.key, data.value, data.type);
+            data.children.forEach(c => n.appendChild(build(c)));
+            return n;
+        };
+        editorRoot.appendChild(build(d));
+    } else {
+        editorRoot.appendChild(createNode('root', '', 'object'));
+    }
+</script>
+</body>
+</html>
