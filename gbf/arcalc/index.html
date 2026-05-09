@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>十賢者素材計算機 - Muted Dark</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', 'sans-serif'; background-color: #0f172a; }
+        .grid-button { transition: all 0.15s ease-out; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    </style>
+</head>
+<body class="text-slate-300">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo } = React;
+
+        const rawData = {
+            "段階一覧": {
+                "1": "交換", "2": "★1", "3": "★2", "4": "★3", "5": "SSR", "6": "★4", "7": "★5",
+                "8": "加入", "9": "★1", "10": "★2", "11": "★3", "12": "★4", "23": "★5", "24": "4アビ",
+                "13": "交換", "14": "★1", "15": "★2", "16": "★3", "17": "★4", "18": "★5",
+                "19": "至賢1", "20": "至賢2", "21": "至賢3", "22": "至賢4"
+            },
+            "十賢者詳細": {
+                "マリア・テレサ": { "属性": "水" }, "カイム": { "属性": "土" }, "ニーア": { "属性": "闇" },
+                "エスタリオラ": { "属性": "風" }, "フラウ": { "属性": "火" }, "ロベリア": { "属性": "土" },
+                "ガイゼンボーガ": { "属性": "光" }, "ハーゼリーラ": { "属性": "水" }, "アラナン": { "属性": "火" },
+                "カッツェリーラ": { "属性": "風" }
+            },
+            "アイテム対応表": {
+                "石片": { "火": "業火", "水": "玉水", "土": "荒土", "風": "狂風" },
+                "天司": { "火": "ミカエル", "水": "ガブリエル", "土": "ウリエル", "風": "ラファエル" },
+                "アストラ": { "火": "火精", "水": "水精", "土": "土精", "風": "風精", "光": "光精", "闇": "闇精" },
+                "マグナ": { "火": "コロッサス", "水": "リヴァイアサン", "土": "ユグドラシル", "風": "ティアマト", "光": "シュヴァリエ", "闇": "セレスト" },
+                "レガリア": { "火": "シヴァ", "水": "エウロペ", "土": "ブローディア", "風": "グリームニル", "光": "メタトロン", "闇": "アバター" },
+                "旧召喚石": { "火": "フラム=グラス", "水": "マキュラ・マリウス", "土": "メデューサ", "風": "ナタク", "光": "アポロン", "闇": "オリヴィエ" },
+                "新召喚石": { "火": "アテナ", "水": "グラニ", "土": "バアル", "風": "ガルーダ", "光": "オーディン", "闇": "リッチ" },
+                "竜珠": { "火": "ウィルナス", "水": "ワムデュス", "土": "ガレヲン", "風": "イーウィア", "光": "ル・オー", "闇": "フェディエル" },
+                "六竜素材": { "火": "イグナイトラブル", "水": "アビサル・トラジェディー", "土": "インシュラーコア", "風": "ゲイルロック", "光": "靂輪", "闇": "トーデストリープ" },
+                "イデア": { "マリア・テレサ": "正義", "カイム": "刑死者", "ニーア": "死神", "エスタリオラ": "節制", "フラウ": "悪魔", "ロベリア": "塔", "ガイゼンボーガ": "星", "ハーゼリーラ": "月", "アラナン": "太陽", "カッツェリーラ": "審判" },
+                "ウェリタス": { "マリア・テレサ": "正義", "カイム": "刑死者", "ニーア": "死神", "エスタリオラ": "節制", "フラウ": "悪魔", "ロベリア": "塔", "ガイゼンボーガ": "星", "ハーゼリーラ": "月", "アラナン": "太陽", "カッツェリーラ": "審判" },
+                "フラグメント": { "マリア・テレサ": "ベラトール", "カイム": "アクイラ", "ニーア": "ケルサス", "エスタリオラ": "ケルサス", "フラウ": "アクイラ", "ロベリア": "ケルサス", "ガイゼンボーガ": "ケルサス", "ハーゼリーラ": "ベラトール", "アラナン": "アクイラ", "カッツェリーラ": "ベラトール" },
+                "ヘイズ": { "マリア・テレサ": "カオティック", "カイム": "カオティック", "ニーア": "カオティック", "エスタリオラ": "オーロラ", "フラウ": "オーロラ", "ロベリア": "カオティック", "ガイゼンボーガ": "オーロラ", "ハーゼリーラ": "カオティック", "アラナン": "オーロラ", "カッツェリーラ": "オーロラ" },
+                "ディフェンダー": { "マリア・テレサ": ["アナリプシア"], "カイム": ["テュシア"], "ニーア": ["テュシア", "アナリプシア"], "エスタリオラ": ["ゲネア"], "フラウ": ["エゲイラ"], "ロベリア": ["テュシア"], "ガイゼンボーガ": ["エゲイラ", "ゲネア"], "ハーゼリーラ": ["ゲネア", "エゲイラ"], "アラナン": ["エゲイラ"], "カッツェリーラ": ["ゲネア"] },
+                "ヴェルム文書": { "マリア・テレサ": ["水"], "カイム": ["土"], "ニーア": ["水", "土"], "エスタリオラ": ["風"], "フラウ": ["火"], "ロベリア": ["土"], "ガイゼンボーガ": ["火", "風"], "ハーゼリーラ": ["水"], "アラナン": ["火"], "カッツェリーラ": ["風"] },
+                "ブライト": { "マリア・テレサ": ["アクア"], "カイム": ["テラ"], "ニーア": ["アクア", "テラ"], "エスタリオラ": ["ウェントス"], "フラウ": ["イグニス"], "ロベリア": ["テラ"], "ガイゼンボーガ": ["イグニス", "ウェントス"], "ハーゼリーラ": ["アクア"], "アラナン": ["イグニス"], "カッツェリーラ": ["ウェントス"] },
+                "討滅戦": { "マリア・テレサ": "氷獄の結晶", "カイム": "裁考の水晶", "ニーア": "幻魔の破片", "エスタリオラ": "人馬の円盤", "フラウ": "灼熱の焰角", "ロベリア": "裁考の水晶", "ガイゼンボーガ": "妃光の水晶", "ハーゼリーラ": "氷獄の結晶", "アラナン": "灼熱の焰角", "カッツェリーラ": "人馬の円盤" },
+                "ナルグランデ": { "マリア・テレサ": "トキシックフラワー", "カイム": "ベスティエフルーツ", "ニーア": "巨獣骨", "エスタリオラ": "クルーガーハープ", "フラウ": "レムペッパー", "ロベリア": "割れたティーカップ", "ガイゼンボーガ": "錆びついた掛瓦", "ハーゼリーラ": "透き通るような絹", "アラナン": "修行者の覚書", "カッツェリーラ": "埃まみれの書物" },
+                "鱗": { "火": "赤竜鱗", "水": "青竜鱗", "土": "地竜鱗", "風": "風竜鱗", "光": "白竜鱗", "闇": "黒竜鱗" }
+            },
+            "必要アイテム": {
+                "1": { "セフィラストーン": 2, "アストラ": 3, "イデア": 2, "ヴェルム文書": 6, "ヘイズ": 1, "星晶塊": 100, "マグナ": 30 },
+                "2": { "セフィラストーン": 5, "アストラ": 5, "イデア": 3, "ヴェルム文書": 16, "ヘイズ": 3, "虹星晶": 100, "エレメント": 100 },
+                "3": { "セフィラストーン": 10, "アストラ": 10, "イデア": 5, "ヴェルム文書": 30, "旧召喚石": 30 },
+                "4": { "セフィラストーン": 15, "アストラ": 15, "イデア": 7, "ヴェルム文書": 50, "ヘイズ": 16, "新召喚石": 30, "究竟の証": 3 },
+                "5": { "セフィラストーン": 30, "アストラ": 30, "イデア": 15, "ヴェルム文書": 80, "ヘイズ": 24, "銀天の輝き": 5, "天司": 20, "金剛晶": 1 },
+                "6": { "セフィラストーン": 45, "アストラ": 45, "イデア": 25, "ヴェルム文書": 120, "ヘイズ": 32, "レガリア": 10, "フラグメント": 10 },
+                "7": { "ヴェルム文書": 250, "フラグメント": 20, "討滅戦": 100, "石片": 50, "ジェネシス・フラグメント": 80, "バハムートの紫電角": 10, "ナルグランデ": 50 },
+                "8": { "セフィラストーン": 30, "アストラ": 200, "イデア": 20, "セフィラ玉髄": 1 },
+                "9": { "ヴェルム文書": 2, "星晶塊": 5, "覇者の証": 1 },
+                "10": { "アストラ": 1, "ヴェルム文書": 2, "星晶塊": 10, "鱗": 1, "覇者の証": 3 },
+                "11": { "アストラ": 2, "ヴェルム文書": 6, "虹星晶": 13, "イデア": 1, "覇者の証": 6 },
+                "12": { "アストラ": 3, "ヴェルム文書": 10, "ヘイズ": 3, "イデア": 1, "覇者の証": 10 },
+                "13": { "ニューワールド・クォーツ": 5, "ブライト": 5, "ウェリタス": 20 },
+                "14": { "ニューワールド・クォーツ": 5, "ブライト": 15, "ウェリタス": 70, "マリス・フラグメント": 30, "ヴェルム文書": 100, "アストラ": 30 },
+                "15": { "ニューワールド・クォーツ": 10, "ブライト": 30, "ウェリタス": 100, "蒼翠の結晶": 20, "ヴェルム文書": 150, "アストラ": 50, "イデア": 30 },
+                "16": { "ニューワールド・クォーツ": 20, "ブライト": 50, "ウェリタス": 130, "竜珠": 20, "ヴェルム文書": 200, "アストラ": 100, "イデア": 70 },
+                "17": { "ニューワールド・クォーツ": 20, "ブライト": 60, "ウェリタス": 150, "竜珠": 30, "ヴェルム文書": 250, "アストラ": 120, "イデア": 100 },
+                "18": { "ニューワールド・クォーツ": 30, "ブライト": 35, "ウェリタス": 170, "六竜素材": 30, "フラグメント": 30, "アストラ": 140, "イデア": 130, "刻の流砂": 3 },
+                "19": { "ジェネシス・フラグメント": 30, "ヴェルム文書": 120, "ヘイズ": 20, "セフィラストーン": 5 },
+                "20": { "プシュケー": 30, "ヴェルム文書": 240, "アストラ": 30, "ヘイズ": 30, "セフィラストーン": 10 },
+                "21": { "レガリア": 10, "ウェリタス": 30, "アストラ": 40, "イデア": 40, "フラグメント": 10, "セフィラストーン": 15 },
+                "22": { "六竜素材": 30, "ブライト": 20, "ウェリタス": 50, "アストラ": 40, "イデア": 70, "フラグメント": 20, "セフィラストーン": 20 },
+                "23": { "セフィラ玉髄": 1, "ディフェンダー": 50, "ブライト": 50, "セフィラストーン": 200 },
+                "24": { "金剛晶": 1, "世界のイデア": 100, "ニューワールド・クォーツ": 30, "ダマスカス骸晶": 10 }
+            }
+        };
+
+        const ATTR_THEMES = {
+            "火": { active: "bg-rose-950/40 border-rose-500/50 text-rose-200" },
+            "水": { active: "bg-sky-950/40 border-sky-500/50 text-sky-200" },
+            "土": { active: "bg-amber-950/40 border-amber-600/50 text-amber-200" },
+            "風": { active: "bg-emerald-950/40 border-emerald-500/50 text-emerald-200" },
+            "光": { active: "bg-stone-800 border-stone-400/50 text-stone-100" },
+            "闇": { active: "bg-indigo-950/40 border-indigo-500/50 text-indigo-200" }
+        };
+
+        const IconCheck = () => <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
+
+        const App = () => {
+            const [selectedCharacter, setSelectedCharacter] = useState("マリア・テレサ");
+            const [currentStage, setCurrentStage] = useState(0); // 完了済みの最終ステップ
+            const [targetStage, setTargetStage] = useState(24); // 目標ステップ
+            const [inputMode, setInputMode] = useState("current"); // "current" or "target"
+
+            const characterInfo = rawData.十賢者詳細[selectedCharacter];
+            const attr = characterInfo.属性;
+            const theme = ATTR_THEMES[attr];
+
+            const calculatedMaterials = useMemo(() => {
+                const summary = {};
+                for (let i = currentStage + 1; i <= targetStage; i++) {
+                    const requirements = rawData.必要アイテム[i.toString()];
+                    if (!requirements) continue;
+                    Object.entries(requirements).forEach(([category, amount]) => {
+                        const mapping = rawData.アイテム対応表[category];
+                        if (mapping) {
+                            if (["イデア", "ウェリタス", "フラグメント", "ヘイズ", "討滅戦", "ナルグランデ"].includes(category)) {
+                                const subName = mapping[selectedCharacter];
+                                const suffix = category === "フラグメント" ? "・フラグメント" : category === "ヘイズ" ? "・ヘイズ" : category.includes("戦") || category.includes("ナル") ? "" : `の${category}`;
+                                summary[`${subName}${suffix}`] = (summary[`${subName}${suffix}`] || 0) + amount;
+                            } else if (["ヴェルム文書", "ブライト", "ディフェンダー"].includes(category)) {
+                                const types = mapping[selectedCharacter];
+                                const suffix = category === "ヴェルム文書" ? "" : (category === "ブライト" ? "・ブライト" : "・ゴスペル");
+                                types.forEach(t => {
+                                    const key = category === "ヴェルム文書" ? `ヴェルム文書・${t}` : `${t}${suffix}`;
+                                    summary[key] = (summary[key] || 0) + Math.ceil(amount / types.length);
+                                });
+                            } else if (mapping[attr]) {
+                                const subName = mapping[attr];
+                                const table = { "石片": `${subName}の石片`, "天司": `${subName}のアニマ`, "アストラ": `${subName}のアストラ`, "マグナ": `${subName}のマグナアニマ`, "レガリア": `${subName}のマグナアニマ`, "旧召喚石": `${subName}のマグナアニマ`, "新召喚石": `${subName}のマグナアニマ`, "竜珠": `${subName}の竜珠` };
+                                const key = table[category] || subName;
+                                summary[key] = (summary[key] || 0) + amount;
+                            }
+                        } else {
+                            summary[category] = (summary[category] || 0) + amount;
+                        }
+                    });
+                }
+                return summary;
+            }, [selectedCharacter, currentStage, targetStage]);
+
+            const handleStageClick = (id) => {
+                const stage = parseInt(id);
+                if (inputMode === "current") {
+                    setCurrentStage(stage);
+                    if (stage >= targetStage) setTargetStage(Math.min(stage + 1, 24));
+                } else {
+                    if (stage <= currentStage) setCurrentStage(stage - 1);
+                    setTargetStage(stage);
+                }
+            };
+
+            const renderButton = (id) => {
+                const numId = parseInt(id);
+                const isCompleted = numId <= currentStage;
+                const isTargeted = numId > currentStage && numId <= targetStage;
+
+                let stateClass = "border-slate-800 bg-slate-900/40 text-slate-600 opacity-30 grayscale";
+                if (isCompleted) stateClass = "border-emerald-900/40 bg-emerald-950/10 text-emerald-700/80 opacity-100 grayscale-0";
+                if (isTargeted) stateClass = `${theme.active} opacity-100 grayscale-0 shadow-inner`;
+
+                return (
+                    <button
+                        key={id}
+                        onClick={() => handleStageClick(id)}
+                        className={`grid-button relative flex flex-col items-center justify-center h-10 rounded-md border text-[10px] font-medium ${stateClass}`}
+                    >
+                        {isCompleted && <div className="absolute -top-1 -right-1 bg-emerald-800/80 text-white rounded-full p-0.5"><IconCheck /></div>}
+                        <span className="truncate w-full text-center px-1">{rawData.段階一覧[id]}</span>
+                    </button>
+                );
+            };
+
+            return (
+                <div className="max-w-6xl mx-auto p-4 sm:p-10">
+                    <header className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-slate-800 pb-6">
+                        <h1 className="text-2xl font-bold text-slate-100 tracking-tight">Evocator <span className="text-slate-500 font-normal italic">Calc</span></h1>
+                        <div className="flex flex-wrap gap-1.5">
+                            {Object.keys(rawData.十賢者詳細).map(name => (
+                                <button
+                                    key={name}
+                                    onClick={() => {setSelectedCharacter(name); setCurrentStage(0); setTargetStage(24);}}
+                                    className={`px-2.5 py-1.5 text-[10px] rounded border transition-colors ${selectedCharacter === name ? 'bg-slate-800 border-slate-500 text-slate-100' : 'border-slate-800 text-slate-500 hover:text-slate-300'}`}
+                                >
+                                    {name}
+                                </button>
+                            ))}
+                        </div>
+                    </header>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                        <div className="lg:col-span-7 space-y-8">
+                            {/* Mode Switcher */}
+                            <div className="flex p-1 bg-slate-900 border border-slate-800 rounded-lg w-fit">
+                                <button 
+                                    onClick={() => setInputMode("current")}
+                                    className={`px-4 py-1.5 text-[11px] font-bold rounded-md transition-all ${inputMode === "current" ? "bg-slate-800 text-slate-100 shadow-sm" : "text-slate-500 hover:text-slate-300"}`}
+                                >
+                                    ① 進捗を入力
+                                </button>
+                                <button 
+                                    onClick={() => setInputMode("target")}
+                                    className={`px-4 py-1.5 text-[11px] font-bold rounded-md transition-all ${inputMode === "target" ? "bg-slate-800 text-slate-100 shadow-sm" : "text-slate-500 hover:text-slate-300"}`}
+                                >
+                                    ② 目標を入力
+                                </button>
+                            </div>
+
+                            <div className="space-y-6 bg-slate-900/20 p-6 rounded-xl border border-slate-800/40">
+                                {[{label: "ARCARUM STONE", ids: [1,2,3,4,5,6,7], cols: "grid-cols-4 sm:grid-cols-7"},
+                                  {label: "CHARACTER", ids: [8,9,10,11,12,23,24], cols: "grid-cols-4 sm:grid-cols-7"},
+                                  {label: "WEAPON", ids: [13,14,15,16,17,18], cols: "grid-cols-3 sm:grid-cols-6"},
+                                  {label: "DOMAIN", ids: [19,20,21,22], cols: "grid-cols-4"}].map(row => (
+                                    <div key={row.label}>
+                                        <h3 className="text-[9px] font-bold text-slate-600 mb-2 tracking-widest uppercase">{row.label}</h3>
+                                        <div className={`grid ${row.cols} gap-2`}>
+                                            {row.ids.map(i => renderButton(i.toString()))}
+                                        </div>
+                                    </div>
+                                ))}
+                                
+                                <div className="pt-4 flex items-center justify-between text-[10px] text-slate-600 border-t border-slate-800/30">
+                                    <p>{inputMode === "current" ? "完了した最新の段階を選択してください" : "目指したい最終段階を選択してください"}</p>
+                                    <button onClick={() => {setCurrentStage(0); setTargetStage(24);}} className="hover:text-slate-400 font-bold uppercase">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="lg:col-span-5">
+                            <div className="bg-slate-900/40 border border-slate-800/40 rounded-xl flex flex-col max-h-[70vh]">
+                                <div className="p-4 border-b border-slate-800/40 bg-slate-800/10 flex justify-between items-center">
+                                    <h2 className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Required Materials</h2>
+                                    <span className="text-[10px] text-slate-600">Step {currentStage + 1} ~ {targetStage}</span>
+                                </div>
+                                <div className="flex-1 overflow-y-auto p-4 space-y-1.5">
+                                    {Object.keys(calculatedMaterials).length === 0 ? (
+                                        <p className="text-center text-slate-600 text-[11px] py-10 italic">現在地と目標が同じです</p>
+                                    ) : (
+                                        Object.entries(calculatedMaterials).sort((a,b) => b[1]-a[1]).map(([name, amount]) => (
+                                            <div key={name} className="flex items-center justify-between p-2.5 rounded bg-slate-950/20 border border-slate-800/30 hover:border-slate-700 transition-colors">
+                                                <span className="text-[10px] text-slate-500">{name}</span>
+                                                <span className="text-[11px] font-semibold text-slate-300">{amount.toLocaleString()}</span>
+                                            </div>
+                                        ))
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <footer className="mt-16 pt-8 border-t border-slate-900 text-center text-slate-700 text-[9px] tracking-widest uppercase">
+                        GBF Materials Calculator
+                    </footer>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
