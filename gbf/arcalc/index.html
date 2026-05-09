@@ -3,25 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>十賢者素材計算機 - Muted Dark</title>
+    <title>十賢者素材計算機</title>
+    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', 'sans-serif'; background-color: #0f172a; }
-        .grid-button { transition: all 0.15s ease-out; }
+        .grid-button { transition: all 0.1s ease-out; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        
+        #hidden-export-container {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            width: 800px; /* 2列表示に耐えられる幅 */
+            background-color: #0f172a;
+        }
     </style>
 </head>
 <body class="text-slate-300">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useMemo } = React;
+        const { useState, useMemo, useEffect } = React;
 
         const rawData = {
             "段階一覧": {
@@ -95,19 +105,54 @@
         };
 
         const IconCheck = () => <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
+        const IconDownload = () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>;
+        const IconLink = () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
 
         const App = () => {
-            const [selectedCharacter, setSelectedCharacter] = useState("マリア・テレサ");
-            const [currentStage, setCurrentStage] = useState(0); // 完了済みの最終ステップ
-            const [targetStage, setTargetStage] = useState(24); // 目標ステップ
-            const [inputMode, setInputMode] = useState("current"); // "current" or "target"
+            // URLパラメータまたはlocalStorageからの初期化
+            const getInitialState = () => {
+                const params = new URLSearchParams(window.location.search);
+                const saved = JSON.parse(localStorage.getItem('gbf_calc_save') || '{}');
+                
+                return {
+                    char: params.get('c') || saved.char || "マリア・テレサ",
+                    start: parseInt(params.get('s')) || saved.start || 0,
+                    target: parseInt(params.get('e')) || saved.target || 24,
+                    checks: JSON.parse(localStorage.getItem('gbf_calc_checks') || '{}')
+                };
+            };
+
+            const initialState = getInitialState();
+            const [selectedCharacter, setSelectedCharacter] = useState(initialState.char);
+            const [currentStage, setCurrentStage] = useState(initialState.start);
+            const [targetStage, setTargetStage] = useState(initialState.target);
+            const [inputMode, setInputMode] = useState("current");
+            const [checkedItems, setCheckedItems] = useState(initialState.checks);
+            const [isExporting, setIsExporting] = useState(false);
+            const [copied, setCopied] = useState(false);
 
             const characterInfo = rawData.十賢者詳細[selectedCharacter];
             const attr = characterInfo.属性;
             const theme = ATTR_THEMES[attr];
 
+            // 状態の保存とURL同期
+            useEffect(() => {
+                const save = { char: selectedCharacter, start: currentStage, target: targetStage };
+                localStorage.setItem('gbf_calc_save', JSON.stringify(save));
+                localStorage.setItem('gbf_calc_checks', JSON.stringify(checkedItems));
+
+                const params = new URLSearchParams();
+                params.set('c', selectedCharacter);
+                params.set('s', currentStage);
+                params.set('e', targetStage);
+                const newUrl = `${window.location.pathname}?${params.toString()}`;
+                window.history.replaceState({}, '', newUrl);
+            }, [selectedCharacter, currentStage, targetStage, checkedItems]);
+
             const calculatedMaterials = useMemo(() => {
                 const summary = {};
+                const add = (name, val) => summary[name] = (summary[name] || 0) + val;
+
                 for (let i = currentStage + 1; i <= targetStage; i++) {
                     const requirements = rawData.必要アイテム[i.toString()];
                     if (!requirements) continue;
@@ -117,71 +162,120 @@
                             if (["イデア", "ウェリタス", "フラグメント", "ヘイズ", "討滅戦", "ナルグランデ"].includes(category)) {
                                 const subName = mapping[selectedCharacter];
                                 const suffix = category === "フラグメント" ? "・フラグメント" : category === "ヘイズ" ? "・ヘイズ" : category.includes("戦") || category.includes("ナル") ? "" : `の${category}`;
-                                summary[`${subName}${suffix}`] = (summary[`${subName}${suffix}`] || 0) + amount;
+                                add(`${subName}${suffix}`, amount);
                             } else if (["ヴェルム文書", "ブライト", "ディフェンダー"].includes(category)) {
                                 const types = mapping[selectedCharacter];
                                 const suffix = category === "ヴェルム文書" ? "" : (category === "ブライト" ? "・ブライト" : "・ゴスペル");
-                                types.forEach(t => {
-                                    const key = category === "ヴェルム文書" ? `ヴェルム文書・${t}` : `${t}${suffix}`;
-                                    summary[key] = (summary[key] || 0) + Math.ceil(amount / types.length);
-                                });
+                                types.forEach(t => add(category === "ヴェルム文書" ? `ヴェルム文書・${t}` : `${t}${suffix}`, Math.ceil(amount / types.length)));
                             } else if (mapping[attr]) {
                                 const subName = mapping[attr];
                                 const table = { "石片": `${subName}の石片`, "天司": `${subName}のアニマ`, "アストラ": `${subName}のアストラ`, "マグナ": `${subName}のマグナアニマ`, "レガリア": `${subName}のマグナアニマ`, "旧召喚石": `${subName}のマグナアニマ`, "新召喚石": `${subName}のマグナアニマ`, "竜珠": `${subName}の竜珠` };
-                                const key = table[category] || subName;
-                                summary[key] = (summary[key] || 0) + amount;
+                                add(table[category] || subName, amount);
                             }
                         } else {
-                            summary[category] = (summary[category] || 0) + amount;
+                            add(category, amount);
                         }
                     });
                 }
                 return summary;
             }, [selectedCharacter, currentStage, targetStage]);
 
-            const handleStageClick = (id) => {
-                const stage = parseInt(id);
-                if (inputMode === "current") {
-                    setCurrentStage(stage);
-                    if (stage >= targetStage) setTargetStage(Math.min(stage + 1, 24));
-                } else {
-                    if (stage <= currentStage) setCurrentStage(stage - 1);
-                    setTargetStage(stage);
-                }
+            const toggleCheck = (name) => {
+                setCheckedItems(prev => ({
+                    ...prev,
+                    [name]: !prev[name]
+                }));
+            };
+
+            const copyShareLink = () => {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
+
+            const handleExport = async () => {
+                const element = document.getElementById("hidden-export-container");
+                setIsExporting(true);
+                try {
+                    const canvas = await html2canvas(element, { backgroundColor: "#0f172a", scale: 2 });
+                    const image = canvas.toDataURL("image/png");
+                    const link = document.createElement("a");
+                    link.href = image;
+                    link.download = `GBF_Materials_${selectedCharacter}.png`;
+                    link.click();
+                } catch (err) { console.error(err); }
+                setIsExporting(false);
             };
 
             const renderButton = (id) => {
                 const numId = parseInt(id);
                 const isCompleted = numId <= currentStage;
                 const isTargeted = numId > currentStage && numId <= targetStage;
-
-                let stateClass = "border-slate-800 bg-slate-900/40 text-slate-600 opacity-30 grayscale";
-                if (isCompleted) stateClass = "border-emerald-900/40 bg-emerald-950/10 text-emerald-700/80 opacity-100 grayscale-0";
-                if (isTargeted) stateClass = `${theme.active} opacity-100 grayscale-0 shadow-inner`;
+                let stateClass = "border-slate-800 bg-slate-900/40 text-slate-600 opacity-30";
+                if (isCompleted) stateClass = "border-emerald-900/40 bg-emerald-950/10 text-emerald-700/80";
+                if (isTargeted) stateClass = `${theme.active} shadow-inner opacity-100`;
 
                 return (
-                    <button
-                        key={id}
-                        onClick={() => handleStageClick(id)}
-                        className={`grid-button relative flex flex-col items-center justify-center h-10 rounded-md border text-[10px] font-medium ${stateClass}`}
-                    >
+                    <button key={id} onClick={() => {
+                        const stage = parseInt(id);
+                        if (inputMode === "current") {
+                            setCurrentStage(stage);
+                            if (stage >= targetStage) setTargetStage(Math.min(stage + 1, 24));
+                        } else {
+                            if (stage <= currentStage) setCurrentStage(stage - 1);
+                            setTargetStage(stage);
+                        }
+                    }} className={`grid-button relative flex flex-col items-center justify-center h-10 rounded-md border text-[10px] font-medium ${stateClass}`}>
                         {isCompleted && <div className="absolute -top-1 -right-1 bg-emerald-800/80 text-white rounded-full p-0.5"><IconCheck /></div>}
                         <span className="truncate w-full text-center px-1">{rawData.段階一覧[id]}</span>
                     </button>
                 );
             };
 
+            // 素材リストコンポーネント
+            const MaterialDisplay = ({ items, isExport = false }) => {
+                const sortedItems = Object.entries(items).sort((a,b) => b[1]-a[1]);
+                if (sortedItems.length === 0) return <p className="text-center text-slate-600 text-[11px] py-10 italic">対象なし</p>;
+
+                return (
+                    <div className={`grid gap-2 ${isExport ? 'grid-cols-2' : 'grid-cols-1 sm:grid-cols-2'}`}>
+                        {sortedItems.map(([name, amount]) => {
+                            const isChecked = checkedItems[name];
+                            return (
+                                <div 
+                                    key={name} 
+                                    onClick={() => !isExport && toggleCheck(name)}
+                                    className={`flex items-center justify-between p-2.5 rounded border transition-all cursor-pointer ${
+                                        isChecked 
+                                        ? 'bg-slate-900/20 border-slate-800/20 opacity-40 line-through' 
+                                        : 'bg-slate-950/20 border-slate-800/30 hover:border-slate-600'
+                                    }`}
+                                >
+                                    <div className="flex items-center gap-2">
+                                        {!isExport && <div className={`w-3 h-3 rounded border flex items-center justify-center ${isChecked ? 'bg-emerald-800 border-emerald-700' : 'border-slate-700'}`}>
+                                            {isChecked && <IconCheck />}
+                                        </div>}
+                                        <span className="text-[10px] text-slate-400">{name}</span>
+                                    </div>
+                                    <span className="text-[11px] font-semibold text-slate-300 font-mono">{amount.toLocaleString()}</span>
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+            };
+
             return (
                 <div className="max-w-6xl mx-auto p-4 sm:p-10">
                     <header className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-slate-800 pb-6">
-                        <h1 className="text-2xl font-bold text-slate-100 tracking-tight">Evocator <span className="text-slate-500 font-normal italic">Calc</span></h1>
+                        <div>
+                            <h1 className="text-2xl font-bold text-slate-100 tracking-tight">十賢者 <span className="text-slate-500 font-normal italic">計算機</span></h1>
+                        </div>
                         <div className="flex flex-wrap gap-1.5">
                             {Object.keys(rawData.十賢者詳細).map(name => (
-                                <button
-                                    key={name}
-                                    onClick={() => {setSelectedCharacter(name); setCurrentStage(0); setTargetStage(24);}}
-                                    className={`px-2.5 py-1.5 text-[10px] rounded border transition-colors ${selectedCharacter === name ? 'bg-slate-800 border-slate-500 text-slate-100' : 'border-slate-800 text-slate-500 hover:text-slate-300'}`}
-                                >
+                                <button key={name} onClick={() => setSelectedCharacter(name)}
+                                    className={`px-2.5 py-1.5 text-[10px] rounded border transition-colors ${selectedCharacter === name ? 'bg-slate-800 border-slate-500 text-slate-100' : 'border-slate-800 text-slate-500 hover:text-slate-300'}`}>
                                     {name}
                                 </button>
                             ))}
@@ -190,19 +284,13 @@
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                         <div className="lg:col-span-7 space-y-8">
-                            {/* Mode Switcher */}
-                            <div className="flex p-1 bg-slate-900 border border-slate-800 rounded-lg w-fit">
-                                <button 
-                                    onClick={() => setInputMode("current")}
-                                    className={`px-4 py-1.5 text-[11px] font-bold rounded-md transition-all ${inputMode === "current" ? "bg-slate-800 text-slate-100 shadow-sm" : "text-slate-500 hover:text-slate-300"}`}
-                                >
-                                    ① 進捗を入力
-                                </button>
-                                <button 
-                                    onClick={() => setInputMode("target")}
-                                    className={`px-4 py-1.5 text-[11px] font-bold rounded-md transition-all ${inputMode === "target" ? "bg-slate-800 text-slate-100 shadow-sm" : "text-slate-500 hover:text-slate-300"}`}
-                                >
-                                    ② 目標を入力
+                            <div className="flex flex-wrap items-center justify-between gap-4">
+                                <div className="flex p-1 bg-slate-900 border border-slate-800 rounded-lg w-fit">
+                                    <button onClick={() => setInputMode("current")} className={`px-4 py-1.5 text-[11px] font-bold rounded-md transition-all ${inputMode === "current" ? "bg-slate-800 text-slate-100" : "text-slate-500 hover:text-slate-300"}`}>① 進捗</button>
+                                    <button onClick={() => setInputMode("target")} className={`px-4 py-1.5 text-[11px] font-bold rounded-md transition-all ${inputMode === "target" ? "bg-slate-800 text-slate-100" : "text-slate-500 hover:text-slate-300"}`}>② 目標</button>
+                                </div>
+                                <button onClick={copyShareLink} className="flex items-center gap-2 text-[10px] font-bold text-slate-400 hover:text-slate-200 bg-slate-900 px-3 py-2 rounded-lg border border-slate-800 transition-all active:scale-95">
+                                    <IconLink /> {copied ? "COPIED!" : "SHARE LINK"}
                                 </button>
                             </div>
 
@@ -218,10 +306,9 @@
                                         </div>
                                     </div>
                                 ))}
-                                
                                 <div className="pt-4 flex items-center justify-between text-[10px] text-slate-600 border-t border-slate-800/30">
-                                    <p>{inputMode === "current" ? "完了した最新の段階を選択してください" : "目指したい最終段階を選択してください"}</p>
-                                    <button onClick={() => {setCurrentStage(0); setTargetStage(24);}} className="hover:text-slate-400 font-bold uppercase">Reset</button>
+                                    <p>クリックで段階をセットできます。チェック状態は保持されます。</p>
+                                    <button onClick={() => {setCurrentStage(0); setTargetStage(24); setCheckedItems({}); localStorage.clear(); window.location.search = '';}} className="hover:text-slate-400 font-bold uppercase">Reset All</button>
                                 </div>
                             </div>
                         </div>
@@ -229,27 +316,50 @@
                         <div className="lg:col-span-5">
                             <div className="bg-slate-900/40 border border-slate-800/40 rounded-xl flex flex-col max-h-[70vh]">
                                 <div className="p-4 border-b border-slate-800/40 bg-slate-800/10 flex justify-between items-center">
-                                    <h2 className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Required Materials</h2>
-                                    <span className="text-[10px] text-slate-600">Step {currentStage + 1} ~ {targetStage}</span>
+                                    <h2 className="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Materials List</h2>
+                                    <button onClick={handleExport} disabled={isExporting} className="flex items-center gap-1.5 text-[9px] font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 px-3 rounded transition-colors disabled:opacity-50">
+                                        <IconDownload /> {isExporting ? "EXPORTING..." : "SAVE IMAGE"}
+                                    </button>
                                 </div>
-                                <div className="flex-1 overflow-y-auto p-4 space-y-1.5">
-                                    {Object.keys(calculatedMaterials).length === 0 ? (
-                                        <p className="text-center text-slate-600 text-[11px] py-10 italic">現在地と目標が同じです</p>
-                                    ) : (
-                                        Object.entries(calculatedMaterials).sort((a,b) => b[1]-a[1]).map(([name, amount]) => (
-                                            <div key={name} className="flex items-center justify-between p-2.5 rounded bg-slate-950/20 border border-slate-800/30 hover:border-slate-700 transition-colors">
-                                                <span className="text-[10px] text-slate-500">{name}</span>
-                                                <span className="text-[11px] font-semibold text-slate-300">{amount.toLocaleString()}</span>
-                                            </div>
-                                        ))
-                                    )}
+                                <div className="flex-1 overflow-y-auto p-4">
+                                    <div className="mb-4 border-b border-slate-800/40 pb-2 flex justify-between items-end">
+                                        <div>
+                                            <p className="text-[14px] font-bold text-slate-200">{selectedCharacter}</p>
+                                            <p className="text-[9px] text-slate-500">{rawData.段階一覧[currentStage] || "未着手"} → {rawData.段階一覧[targetStage]}</p>
+                                        </div>
+                                        <span className="text-[9px] text-slate-600 italic">Click item to check</span>
+                                    </div>
+                                    <MaterialDisplay items={calculatedMaterials} />
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* 画像書き出し用の隠しエリア */}
+                    <div id="hidden-export-container" className="p-10 space-y-8">
+                        <div className="border-b border-slate-800 pb-6 flex justify-between items-center">
+                            <div>
+                                <h1 className="text-2xl font-bold text-slate-100 tracking-tight mb-1">Evocator Materials Summary</h1>
+                                <div className="flex items-baseline gap-2">
+                                    <span className={`text-xl font-black ${theme.active.split(' ')[2]} px-2 rounded`}>{selectedCharacter}</span>
+                                    <span className="text-[12px] text-slate-500 uppercase tracking-widest italic">
+                                        {rawData.段階一覧[currentStage] || "Starting"} ➔ {rawData.段階一覧[targetStage]}
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-[10px] text-slate-600 uppercase tracking-widest">Progress Share Report</p>
+                                <p className="text-[11px] text-slate-500">{new Date().toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        <MaterialDisplay items={calculatedMaterials} isExport={true} />
+                        <div className="pt-6 border-t border-slate-900 text-center opacity-30">
+                            <span className="text-[10px] text-slate-700 uppercase tracking-[0.3em]">GBF Materials Calculator Pro</span>
+                        </div>
+                    </div>
+
                     <footer className="mt-16 pt-8 border-t border-slate-900 text-center text-slate-700 text-[9px] tracking-widest uppercase">
-                        GBF Materials Calculator
+                        Material Progress & Sharing System
                     </footer>
                 </div>
             );
