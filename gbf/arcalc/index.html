@@ -1,53 +1,124 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>十賢者素材計算機</title>
-    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        /* 日本語フォントの読み込み */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
-        
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #0f172a; }
-        .grid-button { transition: all 0.1s ease-out; }
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-        
-        /* 書き出し用コンテナ：横幅を動的に広げられるよう調整 */
+        /* 日本語フォントを明示的に指定 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Roboto+Mono:wght@700&display=swap');
+
+        body {
+            font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+            background-color: #020617;
+            color: #94a3b8;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* 昔ながらの攻略サイト風：ソリッドな枠線 */
+        .retro-table {
+            border: 1px solid #334155;
+            background-color: #0f172a;
+        }
+
+        .retro-header {
+            background-color: #1e293b;
+            color: #f1f5f9;
+            padding: 4px 8px;
+            font-weight: bold;
+            border-bottom: 1px solid #334155;
+            font-size: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .btn-base {
+            border: 1px solid #334155;
+            background-color: #1e293b;
+            padding: 2px 6px;
+            transition: all 0.1s;
+        }
+
+        .btn-base:hover {
+            background-color: #334155;
+        }
+
+        .btn-active {
+            background-color: #3b82f6 !important;
+            color: white !important;
+            border-color: #2563eb !important;
+        }
+
+        .btn-done {
+            background-color: #064e3b !important;
+            color: #4ade80 !important;
+            border-color: #065f46 !important;
+        }
+
+        .item-row {
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .item-row:hover {
+            background-color: #1e293b/50;
+        }
+
+        .text-ok {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        /* 充足 */
+        .text-ng {
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        /* 不足 */
+
+        .num-font {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 12px;
+        }
+
+        /* スクロールバーのカスタマイズ */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #020617;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+        }
+
+        /* 画像書き出し専用コンテナ */
         #hidden-export-container {
             position: absolute;
             left: -9999px;
             top: 0;
-            background-color: #0f172a;
+            background-color: #020617;
             display: inline-block;
-            padding: 50px;
+            padding: 40px;
             box-sizing: border-box;
-            overflow: visible;
+            color: #f1f5f9;
         }
 
-        /* 画像内での打ち消し線を確実に描画するためのスタイル */
-        .export-checked {
-            text-decoration: line-through !important;
-            opacity: 0.3 !important;
-            color: #475569 !important;
-        }
-
-        /* 書き出し時の文字見切れ対策 */
         .export-text {
-            line-height: 1.6 !important;
-            padding-top: 2px;
-            padding-bottom: 2px;
+            line-height: 2.0 !important;
         }
     </style>
 </head>
-<body class="text-slate-300">
+
+<body>
     <div id="root"></div>
 
     <script type="text/babel">
@@ -56,7 +127,7 @@
         const rawData = {
             "段階一覧": {
                 "1": "石交換", "2": "石★1", "3": "石★2", "4": "石★3", "5": "石SSR", "6": "石★4", "7": "石★5",
-                "8": "キャラ加入", "9": "キャラ★1", "10": "キャラ★2", "11": "キャラ★3", "12": "キャラ★4", "23": "キャラ★5", "24": "キャラ4アビ",
+                "8": "加入", "9": "キャラ★1", "10": "キャラ★2", "11": "キャラ★3", "12": "キャラ★4", "23": "キャラ★5", "24": "4アビ",
                 "13": "武器交換", "14": "武器★1", "15": "武器★2", "16": "武器★3", "17": "武器★4", "18": "武器★5",
                 "19": "至賢1", "20": "至賢2", "21": "至賢3", "22": "至賢4"
             },
@@ -81,7 +152,7 @@
                 "フラグメント": { "マリア・テレサ": "ベラトール", "カイム": "アクイラ", "ニーア": "ケルサス", "エスタリオラ": "ケルサス", "フラウ": "アクイラ", "ロベリア": "ケルサス", "ガイゼンボーガ": "ケルサス", "ハーゼリーラ": "ベラトール", "アラナン": "アクイラ", "カッツェリーラ": "ベラトール" },
                 "ヘイズ": { "マリア・テレサ": "カオティック", "カイム": "カオティック", "ニーア": "カオティック", "エスタリオラ": "オーロラ", "フラウ": "オーロラ", "ロベリア": "カオティック", "ガイゼンボーガ": "オーロラ", "ハーゼリーラ": "カオティック", "アラナン": "オーロラ", "カッツェリーラ": "オーロラ" },
                 "ディフェンダー": { "マリア・テレサ": ["アナリプシア"], "カイム": ["テュシア"], "ニーア": ["テュシア", "アナリプシア"], "エスタリオラ": ["ゲネア"], "フラウ": ["エゲイラ"], "ロベリア": ["テュシア"], "ガイゼンボーガ": ["エゲイラ", "ゲネア"], "ハーゼリーラ": ["ゲネア", "エゲイラ"], "アラナン": ["エゲイラ"], "カッツェリーラ": ["ゲネア"] },
-                "ヴェルム文書": { "マリア・テレサ": ["水"], "カイム": ["土"], "ニーア": ["水", "土"], "エスタリオラ": ["風"], "フラウ": ["火"], "ロベリア": ["土"], "ガイゼンボーガ": ["火", "風"], "ハーゼリーラ": ["水"], "アラナン": ["火"], "カッツェリーラ": ["風" ] },
+                "ヴェルム文書": { "マリア・テレサ": ["水"], "カイム": ["土"], "ニーア": ["水", "土"], "エスタリオラ": ["風"], "フラウ": ["火"], "ロベリア": ["土"], "ガイゼンボーガ": ["火", "風"], "ハーゼリーラ": ["水"], "アラナン": ["火"], "カッツェリーラ": ["風"] },
                 "ブライト": { "マリア・テレサ": ["アクア"], "カイム": ["テラ"], "ニーア": ["アクア", "テラ"], "エスタリオラ": ["ウェントス"], "フラウ": ["イグニス"], "ロベリア": ["テラ"], "ガイゼンボーガ": ["イグニス", "ウェントス"], "ハーゼリーラ": ["アクア"], "アラナン": ["イグニス"], "カッツェリーラ": ["ウェントス"] },
                 "討滅戦": { "マリア・テレサ": "氷獄の結晶", "カイム": "裁考の水晶", "ニーア": "幻魔の破片", "エスタリオラ": "人馬の円盤", "フラウ": "灼熱の焰角", "ロベリア": "裁考の水晶", "ガイゼンボーガ": "妃光の水晶", "ハーゼリーラ": "氷獄の結晶", "アラナン": "灼熱の焰角", "カッツェリーラ": "人馬の円盤" },
                 "ナルグランデ": { "マリア・テレサ": "トキシックフラワー", "カイム": "ベスティエフルーツ", "ニーア": "巨獣骨", "エスタリオラ": "クルーガーハープ", "フラウ": "レムペッパー", "ロベリア": "割れたティーカップ", "ガイゼンボーガ": "錆びついた掛瓦", "ハーゼリーラ": "透き通るような絹", "アラナン": "修行者の覚書", "カッツェリーラ": "埃まみれの書物" },
@@ -115,63 +186,42 @@
             }
         };
 
-        const ATTR_THEMES = {
-            "火": { active: "bg-rose-950/40 border-rose-500/50 text-rose-200" },
-            "水": { active: "bg-sky-950/40 border-sky-500/50 text-sky-200" },
-            "土": { active: "bg-amber-950/40 border-amber-600/50 text-amber-200" },
-            "風": { active: "bg-emerald-950/40 border-emerald-500/50 text-emerald-200" },
-            "光": { active: "bg-stone-800 border-stone-400/50 text-stone-100" },
-            "闇": { active: "bg-indigo-950/40 border-indigo-500/50 text-indigo-200" }
-        };
-
-        const IconCheck = () => <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>;
-        const IconDownload = () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>;
-        const IconLink = () => <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>;
+        // 指定されたブックマークレットコード
+        const BOOKMARKLET_CODE = `javascript:(function(){  const uid = JSON.parse(document.getElementById("server-props").textContent).userId;  const now = Date.now();  const ver = (typeof Game !== 'undefined') ? Game.version : "1778472014";  const url = \`https://game.granbluefantasy.jp/item/article_list_by_filter_mode?_=\${now}&t=\${now}&uid=\${uid}\`;  fetch(url, {    "headers": {      "accept": "application/json, text/javascript, */*; q=0.01",      "x-requested-with": "XMLHttpRequest",      "x-version": ver    },    "referrer": "https://game.granbluefantasy.jp/",    "method": "GET",    "credentials": "include"  })  .then(res => res.text())  .then(text => {    const ta = document.createElement('textarea');    ta.value = text;    document.body.appendChild(ta);    ta.select();    document.execCommand('copy');    document.body.removeChild(ta);    alert('アイテムデータをコピーしました！\\n計算機サイトで「読み込み」を押してください。');  })  .catch(err => alert('取得に失敗しました。ゲーム画面で実行しているか確認してください。\\n' + err));})();`;
 
         const App = () => {
-            const getInitialState = () => {
-                const params = new URLSearchParams(window.location.search);
-                const saved = JSON.parse(localStorage.getItem('gbf_calc_save') || '{}');
-                return {
-                    char: params.get('c') || saved.char || "マリア・テレサ",
-                    start: parseInt(params.get('s')) || saved.start || 0,
-                    target: parseInt(params.get('e')) || saved.target || 24,
-                    checks: JSON.parse(localStorage.getItem('gbf_calc_checks') || '{}')
-                };
-            };
-
-            const initialState = getInitialState();
-            const [selectedCharacter, setSelectedCharacter] = useState(initialState.char);
-            const [currentStage, setCurrentStage] = useState(initialState.start);
-            const [targetStage, setTargetStage] = useState(initialState.target);
+            const [selectedCharacter, setSelectedCharacter] = useState(() => {
+                const p = new URLSearchParams(window.location.search);
+                return p.get('c') || JSON.parse(localStorage.getItem('gbf_save_v5') || '{}').char || "マリア・テレサ";
+            });
+            const [start, setStart] = useState(() => {
+                const p = new URLSearchParams(window.location.search);
+                return parseInt(p.get('s')) || JSON.parse(localStorage.getItem('gbf_save_v5') || '{}').start || 0;
+            });
+            const [end, setEnd] = useState(() => {
+                const p = new URLSearchParams(window.location.search);
+                return parseInt(p.get('e')) || JSON.parse(localStorage.getItem('gbf_save_v5') || '{}').target || 24;
+            });
+            const [inventory, setInventory] = useState(() => JSON.parse(localStorage.getItem('gbf_inv_v5') || '{}'));
             const [inputMode, setInputMode] = useState("current");
-            const [checkedItems, setCheckedItems] = useState(initialState.checks);
             const [isExporting, setIsExporting] = useState(false);
+            const [exportShortage, setExportShortage] = useState(false);
             const [copied, setCopied] = useState(false);
 
-            const characterInfo = rawData.十賢者詳細[selectedCharacter];
-            const attr = characterInfo.属性;
-            const theme = ATTR_THEMES[attr];
-
             useEffect(() => {
-                const save = { char: selectedCharacter, start: currentStage, target: targetStage };
-                localStorage.setItem('gbf_calc_save', JSON.stringify(save));
-                localStorage.setItem('gbf_calc_checks', JSON.stringify(checkedItems));
-                
+                localStorage.setItem('gbf_save_v5', JSON.stringify({ char: selectedCharacter, start, target: end }));
+                localStorage.setItem('gbf_inv_v5', JSON.stringify(inventory));
                 try {
-                    const params = new URLSearchParams();
-                    params.set('c', selectedCharacter);
-                    params.set('s', currentStage);
-                    params.set('e', targetStage);
-                    const newUrl = `${window.location.pathname}?${params.toString()}`;
-                    window.history.replaceState({}, '', newUrl);
-                } catch (e) {}
-            }, [selectedCharacter, currentStage, targetStage, checkedItems]);
+                    const p = new URLSearchParams();
+                    p.set('c', selectedCharacter); p.set('s', start); p.set('e', end);
+                    window.history.replaceState({}, '', `?${p.toString()}`);
+                } catch (e) { }
+            }, [selectedCharacter, start, end, inventory]);
 
-            const calculatedMaterials = useMemo(() => {
-                const summary = {};
-                const add = (n, v) => summary[n] = (summary[n] || 0) + v;
-                for (let i = currentStage + 1; i <= targetStage; i++) {
+            const summary = useMemo(() => {
+                const res = {};
+                const add = (n, v) => res[n] = (res[n] || 0) + v;
+                for (let i = start + 1; i <= end; i++) {
                     const req = rawData.必要アイテム[i.toString()];
                     if (!req) continue;
                     Object.entries(req).forEach(([cat, amt]) => {
@@ -183,59 +233,78 @@
                                 add(`${sub}${suf}`, amt);
                             } else if (["ヴェルム文書", "ブライト", "ディフェンダー"].includes(cat)) {
                                 const types = map[selectedCharacter];
-                                const suf = cat === "ヴェルム文書" ? "" : (cat === "ブライト" ? "・ブライト" : "・ゴスペル");
-                                types.forEach(t => add(cat === "ヴェルム文書" ? `ヴェルム文書・${t}` : `${t}${suf}`, Math.ceil(amt / types.length)));
-                            } else if (map[attr]) {
-                                const sub = map[attr];
+                                types.forEach(t => {
+                                    const name = cat === "ヴェルム文書" ? `ヴェルム文書・${t}` : (cat === "ブライト" ? `${t}・ブライト` : `${t}・ゴスペル`);
+                                    add(name, Math.ceil(amt / types.length));
+                                });
+                            } else if (map[rawData.十賢者詳細[selectedCharacter].属性]) {
+                                const sub = map[rawData.十賢者詳細[selectedCharacter].属性];
                                 const table = { "石片": `${sub}の石片`, "天司": `${sub}のアニマ`, "アストラ": `${sub}のアストラ`, "マグナ": `${sub}のマグナアニマ`, "レガリア": `${sub}のマグナアニマ`, "旧召喚石": `${sub}のマグナアニマ`, "新召喚石": `${sub}のマグナアニマ`, "竜珠": `${sub}の竜珠` };
                                 add(table[cat] || sub, amt);
                             }
                         } else add(cat, amt);
                     });
                 }
-                return summary;
-            }, [selectedCharacter, currentStage, targetStage]);
+                return res;
+            }, [selectedCharacter, start, end]);
 
-            const handleExport = async () => {
-                const element = document.getElementById("hidden-export-container");
-                setIsExporting(true);
+            const handleImport = async () => {
                 try {
-                    const canvas = await html2canvas(element, { 
-                        backgroundColor: "#0f172a", 
-                        scale: 2, 
-                        logging: false,
-                        useCORS: true
-                    });
-                    const link = document.createElement("a");
-                    link.href = canvas.toDataURL("image/png");
-                    link.download = `${selectedCharacter}_素材.png`;
-                    link.click();
-                } catch (err) { console.error(err); }
-                setIsExporting(false);
+                    let text = await navigator.clipboard.readText();
+                    if (!text.includes('[')) text = prompt("素材データを貼り付けてください：");
+                    if (!text) return;
+                    const data = JSON.parse(text);
+                    const newInv = {};
+                    if (Array.isArray(data)) data.forEach(i => { if (i.name) newInv[i.name] = parseInt(i.number || 0); });
+                    else Object.assign(newInv, data);
+                    setInventory(newInv);
+                    alert("所持数を反映しました");
+                } catch (e) { alert("データの形式が正しくありません"); }
             };
 
-            // 素材リストコンポーネント（書き出し時は8項目ごとに列を分ける）
-            const MaterialDisplay = ({ items, isExport = false }) => {
-                const sorted = Object.entries(items).sort((a,b) => b[1]-a[1]);
-                if (sorted.length === 0) return <p className="text-center text-slate-600 py-10 italic text-sm">対象なし</p>;
-                
-                if (isExport) {
-                    // 書き出し用：8項目ごとにチャンク分け
-                    const chunks = [];
-                    for (let i = 0; i < sorted.length; i += 8) {
-                        chunks.push(sorted.slice(i, i + 8));
-                    }
+            const handleCopyBookmarklet = () => {
+                navigator.clipboard.writeText(BOOKMARKLET_CODE);
+                setCopied(true);
+                setTimeout(() => setCopied(false), 2000);
+            };
 
+            const handleExport = (shortageOnly) => {
+                setExportShortage(shortageOnly);
+                setIsExporting(true);
+                setTimeout(async () => {
+                    const el = document.getElementById("hidden-export-container");
+                    try {
+                        const canvas = await html2canvas(el, { backgroundColor: "#020617", scale: 2, logging: false });
+                        const link = document.createElement("a");
+                        link.href = canvas.toDataURL("image/png");
+                        link.download = `${selectedCharacter}_${shortageOnly ? '不足' : '全'}素材.png`;
+                        link.click();
+                    } catch (e) { }
+                    setIsExporting(false);
+                }, 100);
+            };
+
+            const MaterialTable = ({ items, isExport = false, onlyShortage = false }) => {
+                let list = Object.entries(items).sort((a, b) => b[1] - a[1]);
+                if (onlyShortage) list = list.filter(([n, a]) => (inventory[n] || 0) < a);
+                if (list.length === 0) return <div className="p-4 text-center opacity-40">該当なし</div>;
+
+                if (isExport) {
+                    const chunks = [];
+                    for (let i = 0; i < list.length; i += 8) chunks.push(list.slice(i, i + 8));
                     return (
                         <div className="flex gap-x-12 items-start">
                             {chunks.map((chunk, idx) => (
-                                <div key={idx} className="flex-1 space-y-3 min-w-[320px]">
-                                    {chunk.map(([name, amount]) => {
-                                        const isChecked = checkedItems[name];
+                                <div key={idx} className="space-y-4">
+                                    {chunk.map(([n, a]) => {
+                                        const pos = inventory[n] || 0;
+                                        const ok = pos >= a;
                                         return (
-                                            <div key={name} className={`flex items-center justify-between p-3.5 rounded border border-slate-800/30 bg-slate-950/20`}>
-                                                <span className={`text-[12px] export-text font-medium ${isChecked ? 'export-checked' : 'text-slate-400'}`}>{name}</span>
-                                                <span className={`text-[13px] font-mono font-bold ml-4 export-text ${isChecked ? 'export-checked' : 'text-slate-200'}`}>{amount.toLocaleString()}</span>
+                                            <div key={n} className="flex justify-between items-baseline min-w-[320px] border-b border-slate-800 pb-2">
+                                                <span className="text-[14px] font-bold pr-6 export-text">{n}</span>
+                                                <span className={`num-font text-[16px] whitespace-nowrap ${ok ? 'text-ok' : 'text-ng'}`}>
+                                                    {pos.toLocaleString()} / {a.toLocaleString()}
+                                                </span>
                                             </div>
                                         );
                                     })}
@@ -245,21 +314,17 @@
                     );
                 }
 
-                // 通常表示用
                 return (
-                    <div className="grid gap-x-6 gap-y-2 grid-cols-1 sm:grid-cols-2">
-                        {sorted.map(([name, amount]) => {
-                            const isChecked = checkedItems[name];
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-1">
+                        {list.map(([n, a]) => {
+                            const pos = inventory[n] || 0;
+                            const ok = pos >= a;
                             return (
-                                <div key={name} onClick={() => setCheckedItems(prev => ({...prev, [name]: !prev[name]}))}
-                                    className={`flex items-center justify-between p-2.5 rounded border transition-all cursor-pointer ${
-                                        isChecked ? 'bg-slate-900/20 border-slate-800/10' : 'bg-slate-950/20 border-slate-800/30'
-                                    }`}>
-                                    <div className="flex items-center gap-2 overflow-visible flex-1">
-                                        <div className={`flex-shrink-0 w-3 h-3 rounded border flex items-center justify-center ${isChecked ? 'bg-emerald-800 border-emerald-700' : 'border-slate-700'}`}>{isChecked && <IconCheck />}</div>
-                                        <span className={`text-[11px] ${isChecked ? 'text-slate-700 line-through' : 'text-slate-400'}`}>{name}</span>
-                                    </div>
-                                    <span className={`text-[12px] font-mono font-bold flex-shrink-0 ml-2 ${isChecked ? 'text-slate-700 line-through' : 'text-slate-300'}`}>{amount.toLocaleString()}</span>
+                                <div key={n} className="item-row flex justify-between items-center py-1.5 px-2">
+                                    <span className="font-bold text-[11px] truncate pr-2 text-slate-300">{n}</span>
+                                    <span className={`num-font text-[11px] whitespace-nowrap ${ok ? 'text-ok' : 'text-ng'}`}>
+                                        {pos.toLocaleString()} / {a.toLocaleString()}
+                                    </span>
                                 </div>
                             );
                         })}
@@ -267,98 +332,100 @@
                 );
             };
 
-            const renderButton = (id) => {
-                const numId = parseInt(id);
-                const isCompleted = numId <= currentStage;
-                const isTargeted = numId > currentStage && numId <= targetStage;
-                let stateClass = "border-slate-800 bg-slate-900/40 text-slate-600 opacity-30";
-                if (isCompleted) stateClass = "border-emerald-900/40 bg-emerald-950/10 text-emerald-700/80";
-                if (isTargeted) stateClass = `${theme.active} shadow-inner opacity-100`;
-                const label = rawData.段階一覧[id].replace(/^(石|キャラ|武器)/, '');
-                return (
-                    <button key={id} onClick={() => {
-                        const s = parseInt(id);
-                        if (inputMode === "current") { setCurrentStage(s); if (s >= targetStage) setTargetStage(Math.min(s + 1, 24)); }
-                        else { if (s <= currentStage) setCurrentStage(s - 1); setTargetStage(s); }
-                    }} className={`grid-button relative flex flex-col items-center justify-center h-10 rounded-md border text-[10px] font-medium ${stateClass}`}>
-                        {isCompleted && <div className="absolute -top-1 -right-1 bg-emerald-800/80 text-white rounded-full p-0.5"><IconCheck /></div>}
-                        <span className="px-1">{label}</span>
-                    </button>
-                );
-            };
-
             return (
-                <div className="max-w-6xl mx-auto p-4 sm:p-10">
-                    <header className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6 border-b border-slate-800 pb-6">
-                        <h1 className="text-2xl font-bold text-slate-100">Evocator Calc</h1>
-                        <div className="flex flex-wrap gap-1.5">
-                            {Object.keys(rawData.十賢者詳細).map(name => (
-                                <button key={name} onClick={() => setSelectedCharacter(name)}
-                                    className={`px-2.5 py-1.5 text-[10px] rounded border ${selectedCharacter === name ? 'bg-slate-800 border-slate-500 text-slate-100' : 'border-slate-800 text-slate-500'}`}>{name}</button>
-                            ))}
-                        </div>
-                    </header>
+                <div className="p-4 max-w-5xl mx-auto space-y-4">
+                    {/* Character Selector */}
+                    <div className="retro-table p-2 flex flex-wrap gap-1">
+                        {Object.keys(rawData.十賢者詳細).map(name => (
+                            <button key={name} onClick={() => setSelectedCharacter(name)}
+                                className={`btn-base text-[10px] font-bold ${selectedCharacter === name ? 'btn-active' : 'text-slate-400'}`}>{name}</button>
+                        ))}
+                    </div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-                        <div className="lg:col-span-7 space-y-8">
-                            <div className="flex flex-wrap items-center justify-between gap-4">
-                                <div className="flex p-1 bg-slate-900 border border-slate-800 rounded-lg">
-                                    <button onClick={() => setInputMode("current")} className={`px-4 py-1.5 text-[11px] font-bold rounded-md ${inputMode === "current" ? "bg-slate-800 text-slate-100" : "text-slate-500"}`}>① 進捗</button>
-                                    <button onClick={() => setInputMode("target")} className={`px-4 py-1.5 text-[11px] font-bold rounded-md ${inputMode === "target" ? "bg-slate-800 text-slate-100" : "text-slate-500"}`}>② 目標</button>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+                        {/* Control Area */}
+                        <div className="lg:col-span-7 space-y-4">
+                            <div className="flex flex-wrap gap-2 items-center">
+                                <div className="flex retro-table p-0.5">
+                                    <button onClick={() => setInputMode("current")} className={`px-3 py-1 text-[11px] font-bold ${inputMode === "current" ? "btn-active" : ""}`}>① 現在</button>
+                                    <button onClick={() => setInputMode("target")} className={`px-3 py-1 text-[11px] font-bold ${inputMode === "target" ? "btn-active" : ""}`}>② 目標</button>
                                 </div>
-                                <button onClick={() => { navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 2000); }} className="flex items-center gap-2 text-[10px] font-bold text-slate-400 bg-slate-900 px-3 py-2 rounded-lg border border-slate-800 transition-all active:scale-95">
-                                    <IconLink /> {copied ? "COPIED!" : "SHARE LINK"}
+                                <button onClick={handleImport} className="btn-base bg-emerald-900/40 text-emerald-400 border-emerald-900 font-bold hover:bg-emerald-900">素材読み込み</button>
+                                <button onClick={handleCopyBookmarklet} className="btn-base bg-slate-800 text-slate-300 border-slate-600 font-bold hover:bg-slate-700">
+                                    {copied ? "コピー完了!" : "ブックマークレットをコピー"}
                                 </button>
                             </div>
-                            <div className="space-y-6 bg-slate-900/20 p-6 rounded-xl border border-slate-800/40">
-                                {[{label: "ARCARUM STONE (石)", ids: [1,2,3,4,5,6,7], cols: "grid-cols-4 sm:grid-cols-7"},
-                                  {label: "CHARACTER (キャラ)", ids: [8,9,10,11,12,23,24], cols: "grid-cols-4 sm:grid-cols-7"},
-                                  {label: "WEAPON (武器)", ids: [13,14,15,16,17,18], cols: "grid-cols-3 sm:grid-cols-6"},
-                                  {label: "DOMAIN (至賢)", ids: [19,20,21,22], cols: "grid-cols-4"}].map(row => (
-                                    <div key={row.label}>
-                                        <h3 className="text-[9px] font-bold text-slate-600 mb-2 tracking-widest uppercase">{row.label}</h3>
-                                        <div className={`grid ${row.cols} gap-2`}>{row.ids.map(i => renderButton(i.toString()))}</div>
+
+                            <div className="retro-table overflow-hidden">
+                                <div className="retro-header">PROGRESS SETTINGS</div>
+                                <div className="p-4 space-y-4">
+                                    {[
+                                        { label: "ARCARUM STONE", ids: [1, 2, 3, 4, 5, 6, 7] },
+                                        { label: "EVOCATOR", ids: [8, 9, 10, 11, 12, 23, 24] },
+                                        { label: "NEW WORLD WEAPON", ids: [13, 14, 15, 16, 17, 18] },
+                                        { label: "DOMAIN", ids: [19, 20, 21, 22] }
+                                    ].map(row => (
+                                        <div key={row.label}>
+                                            <div className="text-[9px] font-bold text-slate-500 mb-1.5 tracking-widest">{row.label}</div>
+                                            <div className="grid grid-cols-4 sm:grid-cols-7 gap-1">
+                                                {row.ids.map(i => {
+                                                    const val = parseInt(i);
+                                                    const isDone = val <= start;
+                                                    const isActive = val > start && val <= end;
+                                                    return (
+                                                        <button key={i} onClick={() => {
+                                                            if (inputMode === "current") { setStart(val); if (val >= end) setEnd(Math.min(val + 1, 24)); }
+                                                            else { if (val <= start) setStart(val - 1); setEnd(val); }
+                                                        }} className={`btn-base h-8 font-bold ${isDone ? 'btn-done' : isActive ? 'btn-active' : 'opacity-25'}`}>
+                                                            {rawData.段階一覧[i.toString()].replace(/^(石|キャラ|武器)/, '')}
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    <div className="pt-2 flex justify-between items-center text-[10px] opacity-50 italic">
+                                        <span>Click to toggle mode & stage.</span>
+                                        <button onClick={() => { if (confirm("全リセットしますか？")) { setStart(0); setEnd(24); setInventory({}); } }} className="text-red-400 underline font-bold uppercase not-italic">Reset All</button>
                                     </div>
-                                ))}
-                                <div className="pt-4 text-[10px] text-slate-600 border-t border-slate-800/30 flex justify-between">
-                                    <p>素材名クリックでチェック。設定は自動保存されます。</p>
-                                    <button onClick={() => {setCurrentStage(0); setTargetStage(24); setCheckedItems({}); localStorage.clear(); window.location.search = '';}} className="uppercase hover:text-slate-300">Reset</button>
                                 </div>
                             </div>
                         </div>
 
+                        {/* List Area */}
                         <div className="lg:col-span-5">
-                            <div className="bg-slate-900/40 border border-slate-800/40 rounded-xl flex flex-col max-h-[70vh]">
-                                <div className="p-4 border-b border-slate-800/40 bg-slate-800/10 flex justify-between items-center">
-                                    <h2 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Materials List</h2>
-                                    <button onClick={handleExport} disabled={isExporting} className="flex items-center gap-1.5 text-[9px] font-bold bg-slate-800 text-slate-300 py-1.5 px-3 rounded disabled:opacity-50">
-                                        <IconDownload /> {isExporting ? "EXPORTING..." : "SAVE IMAGE"}
-                                    </button>
-                                </div>
-                                <div className="flex-1 overflow-y-auto p-4">
-                                    <div className="mb-4 border-b border-slate-800/40 pb-2">
-                                        <p className="text-[14px] font-bold text-slate-200">{selectedCharacter}</p>
-                                        <p className="text-[9px] text-slate-500 uppercase tracking-wider font-medium">
-                                            {rawData.段階一覧[currentStage] || "未着手"} ➔ {rawData.段階一覧[targetStage]}
-                                        </p>
+                            <div className="retro-table flex flex-col max-h-[750px]">
+                                <div className="retro-header flex justify-between items-center">
+                                    <span>INVENTORY CHECK</span>
+                                    <div className="flex gap-2">
+                                        <button onClick={() => handleExport(false)} className="btn-base text-[9px] font-normal py-0">全部出力</button>
+                                        <button onClick={() => handleExport(true)} className="btn-base border-rose-900 text-rose-400 text-[9px] font-normal py-0">不足のみ出力</button>
                                     </div>
-                                    <MaterialDisplay items={calculatedMaterials} />
+                                </div>
+                                <div className="p-3 bg-slate-900/50 border-b border-slate-800">
+                                    <div className="font-black text-slate-100 text-[13px]">{selectedCharacter}</div>
+                                    <div className="text-[10px] text-slate-500 font-bold uppercase">{rawData.段階一覧[start] || "未着手"} → {rawData.段階一覧[end]}</div>
+                                </div>
+                                <div className="flex-1 overflow-y-auto p-2">
+                                    {MaterialTable({ items: summary })}
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* 画像書き出し専用エリア */}
+                    {/* Image Export Area */}
                     <div id="hidden-export-container">
-                        <div className="border-b border-slate-800 pb-10 mb-10 flex justify-between items-end">
-                            <div>
-                                <h1 className="text-4xl font-black text-slate-100 uppercase tracking-tighter mb-2">{selectedCharacter}</h1>
-                                <p className="text-[14px] text-slate-500 uppercase tracking-[0.2em] font-bold italic">
-                                    {rawData.段階一覧[currentStage] || "START"} ➔ {rawData.段階一覧[targetStage]}
+                        <div className="border-b-4 border-slate-700 pb-8 mb-10">
+                            <h1 className="text-5xl font-black uppercase tracking-tighter mb-2 text-white">{selectedCharacter}</h1>
+                            <div className="flex justify-between items-end">
+                                <p className="text-xl font-bold text-slate-400">
+                                    {exportShortage ? '【不足素材リスト】' : '【全素材リスト】'}
+                                    <span className="ml-4">{rawData.段階一覧[start] || "START"} ➔ {rawData.段階一覧[end]}</span>
                                 </p>
+                                <span className="text-sm opacity-30 num-font">{new Date().toLocaleDateString()}</span>
                             </div>
                         </div>
-                        <MaterialDisplay items={calculatedMaterials} isExport={true} />
+                        {MaterialTable({ items: summary, isExport: true, onlyShortage: exportShortage })}
                     </div>
                 </div>
             );
@@ -368,4 +435,5 @@
         root.render(<App />);
     </script>
 </body>
+
 </html>
