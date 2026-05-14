@@ -144,7 +144,7 @@ function copyBM() { navigator.clipboard.writeText(bmCode); alert("コピーし�
 
 function addTargetRow() {
     const div = document.createElement("div");
-    div.className = "target-row";
+    div.className = "target-row"; 
     div.innerHTML = `
         <select class="w-sel" onchange="updateView()">${Object.keys(MATERIAL_DATA).map(k=>`<option value="${k}">${k.split('・')[0]}</option>`).join('')}</select>
         <select class="c-sel" onchange="updateView()">${STAGES.slice(0,5).map((l,i)=>`<option value="${i}">${l}</option>`).join('')}</select>
