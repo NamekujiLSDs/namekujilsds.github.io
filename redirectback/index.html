@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <style>
+        :root { --bg: #f8f9fa; --text: #212529; --accent: #007bff; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; max-width: 90%; width: 400px; }
+        h1 { font-size: 1.5rem; margin-bottom: 1rem; }
+        #timer { font-size: 3rem; font-weight: bold; color: var(--accent); margin: 1rem 0; }
+        .url-display { font-size: 0.85rem; color: #6c757d; word-break: break-all; margin-bottom: 1.5rem; border-top: 1px solid #eee; pt: 1rem; }
+        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
+        a:hover { text-decoration: underline; }
+        .error { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div id="app">
+            <h1 id="status">リダイレクト準備中</h1>
+            <div id="timer">--</div>
+            <p id="message">まもなく指定のURLへ移動します</p>
+            <div class="url-display" id="url-display"></div>
+            <a id="manual-link" href="#" style="display:none;">今すぐ移動する</a>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const encodedUrl = params.get('url');
+            const timeParam = params.get('t') || '0s';
+            
+            // 秒数の抽出（'600s' から 600 を取得）
+            let waitTime = parseInt(timeParam.replace(/[^0-9]/g, '')) || 0;
+            
+            const statusEl = document.getElementById('status');
+            const timerEl = document.getElementById('timer');
+            const messageEl = document.getElementById('message');
+            const urlDisplayEl = document.getElementById('url-display');
+            const linkEl = document.getElementById('manual-link');
+
+            if (!encodedUrl) {
+                showError('エラー: URLパラメータが不足しています。');
+                return;
+            }
+
+            let targetUrl;
+            try {
+                // Base64デコード。前回のブックマークレットでencodeURIComponentされているため
+                // URLSearchParamsが自動で1段階デコードしたものをatobに渡す
+                targetUrl = atob(encodedUrl);
+                // デコード後の妥当性チェック
+                new URL(targetUrl); 
+            } catch (e) {
+                showError('エラー: 不正なURL形式、またはデコードに失敗しました。');
+                return;
+            }
+
+            // UIの初期設定
+            urlDisplayEl.textContent = `移動先: ${targetUrl}`;
+            linkEl.href = targetUrl;
+            linkEl.style.display = 'inline-block';
+
+            function showError(msg) {
+                statusEl.textContent = 'Error';
+                statusEl.classList.add('error');
+                messageEl.textContent = msg;
+                timerEl.textContent = '×';
+            }
+
+            function countdown() {
+                if (waitTime <= 0) {
+                    timerEl.textContent = '0';
+                    statusEl.textContent = '移動中...';
+                    window.location.href = targetUrl;
+                } else {
+                    statusEl.textContent = 'リダイレクト待機中';
+                    timerEl.textContent = waitTime;
+                    waitTime--;
+                    setTimeout(countdown, 1000);
+                }
+            }
+
+            countdown();
+        })();
+    </script>
+</body>
+</html>
