@@ -10,7 +10,7 @@
         .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; max-width: 90%; width: 400px; }
         h1 { font-size: 1.5rem; margin-bottom: 1rem; }
         #timer { font-size: 3rem; font-weight: bold; color: var(--accent); margin: 1rem 0; }
-        .url-display { font-size: 0.85rem; color: #6c757d; word-break: break-all; margin-bottom: 1.5rem; border-top: 1px solid #eee; pt: 1rem; }
+        .url-display { font-size: 0.85rem; color: #6c757d; word-break: break-all; margin-bottom: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem; }
         a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
         a:hover { text-decoration: underline; }
         .error { color: #dc3545; }
@@ -31,10 +31,38 @@
         (function() {
             const params = new URLSearchParams(window.location.search);
             const encodedUrl = params.get('url');
-            const timeParam = params.get('t') || '0s';
             
-            // 秒数の抽出（'600s' から 600 を取得）
-            let waitTime = parseInt(timeParam.replace(/[^0-9]/g, '')) || 0;
+            // 時間の文字列(例: '20m', '30s', '1h', '600')を秒数(数値)に変換する関数
+            function parseTime(timeStr) {
+                if (!timeStr) return 0;
+                const match = timeStr.toLowerCase().match(/^(\d+)(h|m|s)?$/);
+                if (match) {
+                    const val = parseInt(match[1], 10);
+                    const unit = match[2];
+                    if (unit === 'h') return val * 3600;
+                    if (unit === 'm') return val * 60;
+                    return val; // 's' または単位なしの場合はそのまま秒として扱う
+                }
+                return parseInt(timeStr.replace(/[^0-9]/g, '')) || 0; // フォールバック
+            }
+
+            // 各パラメータを秒数として取得
+            const baseTime = parseTime(params.get('t') || '0s');
+            const randVal = parseTime(params.get('rand'));
+            
+            // randp または randn が指定されていればその値を優先、なければ rand の値を継承
+            const randPVal = params.has('randp') ? parseTime(params.get('randp')) : randVal;
+            const randNVal = params.has('randn') ? parseTime(params.get('randn')) : randVal;
+            
+            let waitTime = baseTime;
+            
+            // ランダム前後の計算ロジック
+            if (randPVal > 0 || randNVal > 0) {
+                // -randNVal から +randPVal までのランダムな整数を生成
+                const fluctuation = Math.floor(Math.random() * (randPVal + randNVal + 1)) - randNVal;
+                // 計算後の待ち時間がマイナスにならないよう防御
+                waitTime = Math.max(0, baseTime + fluctuation);
+            }
             
             const statusEl = document.getElementById('status');
             const timerEl = document.getElementById('timer');
@@ -49,17 +77,13 @@
 
             let targetUrl;
             try {
-                // Base64デコード。前回のブックマークレットでencodeURIComponentされているため
-                // URLSearchParamsが自動で1段階デコードしたものをatobに渡す
                 targetUrl = atob(encodedUrl);
-                // デコード後の妥当性チェック
                 new URL(targetUrl); 
             } catch (e) {
                 showError('エラー: 不正なURL形式、またはデコードに失敗しました。');
                 return;
             }
 
-            // UIの初期設定
             urlDisplayEl.textContent = `移動先: ${targetUrl}`;
             linkEl.href = targetUrl;
             linkEl.style.display = 'inline-block';
@@ -71,6 +95,7 @@
                 timerEl.textContent = '×';
             }
 
+            // タイマー表示用のフォーマット関数 (秒数を mm:ss などにする場合はここを拡張)
             function countdown() {
                 if (waitTime <= 0) {
                     timerEl.textContent = '0';
