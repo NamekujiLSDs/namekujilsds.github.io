@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <style>
-        /* カラー変数の定義（ライトテーマ基準） */
         :root {
             --bg: #f8f9fa;
             --card-bg: #ffffff;
@@ -15,7 +14,6 @@
             --border: #eeeeee;
         }
 
-        /* ダークテーマの定義（システム設定がダークの場合に自動適用） */
         @media (prefers-color-scheme: dark) {
             :root {
                 --bg: #121212;
@@ -105,7 +103,7 @@
         (function() {
             const params = new URLSearchParams(window.location.search);
             const encodedUrl = params.get('url');
-            const idParam = params.get('id'); // id パラメータを取得
+            const idParam = params.get('id');
             
             function parseTime(timeStr) {
                 if (!timeStr) return 0;
@@ -146,14 +144,20 @@
             let targetUrl;
             try {
                 const decodedUrl = atob(encodedUrl);
-                // URLオブジェクトを使用して安全にクエリパラメータを結合
                 const urlObj = new URL(decodedUrl);
+                
                 if (idParam) {
-                    urlObj.searchParams.set('timer', idParam);
+                    // ハッシュ（フラグメント）が存在する場合、SPAルーティングとして扱いハッシュ内にクエリを付与する
+                    if (urlObj.hash) {
+                        const hashConnector = urlObj.hash.includes('?') ? '&' : '?';
+                        urlObj.hash = urlObj.hash + hashConnector + 'timer=' + encodeURIComponent(idParam);
+                    } else {
+                        // ハッシュがない場合は標準仕様通りに検索パラメータとして付与する
+                        urlObj.searchParams.set('timer', idParam);
+                    }
                 }
                 targetUrl = urlObj.toString();
             } catch (e) {
-                // 既存のURLが特殊な形式だった場合の単純結合フォールバック
                 try {
                     const decodedUrl = atob(encodedUrl);
                     if (idParam) {
