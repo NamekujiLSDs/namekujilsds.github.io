@@ -5,24 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <style>
+        /* 常時ダークテーマ用のカラー変数 */
         :root {
-            --bg: #f8f9fa;
-            --card-bg: #ffffff;
-            --text: #212529;
-            --accent: #007bff;
-            --muted: #6c757d;
-            --border: #eeeeee;
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg: #121212;
-                --card-bg: #1e1e1e;
-                --text: #e0e0e0;
-                --accent: #3b99ff;
-                --muted: #a0a0a0;
-                --border: #2d2d2d;
-            }
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #e0e0e0;
+            --accent: #3b99ff;
+            --muted: #a0a0a0;
+            --border: #2d2d2d;
         }
 
         body {
@@ -34,19 +24,17 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         .card {
             background: var(--card-bg);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
             border: 1px solid var(--border);
             text-align: center;
             max-width: 90%;
             width: 400px;
-            transition: background-color 0.3s, border-color 0.3s;
         }
 
         h1 {
@@ -81,10 +69,7 @@
         }
 
         .error {
-            color: #dc3545;
-        }
-        @media (prefers-color-scheme: dark) {
-            .error { color: #ff6b6b; }
+            color: #ff6b6b;
         }
     </style>
 </head>
@@ -147,12 +132,10 @@
                 const urlObj = new URL(decodedUrl);
                 
                 if (idParam) {
-                    // ハッシュ（フラグメント）が存在する場合、SPAルーティングとして扱いハッシュ内にクエリを付与する
                     if (urlObj.hash) {
                         const hashConnector = urlObj.hash.includes('?') ? '&' : '?';
                         urlObj.hash = urlObj.hash + hashConnector + 'timer=' + encodeURIComponent(idParam);
                     } else {
-                        // ハッシュがない場合は標準仕様通りに検索パラメータとして付与する
                         urlObj.searchParams.set('timer', idParam);
                     }
                 }
