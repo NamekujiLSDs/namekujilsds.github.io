@@ -5,15 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <style>
-        :root { --bg: #f8f9fa; --text: #212529; --accent: #007bff; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); text-align: center; max-width: 90%; width: 400px; }
-        h1 { font-size: 1.5rem; margin-bottom: 1rem; }
-        #timer { font-size: 3rem; font-weight: bold; color: var(--accent); margin: 1rem 0; }
-        .url-display { font-size: 0.85rem; color: #6c757d; word-break: break-all; margin-bottom: 1.5rem; border-top: 1px solid #eee; padding-top: 1rem; }
-        a { color: var(--accent); text-decoration: none; font-size: 0.9rem; }
-        a:hover { text-decoration: underline; }
-        .error { color: #dc3545; }
+        /* カラー変数の定義（ライトテーマ基準） */
+        :root {
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --text: #212529;
+            --accent: #007bff;
+            --muted: #6c757d;
+            --border: #eeeeee;
+        }
+
+        /* ダークテーマの定義（システム設定がダークの場合に自動適用） */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #121212;
+                --card-bg: #1e1e1e;
+                --text: #e0e0e0;
+                --accent: #3b99ff;
+                --muted: #a0a0a0;
+                --border: #2d2d2d;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border);
+            text-align: center;
+            max-width: 90%;
+            width: 400px;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        #timer {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--accent);
+            margin: 1rem 0;
+        }
+
+        .url-display {
+            font-size: 0.85rem;
+            color: var(--muted);
+            word-break: break-all;
+            margin-bottom: 1.5rem;
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+        @media (prefers-color-scheme: dark) {
+            .error { color: #ff6b6b; }
+        }
     </style>
 </head>
 <body>
@@ -31,8 +105,8 @@
         (function() {
             const params = new URLSearchParams(window.location.search);
             const encodedUrl = params.get('url');
+            const idParam = params.get('id'); // id パラメータを取得
             
-            // 時間の文字列(例: '20m', '30s', '1h', '600')を秒数(数値)に変換する関数
             function parseTime(timeStr) {
                 if (!timeStr) return 0;
                 const match = timeStr.toLowerCase().match(/^(\d+)(h|m|s)?$/);
@@ -41,26 +115,20 @@
                     const unit = match[2];
                     if (unit === 'h') return val * 3600;
                     if (unit === 'm') return val * 60;
-                    return val; // 's' または単位なしの場合はそのまま秒として扱う
+                    return val;
                 }
-                return parseInt(timeStr.replace(/[^0-9]/g, '')) || 0; // フォールバック
+                return parseInt(timeStr.replace(/[^0-9]/g, '')) || 0;
             }
 
-            // 各パラメータを秒数として取得
             const baseTime = parseTime(params.get('t') || '0s');
             const randVal = parseTime(params.get('rand'));
-            
-            // randp または randn が指定されていればその値を優先、なければ rand の値を継承
             const randPVal = params.has('randp') ? parseTime(params.get('randp')) : randVal;
             const randNVal = params.has('randn') ? parseTime(params.get('randn')) : randVal;
             
             let waitTime = baseTime;
             
-            // ランダム前後の計算ロジック
             if (randPVal > 0 || randNVal > 0) {
-                // -randNVal から +randPVal までのランダムな整数を生成
                 const fluctuation = Math.floor(Math.random() * (randPVal + randNVal + 1)) - randNVal;
-                // 計算後の待ち時間がマイナスにならないよう防御
                 waitTime = Math.max(0, baseTime + fluctuation);
             }
             
@@ -77,11 +145,26 @@
 
             let targetUrl;
             try {
-                targetUrl = atob(encodedUrl);
-                new URL(targetUrl); 
+                const decodedUrl = atob(encodedUrl);
+                // URLオブジェクトを使用して安全にクエリパラメータを結合
+                const urlObj = new URL(decodedUrl);
+                if (idParam) {
+                    urlObj.searchParams.set('timer', idParam);
+                }
+                targetUrl = urlObj.toString();
             } catch (e) {
-                showError('エラー: 不正なURL形式、またはデコードに失敗しました。');
-                return;
+                // 既存のURLが特殊な形式だった場合の単純結合フォールバック
+                try {
+                    const decodedUrl = atob(encodedUrl);
+                    if (idParam) {
+                        targetUrl = decodedUrl + (decodedUrl.includes('?') ? '&' : '?') + 'timer=' + encodeURIComponent(idParam);
+                    } else {
+                        targetUrl = decodedUrl;
+                    }
+                } catch(err) {
+                    showError('エラー: 不正なURL形式、またはデコードに失敗しました。');
+                    return;
+                }
             }
 
             urlDisplayEl.textContent = `移動先: ${targetUrl}`;
@@ -95,7 +178,6 @@
                 timerEl.textContent = '×';
             }
 
-            // タイマー表示用のフォーマット関数 (秒数を mm:ss などにする場合はここを拡張)
             function countdown() {
                 if (waitTime <= 0) {
                     timerEl.textContent = '0';
