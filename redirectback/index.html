@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Redirecting...</title>
     <style>
-        /* 常時ダークテーマ用のカラー変数 */
         :root {
             --bg: #121212;
             --card-bg: #1e1e1e;
@@ -43,7 +42,7 @@
         }
 
         #timer {
-            font-size: 3rem;
+            font-size: 2.2rem; /* 「時間分秒」が入るため、前の3remから少し縮小して折り返しを防止 */
             font-weight: bold;
             color: var(--accent);
             margin: 1rem 0;
@@ -87,98 +86,141 @@
     <script>
         (function() {
             const params = new URLSearchParams(window.location.search);
-            const encodedUrl = params.get('url');
-            const idParam = params.get('id');
-            
-            function parseTime(timeStr) {
-                if (!timeStr) return 0;
-                const match = timeStr.toLowerCase().match(/^(\d+)(h|m|s)?$/);
-                if (match) {
-                    const val = parseInt(match[1], 10);
-                    const unit = match[2];
-                    if (unit === 'h') return val * 3600;
-                    if (unit === 'm') return val * 60;
-                    return val;
-                }
-                return parseInt(timeStr.replace(/[^0-9]/g, '')) || 0;
-            }
-
-            const baseTime = parseTime(params.get('t') || '0s');
-            const randVal = parseTime(params.get('rand'));
-            const randPVal = params.has('randp') ? parseTime(params.get('randp')) : randVal;
-            const randNVal = params.has('randn') ? parseTime(params.get('randn')) : randVal;
-            
-            let waitTime = baseTime;
-            
-            if (randPVal > 0 || randNVal > 0) {
-                const fluctuation = Math.floor(Math.random() * (randPVal + randNVal + 1)) - randNVal;
-                waitTime = Math.max(0, baseTime + fluctuation);
-            }
-            
             const statusEl = document.getElementById('status');
             const timerEl = document.getElementById('timer');
             const messageEl = document.getElementById('message');
             const urlDisplayEl = document.getElementById('url-display');
             const linkEl = document.getElementById('manual-link');
 
-            if (!encodedUrl) {
-                showError('エラー: URLパラメータが不足しています。');
-                return;
-            }
-
-            let targetUrl;
-            try {
-                const decodedUrl = atob(encodedUrl);
-                const urlObj = new URL(decodedUrl);
-                
-                if (idParam) {
-                    if (urlObj.hash) {
-                        const hashConnector = urlObj.hash.includes('?') ? '&' : '?';
-                        urlObj.hash = urlObj.hash + hashConnector + 'timer=' + encodeURIComponent(idParam);
-                    } else {
-                        urlObj.searchParams.set('timer', idParam);
-                    }
-                }
-                targetUrl = urlObj.toString();
-            } catch (e) {
-                try {
-                    const decodedUrl = atob(encodedUrl);
-                    if (idParam) {
-                        targetUrl = decodedUrl + (decodedUrl.includes('?') ? '&' : '?') + 'timer=' + encodeURIComponent(idParam);
-                    } else {
-                        targetUrl = decodedUrl;
-                    }
-                } catch(err) {
-                    showError('エラー: 不正なURL形式、またはデコードに失敗しました。');
-                    return;
-                }
-            }
-
-            urlDisplayEl.textContent = `移動先: ${targetUrl}`;
-            linkEl.href = targetUrl;
-            linkEl.style.display = 'inline-block';
-
             function showError(msg) {
                 statusEl.textContent = 'Error';
                 statusEl.classList.add('error');
                 messageEl.textContent = msg;
                 timerEl.textContent = '×';
+                urlDisplayEl.textContent = '';
+                linkEl.style.display = 'none';
             }
 
-            function countdown() {
-                if (waitTime <= 0) {
-                    timerEl.textContent = '0';
-                    statusEl.textContent = '移動中...';
-                    window.location.href = targetUrl;
-                } else {
-                    statusEl.textContent = 'リダイレクト待機中';
-                    timerEl.textContent = waitTime;
-                    waitTime--;
-                    setTimeout(countdown, 1000);
+            // 秒数を「n時間n分n秒」にフォーマットする関数
+            function formatTimeDisplay(totalSeconds) {
+                if (totalSeconds <= 0) return "0秒";
+                const h = Math.floor(totalSeconds / 3600);
+                const m = Math.floor((totalSeconds % 3600) / 60);
+                const s = totalSeconds % 60;
+                
+                let result = "";
+                if (h > 0) result += h + "時間 ";
+                if (m > 0 || h > 0) result += m + "分 ";
+                result += s + "秒";
+                
+                return result.trim();
+            }
+
+            // ==========================================
+            // フェーズ2: カウントダウンの実行
+            // ==========================================
+            if (params.has('now') && params.has('time') && params.has('redirectto')) {
+                const startUnix = parseInt(params.get('now'), 10);
+                const waitTime = parseInt(params.get('time'), 10);
+                const targetUrl = decodeURIComponent(params.get('redirectto'));
+
+                if (isNaN(startUnix) || isNaN(waitTime) || !targetUrl) {
+                    showError('エラー: 不正なパラメータです。');
+                    return;
                 }
+
+                const targetUnix = startUnix + waitTime;
+
+                urlDisplayEl.textContent = `移動先: ${targetUrl}`;
+                linkEl.href = targetUrl;
+                linkEl.style.display = 'inline-block';
+
+                function updateTimer() {
+                    const currentUnix = Math.floor(Date.now() / 1000);
+                    const remaining = targetUnix - currentUnix;
+
+                    if (remaining <= 0) {
+                        timerEl.textContent = '0秒';
+                        statusEl.textContent = '移動中...';
+                        window.location.replace(targetUrl);
+                    } else {
+                        statusEl.textContent = 'リダイレクト待機中';
+                        // フォーマット関数を通してから表示
+                        timerEl.textContent = formatTimeDisplay(remaining);
+                        setTimeout(updateTimer, 500); 
+                    }
+                }
+                updateTimer();
+                return;
             }
 
-            countdown();
+            // ==========================================
+            // フェーズ1: パラメータの初期化と再転送
+            // ==========================================
+            if (params.has('url')) {
+                const encodedUrl = params.get('url');
+                const idParam = params.get('id');
+                
+                function parseTime(timeStr) {
+                    if (!timeStr) return 0;
+                    const match = timeStr.toLowerCase().match(/^(\d+)(h|m|s)?$/);
+                    if (match) {
+                        const val = parseInt(match[1], 10);
+                        const unit = match[2];
+                        if (unit === 'h') return val * 3600;
+                        if (unit === 'm') return val * 60;
+                        return val;
+                    }
+                    return parseInt(timeStr.replace(/[^0-9]/g, '')) || 0;
+                }
+
+                const baseTime = parseTime(params.get('t') || '0s');
+                const randVal = parseTime(params.get('rand'));
+                const randPVal = params.has('randp') ? parseTime(params.get('randp')) : randVal;
+                const randNVal = params.has('randn') ? parseTime(params.get('randn')) : randVal;
+                
+                let calculatedTime = baseTime;
+                
+                if (randPVal > 0 || randNVal > 0) {
+                    const fluctuation = Math.floor(Math.random() * (randPVal + randNVal + 1)) - randNVal;
+                    calculatedTime = Math.max(0, baseTime + fluctuation);
+                }
+
+                let targetUrl;
+                try {
+                    const decodedUrl = atob(encodedUrl);
+                    const urlObj = new URL(decodedUrl);
+                    
+                    if (idParam) {
+                        if (urlObj.hash) {
+                            const hashConnector = urlObj.hash.includes('?') ? '&' : '?';
+                            urlObj.hash = urlObj.hash + hashConnector + 'timer=' + encodeURIComponent(idParam);
+                        } else {
+                            urlObj.searchParams.set('timer', idParam);
+                        }
+                    }
+                    targetUrl = urlObj.toString();
+                } catch (e) {
+                    try {
+                        const decodedUrl = atob(encodedUrl);
+                        if (idParam) {
+                            targetUrl = decodedUrl + (decodedUrl.includes('?') ? '&' : '?') + 'timer=' + encodeURIComponent(idParam);
+                        } else {
+                            targetUrl = decodedUrl;
+                        }
+                    } catch(err) {
+                        showError('エラー: 不正なURL形式、またはデコードに失敗しました。');
+                        return;
+                    }
+                }
+
+                const currentUnix = Math.floor(Date.now() / 1000);
+                const newUrl = `?now=${currentUnix}&time=${calculatedTime}&redirectto=${encodeURIComponent(targetUrl)}`;
+                window.location.replace(newUrl);
+                return;
+            }
+
+            showError('エラー: URLパラメータが不足しています。');
         })();
     </script>
 </body>
