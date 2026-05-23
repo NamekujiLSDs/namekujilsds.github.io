@@ -12,6 +12,7 @@
             --accent: #3b99ff;
             --muted: #a0a0a0;
             --border: #2d2d2d;
+            --danger: #ff6b6b;
         }
 
         body {
@@ -42,10 +43,21 @@
         }
 
         #timer {
-            font-size: 2.2rem; /* 「時間分秒」が入るため、前の3remから少し縮小して折り返しを防止 */
+            font-size: 2.2rem;
             font-weight: bold;
             color: var(--accent);
-            margin: 1rem 0;
+            margin: 0.5rem 0;
+        }
+
+        #eta {
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+        }
+
+        #message {
+            font-size: 1rem;
+            margin-bottom: 1rem;
         }
 
         .url-display {
@@ -61,6 +73,8 @@
             color: var(--accent);
             text-decoration: none;
             font-size: 0.9rem;
+            cursor: pointer;
+            user-select: none; /* 連続タップ時のテキスト選択を防ぐ */
         }
 
         a:hover {
@@ -68,7 +82,59 @@
         }
 
         .error {
-            color: #ff6b6b;
+            color: var(--danger);
+        }
+        
+        /* PIN入力オーバーレイのスタイル */
+        #pin-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .pin-box {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--border);
+        }
+        .pin-display {
+            font-size: 2rem;
+            letter-spacing: 0.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+            color: var(--danger);
+        }
+        input[type="text"] {
+            font-size: 1.5rem;
+            text-align: center;
+            width: 150px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            background: var(--bg);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+        }
+        .btn-group button {
+            padding: 0.5rem 1rem;
+            margin: 0 0.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 6px;
+        }
+        .btn-cancel {
+            background: var(--muted);
+            color: white;
+        }
+        .btn-submit {
+            background: var(--accent);
+            color: white;
         }
     </style>
 </head>
@@ -77,9 +143,25 @@
         <div id="app">
             <h1 id="status">リダイレクト準備中</h1>
             <div id="timer">--</div>
+            <div id="eta"></div>
             <p id="message">まもなく指定のURLへ移動します</p>
             <div class="url-display" id="url-display"></div>
+            <!-- hrefは#にし、クリックイベントをJavaScriptで制御 -->
             <a id="manual-link" href="#" style="display:none;">今すぐ移動する</a>
+        </div>
+    </div>
+
+    <!-- PIN入力用オーバーレイ -->
+    <div id="pin-overlay">
+        <div class="pin-box">
+            <h3>手動リダイレクトの確認</h3>
+            <p>以下の4桁のPINを入力してください</p>
+            <div class="pin-display" id="expected-pin">0000</div>
+            <input type="text" id="pin-input" maxlength="4" autocomplete="off" inputmode="numeric">
+            <div class="btn-group">
+                <button class="btn-cancel" id="pin-cancel">キャンセル</button>
+                <button class="btn-submit" id="pin-submit">移動する</button>
+            </div>
         </div>
     </div>
 
@@ -88,6 +170,7 @@
             const params = new URLSearchParams(window.location.search);
             const statusEl = document.getElementById('status');
             const timerEl = document.getElementById('timer');
+            const etaEl = document.getElementById('eta');
             const messageEl = document.getElementById('message');
             const urlDisplayEl = document.getElementById('url-display');
             const linkEl = document.getElementById('manual-link');
@@ -97,11 +180,11 @@
                 statusEl.classList.add('error');
                 messageEl.textContent = msg;
                 timerEl.textContent = '×';
+                etaEl.textContent = '';
                 urlDisplayEl.textContent = '';
                 linkEl.style.display = 'none';
             }
 
-            // 秒数を「n時間n分n秒」にフォーマットする関数
             function formatTimeDisplay(totalSeconds) {
                 if (totalSeconds <= 0) return "0秒";
                 const h = Math.floor(totalSeconds / 3600);
@@ -130,10 +213,76 @@
                 }
 
                 const targetUnix = startUnix + waitTime;
+                
+                const targetDate = new Date(targetUnix * 1000);
+                const dateOptions = { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+                etaEl.textContent = `終了予定: ${targetDate.toLocaleString('ja-JP', dateOptions)}`;
 
                 urlDisplayEl.textContent = `移動先: ${targetUrl}`;
-                linkEl.href = targetUrl;
                 linkEl.style.display = 'inline-block';
+
+                // --- 誤爆防止: 3回連続タップ & PIN入力ロジック ---
+                let clickCount = 0;
+                let clickTimer = null;
+                let currentPin = '';
+
+                const overlay = document.getElementById('pin-overlay');
+                const expectedPinEl = document.getElementById('expected-pin');
+                const pinInputEl = document.getElementById('pin-input');
+                const btnCancel = document.getElementById('pin-cancel');
+                const btnSubmit = document.getElementById('pin-submit');
+
+                linkEl.addEventListener('click', function(e) {
+                    e.preventDefault(); // 通常のリンク遷移を無効化
+                    clickCount++;
+
+                    if (clickCount >= 3) {
+                        // 3回タップ達成
+                        clearTimeout(clickTimer);
+                        clickCount = 0;
+                        showPinOverlay();
+                    } else {
+                        // 1秒以内に次のタップがなければカウントリセット
+                        clearTimeout(clickTimer);
+                        clickTimer = setTimeout(() => {
+                            clickCount = 0;
+                        }, 1000);
+                    }
+                });
+
+                function showPinOverlay() {
+                    // 0000〜9999のランダムな4桁を生成
+                    currentPin = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+                    expectedPinEl.textContent = currentPin;
+                    pinInputEl.value = '';
+                    overlay.style.display = 'flex';
+                    pinInputEl.focus();
+                }
+
+                function hidePinOverlay() {
+                    overlay.style.display = 'none';
+                    currentPin = '';
+                }
+
+                btnCancel.addEventListener('click', hidePinOverlay);
+
+                btnSubmit.addEventListener('click', function() {
+                    if (pinInputEl.value === currentPin) {
+                        window.location.replace(targetUrl);
+                    } else {
+                        alert('PINが一致しません。');
+                        pinInputEl.value = '';
+                        pinInputEl.focus();
+                    }
+                });
+
+                // Enterキーで送信
+                pinInputEl.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        btnSubmit.click();
+                    }
+                });
+                // ------------------------------------------------
 
                 function updateTimer() {
                     const currentUnix = Math.floor(Date.now() / 1000);
@@ -141,11 +290,11 @@
 
                     if (remaining <= 0) {
                         timerEl.textContent = '0秒';
+                        etaEl.textContent = '';
                         statusEl.textContent = '移動中...';
                         window.location.replace(targetUrl);
                     } else {
                         statusEl.textContent = 'リダイレクト待機中';
-                        // フォーマット関数を通してから表示
                         timerEl.textContent = formatTimeDisplay(remaining);
                         setTimeout(updateTimer, 500); 
                     }
