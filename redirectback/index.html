@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Redirecting...</title>
     <style>
         :root {
@@ -24,6 +24,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            overscroll-behavior-y: none; /* スマホの引っ張り更新防止 */
         }
 
         .card {
@@ -74,7 +75,8 @@
             text-decoration: none;
             font-size: 0.9rem;
             cursor: pointer;
-            user-select: none; /* 連続タップ時のテキスト選択を防ぐ */
+            user-select: none;
+            -webkit-tap-highlight-color: transparent; /* タップ時のハイライト消去 */
         }
 
         a:hover {
@@ -85,12 +87,12 @@
             color: var(--danger);
         }
         
-        /* PIN入力オーバーレイのスタイル */
+        /* カスタムキーボード用オーバーレイ */
         #pin-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
@@ -98,43 +100,86 @@
         .pin-box {
             background: var(--card-bg);
             padding: 2rem;
-            border-radius: 12px;
+            border-radius: 16px;
             text-align: center;
             border: 1px solid var(--border);
+            width: 320px;
+            max-width: 90%;
         }
         .pin-display {
-            font-size: 2rem;
-            letter-spacing: 0.5rem;
+            font-size: 2.2rem;
+            letter-spacing: 0.3rem;
             font-weight: bold;
-            margin: 1rem 0;
+            margin: 0.5rem 0;
             color: var(--danger);
         }
-        input[type="text"] {
-            font-size: 1.5rem;
-            text-align: center;
-            width: 150px;
-            padding: 0.5rem;
-            margin-bottom: 1rem;
+
+        /* 入力状態を示すドット */
+        .pin-dots {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0 30px;
+        }
+        .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid var(--muted);
+            background-color: transparent;
+            transition: all 0.15s ease-out;
+        }
+        .dot.filled {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        .dot.error {
+            background-color: var(--danger);
+            border-color: var(--danger);
+            animation: shake 0.3s;
+        }
+
+        /* エラー時の振動アニメーション */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        /* オンスクリーンキーパッド */
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 260px;
+            margin: 0 auto;
+        }
+        .key {
             background: var(--bg);
             color: var(--text);
             border: 1px solid var(--border);
-            border-radius: 6px;
-        }
-        .btn-group button {
-            padding: 0.5rem 1rem;
-            margin: 0 0.5rem;
-            font-size: 1rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
+            user-select: none;
+            margin: 0 auto;
+            touch-action: manipulation; /* ダブルタップズームを無効化 */
+            transition: background 0.1s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .key:active {
+            background: var(--border);
+        }
+        .key.action {
+            background: transparent;
             border: none;
-            border-radius: 6px;
-        }
-        .btn-cancel {
-            background: var(--muted);
-            color: white;
-        }
-        .btn-submit {
-            background: var(--accent);
-            color: white;
+            font-size: 1.2rem;
+            color: var(--muted);
         }
     </style>
 </head>
@@ -146,21 +191,36 @@
             <div id="eta"></div>
             <p id="message">まもなく指定のURLへ移動します</p>
             <div class="url-display" id="url-display"></div>
-            <!-- hrefは#にし、クリックイベントをJavaScriptで制御 -->
             <a id="manual-link" href="#" style="display:none;">今すぐ移動する</a>
         </div>
     </div>
 
-    <!-- PIN入力用オーバーレイ -->
     <div id="pin-overlay">
         <div class="pin-box">
-            <h3>手動リダイレクトの確認</h3>
-            <p>以下の4桁のPINを入力してください</p>
+            <h3 style="margin-top: 0;">手動移動の確認</h3>
+            <p style="font-size: 0.9rem; color: var(--muted);">以下のPINを入力してください</p>
             <div class="pin-display" id="expected-pin">0000</div>
-            <input type="text" id="pin-input" maxlength="4" autocomplete="off" inputmode="numeric">
-            <div class="btn-group">
-                <button class="btn-cancel" id="pin-cancel">キャンセル</button>
-                <button class="btn-submit" id="pin-submit">移動する</button>
+
+            <div class="pin-dots" id="pin-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+
+            <div class="keypad" id="keypad">
+                <div class="key" data-val="1">1</div>
+                <div class="key" data-val="2">2</div>
+                <div class="key" data-val="3">3</div>
+                <div class="key" data-val="4">4</div>
+                <div class="key" data-val="5">5</div>
+                <div class="key" data-val="6">6</div>
+                <div class="key" data-val="7">7</div>
+                <div class="key" data-val="8">8</div>
+                <div class="key" data-val="9">9</div>
+                <div class="key action" id="key-cancel">取消</div>
+                <div class="key" data-val="0">0</div>
+                <div class="key action" id="key-delete">⌫</div>
             </div>
         </div>
     </div>
@@ -195,7 +255,6 @@
                 if (h > 0) result += h + "時間 ";
                 if (m > 0 || h > 0) result += m + "分 ";
                 result += s + "秒";
-                
                 return result.trim();
             }
 
@@ -221,28 +280,26 @@
                 urlDisplayEl.textContent = `移動先: ${targetUrl}`;
                 linkEl.style.display = 'inline-block';
 
-                // --- 誤爆防止: 3回連続タップ & PIN入力ロジック ---
+                // --- 誤爆防止 & カスタムキーパッドロジック ---
                 let clickCount = 0;
                 let clickTimer = null;
                 let currentPin = '';
+                let enteredPin = '';
 
                 const overlay = document.getElementById('pin-overlay');
                 const expectedPinEl = document.getElementById('expected-pin');
-                const pinInputEl = document.getElementById('pin-input');
-                const btnCancel = document.getElementById('pin-cancel');
-                const btnSubmit = document.getElementById('pin-submit');
+                const dots = document.querySelectorAll('.dot');
+                const keys = document.querySelectorAll('.key');
 
                 linkEl.addEventListener('click', function(e) {
-                    e.preventDefault(); // 通常のリンク遷移を無効化
+                    e.preventDefault();
                     clickCount++;
 
                     if (clickCount >= 3) {
-                        // 3回タップ達成
                         clearTimeout(clickTimer);
                         clickCount = 0;
                         showPinOverlay();
                     } else {
-                        // 1秒以内に次のタップがなければカウントリセット
                         clearTimeout(clickTimer);
                         clickTimer = setTimeout(() => {
                             clickCount = 0;
@@ -250,37 +307,74 @@
                     }
                 });
 
+                function updateDots() {
+                    dots.forEach((dot, index) => {
+                        dot.classList.remove('error');
+                        if (index < enteredPin.length) {
+                            dot.classList.add('filled');
+                        } else {
+                            dot.classList.remove('filled');
+                        }
+                    });
+                }
+
+                function showPinError() {
+                    dots.forEach(dot => dot.classList.add('error'));
+                    // アニメーションが終わる頃に入力値をリセット
+                    setTimeout(() => {
+                        enteredPin = '';
+                        updateDots();
+                    }, 400);
+                }
+
                 function showPinOverlay() {
-                    // 0000〜9999のランダムな4桁を生成
                     currentPin = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
                     expectedPinEl.textContent = currentPin;
-                    pinInputEl.value = '';
+                    enteredPin = '';
+                    updateDots();
                     overlay.style.display = 'flex';
-                    pinInputEl.focus();
                 }
 
                 function hidePinOverlay() {
                     overlay.style.display = 'none';
                     currentPin = '';
+                    enteredPin = '';
                 }
 
-                btnCancel.addEventListener('click', hidePinOverlay);
+                keys.forEach(key => {
+                    key.addEventListener('click', function(e) {
+                        e.preventDefault(); // タップ時の不要なブラウザ挙動を抑制
+                        
+                        if (this.id === 'key-cancel') {
+                            hidePinOverlay();
+                            return;
+                        }
+                        
+                        if (this.id === 'key-delete') {
+                            enteredPin = enteredPin.slice(0, -1);
+                            updateDots();
+                            return;
+                        }
 
-                btnSubmit.addEventListener('click', function() {
-                    if (pinInputEl.value === currentPin) {
-                        window.location.replace(targetUrl);
-                    } else {
-                        alert('PINが一致しません。');
-                        pinInputEl.value = '';
-                        pinInputEl.focus();
-                    }
-                });
+                        const val = this.getAttribute('data-val');
+                        // 数値キーかつ、まだ4桁未満の場合
+                        if (val !== null && enteredPin.length < 4) {
+                            enteredPin += val;
+                            updateDots();
 
-                // Enterキーで送信
-                pinInputEl.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        btnSubmit.click();
-                    }
+                            // 4桁目が入力されたら即座に判定
+                            if (enteredPin.length === 4) {
+                                // ドットが埋まるのを視覚的に少し見せるための微小ディレイ
+                                setTimeout(() => {
+                                    if (enteredPin === currentPin) {
+                                        window.location.replace(targetUrl);
+                                    } else {
+                                        showPinError();
+                                    }
+                                }, 100);
+                            }
+                        }
+                    });
                 });
                 // ------------------------------------------------
 
