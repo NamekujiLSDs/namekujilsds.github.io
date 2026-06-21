@@ -956,9 +956,17 @@
     const renderTable = (data) => {
       tableBody.innerHTML = ''; 
 
+      let userRankCounter = 0; // ボーダー行を除外した順位カウンター
+
       data.forEach((row, idx) => {
         const tr = document.createElement('tr');
         
+        let displayNum = '';
+        if (!row.isBorder) {
+          userRankCounter++;
+          displayNum = userRankCounter;
+        }
+
         let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
         let rankClass = "font-mono text-[#71717a]";
         let nameHTML = "";
@@ -1027,7 +1035,7 @@
         const clickableCell = `cursor-pointer hover:bg-[#3f3f46]/40 transition-colors`;
         
         tr.innerHTML = `
-          <td class="px-3 py-4 text-center font-mono text-xs text-[#71717a]">${row.isBorder ? '' : idx + 1}</td>
+          <td class="px-3 py-4 text-center font-mono text-xs text-[#71717a]">${displayNum}</td>
           <td class="px-5 py-4 ${rankClass}">${rankStr}</td>
           <td class="px-5 py-4">${nameHTML}</td>
           <td class="px-5 py-4 text-right ${pointClass} ${clickableCell}" title="${pointTitle}" onclick="openChartModal('${row.id}', 'point')">${formatPoint(row.point)}</td>
