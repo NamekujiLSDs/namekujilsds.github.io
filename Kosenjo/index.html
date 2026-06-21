@@ -100,6 +100,7 @@
         <table class="w-full text-sm text-left whitespace-nowrap">
           <thead class="bg-[#18181b] text-[#a1a1aa] border-b border-[#3f3f46]">
             <tr>
+              <th class="px-3 py-3 font-medium w-10 text-center text-[#71717a]">#</th>
               <th class="px-5 py-3 font-medium w-24 cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('rank')" title="全体順位で並び替え">
                 <div class="flex items-center gap-1">全体順位 <span id="sort-icon-rank" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
               </th>
@@ -1026,6 +1027,7 @@
         const clickableCell = `cursor-pointer hover:bg-[#3f3f46]/40 transition-colors`;
         
         tr.innerHTML = `
+          <td class="px-3 py-4 text-center font-mono text-xs text-[#71717a]">${row.isBorder ? '' : idx + 1}</td>
           <td class="px-5 py-4 ${rankClass}">${rankStr}</td>
           <td class="px-5 py-4">${nameHTML}</td>
           <td class="px-5 py-4 text-right ${pointClass} ${clickableCell}" title="${pointTitle}" onclick="openChartModal('${row.id}', 'point')">${formatPoint(row.point)}</td>
