@@ -1,172 +1,145 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoxMate 使い方ガイド - シンプルでわかりやすい日本語解説</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Material Symbols Outlined アイコン -->
+    <title>VoxMate User Guide - Simple English Explanation</title>
+<link rel="stylesheet" href="style.css">
+    <!-- Material Symbols Outlined icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
-    <style>
-        /* 基本的な見た目を整える */
-        body { font-family: 'Roboto', sans-serif; background: #121212; color: #f5f5f5; line-height: 1.6; }
-        .container { display: flex; height: 100vh; }
-        .sidebar { width: 280px; background: #1e1e1e; padding: 24px; border-right: 1px solid #333; }
-        .sidebar h1 { margin-bottom: 24px; font-size: 1.4rem; }
-        .sidebar ul { list-style: none; }
-        .sidebar a { display: block; padding: 8px 12px; margin: 8px 0; color: #9e9e9e; text-decoration: none; border-radius: 8px; transition: 0.2s; }
-        .sidebar a:hover { color: #00e5ff; background: rgba(0,229,255,0.08); }
-        .content { flex: 1; padding: 40px; background: #121212; overflow-y: auto; }
-        .content h1 { font-size: 2rem; margin-bottom: 24px; }
-        .content h2 { margin-top: 32px; font-size: 1.4rem; border-left: 4px solid #00e5ff; padding-left: 12px; }
-        .setting { margin-bottom: 24px; padding: 20px; background: #1e1e1e; border: 1px solid #333; border-radius: 8px; }
-        .setting h3 { margin-bottom: 12px; font-size: 1.1rem; }
-        .setting p { color: #9e9e9e; margin-bottom: 12px; }
-        .setting button { padding: 8px 16px; background: #00e5ff; color: #000; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; }
-        .setting button:hover { filter: brightness(1.1); }
-        .code-block { background: #2d2d2d; color: #e0e0e0; padding: 12px; border-radius: 6px; font-family: monospace; overflow-x: auto; margin: 8px 0; }
-        .note { background: rgba(255,255,255,0.05); padding: 12px; border-left: 4px solid #ff5252; margin: 12px 0; }
-        .icon { margin-right: 6px; }
-    </style>
 </head>
 <body>
     <div class="container">
-        <!-- サイドバー -->
+        <!-- Sidebar -->
         <nav class="sidebar">
-            <h1>VoxMate 使い方ガイド</h1>
+            <h1>VoxMate User Guide</h1>
             <ul>
-                <li><a href="#quick"><span class="material-symbols-outlined icon">settings</span>クイック設定</a></li>
-                <li><a href="#crosshair"><span class="material-symbols-outlined icon">crosshairs</span>十字線</a></li>
-                <li><a href="#css"><span class="material-symbols-outlined icon">brush</span>カスタムCSS</a></li>
-                <li><a href="#swapper"><span class="material-symbols-outlined icon">folder_open</span>スワッパー</a></li>
-                <li><a href="#adblocker"><span class="material-symbols-outlined icon">block</span>広告ブロッカー</a></li>
-                <li><a href="#advanced"><span class="material-symbols-outlined icon">tune</span>詳細設定</a></li>
+                <li><a href="#quick"><span class="material-symbols-outlined icon">settings</span>Quick Settings</a></li>
+                <li><a href="#crosshair"><span class="material-symbols-outlined icon">crosshairs</span>Crosshair</a></li>
+                <li><a href="#css"><span class="material-symbols-outlined icon">brush</span>Custom CSS</a></li>
+                <li><a href="#swapper"><span class="material-symbols-outlined icon">folder_open</span>Swap</a></li>
+                <li><a href="#adblocker"><span class="material-symbols-outlined icon">block</span>Ad Blocker</a></li>
+                <li><a href="#advanced"><span class="material-symbols-outlined icon">tune</span>Advanced</a></li>
             </ul>
-            <div style="margin-top: auto; font-size: 0.85rem; color: #9e9e9e; text-align: center;">
-                <span class="material-symbols-outlined icon">discord</span>Discordで質問
+            <div style="margin-top: auto; font-size: 0.85rem; color: #b0b0b0; text-align: center;">
+                <span class="material-symbols-outlined icon">discord</span>Discord for Support
             </div>
         </nav>
 
-        <!-- メインコンテンツ -->
+        <!-- Main Content -->
         <main class="content">
-            <!-- クイック設定 -->
+            <!-- Quick Settings -->
             <section id="quick">
-                <h2><span class="material-symbols-outlined icon">settings</span>クイック設定</h2>
-                <p>主要機能をオン/オフにするマスタースイッチです。変更は再起動後に有効になります。</p>
+                <h2><span class="material-symbols-outlined icon">settings</span>Quick Settings</h2>
+                <p>Main feature toggles. Changes require a restart to take effect.</p>
                 <div class="setting">
-                    <h3>カスタム十字線</h3>
-                    <p>十字線の表示/非表示を切り替えます。詳しくは「十字線」セクションを参照。</p>
+                    <h3>Custom Crosshair</h3>
+                    <p>Toggle crosshair display on/off. See "Crosshair" section for details.</p>
                 </div>
                 <div class="setting">
-                    <h3>カスタムCSS</h3>
-                    <p>画面デザインをカスタマイズするCSSの有効/無効を切り替えます。詳しくは「カスタムCSS」セクションを参照。</p>
+                    <h3>Custom CSS</h3>
+                    <p>Enable/disable custom CSS styling. See "Custom CSS" section.</p>
                 </div>
                 <div class="setting">
-                    <h3>リソーススワッパー</h3>
-                    <p>テクスチャや音を置き換える機能の有効/無効を切り替えます。詳しくは「スワッパー」セクションを参照。変更には再起動が必要です。</p>
+                    <h3>Resource Swapper</h3>
+                    <p>Enable/disable texture and audio replacement. See "Swap" section. Requires restart.</p>
                 </div>
                 <div class="setting">
-                    <h3>広告ブロッカー</h3>
-                    <p>広告やトラッカーをブロックする機能の有効/無効を切り替えます。詳しくは「広告ブロッカー」セクションを参照。変更には再起動が必要です。</p>
+                    <h3>Ad Blocker</h3>
+                    <p>Enable/disable ad and tracker blocking. See "Ad Blocker" section. Requires restart.</p>
                 </div>
                 <div class="setting">
-                    <h3>無制限FPS</h3>
-                    <p>FPS制限を解除します。他の詳細設定と同じく、再起動が必要です。</p>
+                    <h3>Unlimited FPS</h3>
+                    <p>Remove FPS cap (same as in Advanced settings). Requires restart.</p>
                 </div>
             </section>
 
-            <!-- 十字線 -->
+            <!-- Crosshair -->
             <section id="crosshair">
-                <h2><span class="material-symbols-outlined icon">crosshairs</span>十字線（Crosshair）</h2>
-                <div class="note">カスタム十字線機能を使うには、まず「クイック設定」で「カスタム十字線」をONにしてください。</div>
+                <h2><span class="material-symbols-outlined icon">crosshairs</span>Crosshair</h2>
+                <div class="note">To use custom crosshair, first turn on "Custom Crosshair" in Quick Settings.</div>
                 <div class="setting">
-                    <h3>十字線の種類</h3>
-                    <p>画像の読み込み方法を3種類から選べます。</p>
+                    <h3>Crosshair Type</h3>
+                    <p>Choose how to load the crosshair image:</p>
                     <ul>
-                        <li><strong>URL:</strong> インターネット上の画像URLを指定します（PNG/GIF推奨）。</li>
-                        <li><strong>ローカル:</strong> PC内の画像ファイルを選択します（PNG/GIF/APNG対応）。</li>
-                        <li><strong>リスト:</strong> スワッパーフォルダ内の画像から選択します。</li>
+                        <li><strong>URL:</strong> Paste a direct image link (PNG/GIF recommended).</li>
+                        <li><strong>Local File:</strong> Select an image file from your PC (PNG/GIF/APNG supported).</li>
+                        <li><strong>List:</strong> Pick from images stored in the swap folder.</li>
                     </ul>
                 </div>
                 <div class="setting">
-                    <h3>URL / ローカルファイル</h3>
-                    <p>画像のアドレスやファイルパスを入力/選択します。</p>
+                    <h3>URL / Local File</h3>
+                    <p>Enter the image URL or select a local file.</p>
                 </div>
                 <div class="setting">
-                    <h3>サイズ設定</h3>
-                    <p>「自動サイズ検出」にチェックを入れると、画像本来のサイズが自動的に適用されます。<br>
-                    チェックを外すと、手動で幅と高さを設定できます（1px〜1024px）。</p>
+                    <h3>Size Settings</h3>
+                    <p>Enable "Auto Size" to use the image's native resolution. Disable to set width and height manually (1px–1024px).</p>
                 </div>
                 <div class="setting">
-                    <h3>不透明度</h3>
-                    <p>十字線の透明度を設定します（0 = 透明、1 = 不透明）。</p>
+                    <h3>Opacity</h3>
+                    <p>Set transparency (0 = fully transparent, 1 = fully opaque).</p>
                 </div>
                 <div class="setting">
-                    <h3>描画方法</h3>
-                    <p>画像の拡大・縮小方法を2種類から選べます。</p>
+                    <h3>Rendering Method</h3>
+                    <p>Choose how the image scales:</p>
                     <ul>
-                        <li><strong>ピクセル化:</strong> 元のピクセルアート感を保ちます。</li>
-                        <li><strong>シャープ:</strong> 輪郭がくっきりした表示になります。</li>
+                        <li><strong>Pixelated:</strong> Preserves pixel art look with nearest-neighbor scaling.</li>
+                        <li><strong>Sharp Edges:</strong> Keeps edges crisp without blurring.</li>
                     </ul>
                 </div>
             </section>
 
-            <!-- カスタムCSS -->
+            <!-- Custom CSS -->
             <section id="css">
-                <h2><span class="material-symbols-outlined icon">brush</span>カスタムCSS</h2>
-                <div class="note">カスタムCSSを使うには、まず「クイック設定」で「カスタムCSS」をONにしてください。</div>
+                <h2><span class="material-symbols-outlined icon">brush</span>Custom CSS</h2>
+                <div class="note">To use custom CSS, first enable "Custom CSS" in Quick Settings.</div>
                 <div class="setting">
-                    <h3>CSSの読み込み方法</h3>
-                    <p>3種類の方法でCSSファイルを読み込めます。</p>
+                    <h3>CSS Source</h3>
+                    <p>Choose how to load your CSS file:</p>
                     <ul>
-                        <li><strong>URL:</strong> インターネット上のCSSファイルURLを指定します（CORS対応が必要です）。</li>
-                        <li><strong>ローカルファイル:</strong> PC内の.cssファイルを指定します。</li>
-                        <li><strong>リスト:</strong> スワッパーフォルダ内のCSSファイルから選択します。</li>
+                        <li><strong>URL:</strong> Link to a CSS file online (must support CORS, e.g., GitHub Pages).</li>
+                        <li><strong>Local File:</strong> Select a .css file from your PC.</li>
+                        <li><strong>List:</strong> Pick a CSS file stored in the swap folder.</li>
                     </ul>
                 </div>
             </section>
 
-            <!-- スワッパー -->
+            <!-- Swap (Resource Swapper) -->
             <section id="swapper">
-                <h2><span class="material-symbols-outlined icon">folder_open</span>スワッパー（リソース置き換え）</h2>
-                <div class="note">スワッパーを使うには、まず「クイック設定」で「リソーススワッパー」をONにしてください。変更は再起動後に有効になります。</div>
+                <h2><span class="material-symbols-outlined icon">folder_open</span>Swap (Resource Replacement)</h2>
+                <div class="note">To use the swapper, first enable "Resource Swapper" in Quick Settings. Changes require a restart.</div>
                 <div class="setting">
-                    <h3>フォルダの場所</h3>
-                    <p>VoxMateを初めて起動すると、<code>documents/vmc-swap</code>フォルダが自動作成されます。<br>
-                    その中に「css」と「crosshair」フォルダが作られるので、ファイルはそこに置いてください。</p>
+                    <h3>Folder Location</h3>
+                    <p>On first launch, VoxMate creates <code>documents/vmc-swap</code>. Inside, you'll find "css" and "crosshair" folders. Place your files there.</p>
                 </div>
                 <div class="setting">
-                    <h3>デフォルトリストを使う</h3>
-                    <p>組み込みの<code>swapper-default.json</code>（<a href="./swapper-default.json" target="_blank">中身を確認</a>）に従って置き換えが行われます。</p>
+                    <h3>Use Default List</h3>
+                    <p>Use the built-in <a href="./swapper-default.json" target="_blank">swapper-default.json</a> that maps game URLs to local filenames.</li>
                 </div>
                 <div class="setting">
-                    <h3>ユーザーリストを使う</h3>
-                    <p>自分で<code>swapper-user.json</code>を作成して追加できます。<br>
-                    ファイルは<code>documents/vmc-swap</code>に置き、内容はJSON形式で記述します。<br>
-                    <strong>例:</strong></p>
+                    <h3>Use User List</h3>
+                    <p>Create your own <code>swapper-user.json</code> in <code>documents/vmc-swap</code> to add or override mappings. Format:</p>
                     <div class="code-block">
 {
     "https://voxiom.io/package/aef55bdd0c3c3c3734f8.png": "soldier_red.png",
     "https://voxiom.io/sound/weapon.ogg": "weapon_custom.ogg"
 }
                     </div>
-                    <p>デフォルトリストと重複するURLがある場合、ユーザーリストの値が優先されます。</p>
+                    <p>If both lists contain the same URL, the user list takes priority.</p>
                 </div>
             </section>
 
-            <!-- 広告ブロッカー -->
+            <!-- Ad Blocker -->
             <section id="adblocker">
-                <h2><span class="material-symbols-outlined icon">block</span>広告ブロッカー</h2>
-                <div class="note">広告ブロッカーを使うには、まず「クイック設定」で「広告ブロッカー」をONにしてください。変更は再起動後に有効になります。</div>
+                <h2><span class="material-symbols-outlined icon">block</span>Ad Blocker</h2>
+                <div class="note">To use the ad blocker, first enable "Ad Blocker" in Quick Settings. Changes require a restart.</div>
                 <div class="setting">
-                    <h3>デフォルトブロックリストを使う</h3>
-                    <p>組み込みの<code>adblock-default.json</code>（<a href="./adblock-default.json" target="_blank">中身を確認</a>）に従って広告がブロックされます。</p>
+                    <h3>Use Default Block List</h3>
+                    <p>Use the built-in <a href="./adblock-default.json" target="_blank">adblock-default.json</a> (list of domains to block).</p>
                 </div>
                 <div class="setting">
-                    <h3>ユーザーリストを使う</h3>
-                    <p>自分で<code>adblock-user.json</code>を作成して追加できます。<br>
-                    ファイルは<code>documents/vmc-swap</code>に置き、内容はJSON形式で記述します。<br>
-                    <strong>例:</strong></p>
+                    <h3>Use User List</h3>
+                    <p>Create your own <code>adblock-user.json</code> in <code>documents/vmc-swap</code> with the format:</p>
                     <div class="code-block">
 {
     "urls": [
@@ -179,75 +152,75 @@
                 </div>
             </section>
 
-            <!-- 詳細設定 -->
+            <!-- Advanced Settings -->
             <section id="advanced">
-                <h2><span class="material-symbols-outlined icon">tune</span>詳細設定</h2>
-                <div class="note">ここは上級者向けの設定です。変更には再起動が必要な項目が多いので、慎重に操作してください。</div>
+                <h2><span class="material-symbols-outlined icon">tune</span>Advanced Settings</h2>
+                <div class="note">These are advanced options. Most require a restart. Change with caution.</div>
                 <div class="setting">
-                    <h3>無制限FPS</h3>
-                    <p>FPSの制限を解除します。</p>
+                    <h3>Unlimited FPS</h3>
+                    <p>Remove the FPS cap.</p>
                 </div>
                 <div class="setting">
-                    <h3>Discord連携</h3>
-                    <p>ゲーム中の状態をDiscordプロフィールに表示します。</p>
+                    <h3>Discord Rich Presence</h3>
+                    <p>Show your game status on your Discord profile.</p>
                 </div>
                 <div class="setting">
-                    <h3>GPU Vsync 無効</h3>
-                    <p>垂直同期をオフにして、入力遅延を最小化します。</p>
+                    <h3>Disable GPU VSync</h3>
+                    <p>Turn off vertical sync to reduce input lag.</p>
                 </div>
                 <div class="setting">
-                    <h3>ANGLEバックエンド変更</h3>
-                    <p>グラフィックス処理に使うライブラリ（OpenGL/Direct3D）を変更できます。</p>
+                    <h3>Change ANGLE Backend</h3>
+                    <p>Switch the graphics backend (OpenGL, Direct3D, etc.).</p>
                 </div>
                 <div class="setting">
-                    <h3>イープロセスGPU</h3>
-                    <p>GPU処理をメインプロセス内で実行します（実験的）。パフォーマンスが向上する場合があります。</p>
+                    <h3>In-Process GPU</h3>
+                    <p>Run GPU processes inside the main process (experimental; may improve performance).</p>
                 </div>
                 <div class="setting">
-                    <h3>QUICプロトコル</h3>
-                    <p>ネットワーク通信にQUICプロトコルを使用します。</p>
+                    <h3>QUIC Protocol</h3>
+                    <p>Use QUIC for network traffic.</p>
                 </div>
                 <div class="setting">
-                    <h3>GPUラスタライゼーション</h3>
-                    <p>GPUでラスタライゼーション処理を実行します。</p>
+                    <h3>GPU Rasterization</h3>
+                    <p>Use the GPU for rasterization steps.</p>
                 </div>
                 <div class="setting">
-                    <h3>ポインタロックオプション</h3>
-                    <p>マウスカーソルをゲーム内でロックできるようにします（FPS向き）。 </p>
+                    <h3>Pointer Lock Options</h3>
+                    <p>Allow the game to lock the mouse pointer (FPS-style controls).</p>
                 </div>
                 <div class="setting">
-                    <h3>重い広告対策</h3>
-                    <p>ブラウザの重い広告対策機能を有効にします。</p>
+                    <h3>Heavy Ad Intervention</h3>
+                    <p>Enable Chrome's heavy ad mitigation.</p>
                 </div>
                 <div class="setting">
-                    <h3>GPUブロックリストを無視</h3>
-                    <p>ドライバが対応していないと警告されるGPUでも強制使用します。</p>
+                    <h3>Ignore GPU Blocklist</h3>
+                    <p>Force-use GPUs that are normally blocked.</p>
                 </div>
                 <div class="setting">
-                    <h3>ゼロコピー転送</h3>
-                    <p>プロセス間のテクスチャ転送を最適化します。</p>
+                    <h3>Zero Copy Transfer</h3>
+                    <p>Optimize texture transfers between processes.</p>
                 </div>
                 <div class="setting">
-                    <h3>キャッシュクリア</h3>
-                    <p>アプリケーションキャッシュを削除します。</p>
+                    <h3>Clear Cache</h3>
+                    <p>Delete the application cache.</p>
                 </div>
                 <div class="setting">
-                    <h3>全データリセット</h3>
-                    <p>設定やキャッシュをすべて初期値に戻します。</p>
+                    <h3>Reset All Data</h3>
+                    <p>Delete all settings and data, returning to factory defaults.</p>
                 </div>
             </section>
 
-            <!-- フォルダの場所 -->
+            <!-- Folder Locations -->
             <section>
-                <h2><span class="material-symbols-outlined icon">folder_open</span>ファイル置き場</h2>
+                <h2><span class="material-symbols-outlined icon">folder_open</span>Where to Put Files</h2>
                 <ul>
-                    <li><code>documents/vmc-swap</code> – すべてのカスタムファイル置き場</li>
-                    <li><code>documents/vmc-swap/css</code> – カスタムCSSファイル</li>
-                    <li><code>documents/vmc-swap/crosshair</code> – 十字線画像（PNG/GIF/APNG）</li>
-                    <li><code>documents/vmc-swap/swapper-user.json</code> – 自分で追加するスワッパー設定</li>
-                    <li><code>documents/vmc-swap/adblock-user.json</code> – 自分で追加する広告ブロック設定</li>
+                    <li><code>documents/vmc-swap</code> – Root folder for all custom files</li>
+                    <li><code>documents/vmc-swap/css</code> – Place custom .css files here</li>
+                    <li><code>documents/vmc-swap/crosshair</code> – Place crosshair images (PNG/GIF/APNG) here</li>
+                    <li><code>documents/vmc-swap/swapper-user.json</code> – Custom swap mappings</li>
+                    <li><code>documents/vmc-swap/adblock-user.json</code> – Custom ad block list</li>
                 </ul>
-                <div class="note">フォルダはVoxMate初回起動時に自動作成されます。存在しない場合は手動で作成してください。</div>
+                <div class="note">These folders are created automatically on first launch. If missing, create them manually.</div>
             </section>
         </main>
     </div>
