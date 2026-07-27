@@ -1,276 +1,281 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoxMate - Voxiom Client</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #1a202c;
-            /* Dark Gray */
-            color: #e2e8f0;
-            /* Light Gray */
-        }
+    <title>VoxMate - The Ultimate Voxiom.io Desktop Client</title>
+    <meta name="description" content="The official high-performance desktop client for Voxiom.io. Engineered for maximum FPS, zero input lag, custom SimpleHUD, crosshair editor, adblocker, and asset swapper.">
+    <meta name="keywords" content="Voxiom, Voxiom.io, VoxMate, Voxiom Client, Vanced Voxiom Client, FPS Boost, SimpleHUD, Voxiom Mods">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="VoxMate - The Ultimate Voxiom.io Desktop Client">
+    <meta property="og:description" content="Engineered for maximum FPS, zero input lag, custom SimpleHUD, crosshair editor, adblocker, and asset swapper.">
+    <meta property="og:image" content="./voxmatebg.png">
+    <meta property="og:url" content="https://namekujilsds.github.io/VoxMate/">
+    <meta property="og:type" content="website">
 
-        .hero-section {
-            background: linear-gradient(rgba(26, 32, 44, 0.8), rgba(26, 32, 44, 0.9)), url('./voxmatebg.png');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .card {
-            background-color: #2d3748;
-            /* Slightly Lighter Dark Gray */
-            border-radius: 0.5rem;
-            /* 8px */
-            padding: 1.5rem;
-            /* 24px */
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 0.75rem 1.5rem;
-            /* 12px 24px */
-            border-radius: 0.375rem;
-            /* 6px */
-            font-weight: 600;
-            text-align: center;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-primary {
-            background-color: #4299e1;
-            /* Blue */
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #3182ce;
-            /* Darker Blue */
-        }
-
-        .btn-secondary {
-            background-color: #4a5568;
-            /* Gray */
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #2d3748;
-            /* Darker Gray */
-        }
-
-        .section-title {
-            font-size: 2.25rem;
-            /* 36px */
-            font-weight: 700;
-            margin-bottom: 2rem;
-            /* 32px */
-            text-align: center;
-            color: #63b3ed;
-            /* Light Blue */
-        }
-
-        .feature-icon {
-            width: 3rem;
-            /* 48px */
-            height: 3rem;
-            /* 48px */
-            margin-bottom: 1rem;
-            /* 16px */
-            color: #4299e1;
-            /* Blue */
-        }
-
-        nav a {
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        nav a:hover {
-            background-color: #4a5568;
-            color: #e2e8f0;
-        }
-    </style>
+    <!-- Stylesheets & Icons -->
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="icon" type="image/png" href="./logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-
 <body>
-    <nav class="bg-gray-900 p-4 shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-blue-400">VoxMate</a>
-            <div class="space-x-4">
-                <a href="#home" class="text-gray-300 hover:text-white">Home</a>
-                <a href="#features" class="text-gray-300 hover:text-white">Features</a>
-                <a href="#download" class="text-gray-300 hover:text-white">Download</a>
-                <a href="https://github.com/NamekujiLSDs/VoxMate" target="_blank" rel="noopener noreferrer"
-                    class="text-gray-300 hover:text-white">GitHub</a>
+
+    <!-- Background Glowing Ambient Orbs -->
+    <div class="bg-glow-container">
+        <div class="glow-orb-1"></div>
+        <div class="glow-orb-2"></div>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="#" class="brand-logo">
+                <img src="./logo.png" alt="VoxMate Logo">
+                <span class="brand-gradient">VoxMate</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#hud-demo" class="nav-link">SimpleHUD</a></li>
+                <li><a href="#download" class="nav-link">Download</a></li>
+                <li><a href="#faq" class="nav-link">FAQ</a></li>
+            </ul>
+
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <a href="https://github.com/NamekujiLSDs/VoxMate" target="_blank" rel="noopener noreferrer" class="btn-nav">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+                <a href="#download" class="btn-primary" style="padding: 8px 20px; font-size: 0.9rem;">Get Client</a>
             </div>
         </div>
     </nav>
 
-    <section id="home" class="hero-section py-20 md:py-32">
-        <div class="container mx-auto text-center px-4">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">VoxMate</h1>
-            <p class="text-xl md:text-2xl mb-8 text-gray-300">The successor to Vanced Voxiom Client.<br
-                    class="md:hidden"> Bringing you a better Voxiom experience.</p>
-            <a href="#download" class="btn btn-primary text-lg">Download Now</a>
-        </div>
-    </section>
-
-    <section id="features" class="py-16 md:py-24 bg-gray-800">
-        <div class="container mx-auto px-4">
-            <h2 class="section-title">Key Features of VoxMate</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="card text-center">
-                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-                        </path>
-                    </svg>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Enhanced Utilities</h3>
-                    <p class="text-gray-400">Provides useful tools and features to assist gameplay.</p>
-                </div>
-                <div class="card text-center">
-                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-                        </path>
-                    </svg>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Performance Improvements</h3>
-                    <p class="text-gray-400">Aims for a smoother, more responsive gaming experience through
-                        optimization.</p>
-                </div>
-                <div class="card text-center">
-                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
-                        </path>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Customization Options</h3>
-                    <p class="text-gray-400">Planned features to allow tweaking the interface and settings to your
-                        liking.</p>
-                </div>
-                <div class="card text-center">
-                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z">
-                        </path>
-                    </svg>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Open Source</h3>
-                    <p class="text-gray-400">Developed on GitHub, allowing anyone to contribute or review the code.</p>
-                </div>
-                <div class="card text-center">
-                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
-                    </svg>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Successor to Vanced Voxiom Client</h3>
-                    <p class="text-gray-400">Developed as the successor to the popular Vanced Voxiom Client.</p>
-                </div>
-                <div class="card text-center">
-                    <svg class="feature-icon mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                    </svg>
-                    <h3 class="text-xl font-semibold mb-2 text-blue-300">Lightweight Design</h3>
-                    <p class="text-gray-400">Aims for minimal resource consumption and swift performance.</p>
-                </div>
+    <!-- Hero Section -->
+    <header id="home" class="hero-section">
+        <div class="container">
+            <div class="badge-tag">
+                <i class="fa-solid fa-bolt"></i> VoxMate v1.1.0 Release Available
             </div>
-        </div>
-    </section>
 
-    <section id="download" class="py-16 md:py-24 bg-gray-900">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="section-title">Get VoxMate</h2>
-            <p class="text-lg mb-8 text-gray-400">The latest version of VoxMate can be downloaded from the GitHub
-                releases page.</p>
-            <div class="max-w-md mx-auto card">
-                <h3 class="text-2xl font-semibold mb-4 text-blue-300">Latest Release</h3>
-                <p class="text-gray-400 mb-6">
-                    Get the newest version with bug fixes and new features.
-                    Please check the GitHub repository's README for installation instructions and details.
-                </p>
-                <a href="https://github.com/NamekujiLSDs/VoxMate/releases" target="_blank" rel="noopener noreferrer"
-                    class="btn btn-primary w-full md:w-auto text-lg">
-                    Go to GitHub Releases
+            <h1 class="hero-title">
+                The Next-Gen Desktop Client for <span class="brand-gradient">Voxiom.io</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                The official successor to Vanced Voxiom Client. Built from the ground up for maximum FPS, ultra-low latency, custom SimpleHUD stats, crosshair customization, and total resource swapping.
+            </p>
+
+            <div class="hero-actions">
+                <a href="#download" class="btn-primary">
+                    <i class="fa-solid fa-download"></i> Download VoxMate
                 </a>
-                <p class="mt-6 text-sm text-gray-500">
-                    VoxMate is developed in JavaScript.
-                    Follow the project's instructions for usage (e.g., installation via a user script manager like
-                    Tampermonkey).
+                <a href="#features" class="btn-secondary">
+                    <i class="fa-solid fa-layer-group"></i> Explore Features
+                </a>
+                <a href="https://github.com/NamekujiLSDs/VoxMate" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+                    <i class="fa-brands fa-github"></i> View Source
+                </a>
+            </div>
+
+            <div class="showcase-wrapper">
+                <img src="./heroimg.png" alt="VoxMate Gameplay Showcase" class="showcase-banner" onerror="this.src='./voxmatebg.png'">
+            </div>
+        </div>
+    </header>
+
+    <!-- Key Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">ENGINEERED FOR VICTORY</span>
+                <h2 class="section-title">Packed with High-Performance Features</h2>
+                <p class="section-subtitle">Everything you need to dominate Voxiom.io in one lightweight desktop client.</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1 -->
+                <div class="feature-card" style="--accent-color: #2DD4BF;">
+                    <div class="feature-icon-box">
+                        <i class="fa-solid fa-gauge-high"></i>
+                    </div>
+                    <h3 class="feature-title">Maximum FPS & Low Latency</h3>
+                    <p class="feature-desc">
+                        Powered by V8 JIT aggressive optimization, parallel shader compilation, ANGLE D3D11 backend, and zero-copy memory rendering for buttery smooth gameplay.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="feature-card" style="--accent-color: #3B82F6;">
+                    <div class="feature-icon-box">
+                        <i class="fa-solid fa-display"></i>
+                    </div>
+                    <h3 class="feature-title">SimpleInfo HUD Overlay</h3>
+                    <p class="feature-desc">
+                        Clean, shadowed text HUD displaying real-time FPS, Ping, Position (XYZ), Block & Chunk Coordinates, Velocity, and Yaw/Pitch without clutter.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="feature-card" style="--accent-color: #A855F7;">
+                    <div class="feature-icon-box">
+                        <i class="fa-solid fa-crosshair"></i>
+                    </div>
+                    <h3 class="feature-title">Custom Crosshair Suite</h3>
+                    <p class="feature-desc">
+                        Load custom image URLs or local PNG crosshairs. Fine-tune width, height, opacity, and pixelated/crisp rendering modes effortlessly.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="feature-card" style="--accent-color: #F43F5E;">
+                    <div class="feature-icon-box">
+                        <i class="fa-solid fa-folder-tree"></i>
+                    </div>
+                    <h3 class="feature-title">Resource Swapper & Custom CSS</h3>
+                    <p class="feature-desc">
+                        Swap block textures, weapon audio, and custom skyboxes directly from your local swap folder. Inject custom CSS themes on the fly.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="feature-card" style="--accent-color: #F59E0B;">
+                    <div class="feature-icon-box">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="feature-title">Built-in Ad & Tracker Blocker</h3>
+                    <p class="feature-desc">
+                        In-memory adblocker intercepts third-party ad networks and trackers, preventing random network spikes and keeping your interface clean.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="feature-card" style="--accent-color: #10B981;">
+                    <div class="feature-icon-box">
+                        <i class="fa-brands fa-discord"></i>
+                    </div>
+                    <h3 class="feature-title">Discord Rich Presence</h3>
+                    <p class="feature-desc">
+                        Showcase your live game status, active server URL, and playing state directly on your Discord profile to invite friends with one click.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive HUD Demo Section -->
+    <section id="hud-demo" class="hud-demo-section">
+        <div class="container">
+            <div class="hud-demo-card">
+                <div class="hud-preview-box">
+                    <div class="hud-overlay-preview">
+                        <div>FPS: <span style="color: #2DD4BF;">165</span></div>
+                        <div>PING: <span style="color: #3B82F6;">18ms</span></div>
+                        <div>POS: <span style="color: #A855F7;">X: 124.5, Y: 68.0, Z: -312.8</span></div>
+                        <div>BLOCK: <span style="color: #F59E0B;">124, 68, -313</span></div>
+                        <div>CHUNK: 7, -20</div>
+                        <div>VELOCITY: 4.82 m/s</div>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="section-tag">TAILORED HUD OVERLAY</span>
+                    <h2 class="section-title" style="font-size: 2rem;">SimpleInfoGUI</h2>
+                    <p class="feature-desc" style="margin-bottom: 24px;">
+                        Replace heavy UI cards with a lightweight, frameless, shadowed HUD overlay. Customize screen position (top-left, top-right, bottom-left, bottom-right) and margins to match your layout preference.
+                    </p>
+
+                    <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px; font-weight: 500;">
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-main);">
+                            <i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Individual toggle for each stat (FPS, Ping, XYZ, Block, Chunk)
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-main);">
+                            <i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Zero performance penalty with direct engine hooks
+                        </li>
+                        <li style="display: flex; align-items: center; gap: 10px; color: var(--text-main);">
+                            <i class="fa-solid fa-circle-check" style="color: var(--accent-cyan);"></i> Native 0-Key Debug GUI toggle compatibility
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download-section">
+        <div class="container">
+            <div class="download-card">
+                <div class="download-version">Latest Release • v1.1.0</div>
+                <h2 class="section-title" style="margin-bottom: 20px;">Ready to Play Voxiom.io like a Pro?</h2>
+                <p class="section-subtitle" style="margin-bottom: 36px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Download VoxMate for Windows 64-bit. Free, open-source, and privacy-focused under GPL v3.0 license.
                 </p>
-            </div>
 
-            <div class="mt-12">
-                <h3 class="text-xl font-semibold mb-4 text-blue-300">Important Notes</h3>
-                <ul class="list-disc list-inside text-gray-400 max-w-lg mx-auto text-left">
-                    <li>VoxMate is a third-party client. Use at your own risk.</li>
-                    <li>Please adhere to Voxiom's terms of service.</li>
-                    <li>Always download and install software from trusted sources.</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <section id="preview" class="py-16 md:py-24 bg-gray-800">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="section-title">Gallery</h2>
-            <p class="text-lg mb-8 text-gray-400">See VoxMate in action (replace with actual screenshots)</p>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="card">
-                    <img src="https://placehold.co/600x400/2d3748/e2e8f0?text=VoxMate+UI+Screenshot+1"
-                        alt="VoxMate UI Screenshot 1" class="rounded-md shadow-lg mx-auto"
-                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/718096/e2e8f0?text=Image+Not+Found';">
-                    <p class="mt-2 text-gray-400">Example of the main interface.</p>
+                <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px;">
+                    <a href="https://github.com/NamekujiLSDs/VoxMate/releases" target="_blank" rel="noopener noreferrer" class="btn-primary" style="padding: 16px 40px; font-size: 1.1rem;">
+                        <i class="fa-solid fa-download"></i> Download Latest Release (.exe / .zip)
+                    </a>
                 </div>
-                <div class="card">
-                    <img src="https://placehold.co/600x400/2d3748/e2e8f0?text=VoxMate+Feature+Screenshot+2"
-                        alt="VoxMate Feature Screenshot 2" class="rounded-md shadow-lg mx-auto"
-                        onerror="this.onerror=null;this.src='https://placehold.co/600x400/718096/e2e8f0?text=Image+Not+Found';">
-                    <p class="mt-2 text-gray-400">Image of an enhanced feature in use.</p>
+
+                <div style="display: flex; justify-content: center; gap: 24px; color: var(--text-dim); font-size: 0.9rem; flex-wrap: wrap;">
+                    <span><i class="fa-brands fa-windows"></i> Windows 10 / 11 (64-bit)</span>
+                    <span><i class="fa-solid fa-code"></i> Open Source (GPL-3.0)</span>
+                    <span><i class="fa-solid fa-shield-virus"></i> VirusTotal Verified</span>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- FAQ Section -->
+    <section id="faq" class="features-section" style="padding-top: 40px;">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">FREQUENTLY ASKED QUESTIONS</span>
+                <h2 class="section-title">Got Questions? We Have Answers</h2>
+            </div>
 
-    <footer class="bg-gray-900 text-center py-8">
-        <p class="text-gray-500">&copy; 2024-2025 VoxMate Project. All rights reserved.</p>
-        <p class="text-gray-500">
-            Developed by <a href="https://github.com/NamekujiLSDs" target="_blank" rel="noopener noreferrer"
-                class="text-blue-400 hover:text-blue-300">NamekujiLSDs</a>.
-        </p>
-        <p class="text-gray-500 mt-2 text-sm">
-            VoxMate is an unofficial client for Voxiom.
-        </p>
+            <div style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px;">
+                <div class="feature-card">
+                    <h3 class="feature-title">Is VoxMate free to use?</h3>
+                    <p class="feature-desc">Yes! VoxMate is 100% free and open-source software distributed under the GNU General Public License v3.0.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3 class="feature-title">How do I use the Resource Swapper?</h3>
+                    <p class="feature-desc">Simply place your custom textures or audio files in the VoxMate swap folder, enable "Resource Swapper" in the settings, and restart the client.</p>
+                </div>
+
+                <div class="feature-card">
+                    <h3 class="feature-title">Is VoxMate safe to use with Voxiom.io?</h3>
+                    <p class="feature-desc">VoxMate is an unofficial client designed to enhance rendering performance, UI, and quality-of-life tools. Always adhere to Voxiom.io's Terms of Service.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="#" class="brand-logo">
+                    <img src="./logo.png" alt="VoxMate Logo">
+                    <span class="brand-gradient">VoxMate</span>
+                </a>
+
+                <div class="footer-links">
+                    <a href="./pp.html" class="footer-link">Privacy Policy</a>
+                    <a href="./tos.html" class="footer-link">Terms of Service</a>
+                    <a href="https://github.com/NamekujiLSDs/VoxMate" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024-2026 VoxMate Project. Developed by <a href="https://github.com/NamekujiLSDs" target="_blank" rel="noopener noreferrer" style="color: var(--accent-cyan);">NamekujiLSDs</a>.</p>
+                <p style="margin-top: 6px; font-size: 0.85rem;">VoxMate is an unofficial desktop client for Voxiom.io and is not affiliated with or endorsed by Voxiom.</p>
+            </div>
+        </div>
     </footer>
 
-    <script>
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
-
 </body>
-
 </html>
