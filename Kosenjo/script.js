@@ -1,4 +1,4 @@
-﻿/**
+/**
  * 古戦場貢献度ランキング スクリプト (script.js)
  * 
  * 本スクリプトは、グランブルーファンタジーのゲーム内イベント「決戦！星の古戦場」において、
@@ -202,7 +202,7 @@ const calculateTodayIncrease = (points) => {
 const calculateSpeedFromPast = (points, targetSeconds) => {
   if (!points || points.length < 2) return null;
   const latest = points[points.length - 1];
-  
+
   let pastPoint = null;
   for (let i = points.length - 2; i >= 0; i--) {
     if (latest.updatetime - points[i].updatetime >= targetSeconds) {
@@ -210,12 +210,12 @@ const calculateSpeedFromPast = (points, targetSeconds) => {
       break;
     }
   }
-  
+
   if (!pastPoint) pastPoint = points[0];
 
   const dt = latest.updatetime - pastPoint.updatetime;
   const dp = latest.point - pastPoint.point;
-  
+
   if (dt <= 0) return 0;
   return (dp / dt) * 3600;
 };
@@ -277,12 +277,12 @@ const fetchData = async (url) => {
  * @type {Array<{id: string, name: string, realStartH: number, realEndH: number, activeStartH: number, activeEndH: number}>}
  */
 const ACTIVE_SEGMENTS = [
-  { id: 'qualify',  name: '予選',       realStartH: 0,   realEndH: 29,  activeStartH: 0,   activeEndH: 29 },
-  { id: 'interval', name: 'インターバル', realStartH: 36,  realEndH: 60,  activeStartH: 29,  activeEndH: 53 },
-  { id: 'day1',     name: '本戦1日目',   realStartH: 60,  realEndH: 77,  activeStartH: 53,  activeEndH: 70 },
-  { id: 'day2',     name: '本戦2日目',   realStartH: 84,  realEndH: 101, activeStartH: 70,  activeEndH: 87 },
-  { id: 'day3',     name: '本戦3日目',   realStartH: 108, realEndH: 125, activeStartH: 87,  activeEndH: 104 },
-  { id: 'day4',     name: '本戦4日目',   realStartH: 132, realEndH: 149, activeStartH: 104, activeEndH: 121 }
+  { id: 'qualify', name: '予選', realStartH: 0, realEndH: 29, activeStartH: 0, activeEndH: 29 },
+  { id: 'interval', name: 'インターバル', realStartH: 36, realEndH: 60, activeStartH: 29, activeEndH: 53 },
+  { id: 'day1', name: '本戦1日目', realStartH: 60, realEndH: 77, activeStartH: 53, activeEndH: 70 },
+  { id: 'day2', name: '本戦2日目', realStartH: 84, realEndH: 101, activeStartH: 70, activeEndH: 87 },
+  { id: 'day3', name: '本戦3日目', realStartH: 108, realEndH: 125, activeStartH: 87, activeEndH: 104 },
+  { id: 'day4', name: '本戦4日目', realStartH: 132, realEndH: 149, activeStartH: 104, activeEndH: 121 }
 ];
 
 /**
@@ -295,13 +295,13 @@ const ACTIVE_SEGMENTS = [
  * @type {Array<{id: string, label: string, activeStartH: number|null, activeEndH: number|null, realStartH: number|null, realEndH: number|null}>}
  */
 const EVENT_PHASES = [
-  { id: 'all',      label: '全期間',    activeStartH: null, activeEndH: null, realStartH: null, realEndH: null },
-  { id: 'qualify',  label: '予選',      activeStartH: 0,   activeEndH: 29,  realStartH: 0,   realEndH: 29 },
-  { id: 'interval', label: 'インターバル', activeStartH: 29,  activeEndH: 53,  realStartH: 36,  realEndH: 60 },
-  { id: 'day1',     label: '本戦1日目',  activeStartH: 53,  activeEndH: 70,  realStartH: 60,  realEndH: 77 },
-  { id: 'day2',     label: '本戦2日目',  activeStartH: 70,  activeEndH: 87,  realStartH: 84,  realEndH: 101 },
-  { id: 'day3',     label: '本戦3日目',  activeStartH: 87,  activeEndH: 104, realStartH: 108, realEndH: 125 },
-  { id: 'day4',     label: '本戦4日目',  activeStartH: 104, activeEndH: 121, realStartH: 132, realEndH: 149 }
+  { id: 'all', label: '全期間', activeStartH: null, activeEndH: null, realStartH: null, realEndH: null },
+  { id: 'qualify', label: '予選', activeStartH: 0, activeEndH: 29, realStartH: 0, realEndH: 29 },
+  { id: 'interval', label: 'インターバル', activeStartH: 29, activeEndH: 53, realStartH: 36, realEndH: 60 },
+  { id: 'day1', label: '本戦1日目', activeStartH: 53, activeEndH: 70, realStartH: 60, realEndH: 77 },
+  { id: 'day2', label: '本戦2日目', activeStartH: 70, activeEndH: 87, realStartH: 84, realEndH: 101 },
+  { id: 'day3', label: '本戦3日目', activeStartH: 87, activeEndH: 104, realStartH: 108, realEndH: 125 },
+  { id: 'day4', label: '本戦4日目', activeStartH: 104, activeEndH: 121, realStartH: 132, realEndH: 149 }
 ];
 
 /**
@@ -425,10 +425,10 @@ const getRealElapsedForPhase = (activeH, phaseId = 'all') => {
 const getInterpolatedPoint = (points, startUnix, targetElapsedH) => {
   if (!points || points.length === 0) return 0;
   const targetUnix = startUnix + targetElapsedH * 3600;
-  
+
   if (targetUnix <= points[0].updatetime) return points[0].point;
   if (targetUnix >= points[points.length - 1].updatetime) return points[points.length - 1].point;
-  
+
   let p1 = points[0], p2 = points[points.length - 1];
   for (let i = 0; i < points.length - 1; i++) {
     if (points[i].updatetime <= targetUnix && points[i + 1].updatetime >= targetUnix) {
@@ -456,7 +456,7 @@ const calculateActivityCurve = (pastDataArrays, maxHours) => {
   const curve = new Map();
   for (let h = 0; h < maxHours; h++) {
     if (isRestTimeByElapsed(h)) {
-      curve.set(h, 0); 
+      curve.set(h, 0);
       continue;
     }
     let speedSum = 0; let count = 0;
@@ -493,14 +493,14 @@ const calcInflationRate = (currentBorder, activityCurve, latestElapsedH) => {
   const compareHours = 12;
   const elapsedInt = Math.floor(latestElapsedH);
   if (elapsedInt < compareHours) return 1.0;
-  
+
   const pStart = getInterpolatedPoint(currentBorder, currentBorder[0].updatetime, elapsedInt - compareHours);
   const pEnd = getInterpolatedPoint(currentBorder, currentBorder[0].updatetime, elapsedInt);
   const currentInc = Math.max(0, pEnd - pStart);
-  
+
   let pastInc = 0;
   for (let h = elapsedInt - compareHours; h < elapsedInt; h++) pastInc += (activityCurve.get(h) || 10000);
-  
+
   if (pastInc > 0 && currentInc > 0) return currentInc / pastInc;
   return 1.0;
 };
@@ -520,14 +520,14 @@ const calcInflationRate = (currentBorder, activityCurve, latestElapsedH) => {
  * @param {'point'|'speed'} [chartType='point'] - グラフ種別 ('point': 累計貢献度, 'speed': 時速)
  * @returns {void}
  */
-window.openChartModal = function(userId, chartType = 'point') {
+window.openChartModal = function (userId, chartType = 'point') {
   if (!globalEventData.currentBorder100k || globalEventData.currentBorder100k.length === 0) return;
 
   // 初日19:00:00 JSTを開始基準時刻として算出
   const currentStartTime = getEventStartTime(globalEventData.currentBorder100k[0].updatetime);
   // 本戦4日目終了（149時間）までの全期間を対象（SPバトルは貢献度変動がないため除外）
-  const maxElapsed = 149; 
-  
+  const maxElapsed = 149;
+
   if (!globalEventData.activityCurve100k) {
     globalEventData.activityCurve100k = calculateActivityCurve(globalEventData.pastBorders100k, maxElapsed + 1);
     globalEventData.activityCurve2k = calculateActivityCurve(globalEventData.pastBorders2k, maxElapsed + 1);
@@ -537,7 +537,7 @@ window.openChartModal = function(userId, chartType = 'point') {
 
   const latestBorder = globalEventData.currentBorder100k[globalEventData.currentBorder100k.length - 1];
   const latestElapsedH = (latestBorder.updatetime - currentStartTime) / 3600;
-  const latestUnixMs = latestBorder.updatetime * 1000; 
+  const latestUnixMs = latestBorder.updatetime * 1000;
 
   const inflation100k = calcInflationRate(globalEventData.currentBorder100k, curve100k, latestElapsedH);
   const inflation2k = (globalEventData.currentBorder2k && globalEventData.currentBorder2k.length > 0)
@@ -550,15 +550,15 @@ window.openChartModal = function(userId, chartType = 'point') {
   if (userId !== 'border_100k' && userId !== 'border_2k') {
     targetUser = globalEventData.users[userId];
     if (targetUser) {
-       const uLatestPoint = targetUser.points[targetUser.points.length-1].point;
-       const border100kLatestPoint = latestBorder.point;
-       // プレイヤーのポイントが10万位の2倍以上ある場合は、よりハイレベルな2000位ボーダーと比較する
-       if (uLatestPoint > border100kLatestPoint * 2) {
-           is2kTier = true;
-       }
+      const uLatestPoint = targetUser.points[targetUser.points.length - 1].point;
+      const border100kLatestPoint = latestBorder.point;
+      // プレイヤーのポイントが10万位の2倍以上ある場合は、よりハイレベルな2000位ボーダーと比較する
+      if (uLatestPoint > border100kLatestPoint * 2) {
+        is2kTier = true;
+      }
     }
   } else if (userId === 'border_2k') {
-      is2kTier = true;
+    is2kTier = true;
   }
 
   const refBorderName = is2kTier ? '2000位ボーダー' : '10万位ボーダー';
@@ -568,18 +568,18 @@ window.openChartModal = function(userId, chartType = 'point') {
 
   let userPace = 1.0;
   if (targetUser) {
-      // ユーザー自身の直近12時間の稼働速度比率を計算し、ボーダー速度に対する個人ペース係数を算出
-      const compareHours = 12;
-      const uPoints = targetUser.points;
-      const uLatestH = (uPoints[uPoints.length-1].updatetime - currentStartTime) / 3600;
-      const startH = Math.max(0, uLatestH - compareHours);
-      
-      const uInc = Math.max(0, uPoints[uPoints.length-1].point - getInterpolatedPoint(uPoints, currentStartTime, startH));
-      const borderInc = Math.max(0, refBorderDataRaw[refBorderDataRaw.length-1].point - getInterpolatedPoint(refBorderDataRaw, currentStartTime, startH));
-      
-      if (borderInc > 0) {
-          userPace = uInc / borderInc;
-      }
+    // ユーザー自身の直近12時間の稼働速度比率を計算し、ボーダー速度に対する個人ペース係数を算出
+    const compareHours = 12;
+    const uPoints = targetUser.points;
+    const uLatestH = (uPoints[uPoints.length - 1].updatetime - currentStartTime) / 3600;
+    const startH = Math.max(0, uLatestH - compareHours);
+
+    const uInc = Math.max(0, uPoints[uPoints.length - 1].point - getInterpolatedPoint(uPoints, currentStartTime, startH));
+    const borderInc = Math.max(0, refBorderDataRaw[refBorderDataRaw.length - 1].point - getInterpolatedPoint(refBorderDataRaw, currentStartTime, startH));
+
+    if (borderInc > 0) {
+      userPace = uInc / borderInc;
+    }
   }
 
   const borderData = [];
@@ -649,7 +649,7 @@ window.openChartModal = function(userId, chartType = 'point') {
         const p1 = points[i - 1];
         const p2 = points[i];
         const elapsedH = (p2.updatetime - currentStartTime) / 3600;
-        
+
         // 空白の時間帯は時速プロットをスキップ
         if (isRestTimeByElapsed(elapsedH)) continue;
 
@@ -659,12 +659,12 @@ window.openChartModal = function(userId, chartType = 'point') {
         if (dt > 0) speed = (dp / dt) * 3600;
         // 休止時間等で長時間データ間隔が空いた場合の補正
         if (dt > 3600 && dp < 10000) speed = 0;
-        data.push({ 
-          x: realElapsedToActiveH(elapsedH), 
-          y: speed, 
+        data.push({
+          x: realElapsedToActiveH(elapsedH),
+          y: speed,
           point: p2.point,
           isPredict: false,
-          realUnixMs: p2.updatetime * 1000 
+          realUnixMs: p2.updatetime * 1000
         });
       }
       return data;
@@ -696,7 +696,7 @@ window.openChartModal = function(userId, chartType = 'point') {
   }
 
   renderChartjs(userId, targetUser, refBorderName, borderData, userData, currentStartTime, latestUnixMs, chartType);
-  
+
   const modal = document.getElementById('chartModal');
   modal.classList.remove('hidden');
   requestAnimationFrame(() => {
@@ -713,7 +713,7 @@ window.openChartModal = function(userId, chartType = 'point') {
  * 
  * @returns {void}
  */
-window.closeChartModal = function() {
+window.closeChartModal = function () {
   const modal = document.getElementById('chartModal');
   modal.classList.add('opacity-0');
   setTimeout(() => {
@@ -862,7 +862,7 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
   // データ配列から実測値および予測値を算出する内部関数
   const calcStats = (dataList) => {
     if (!dataList || dataList.length === 0) return { realVal: 0, predVal: null, hasData: false };
-    
+
     // 実測データ（isPredict: false）
     const realList = dataList.filter(d => !d.isPredict && d.point !== undefined && d.point !== null);
     const hasData = realList.length >= 1;
@@ -876,7 +876,7 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
         realVal = realList.length >= 2 ? Math.max(0, realList[realList.length - 1].point - realList[0].point) : 0;
       }
     }
-    
+
     // 予測データ（isPredict: true）
     const predList = dataList.filter(d => d.isPredict && d.point !== undefined && d.point !== null);
     let predVal = null;
@@ -889,7 +889,7 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
         predVal = Math.max(0, predList[predList.length - 1].point - realList[0].point);
       }
     }
-    
+
     return { realVal, predVal, hasData };
   };
 
@@ -962,7 +962,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
   const tabsContainer = document.getElementById('modalDateTabs');
   const modalTitleEl = document.getElementById('modalChartTitle');
   tabsContainer.innerHTML = '';
-  
+
   // モーダルヘッダータイトルの更新
   if (modalTitleEl) {
     const targetName = targetUser ? `${targetUser.name}` : `${refBorderName}`;
@@ -990,7 +990,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
         c.className = `px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-lg font-medium transition-all whitespace-nowrap border border-[#3f3f46] text-[#a1a1aa] hover:bg-[#3f3f46]/50 bg-[#18181b] shrink-0`;
       });
       btn.className = `px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-lg font-bold transition-all whitespace-nowrap border border-[#3b82f6] bg-[#3b82f6]/20 text-[#60a5fa] shrink-0 shadow-sm`;
-      
+
       currentSelectedPhaseId = phase.id;
 
       if (myChart) {
@@ -1065,7 +1065,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
 
   const datasets = [];
   const borderRealIdx = borderData.findIndex(d => d.isPredict);
-  
+
   // ボーダー曲線のデータセット定義（実測値は実線、予測値は破線 [5, 5] で描画）
   // 【背景・意図】
   // 全期間表示において、300点以上の過密プロットが重なって線が極太になる現象を根絶するため、
@@ -1073,7 +1073,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
   datasets.push({
     label: refBorderName,
     data: borderData,
-    borderColor: '#3b82f6', 
+    borderColor: '#3b82f6',
     backgroundColor: '#3b82f6',
     borderWidth: 2,
     pointRadius: (ctx) => currentSelectedPhaseId === 'all' ? 0 : (isMobile ? 1.5 : 2),
@@ -1093,7 +1093,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
     datasets.push({
       label: targetUser.name + ' (自分)',
       data: userData,
-      borderColor: '#ef4444', 
+      borderColor: '#ef4444',
       backgroundColor: '#ef4444',
       borderWidth: 2.5,
       pointRadius: (ctx) => currentSelectedPhaseId === 'all' ? 0 : (isMobile ? 2.5 : 3),
@@ -1189,7 +1189,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
       chartCtx.restore();
     }
   };
-  
+
   myChart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
@@ -1201,19 +1201,19 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
       interaction: { mode: 'index', intersect: false },
       plugins: {
         title: {
-            display: true,
-            text: chartType === 'speed' ? '速度(万/時)' : '貢献度(億)',
-            color: '#71717a',
-            align: 'start',
-            font: { size: isMobile ? 11 : 12, weight: 'normal' },
-            padding: { bottom: 8 }
+          display: true,
+          text: chartType === 'speed' ? '速度(万/時)' : '貢献度(億)',
+          color: '#71717a',
+          align: 'start',
+          font: { size: isMobile ? 11 : 12, weight: 'normal' },
+          padding: { bottom: 8 }
         },
         legend: {
           labels: { color: '#e4e4e7', font: { size: isMobile ? 12 : 14, weight: 'bold' } }
         },
         tooltip: {
           callbacks: {
-            title: function(context) {
+            title: function (context) {
               const raw = context[0].raw;
               let unixMs = raw.realUnixMs;
               if (!unixMs) {
@@ -1221,14 +1221,14 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
                 unixMs = (currentStartTime + realElapsed * 3600) * 1000;
               }
               const d = new Date(unixMs);
-              return `${d.getMonth()+1}/${d.getDate()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+              return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
             },
-            label: function(context) {
+            label: function (context) {
               const label = context.dataset.label || '';
               const isPredict = context.raw.isPredict ? ' (予測)' : '';
               const val = context.raw.y;
               if (chartType === 'speed') {
-                  return `${label}${isPredict}: ${formatSpeed(val)}/時`;
+                return `${label}${isPredict}: ${formatSpeed(val)}/時`;
               }
               return `${label}${isPredict}: ${formatPoint(val)}`;
             }
@@ -1240,16 +1240,16 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
           type: 'linear',
           ticks: {
             color: '#a1a1aa',
-            callback: function(value) {
+            callback: function (value) {
               const isAllPeriod = !currentSelectedPhaseId || currentSelectedPhaseId === 'all';
               const realElapsed = getRealElapsedForPhase(value, currentSelectedPhaseId);
               const unixMs = (currentStartTime + realElapsed * 3600) * 1000;
               const d = new Date(unixMs);
-              
+
               if (isAllPeriod) {
                 return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours().toString().padStart(2, '0')}時`;
               }
-              
+
               const hours = d.getHours();
               const minutes = d.getMinutes().toString().padStart(2, '0');
               const seg = ACTIVE_SEGMENTS.find(s => s.id === currentSelectedPhaseId);
@@ -1265,7 +1265,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
         y: {
           ticks: {
             color: '#a1a1aa',
-            callback: function(value) {
+            callback: function (value) {
               if (chartType === 'speed') return value / 10000;
               if (value >= 100000000) return (value / 100000000).toFixed(1);
               if (value >= 10000) return (value / 10000).toFixed(0) + '万';
@@ -1312,7 +1312,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
  * @param {string} id - コピー対象のプレイヤーID
  * @returns {void}
  */
-window.copyId = function(e, id) {
+window.copyId = function (e, id) {
   e.stopPropagation();
   const textArea = document.createElement("textarea");
   textArea.value = id;
@@ -1339,7 +1339,7 @@ window.copyId = function(e, id) {
  * 
  * @returns {void}
  */
-window.copyBookmarklet = function() {
+window.copyBookmarklet = function () {
   const code = 'javascript:(async()=>{u=JSON.parse(document.getElementById("server-props").textContent).userId;v=window.Game.version;r=await Promise.all([1,2,3].map(i=>fetch(`/guild_main/guild_member_list/${i}?uid=${u}`,{headers:{"X-Requested-With":"XMLHttpRequest","X-VERSION":v}}).then(r=>r.json())));navigator.clipboard.writeText(r.flatMap(j=>j.list.map(m=>m.id)).join(","));})()';
   const textArea = document.createElement("textarea");
   textArea.value = code;
@@ -1379,7 +1379,7 @@ const showToast = (message) => {
   const toastMsg = document.getElementById('toastMsg');
   toastMsg.textContent = message;
   toast.classList.remove('opacity-0');
-  
+
   clearTimeout(toastTimeout);
   toastTimeout = setTimeout(() => {
     toast.classList.add('opacity-0');
@@ -1425,7 +1425,7 @@ const updateSortIcons = () => {
  * @param {'rank'|'point'|'realSpeed'|'todayInc'} key - ソート対象のカラムキー
  * @returns {void}
  */
-window.handleSort = function(key) {
+window.handleSort = function (key) {
   if (!globalEventData.tableData || globalEventData.tableData.length === 0) return;
 
   if (currentSortKey === key) {
@@ -1438,12 +1438,12 @@ window.handleSort = function(key) {
   const sortedData = [...globalEventData.tableData].sort((a, b) => {
     const valA = a[key];
     const valB = b[key];
-    
+
     // nullまたはundefinedの項目は末尾に送る
     if (valA === null && valB !== null) return 1;
     if (valB === null && valA !== null) return -1;
     if (valA === null && valB === null) return 0;
-    
+
     if (valA < valB) return currentSortOrder === 'asc' ? -1 : 1;
     if (valA > valB) return currentSortOrder === 'asc' ? 1 : -1;
     return 0;
@@ -1456,33 +1456,177 @@ window.handleSort = function(key) {
 // --- メイン解析ロジック ---
 
 /**
- * プレイヤーID配列をコンパクトなURLセーフBase64文字列にエンコードします。
- * 
- * 【背景・意図】
- * グラブルのIDは各7〜8桁の正の整数（32bit符号なし整数、4バイト）であるため、
- * 30人分の数値をバイナリ配列（Uint32Array）としてパックしてBase64化することで、
- * カンマ区切りテキストに比べてURL長を約40%短縮（270文字超 → 約160文字）できます。
- * 
- * @param {string[]} ids - プレイヤーID文字列の配列
- * @returns {string} URLセーフなBase64エンコード文字列
+ * Uint8ArrayバイナリをURLセーフなBase64文字列に変換します。
+ * @param {Uint8Array} bytes 
+ * @returns {string}
  */
-const encodeIdsToParam = (ids) => {
-  const nums = ids.map(id => parseInt(id, 10)).filter(n => !isNaN(n) && n > 0);
-  if (nums.length === 0) return '';
-  const u32 = new Uint32Array(nums);
-  const u8 = new Uint8Array(u32.buffer);
+const uint8ArrayToBase64url = (bytes) => {
   let binary = '';
-  for (let i = 0; i < u8.length; i++) binary += String.fromCharCode(u8[i]);
-  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
 };
 
 /**
- * URLセーフBase64文字列からプレイヤーID配列を復元します。
+ * URLセーフなBase64文字列をUint8Arrayバイナリに変換します。
+ * @param {string} b64url 
+ * @returns {Uint8Array}
+ */
+const base64urlToUint8Array = (b64url) => {
+  let b64 = b64url.replace(/-/g, '+').replace(/_/g, '/');
+  while (b64.length % 4) b64 += '=';
+  const binary = atob(b64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+};
+
+/**
+ * 数値配列をLEB128可変長整数（varint）バイト列にエンコードします。
+ * @param {number[]} nums 
+ * @returns {Uint8Array}
+ */
+const encodeVarints = (nums) => {
+  const bytes = [];
+  for (let val of nums) {
+    while (val >= 0x80) {
+      bytes.push((val & 0x7f) | 0x80);
+      val >>>= 7;
+    }
+    bytes.push(val & 0x7f);
+  }
+  return new Uint8Array(bytes);
+};
+
+/**
+ * LEB128可変長整数（varint）バイト列から数値配列を復元します。
+ * @param {Uint8Array} bytes 
+ * @returns {number[]}
+ */
+const decodeVarints = (bytes) => {
+  const nums = [];
+  let val = 0;
+  let shift = 0;
+  for (let i = 0; i < bytes.length; i++) {
+    const b = bytes[i];
+    val += (b & 0x7f) * Math.pow(2, shift);
+    if ((b & 0x80) === 0) {
+      nums.push(val);
+      val = 0;
+      shift = 0;
+    } else {
+      shift += 7;
+    }
+  }
+  return nums;
+};
+
+/**
+ * deflate-raw でバイナリデータを非同期圧縮します。
+ * @param {Uint8Array} bytes 
+ * @returns {Promise<Uint8Array>}
+ */
+const deflateCompress = async (bytes) => {
+  const stream = new Response(bytes).body.pipeThrough(new CompressionStream('deflate-raw'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+};
+
+/**
+ * deflate-raw でバイナリデータを非同期解凍します。
+ * @param {Uint8Array} bytes 
+ * @returns {Promise<Uint8Array>}
+ */
+const deflateDecompress = async (bytes) => {
+  const stream = new Response(bytes).body.pipeThrough(new DecompressionStream('deflate-raw'));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+};
+
+/**
+ * プレイヤーID配列をパイプライン圧縮
+ * 【ソート → デルタ圧縮 → varint → DEFLATE → Base64url】
+ * を適用して極小のURLセーフBase64文字列に変換します。
  * 
- * 【背景・意図】
- * 短縮パラメータ（?d=...）で共有・保存されたURLからバイナリを展開し、
- * 元のプレイヤーID一覧を完全に復元します。
+ * @param {string[]} ids - プレイヤーID文字列の配列
+ * @returns {Promise<string>} URLセーフなBase64url文字列
+ */
+const encodeIdsPipeline = async (ids) => {
+  const nums = ids.map(id => parseInt(id, 10)).filter(n => !isNaN(n) && n > 0);
+  if (nums.length === 0) return '';
+
+  // 1. ソート (昇順)
+  nums.sort((a, b) => a - b);
+
+  // 2. デルタ圧縮 (直前のIDとの差分)
+  const deltas = [];
+  let prev = 0;
+  for (const n of nums) {
+    deltas.push(n - prev);
+    prev = n;
+  }
+
+  // 3. varint (可変長整数エンコード)
+  const varintBytes = encodeVarints(deltas);
+
+  // 4. DEFLATE (deflate-raw 圧縮)
+  let compressedBytes;
+  try {
+    compressedBytes = await deflateCompress(varintBytes);
+  } catch (e) {
+    console.warn('DEFLATE compression fallback to varint', e);
+    compressedBytes = varintBytes;
+  }
+
+  // 5. Base64url エンコード
+  return uint8ArrayToBase64url(compressedBytes);
+};
+
+/**
+ * パイプライン圧縮されたBase64url文字列からプレイヤーID配列を復元します。
+ * 【Base64url → DEFLATE解凍 → varint復元 → デルタ復元 → ID配列】
  * 
+ * @param {string} b64url - URLセーフBase64文字列
+ * @returns {Promise<string[]>} 復元されたプレイヤーID文字列配列
+ */
+const decodeIdsPipeline = async (b64url) => {
+  try {
+    // 1. Base64url デコード
+    const compressedBytes = base64urlToUint8Array(b64url);
+
+    // 2. DEFLATE 解凍
+    let varintBytes;
+    try {
+      varintBytes = await deflateDecompress(compressedBytes);
+    } catch (e) {
+      varintBytes = compressedBytes;
+    }
+
+    // 3. varint デコード
+    const deltas = decodeVarints(varintBytes);
+
+    // 4. デルタ復元
+    const ids = [];
+    let current = 0;
+    for (const d of deltas) {
+      current += d;
+      ids.push(current.toString());
+    }
+
+    return ids;
+  } catch (e) {
+    console.error('URL parameter decoding error:', e);
+    return [];
+  }
+};
+
+/**
+ * 【後方互換用】従来のUint32パックBase64文字列からプレイヤーID配列を復元します。
  * @param {string} b64 - URLセーフBase64エンコード文字列
  * @returns {string[]} 復元されたプレイヤーID文字列配列
  */
@@ -1501,27 +1645,27 @@ const decodeParamToIds = (b64) => {
 };
 
 /**
- * 検索されたプレイヤーID一覧をブラウザのURLクエリパラメータへ同期反映します。
+ * 検索されたプレイヤーID一覧をブラウザのURLクエリパラメータへ非同期で同期反映します。
  * 
  * 【背景・意図】
- * ページのリロードやURLの共有・ブックマーク時に同じ団員リストのランキングを復元できるようにします。
- * 30人分など多数のIDが入力された場合は自動的にコンパクトな短縮パラメータ（?d=...）に変換し、
- * 長大なURLになるのを防止します（3件以下の場合は可読性の高い ?id=12345 を維持）。
+ * 4人以上の場合は「ソート → デルタ圧縮 → varint → DEFLATE → Base64url」パイプラインで
+ * 極小化されたパラメータ（?z=...）をセットします。
+ * 3人以下の場合は可読性を保つため通常のカンマ区切り（?id=...）を採用します。
  * 
  * @param {string[]} ids - プレイヤーID文字列の配列
- * @returns {void}
+ * @returns {Promise<void>}
  */
-const updateUrlParams = (ids) => {
+const updateUrlParams = async (ids) => {
   const url = new URL(window.location);
   url.searchParams.delete('id');
   url.searchParams.delete('d');
-  
+  url.searchParams.delete('z');
+
   if (ids && ids.length > 0) {
-    // 4件以上の場合はURL短縮（バイナリパックBase64）を適用し、3件以下なら可読性の高い通常形式を採用
     if (ids.length >= 4) {
-      const encoded = encodeIdsToParam(ids);
+      const encoded = await encodeIdsPipeline(ids);
       if (encoded) {
-        url.searchParams.set('d', encoded);
+        url.searchParams.set('z', encoded);
       } else {
         url.searchParams.set('id', ids.join(','));
       }
@@ -1533,23 +1677,30 @@ const updateUrlParams = (ids) => {
 };
 
 /**
- * 現在のブラウザURLのクエリパラメータ（?d=... または ?id=...）からプレイヤーID一覧を取得します。
+ * 現在のブラウザURLのクエリパラメータからプレイヤーID一覧を取得します。
  * 
- * 【背景・意図】
- * 共有されたリンクからアクセスされた際、初期表示時に自動で解析処理を走らせるために使用します。
- * 短縮パラメータ（?d=...）と従来のカンマ区切りパラメータ（?id=...）の双方を自動判別して復元します。
+ * 【対応形式・優先順位】
+ * 1. 新パイプライン圧縮パラメータ（?z=...）
+ * 2. 従来のUint32短縮パラメータ（?d=...）
+ * 3. 従来のカンマ区切りパラメータ（?id=...）
  * 
- * @returns {string[]} パースされたプレイヤーID文字列の配列
+ * @returns {Promise<string[]>} パースされたプレイヤーID文字列の配列
  */
-const getIdsFromUrl = () => {
+const getIdsFromUrl = async () => {
   const params = new URLSearchParams(window.location.search);
-  // 1. 短縮パラメータ（?d=...）の優先復元
+  // 1. 新パイプライン圧縮パラメータ（?z=...）
+  const zParam = params.get('z');
+  if (zParam) {
+    const decoded = await decodeIdsPipeline(zParam);
+    if (decoded.length > 0) return decoded;
+  }
+  // 2. 従来の短縮パラメータ（?d=...）
   const dParam = params.get('d');
   if (dParam) {
     const decoded = decodeParamToIds(dParam);
     if (decoded.length > 0) return decoded;
   }
-  // 2. 従来の通常パラメータ（?id=...）のフォールバック復元
+  // 3. 従来の通常パラメータ（?id=...）
   const idParam = params.get('id');
   if (idParam) {
     return idParam.split(',').map(s => s.trim()).filter(s => s.length > 0);
@@ -1611,7 +1762,7 @@ const handleAnalyze = async () => {
   const inputVal = inputIdsEl.value;
   if (!inputVal.trim()) {
     showError('プレイヤーIDを入力してください。');
-    updateUrlParams([]);
+    await updateUrlParams([]);
     return;
   }
 
@@ -1619,8 +1770,8 @@ const handleAnalyze = async () => {
 
   // カンマまたは空白区切り文字（/[, ]+/）で分割してID配列を生成
   const ids = inputVal.split(/[, ]+/).map(s => s.trim()).filter(s => s.length > 0);
-  updateUrlParams(ids);
-  
+  await updateUrlParams(ids);
+
   // API用の開催回ID文字列を構築（例: 'teamraid082'）
   const currentRaidId = `teamraid${String(currentRaidNum).padStart(3, '0')}`;
   const pastRaidIds = [
@@ -1632,9 +1783,9 @@ const handleAnalyze = async () => {
   try {
     // 開催回が変わった場合はキャッシュを無視して過去データを再取得する
     if (globalEventData.pastBorders100k.length === 0 || globalEventData.loadedRaidNum !== currentRaidNum) {
-      const pastReqs100k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(()=>[]));
-      const pastReqs2k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(()=>[]));
-      
+      const pastReqs100k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(() => []));
+      const pastReqs2k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(() => []));
+
       globalEventData.pastBorders100k = await Promise.all(pastReqs100k);
       globalEventData.pastBorders2k = await Promise.all(pastReqs2k);
       globalEventData.loadedRaidNum = currentRaidNum;
@@ -1670,14 +1821,14 @@ const handleAnalyze = async () => {
     globalEventData.users = {};
     const validUsers = usersData.filter(u => !u.error && u.points.length > 0);
     validUsers.forEach(u => {
-       globalEventData.users[u.id] = u;
+      globalEventData.users[u.id] = u;
     });
 
     const newTableData = [];
 
     const latestBorder100kData = currentBorder100k[currentBorder100k.length - 1];
     const point100k = latestBorder100kData.point;
-    
+
     // 10万位ボーダー行の作成
     newTableData.push({
       id: 'border_100k',
@@ -1715,7 +1866,7 @@ const handleAnalyze = async () => {
     validUsers.forEach(u => {
       const latestUserData = u.points[u.points.length - 1];
       const latestPoint = latestUserData.point;
-      
+
       newTableData.push({
         id: u.id,
         name: u.name,
@@ -1734,7 +1885,7 @@ const handleAnalyze = async () => {
     // 初期ソートは貢献度降順
     newTableData.sort((a, b) => b.point - a.point);
     globalEventData.tableData = newTableData;
-    
+
     lastUpdateEl.textContent = `取得時刻: ${new Date().toLocaleTimeString()}`;
     resultSection.classList.remove('hidden');
 
@@ -1802,13 +1953,13 @@ const showError = (message) => {
 const renderTable = (data) => {
   // 現在のソート順序を保持（画像エクスポート時に利用）
   currentSortedData = data;
-  tableBody.innerHTML = ''; 
+  tableBody.innerHTML = '';
 
   let userRankCounter = 0; // ボーダー行を除外した順位カウンター
 
   data.forEach((row, idx) => {
     const tr = document.createElement('tr');
-    
+
     let displayNum = '';
     if (!row.isBorder) {
       userRankCounter++;
@@ -1827,10 +1978,10 @@ const renderTable = (data) => {
     const realSpdStr = row.realSpeed !== null ? formatSpeed(row.realSpeed) : '-';
     const realSpdRaw = row.realSpeed !== null ? Math.round(row.realSpeed).toLocaleString() : '-';
     const predSpdStr = row.predictSpeed !== null ? formatSpeed(row.predictSpeed) : '-';
-    
+
     if (row.todayInc !== null) todayIncHTML = formatPoint(row.todayInc);
     const todayIncRaw = row.todayInc !== null ? row.todayInc.toLocaleString() : '-';
-    
+
     const rankStr = row.rank ? row.rank.toLocaleString() + '位' : '-';
 
     const pointTitle = `貢献度: ${pointStrRaw}`;
@@ -1857,7 +2008,7 @@ const renderTable = (data) => {
     } else {
       const nameColorClass = row.isReached ? "text-[#e4e4e7]" : "text-red-400";
       if (!row.isReached) {
-         rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
+        rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
       }
       nameHTML = `
         <div onclick="copyId(event, '${row.id}')" class="cursor-pointer group select-none inline-block" title="クリックしてIDをコピー">
@@ -1868,7 +2019,7 @@ const renderTable = (data) => {
           </div>
         </div>
       `;
-      
+
       speedHTML = `<div class="text-[#a1a1aa]">${realSpdStr}/時</div><div class="text-[#71717a]">(${predSpdStr})</div>`;
 
       if (row.diff !== null) {
@@ -1879,9 +2030,9 @@ const renderTable = (data) => {
     }
 
     tr.className = rowClass;
-    
+
     const clickableCell = `cursor-pointer hover:bg-[#3f3f46]/40 transition-colors`;
-    
+
     tr.innerHTML = `
       <td class="px-3 py-4 text-center font-mono text-xs text-[#71717a]">${displayNum}</td>
       <td class="px-5 py-4 ${rankClass}">${rankStr}</td>
@@ -1902,8 +2053,8 @@ const renderTable = (data) => {
  * 
  * @returns {void}
  */
-const init = () => {
-  const idsFromUrl = getIdsFromUrl();
+const init = async () => {
+  const idsFromUrl = await getIdsFromUrl();
   if (idsFromUrl.length > 0) {
     inputIdsEl.value = idsFromUrl.join(', ');
     handleAnalyze();
@@ -1933,7 +2084,7 @@ window.addEventListener('DOMContentLoaded', init);
  * 
  * @returns {void}
  */
-window.exportRankingImage = function() {
+window.exportRankingImage = function () {
   if (!globalEventData.tableData || globalEventData.tableData.length === 0) {
     showToast('出力可能なランキングデータがありません');
     return;
@@ -2067,7 +2218,7 @@ window.exportRankingImage = function() {
     const isEven = idx % 2 === 0;
     const cyPx = s(currentY);
     const rhPx = s(rowHeight);
-    
+
     // ゼブラ背景
     ctx.fillStyle = isEven ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.2)';
     ctx.fillRect(0, cyPx, W, rhPx);
@@ -2136,7 +2287,7 @@ window.exportRankingImage = function() {
       showToast('画像の生成に失敗しました');
       return;
     }
-    const filename = `kosenjo_ranking_${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}.png`;
+    const filename = `kosenjo_ranking_${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}.png`;
 
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
