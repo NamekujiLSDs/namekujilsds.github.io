@@ -1,0 +1,1830 @@
+
+fetch : GET : "https://gbf.pub/api/client/gw/line?teamraidid=teamraid084&type=user&rank=100000&_=1790556147338"
+
+
+{
+  "message": "",
+  "type": "success",
+  "data": [
+    {
+      "point": 257210,
+      "updatetime": 1789987200,
+      "rank": 100000
+    },
+    {
+      "point": 2169820,
+      "updatetime": 1789988400,
+      "rank": 100000
+    },
+    {
+      "point": 4137820,
+      "updatetime": 1789989600,
+      "rank": 100000
+    },
+    {
+      "point": 6496510,
+      "updatetime": 1789990800,
+      "rank": 100000
+    },
+    {
+      "point": 9627356,
+      "updatetime": 1789992000,
+      "rank": 100000
+    },
+    {
+      "point": 11954600,
+      "updatetime": 1789993200,
+      "rank": 100000
+    },
+    {
+      "point": 15021853,
+      "updatetime": 1789994400,
+      "rank": 100000
+    },
+    {
+      "point": 17721844,
+      "updatetime": 1789995600,
+      "rank": 100000
+    },
+    {
+      "point": 20378600,
+      "updatetime": 1789996800,
+      "rank": 100000
+    },
+    {
+      "point": 23454799,
+      "updatetime": 1789998000,
+      "rank": 100000
+    },
+    {
+      "point": 25642251,
+      "updatetime": 1789999200,
+      "rank": 100000
+    },
+    {
+      "point": 28234525,
+      "updatetime": 1790000400,
+      "rank": 100000
+    },
+    {
+      "point": 30824786,
+      "updatetime": 1790001600,
+      "rank": 100000
+    },
+    {
+      "point": 33112854,
+      "updatetime": 1790002800,
+      "rank": 100000
+    },
+    {
+      "point": 35121600,
+      "updatetime": 1790004000,
+      "rank": 100000
+    },
+    {
+      "point": 36879775,
+      "updatetime": 1790005200,
+      "rank": 100000
+    },
+    {
+      "point": 38381626,
+      "updatetime": 1790006400,
+      "rank": 100000
+    },
+    {
+      "point": 39649786,
+      "updatetime": 1790007600,
+      "rank": 100000
+    },
+    {
+      "point": 41049810,
+      "updatetime": 1790008800,
+      "rank": 100000
+    },
+    {
+      "point": 42270955,
+      "updatetime": 1790010000,
+      "rank": 100000
+    },
+    {
+      "point": 43039200,
+      "updatetime": 1790011200,
+      "rank": 100000
+    },
+    {
+      "point": 44062000,
+      "updatetime": 1790012400,
+      "rank": 100000
+    },
+    {
+      "point": 44904668,
+      "updatetime": 1790013600,
+      "rank": 100000
+    },
+    {
+      "point": 45402695,
+      "updatetime": 1790014800,
+      "rank": 100000
+    },
+    {
+      "point": 46228435,
+      "updatetime": 1790016000,
+      "rank": 100000
+    },
+    {
+      "point": 46848672,
+      "updatetime": 1790017200,
+      "rank": 100000
+    },
+    {
+      "point": 47231354,
+      "updatetime": 1790018400,
+      "rank": 100000
+    },
+    {
+      "point": 47796186,
+      "updatetime": 1790019600,
+      "rank": 100000
+    },
+    {
+      "point": 48555110,
+      "updatetime": 1790020800,
+      "rank": 100000
+    },
+    {
+      "point": 48825800,
+      "updatetime": 1790022000,
+      "rank": 100000
+    },
+    {
+      "point": 49081030,
+      "updatetime": 1790023200,
+      "rank": 100000
+    },
+    {
+      "point": 49660243,
+      "updatetime": 1790024400,
+      "rank": 100000
+    },
+    {
+      "point": 50410752,
+      "updatetime": 1790025600,
+      "rank": 100000
+    },
+    {
+      "point": 50769926,
+      "updatetime": 1790026800,
+      "rank": 100000
+    },
+    {
+      "point": 51275627,
+      "updatetime": 1790028000,
+      "rank": 100000
+    },
+    {
+      "point": 52282350,
+      "updatetime": 1790029200,
+      "rank": 100000
+    },
+    {
+      "point": 52841410,
+      "updatetime": 1790030400,
+      "rank": 100000
+    },
+    {
+      "point": 53997439,
+      "updatetime": 1790031600,
+      "rank": 100000
+    },
+    {
+      "point": 54776992,
+      "updatetime": 1790032800,
+      "rank": 100000
+    },
+    {
+      "point": 56026145,
+      "updatetime": 1790034000,
+      "rank": 100000
+    },
+    {
+      "point": 57005689,
+      "updatetime": 1790035200,
+      "rank": 100000
+    },
+    {
+      "point": 58512400,
+      "updatetime": 1790036400,
+      "rank": 100000
+    },
+    {
+      "point": 59725039,
+      "updatetime": 1790037600,
+      "rank": 100000
+    },
+    {
+      "point": 60785056,
+      "updatetime": 1790038800,
+      "rank": 100000
+    },
+    {
+      "point": 62400400,
+      "updatetime": 1790040000,
+      "rank": 100000
+    },
+    {
+      "point": 63728213,
+      "updatetime": 1790041200,
+      "rank": 100000
+    },
+    {
+      "point": 65094672,
+      "updatetime": 1790042400,
+      "rank": 100000
+    },
+    {
+      "point": 66570527,
+      "updatetime": 1790043600,
+      "rank": 100000
+    },
+    {
+      "point": 68232635,
+      "updatetime": 1790044800,
+      "rank": 100000
+    },
+    {
+      "point": 69935998,
+      "updatetime": 1790046000,
+      "rank": 100000
+    },
+    {
+      "point": 71398490,
+      "updatetime": 1790047200,
+      "rank": 100000
+    },
+    {
+      "point": 72839313,
+      "updatetime": 1790048400,
+      "rank": 100000
+    },
+    {
+      "point": 74481400,
+      "updatetime": 1790049600,
+      "rank": 100000
+    },
+    {
+      "point": 76152166,
+      "updatetime": 1790050800,
+      "rank": 100000
+    },
+    {
+      "point": 77985820,
+      "updatetime": 1790052000,
+      "rank": 100000
+    },
+    {
+      "point": 79814800,
+      "updatetime": 1790053200,
+      "rank": 100000
+    },
+    {
+      "point": 81345200,
+      "updatetime": 1790054400,
+      "rank": 100000
+    },
+    {
+      "point": 82942190,
+      "updatetime": 1790055600,
+      "rank": 100000
+    },
+    {
+      "point": 86007590,
+      "updatetime": 1790058000,
+      "rank": 100000
+    },
+    {
+      "point": 87770498,
+      "updatetime": 1790059200,
+      "rank": 100000
+    },
+    {
+      "point": 89646903,
+      "updatetime": 1790060400,
+      "rank": 100000
+    },
+    {
+      "point": 91472200,
+      "updatetime": 1790061600,
+      "rank": 100000
+    },
+    {
+      "point": 93363718,
+      "updatetime": 1790062800,
+      "rank": 100000
+    },
+    {
+      "point": 95212820,
+      "updatetime": 1790064000,
+      "rank": 100000
+    },
+    {
+      "point": 97194835,
+      "updatetime": 1790065200,
+      "rank": 100000
+    },
+    {
+      "point": 99296680,
+      "updatetime": 1790066400,
+      "rank": 100000
+    },
+    {
+      "point": 101152810,
+      "updatetime": 1790067600,
+      "rank": 100000
+    },
+    {
+      "point": 103020427,
+      "updatetime": 1790068800,
+      "rank": 100000
+    },
+    {
+      "point": 104962595,
+      "updatetime": 1790070000,
+      "rank": 100000
+    },
+    {
+      "point": 107112573,
+      "updatetime": 1790071200,
+      "rank": 100000
+    },
+    {
+      "point": 109290375,
+      "updatetime": 1790072400,
+      "rank": 100000
+    },
+    {
+      "point": 111763510,
+      "updatetime": 1790073600,
+      "rank": 100000
+    },
+    {
+      "point": 114501678,
+      "updatetime": 1790074800,
+      "rank": 100000
+    },
+    {
+      "point": 117179771,
+      "updatetime": 1790076000,
+      "rank": 100000
+    },
+    {
+      "point": 120427926,
+      "updatetime": 1790077200,
+      "rank": 100000
+    },
+    {
+      "point": 123447900,
+      "updatetime": 1790078400,
+      "rank": 100000
+    },
+    {
+      "point": 126762056,
+      "updatetime": 1790079600,
+      "rank": 100000
+    },
+    {
+      "point": 130345066,
+      "updatetime": 1790080800,
+      "rank": 100000
+    },
+    {
+      "point": 133794480,
+      "updatetime": 1790082000,
+      "rank": 100000
+    },
+    {
+      "point": 137384957,
+      "updatetime": 1790083200,
+      "rank": 100000
+    },
+    {
+      "point": 141000971,
+      "updatetime": 1790084400,
+      "rank": 100000
+    },
+    {
+      "point": 144574349,
+      "updatetime": 1790085600,
+      "rank": 100000
+    },
+    {
+      "point": 148239678,
+      "updatetime": 1790086800,
+      "rank": 100000
+    },
+    {
+      "point": 151802036,
+      "updatetime": 1790088000,
+      "rank": 100000
+    },
+    {
+      "point": 155431099,
+      "updatetime": 1790089200,
+      "rank": 100000
+    },
+    {
+      "point": 155687850,
+      "updatetime": 1790114400,
+      "rank": 100000
+    },
+    {
+      "point": 156101801,
+      "updatetime": 1790115600,
+      "rank": 100000
+    },
+    {
+      "point": 156795180,
+      "updatetime": 1790116800,
+      "rank": 100000
+    },
+    {
+      "point": 157635340,
+      "updatetime": 1790118000,
+      "rank": 100000
+    },
+    {
+      "point": 158491558,
+      "updatetime": 1790119200,
+      "rank": 100000
+    },
+    {
+      "point": 159504398,
+      "updatetime": 1790120400,
+      "rank": 100000
+    },
+    {
+      "point": 160412572,
+      "updatetime": 1790121600,
+      "rank": 100000
+    },
+    {
+      "point": 161539339,
+      "updatetime": 1790122800,
+      "rank": 100000
+    },
+    {
+      "point": 162706862,
+      "updatetime": 1790124000,
+      "rank": 100000
+    },
+    {
+      "point": 163825031,
+      "updatetime": 1790125200,
+      "rank": 100000
+    },
+    {
+      "point": 165158236,
+      "updatetime": 1790126400,
+      "rank": 100000
+    },
+    {
+      "point": 166410008,
+      "updatetime": 1790127600,
+      "rank": 100000
+    },
+    {
+      "point": 167814926,
+      "updatetime": 1790128800,
+      "rank": 100000
+    },
+    {
+      "point": 169284581,
+      "updatetime": 1790130000,
+      "rank": 100000
+    },
+    {
+      "point": 170576253,
+      "updatetime": 1790131200,
+      "rank": 100000
+    },
+    {
+      "point": 172109699,
+      "updatetime": 1790132400,
+      "rank": 100000
+    },
+    {
+      "point": 173665501,
+      "updatetime": 1790133600,
+      "rank": 100000
+    },
+    {
+      "point": 175375248,
+      "updatetime": 1790134800,
+      "rank": 100000
+    },
+    {
+      "point": 176989685,
+      "updatetime": 1790136000,
+      "rank": 100000
+    },
+    {
+      "point": 178633239,
+      "updatetime": 1790137200,
+      "rank": 100000
+    },
+    {
+      "point": 180316352,
+      "updatetime": 1790138400,
+      "rank": 100000
+    },
+    {
+      "point": 181998302,
+      "updatetime": 1790139600,
+      "rank": 100000
+    },
+    {
+      "point": 183497834,
+      "updatetime": 1790140800,
+      "rank": 100000
+    },
+    {
+      "point": 185109426,
+      "updatetime": 1790142000,
+      "rank": 100000
+    },
+    {
+      "point": 186854558,
+      "updatetime": 1790143200,
+      "rank": 100000
+    },
+    {
+      "point": 188700131,
+      "updatetime": 1790144400,
+      "rank": 100000
+    },
+    {
+      "point": 190443023,
+      "updatetime": 1790145600,
+      "rank": 100000
+    },
+    {
+      "point": 192079022,
+      "updatetime": 1790146800,
+      "rank": 100000
+    },
+    {
+      "point": 193835003,
+      "updatetime": 1790148000,
+      "rank": 100000
+    },
+    {
+      "point": 195730520,
+      "updatetime": 1790149200,
+      "rank": 100000
+    },
+    {
+      "point": 197467143,
+      "updatetime": 1790150400,
+      "rank": 100000
+    },
+    {
+      "point": 199376549,
+      "updatetime": 1790151600,
+      "rank": 100000
+    },
+    {
+      "point": 200766448,
+      "updatetime": 1790152800,
+      "rank": 100000
+    },
+    {
+      "point": 202442033,
+      "updatetime": 1790154000,
+      "rank": 100000
+    },
+    {
+      "point": 204138180,
+      "updatetime": 1790155200,
+      "rank": 100000
+    },
+    {
+      "point": 205802410,
+      "updatetime": 1790156400,
+      "rank": 100000
+    },
+    {
+      "point": 207717958,
+      "updatetime": 1790157600,
+      "rank": 100000
+    },
+    {
+      "point": 209704035,
+      "updatetime": 1790158800,
+      "rank": 100000
+    },
+    {
+      "point": 211740598,
+      "updatetime": 1790160000,
+      "rank": 100000
+    },
+    {
+      "point": 214006514,
+      "updatetime": 1790161200,
+      "rank": 100000
+    },
+    {
+      "point": 216432779,
+      "updatetime": 1790162400,
+      "rank": 100000
+    },
+    {
+      "point": 218942797,
+      "updatetime": 1790163600,
+      "rank": 100000
+    },
+    {
+      "point": 221661364,
+      "updatetime": 1790164800,
+      "rank": 100000
+    },
+    {
+      "point": 224248893,
+      "updatetime": 1790166000,
+      "rank": 100000
+    },
+    {
+      "point": 227109788,
+      "updatetime": 1790167200,
+      "rank": 100000
+    },
+    {
+      "point": 230030649,
+      "updatetime": 1790168400,
+      "rank": 100000
+    },
+    {
+      "point": 232943334,
+      "updatetime": 1790169600,
+      "rank": 100000
+    },
+    {
+      "point": 235616856,
+      "updatetime": 1790170800,
+      "rank": 100000
+    },
+    {
+      "point": 238316667,
+      "updatetime": 1790172000,
+      "rank": 100000
+    },
+    {
+      "point": 240942020,
+      "updatetime": 1790173200,
+      "rank": 100000
+    },
+    {
+      "point": 243476310,
+      "updatetime": 1790174400,
+      "rank": 100000
+    },
+    {
+      "point": 245965040,
+      "updatetime": 1790175600,
+      "rank": 100000
+    },
+    {
+      "point": 247694261,
+      "updatetime": 1790176800,
+      "rank": 100000
+    },
+    {
+      "point": 249135966,
+      "updatetime": 1790178000,
+      "rank": 100000
+    },
+    {
+      "point": 250261775,
+      "updatetime": 1790179200,
+      "rank": 100000
+    },
+    {
+      "point": 251123071,
+      "updatetime": 1790180400,
+      "rank": 100000
+    },
+    {
+      "point": 251952264,
+      "updatetime": 1790181600,
+      "rank": 100000
+    },
+    {
+      "point": 252824431,
+      "updatetime": 1790182800,
+      "rank": 100000
+    },
+    {
+      "point": 253508186,
+      "updatetime": 1790184000,
+      "rank": 100000
+    },
+    {
+      "point": 254228225,
+      "updatetime": 1790185200,
+      "rank": 100000
+    },
+    {
+      "point": 254727700,
+      "updatetime": 1790186400,
+      "rank": 100000
+    },
+    {
+      "point": 255322398,
+      "updatetime": 1790187600,
+      "rank": 100000
+    },
+    {
+      "point": 255866384,
+      "updatetime": 1790188800,
+      "rank": 100000
+    },
+    {
+      "point": 256251618,
+      "updatetime": 1790190000,
+      "rank": 100000
+    },
+    {
+      "point": 256736334,
+      "updatetime": 1790191200,
+      "rank": 100000
+    },
+    {
+      "point": 257097277,
+      "updatetime": 1790192400,
+      "rank": 100000
+    },
+    {
+      "point": 257564022,
+      "updatetime": 1790193600,
+      "rank": 100000
+    },
+    {
+      "point": 257877215,
+      "updatetime": 1790194800,
+      "rank": 100000
+    },
+    {
+      "point": 258144910,
+      "updatetime": 1790196000,
+      "rank": 100000
+    },
+    {
+      "point": 258469222,
+      "updatetime": 1790197200,
+      "rank": 100000
+    },
+    {
+      "point": 258871535,
+      "updatetime": 1790198400,
+      "rank": 100000
+    },
+    {
+      "point": 259289211,
+      "updatetime": 1790199600,
+      "rank": 100000
+    },
+    {
+      "point": 259716725,
+      "updatetime": 1790200800,
+      "rank": 100000
+    },
+    {
+      "point": 263721577,
+      "updatetime": 1790202000,
+      "rank": 100000
+    },
+    {
+      "point": 269772989,
+      "updatetime": 1790203200,
+      "rank": 100000
+    },
+    {
+      "point": 275764789,
+      "updatetime": 1790204400,
+      "rank": 100000
+    },
+    {
+      "point": 282228819,
+      "updatetime": 1790205600,
+      "rank": 100000
+    },
+    {
+      "point": 288865340,
+      "updatetime": 1790206800,
+      "rank": 100000
+    },
+    {
+      "point": 295524260,
+      "updatetime": 1790208000,
+      "rank": 100000
+    },
+    {
+      "point": 301881043,
+      "updatetime": 1790209200,
+      "rank": 100000
+    },
+    {
+      "point": 308504208,
+      "updatetime": 1790210400,
+      "rank": 100000
+    },
+    {
+      "point": 315098573,
+      "updatetime": 1790211600,
+      "rank": 100000
+    },
+    {
+      "point": 322513108,
+      "updatetime": 1790212800,
+      "rank": 100000
+    },
+    {
+      "point": 330019432,
+      "updatetime": 1790214000,
+      "rank": 100000
+    },
+    {
+      "point": 337508497,
+      "updatetime": 1790215200,
+      "rank": 100000
+    },
+    {
+      "point": 345091135,
+      "updatetime": 1790216400,
+      "rank": 100000
+    },
+    {
+      "point": 352817450,
+      "updatetime": 1790217600,
+      "rank": 100000
+    },
+    {
+      "point": 361095655,
+      "updatetime": 1790218800,
+      "rank": 100000
+    },
+    {
+      "point": 369528215,
+      "updatetime": 1790220000,
+      "rank": 100000
+    },
+    {
+      "point": 378863674,
+      "updatetime": 1790221200,
+      "rank": 100000
+    },
+    {
+      "point": 387919243,
+      "updatetime": 1790222400,
+      "rank": 100000
+    },
+    {
+      "point": 396012076,
+      "updatetime": 1790223600,
+      "rank": 100000
+    },
+    {
+      "point": 403355842,
+      "updatetime": 1790224800,
+      "rank": 100000
+    },
+    {
+      "point": 411145989,
+      "updatetime": 1790226000,
+      "rank": 100000
+    },
+    {
+      "point": 418928555,
+      "updatetime": 1790227200,
+      "rank": 100000
+    },
+    {
+      "point": 426772334,
+      "updatetime": 1790228400,
+      "rank": 100000
+    },
+    {
+      "point": 434190236,
+      "updatetime": 1790229600,
+      "rank": 100000
+    },
+    {
+      "point": 441733913,
+      "updatetime": 1790230800,
+      "rank": 100000
+    },
+    {
+      "point": 449512164,
+      "updatetime": 1790232000,
+      "rank": 100000
+    },
+    {
+      "point": 457437655,
+      "updatetime": 1790233200,
+      "rank": 100000
+    },
+    {
+      "point": 464805064,
+      "updatetime": 1790234400,
+      "rank": 100000
+    },
+    {
+      "point": 472494225,
+      "updatetime": 1790235600,
+      "rank": 100000
+    },
+    {
+      "point": 480632098,
+      "updatetime": 1790236800,
+      "rank": 100000
+    },
+    {
+      "point": 488477228,
+      "updatetime": 1790238000,
+      "rank": 100000
+    },
+    {
+      "point": 497048346,
+      "updatetime": 1790239200,
+      "rank": 100000
+    },
+    {
+      "point": 505425337,
+      "updatetime": 1790240400,
+      "rank": 100000
+    },
+    {
+      "point": 514103416,
+      "updatetime": 1790241600,
+      "rank": 100000
+    },
+    {
+      "point": 524118457,
+      "updatetime": 1790242800,
+      "rank": 100000
+    },
+    {
+      "point": 534361457,
+      "updatetime": 1790244000,
+      "rank": 100000
+    },
+    {
+      "point": 545974826,
+      "updatetime": 1790245200,
+      "rank": 100000
+    },
+    {
+      "point": 558557345,
+      "updatetime": 1790246400,
+      "rank": 100000
+    },
+    {
+      "point": 571787547,
+      "updatetime": 1790247600,
+      "rank": 100000
+    },
+    {
+      "point": 586053573,
+      "updatetime": 1790248800,
+      "rank": 100000
+    },
+    {
+      "point": 601014197,
+      "updatetime": 1790250000,
+      "rank": 100000
+    },
+    {
+      "point": 616593162,
+      "updatetime": 1790251200,
+      "rank": 100000
+    },
+    {
+      "point": 633023129,
+      "updatetime": 1790252400,
+      "rank": 100000
+    },
+    {
+      "point": 650435445,
+      "updatetime": 1790253600,
+      "rank": 100000
+    },
+    {
+      "point": 668108316,
+      "updatetime": 1790254800,
+      "rank": 100000
+    },
+    {
+      "point": 685510562,
+      "updatetime": 1790256000,
+      "rank": 100000
+    },
+    {
+      "point": 703307531,
+      "updatetime": 1790257200,
+      "rank": 100000
+    },
+    {
+      "point": 720218995,
+      "updatetime": 1790258400,
+      "rank": 100000
+    },
+    {
+      "point": 736723825,
+      "updatetime": 1790259600,
+      "rank": 100000
+    },
+    {
+      "point": 752806199,
+      "updatetime": 1790260800,
+      "rank": 100000
+    },
+    {
+      "point": 768989521,
+      "updatetime": 1790262000,
+      "rank": 100000
+    },
+    {
+      "point": 769731326,
+      "updatetime": 1790287200,
+      "rank": 100000
+    },
+    {
+      "point": 775561581,
+      "updatetime": 1790288400,
+      "rank": 100000
+    },
+    {
+      "point": 785073241,
+      "updatetime": 1790289600,
+      "rank": 100000
+    },
+    {
+      "point": 795935095,
+      "updatetime": 1790290800,
+      "rank": 100000
+    },
+    {
+      "point": 806295178,
+      "updatetime": 1790292000,
+      "rank": 100000
+    },
+    {
+      "point": 817288949,
+      "updatetime": 1790293200,
+      "rank": 100000
+    },
+    {
+      "point": 828504425,
+      "updatetime": 1790294400,
+      "rank": 100000
+    },
+    {
+      "point": 840235227,
+      "updatetime": 1790295600,
+      "rank": 100000
+    },
+    {
+      "point": 851490160,
+      "updatetime": 1790296800,
+      "rank": 100000
+    },
+    {
+      "point": 863666832,
+      "updatetime": 1790298000,
+      "rank": 100000
+    },
+    {
+      "point": 876537686,
+      "updatetime": 1790299200,
+      "rank": 100000
+    },
+    {
+      "point": 890469946,
+      "updatetime": 1790300400,
+      "rank": 100000
+    },
+    {
+      "point": 904472529,
+      "updatetime": 1790301600,
+      "rank": 100000
+    },
+    {
+      "point": 919350375,
+      "updatetime": 1790302800,
+      "rank": 100000
+    },
+    {
+      "point": 933579559,
+      "updatetime": 1790304000,
+      "rank": 100000
+    },
+    {
+      "point": 949181023,
+      "updatetime": 1790305200,
+      "rank": 100000
+    },
+    {
+      "point": 965746930,
+      "updatetime": 1790306400,
+      "rank": 100000
+    },
+    {
+      "point": 982640911,
+      "updatetime": 1790307600,
+      "rank": 100000
+    },
+    {
+      "point": 999449223,
+      "updatetime": 1790308800,
+      "rank": 100000
+    },
+    {
+      "point": 1013913090,
+      "updatetime": 1790310000,
+      "rank": 100000
+    },
+    {
+      "point": 1028918080,
+      "updatetime": 1790311200,
+      "rank": 100000
+    },
+    {
+      "point": 1043868154,
+      "updatetime": 1790312400,
+      "rank": 100000
+    },
+    {
+      "point": 1058711150,
+      "updatetime": 1790313600,
+      "rank": 100000
+    },
+    {
+      "point": 1073357962,
+      "updatetime": 1790314800,
+      "rank": 100000
+    },
+    {
+      "point": 1089317735,
+      "updatetime": 1790316000,
+      "rank": 100000
+    },
+    {
+      "point": 1104925886,
+      "updatetime": 1790317200,
+      "rank": 100000
+    },
+    {
+      "point": 1121320314,
+      "updatetime": 1790318400,
+      "rank": 100000
+    },
+    {
+      "point": 1137467852,
+      "updatetime": 1790319600,
+      "rank": 100000
+    },
+    {
+      "point": 1153069283,
+      "updatetime": 1790320800,
+      "rank": 100000
+    },
+    {
+      "point": 1168490933,
+      "updatetime": 1790322000,
+      "rank": 100000
+    },
+    {
+      "point": 1185240229,
+      "updatetime": 1790323200,
+      "rank": 100000
+    },
+    {
+      "point": 1201477022,
+      "updatetime": 1790324400,
+      "rank": 100000
+    },
+    {
+      "point": 1218634162,
+      "updatetime": 1790325600,
+      "rank": 100000
+    },
+    {
+      "point": 1235614397,
+      "updatetime": 1790326800,
+      "rank": 100000
+    },
+    {
+      "point": 1255026792,
+      "updatetime": 1790328000,
+      "rank": 100000
+    },
+    {
+      "point": 1274370496,
+      "updatetime": 1790329200,
+      "rank": 100000
+    },
+    {
+      "point": 1295880901,
+      "updatetime": 1790330400,
+      "rank": 100000
+    },
+    {
+      "point": 1317591142,
+      "updatetime": 1790331600,
+      "rank": 100000
+    },
+    {
+      "point": 1339112976,
+      "updatetime": 1790332800,
+      "rank": 100000
+    },
+    {
+      "point": 1362550837,
+      "updatetime": 1790334000,
+      "rank": 100000
+    },
+    {
+      "point": 1387951310,
+      "updatetime": 1790335200,
+      "rank": 100000
+    },
+    {
+      "point": 1414552665,
+      "updatetime": 1790336400,
+      "rank": 100000
+    },
+    {
+      "point": 1441329614,
+      "updatetime": 1790337600,
+      "rank": 100000
+    },
+    {
+      "point": 1469769478,
+      "updatetime": 1790338800,
+      "rank": 100000
+    },
+    {
+      "point": 1500494200,
+      "updatetime": 1790340000,
+      "rank": 100000
+    },
+    {
+      "point": 1526878483,
+      "updatetime": 1790341200,
+      "rank": 100000
+    },
+    {
+      "point": 1556009991,
+      "updatetime": 1790342400,
+      "rank": 100000
+    },
+    {
+      "point": 1586727854,
+      "updatetime": 1790343600,
+      "rank": 100000
+    },
+    {
+      "point": 1615910831,
+      "updatetime": 1790344800,
+      "rank": 100000
+    },
+    {
+      "point": 1645717853,
+      "updatetime": 1790346000,
+      "rank": 100000
+    },
+    {
+      "point": 1675753187,
+      "updatetime": 1790347200,
+      "rank": 100000
+    },
+    {
+      "point": 1706875752,
+      "updatetime": 1790348400,
+      "rank": 100000
+    },
+    {
+      "point": 1711776334,
+      "updatetime": 1790373600,
+      "rank": 100000
+    },
+    {
+      "point": 1717849416,
+      "updatetime": 1790374800,
+      "rank": 100000
+    },
+    {
+      "point": 1732588843,
+      "updatetime": 1790376000,
+      "rank": 100000
+    },
+    {
+      "point": 1749234162,
+      "updatetime": 1790377200,
+      "rank": 100000
+    },
+    {
+      "point": 1765402308,
+      "updatetime": 1790378400,
+      "rank": 100000
+    },
+    {
+      "point": 1785455796,
+      "updatetime": 1790379600,
+      "rank": 100000
+    },
+    {
+      "point": 1805340493,
+      "updatetime": 1790380800,
+      "rank": 100000
+    },
+    {
+      "point": 1826048271,
+      "updatetime": 1790382000,
+      "rank": 100000
+    },
+    {
+      "point": 1849080839,
+      "updatetime": 1790383200,
+      "rank": 100000
+    },
+    {
+      "point": 1873547552,
+      "updatetime": 1790384400,
+      "rank": 100000
+    },
+    {
+      "point": 1899134331,
+      "updatetime": 1790385600,
+      "rank": 100000
+    },
+    {
+      "point": 1925567485,
+      "updatetime": 1790386800,
+      "rank": 100000
+    },
+    {
+      "point": 1985499923,
+      "updatetime": 1790389200,
+      "rank": 100000
+    },
+    {
+      "point": 2015264251,
+      "updatetime": 1790390400,
+      "rank": 100000
+    },
+    {
+      "point": 2046113038,
+      "updatetime": 1790391600,
+      "rank": 100000
+    },
+    {
+      "point": 2078995989,
+      "updatetime": 1790392800,
+      "rank": 100000
+    },
+    {
+      "point": 2111372609,
+      "updatetime": 1790394000,
+      "rank": 100000
+    },
+    {
+      "point": 2145713808,
+      "updatetime": 1790395200,
+      "rank": 100000
+    },
+    {
+      "point": 2179652943,
+      "updatetime": 1790396400,
+      "rank": 100000
+    },
+    {
+      "point": 2215562002,
+      "updatetime": 1790397600,
+      "rank": 100000
+    },
+    {
+      "point": 2250375282,
+      "updatetime": 1790398800,
+      "rank": 100000
+    },
+    {
+      "point": 2283935360,
+      "updatetime": 1790400000,
+      "rank": 100000
+    },
+    {
+      "point": 2319576985,
+      "updatetime": 1790401200,
+      "rank": 100000
+    },
+    {
+      "point": 2355500015,
+      "updatetime": 1790402400,
+      "rank": 100000
+    },
+    {
+      "point": 2391042774,
+      "updatetime": 1790403600,
+      "rank": 100000
+    },
+    {
+      "point": 2427839866,
+      "updatetime": 1790404800,
+      "rank": 100000
+    },
+    {
+      "point": 2464509537,
+      "updatetime": 1790406000,
+      "rank": 100000
+    },
+    {
+      "point": 2500005331,
+      "updatetime": 1790407200,
+      "rank": 100000
+    },
+    {
+      "point": 2539064655,
+      "updatetime": 1790408400,
+      "rank": 100000
+    },
+    {
+      "point": 2576463202,
+      "updatetime": 1790409600,
+      "rank": 100000
+    },
+    {
+      "point": 2613933227,
+      "updatetime": 1790410800,
+      "rank": 100000
+    },
+    {
+      "point": 2651010360,
+      "updatetime": 1790412000,
+      "rank": 100000
+    },
+    {
+      "point": 2688825031,
+      "updatetime": 1790413200,
+      "rank": 100000
+    },
+    {
+      "point": 2727774501,
+      "updatetime": 1790414400,
+      "rank": 100000
+    },
+    {
+      "point": 2766175382,
+      "updatetime": 1790415600,
+      "rank": 100000
+    },
+    {
+      "point": 2804156232,
+      "updatetime": 1790416800,
+      "rank": 100000
+    },
+    {
+      "point": 2845033444,
+      "updatetime": 1790418000,
+      "rank": 100000
+    },
+    {
+      "point": 2885524910,
+      "updatetime": 1790419200,
+      "rank": 100000
+    },
+    {
+      "point": 2927316457,
+      "updatetime": 1790420400,
+      "rank": 100000
+    },
+    {
+      "point": 2969402244,
+      "updatetime": 1790421600,
+      "rank": 100000
+    },
+    {
+      "point": 3014632586,
+      "updatetime": 1790422800,
+      "rank": 100000
+    },
+    {
+      "point": 3060112681,
+      "updatetime": 1790424000,
+      "rank": 100000
+    },
+    {
+      "point": 3105201383,
+      "updatetime": 1790425200,
+      "rank": 100000
+    },
+    {
+      "point": 3152137413,
+      "updatetime": 1790426400,
+      "rank": 100000
+    },
+    {
+      "point": 3199498522,
+      "updatetime": 1790427600,
+      "rank": 100000
+    },
+    {
+      "point": 3250033415,
+      "updatetime": 1790428800,
+      "rank": 100000
+    },
+    {
+      "point": 3298514837,
+      "updatetime": 1790430000,
+      "rank": 100000
+    },
+    {
+      "point": 3346706726,
+      "updatetime": 1790431200,
+      "rank": 100000
+    },
+    {
+      "point": 3393651052,
+      "updatetime": 1790432400,
+      "rank": 100000
+    },
+    {
+      "point": 3443601588,
+      "updatetime": 1790433600,
+      "rank": 100000
+    },
+    {
+      "point": 3498287519,
+      "updatetime": 1790434800,
+      "rank": 100000
+    },
+    {
+      "point": 3515384819,
+      "updatetime": 1790460000,
+      "rank": 100000
+    },
+    {
+      "point": 3525533850,
+      "updatetime": 1790461200,
+      "rank": 100000
+    },
+    {
+      "point": 3543460183,
+      "updatetime": 1790462400,
+      "rank": 100000
+    },
+    {
+      "point": 3565949415,
+      "updatetime": 1790463600,
+      "rank": 100000
+    },
+    {
+      "point": 3588816575,
+      "updatetime": 1790464800,
+      "rank": 100000
+    },
+    {
+      "point": 3612345090,
+      "updatetime": 1790466000,
+      "rank": 100000
+    },
+    {
+      "point": 3640633463,
+      "updatetime": 1790467200,
+      "rank": 100000
+    },
+    {
+      "point": 3669961124,
+      "updatetime": 1790468400,
+      "rank": 100000
+    },
+    {
+      "point": 3701276691,
+      "updatetime": 1790469600,
+      "rank": 100000
+    },
+    {
+      "point": 3733316008,
+      "updatetime": 1790470800,
+      "rank": 100000
+    },
+    {
+      "point": 3765455147,
+      "updatetime": 1790472000,
+      "rank": 100000
+    },
+    {
+      "point": 3802601407,
+      "updatetime": 1790473200,
+      "rank": 100000
+    },
+    {
+      "point": 3838942025,
+      "updatetime": 1790474400,
+      "rank": 100000
+    },
+    {
+      "point": 3875908266,
+      "updatetime": 1790475600,
+      "rank": 100000
+    },
+    {
+      "point": 3912446597,
+      "updatetime": 1790476800,
+      "rank": 100000
+    },
+    {
+      "point": 3954171182,
+      "updatetime": 1790478000,
+      "rank": 100000
+    },
+    {
+      "point": 3993274419,
+      "updatetime": 1790479200,
+      "rank": 100000
+    },
+    {
+      "point": 4033544109,
+      "updatetime": 1790480400,
+      "rank": 100000
+    },
+    {
+      "point": 4074227645,
+      "updatetime": 1790481600,
+      "rank": 100000
+    },
+    {
+      "point": 4116596897,
+      "updatetime": 1790482800,
+      "rank": 100000
+    },
+    {
+      "point": 4158763559,
+      "updatetime": 1790484000,
+      "rank": 100000
+    },
+    {
+      "point": 4203345268,
+      "updatetime": 1790485200,
+      "rank": 100000
+    },
+    {
+      "point": 4249069844,
+      "updatetime": 1790486400,
+      "rank": 100000
+    },
+    {
+      "point": 4295918435,
+      "updatetime": 1790487600,
+      "rank": 100000
+    },
+    {
+      "point": 4340300579,
+      "updatetime": 1790488800,
+      "rank": 100000
+    },
+    {
+      "point": 4385794264,
+      "updatetime": 1790490000,
+      "rank": 100000
+    },
+    {
+      "point": 4429056408,
+      "updatetime": 1790491200,
+      "rank": 100000
+    },
+    {
+      "point": 4473276552,
+      "updatetime": 1790492400,
+      "rank": 100000
+    },
+    {
+      "point": 4520304323,
+      "updatetime": 1790493600,
+      "rank": 100000
+    },
+    {
+      "point": 4567253394,
+      "updatetime": 1790494800,
+      "rank": 100000
+    },
+    {
+      "point": 4614327718,
+      "updatetime": 1790496000,
+      "rank": 100000
+    },
+    {
+      "point": 4661161876,
+      "updatetime": 1790497200,
+      "rank": 100000
+    },
+    {
+      "point": 4708913471,
+      "updatetime": 1790498400,
+      "rank": 100000
+    },
+    {
+      "point": 4759003268,
+      "updatetime": 1790499600,
+      "rank": 100000
+    },
+    {
+      "point": 4809102531,
+      "updatetime": 1790500800,
+      "rank": 100000
+    },
+    {
+      "point": 4860464691,
+      "updatetime": 1790502000,
+      "rank": 100000
+    },
+    {
+      "point": 4914062198,
+      "updatetime": 1790503200,
+      "rank": 100000
+    },
+    {
+      "point": 4966711986,
+      "updatetime": 1790504400,
+      "rank": 100000
+    },
+    {
+      "point": 5020299849,
+      "updatetime": 1790505600,
+      "rank": 100000
+    },
+    {
+      "point": 5073059341,
+      "updatetime": 1790506800,
+      "rank": 100000
+    },
+    {
+      "point": 5134768796,
+      "updatetime": 1790508000,
+      "rank": 100000
+    },
+    {
+      "point": 5199868385,
+      "updatetime": 1790509200,
+      "rank": 100000
+    },
+    {
+      "point": 5266304812,
+      "updatetime": 1790510400,
+      "rank": 100000
+    },
+    {
+      "point": 5330973868,
+      "updatetime": 1790511600,
+      "rank": 100000
+    },
+    {
+      "point": 5400213565,
+      "updatetime": 1790512800,
+      "rank": 100000
+    },
+    {
+      "point": 5471550113,
+      "updatetime": 1790514000,
+      "rank": 100000
+    },
+    {
+      "point": 5543553002,
+      "updatetime": 1790515200,
+      "rank": 100000
+    },
+    {
+      "point": 5621452060,
+      "updatetime": 1790516400,
+      "rank": 100000
+    },
+    {
+      "point": 5698855318,
+      "updatetime": 1790517600,
+      "rank": 100000
+    },
+    {
+      "point": 5779150313,
+      "updatetime": 1790518800,
+      "rank": 100000
+    },
+    {
+      "point": 5867153767,
+      "updatetime": 1790520000,
+      "rank": 100000
+    },
+    {
+      "point": 5959741001,
+      "updatetime": 1790521200,
+      "rank": 100000
+    }
+  ]
+}
