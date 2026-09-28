@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- 背景グラデーション: ダークネイビーから漆黒へ -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e24"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+    
+    <!-- ランキングバー用グラデーション: シアンから鮮やかなブルー -->
+    <linearGradient id="barGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </linearGradient>
+    
+    <!-- 古戦場の星用グラデーション: 黄金の煌めき -->
+    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+
+    <!-- 星のグロー効果 -->
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- アイコンベース: 角丸スクエア -->
+  <rect x="2" y="2" width="60" height="60" rx="14" fill="url(#bgGrad)" stroke="#3b82f6" stroke-width="2" stroke-opacity="0.5"/>
+
+  <!-- 上昇するランキングバー（成長推移を象徴） -->
+  <rect x="10" y="38" width="8" height="16" rx="2.5" fill="url(#barGrad)" opacity="0.6"/>
+  <rect x="22" y="28" width="8" height="26" rx="2.5" fill="url(#barGrad)" opacity="0.85"/>
+  <rect x="34" y="18" width="8" height="36" rx="2.5" fill="url(#barGrad)"/>
+
+  <!-- 古戦場の星（勝利・勲章を象徴する八点星） -->
+  <g transform="translate(47, 18)" filter="url(#glow)">
+    <!-- 外側の十字 -->
+    <path d="M0 -14 L3 -4 L13 -2 L4 3 L6 13 L0 6 L-6 13 L-4 3 L-13 -2 L-3 -4 Z" fill="url(#starGrad)"/>
+    <!-- 中心のハイライト -->
+    <circle cx="0" cy="0" r="2.5" fill="#ffffff"/>
+  </g>
+
+  <!-- 上昇トレンドライン（グラフの成長線） -->
+  <path d="M14 36 Q 26 26, 45 10" fill="none" stroke="#93c5fd" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="2 3" opacity="0.7"/>
+</svg>
