@@ -88,9 +88,18 @@
 
     <!-- ランキング結果テーブルセクション -->
     <section id="resultSection" class="hidden bg-[#27272a] rounded-lg shadow-lg border border-[#3f3f46] overflow-hidden">
-      <div class="p-4 bg-[#18181b] border-b border-[#3f3f46] flex justify-between items-center">
-        <h2 class="font-bold text-[#e4e4e7]">最新ランキング</h2>
-        <span id="lastUpdate" class="text-xs text-[#71717a]"></span>
+      <div class="p-3 sm:p-4 bg-[#18181b] border-b border-[#3f3f46] flex flex-wrap justify-between items-center gap-2">
+        <div class="flex items-center gap-2.5">
+          <h2 class="font-bold text-[#e4e4e7] text-sm sm:text-base">最新ランキング</h2>
+          <span id="lastUpdate" class="text-xs text-[#71717a]"></span>
+        </div>
+        <button id="saveImageBtn" onclick="exportRankingImage()" class="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-[#27272a] hover:bg-[#3f3f46] text-[#e4e4e7] hover:text-white rounded-lg border border-[#3f3f46] transition-all shadow-sm cursor-pointer select-none active:scale-95" title="現在の順位・貢献度一覧を画像(PNG)として保存">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#60a5fa]">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+          <span class="font-medium">画像として保存</span>
+        </button>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left whitespace-nowrap">
@@ -178,6 +187,6 @@
   </div>
 
   <!-- アプリケーションロジックの読み込み -->
-  <script src="script.js?v=20260928_03"></script>
+  <script src="script.js?v=20260928_05"></script>
 </body>
 </html>

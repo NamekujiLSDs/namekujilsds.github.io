@@ -49,7 +49,7 @@
      `gbf.pub` APIへの並列非同期通信とAllOriginsプロキシによるCORS/キャッシュ回避フォールバック。
   2. **データ処理・計算層 (`calculateActivityCurve`, `calcInflationRate`, `getInterpolatedPoint`, `calculateSpeedFromPast`, `calculateTodayIncrease`, `isRestTimeByElapsed`, `realElapsedToActiveH`, `getRealElapsedForPhase`)**:
      過去開催の伸び率をベースとしたアクティビティ曲線モデルの構築、今回のインフレ倍率算出、線形補間による時系列予測、空白時間（深夜休戦・集計）のプロット除外処理、および夜間空白をスキップして詰める累積活動時間（Active Timeline, 0〜121h）相互変換処理。
-  3. **UI・プレゼンテーション層 (`renderTable`, `renderChartjs`, `updateIncreaseSummary`, `updateSortIcons`, `showToast`, `setLoading`, `showError`)**:
-     ランキングテーブルの生成、Chart.jsによるグラフ描画・ゲーム内フェーズ別（予選、インターバル、本戦1〜4日目）のインタラクティブ切り替え（`animation: false` および `update('none')` によるモーフィング歪み・斜め線バグの完全根絶）、期間内貢献度純増量サマリーの動的算出・タップトグル表示（略記 ⇄ 詳細実数値）、全期間グラフにおけるプロット点非表示化（`pointRadius: 0`）による線のスリム化とホバー拡大、ソート操作、日別グラフにおける07:00〜24:00ジャスト表示、全期間グラフにおける夜間空白スキップ連続描画、モバイル画面幅に応じた動的目盛り調整。
+  3. **UI・プレゼンテーション層 (`renderTable`, `renderChartjs`, `updateIncreaseSummary`, `updateSortIcons`, `showToast`, `setLoading`, `showError`, `exportRankingImage`)**:
+     ランキングテーブルの生成、Chart.jsによるグラフ描画・ゲーム内フェーズ別（予選、インターバル、本戦1〜4日目）のインタラクティブ切り替え（`animation: false` および `update('none')` によるモーフィング歪み・斜め線バグの完全根絶）、全期間および日をまたぐグラフにおける日の切り替わり境界線（縦破線＋日付バッジ）の自動描画プラグイン（`dayBoundaryLinePlugin`）、期間内貢献度純増量サマリーの動的算出・タップトグル表示（略記 ⇄ 詳細実数値）、全期間グラフにおけるプロット点非表示化（`pointRadius: 0`）による線のスリム化とホバー拡大、ソート操作、日別グラフにおける07:00〜24:00ジャスト表示、全期間グラフにおける夜間空白スキップ連続描画、モバイル画面幅に応じた動的目盛り調整、およびボーダー行を除外したプレイヤー一覧の動的サイズ画像（PNG）エクスポート（Retina 2x スケール）。
   4. **永続化・URL連携層 (`updateUrlParams`, `getIdsFromUrl`, `encodeIdsToParam`, `decodeParamToIds`, `localStorage`)**:
      開催回のlocalStorage保持、Uint32バイナリパック＋URL-safe Base64エンコードによるURL短縮同期（`?d=...`）、検索IDリストのURLクエリ同期。

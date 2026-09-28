@@ -85,6 +85,13 @@ let currentSortOrder = 'desc';
  */
 let isSummaryDetailMode = false;
 
+/**
+ * 現在テーブルに描画されているソート済みデータ配列のキャッシュ。
+ * 画像保存時に最新の並び順（全体順位、貢献度、時速等）をそのまま画像化するために保持します。
+ * @type {Array<object>}
+ */
+let currentSortedData = [];
+
 // --- ユーティリティ関数 ---
 
 /**
@@ -1066,10 +1073,90 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
 
   // 以前のチャートが存在する場合は必ず破棄してキャンバスをクリーンアップ
   if (myChart) myChart.destroy();
+
+  /**
+   * 全期間及び日をまたぐ場合のグラフにおいて、日の切り替わり時刻（24:00 / 0:00）に縦線を描画するプラグイン。
+   * 
+   * 【背景・意図】
+   * 「全期間及び日をまたぐ場合のグラフについて、日の切り替わりのところに線が入るようにしてほしい」という要求に対応。
+   * 予選タブ（初日19:00〜翌24:00）における日付変更点（初日24:00＝activeH: 5）や、
+   * 全期間タブ（149h）における各日付の終了・開始境界（activeH: 5, 29, 46, 63, 80, 97）に
+   * 視認性の高い破線と日付バッジを描画することで、期間の推移を直感的に把握可能にします。
+   * 単一日フェーズ（インターバルや本戦各日の7:00〜24:00）では表示範囲外となるため描画されません。
+   */
+  const dayBoundaryLinePlugin = {
+    id: 'dayBoundaryLine',
+    afterDatasetsDraw(chart) {
+      const { ctx: chartCtx, chartArea, scales: { x: scaleX } } = chart;
+      if (!chartArea || !scaleX) return;
+
+      // 日付切り替わり境界の正確な定義（activeH: X軸累積活動時間, realElapsedH: 開始時からの実経過時間）
+      // 1. 予選初日終了 / 予選2日目開始 (翌日0:00): realElapsed 5h (activeH: 5)
+      // 2. 予選2日目終了 / 3日目開始 (翌日0:00): realElapsed 29h (activeH: 29)
+      // 3. インターバル深夜 / 4日目開始 (翌日0:00): realElapsed 53h (activeH: 46)
+      // 4. 本戦1日目終了 / 5日目開始 (翌日0:00): realElapsed 77h (activeH: 70)
+      // 5. 本戦2日目終了 / 6日目開始 (翌日0:00): realElapsed 101h (activeH: 87)
+      // 6. 本戦3日目終了 / 7日目開始 (翌日0:00): realElapsed 125h (activeH: 104)
+      const boundaries = [
+        { activeH: 5, realElapsedH: 5 },
+        { activeH: 29, realElapsedH: 29 },
+        { activeH: 46, realElapsedH: 53 },
+        { activeH: 70, realElapsedH: 77 },
+        { activeH: 87, realElapsedH: 101 },
+        { activeH: 104, realElapsedH: 125 }
+      ];
+
+      chartCtx.save();
+      boundaries.forEach(b => {
+        // 現在のx軸の表示範囲内（端点より内側）にあるか判定
+        // 単一日フェーズ（min=29, max=46など）の境界端点に余計な重複線が出るのを防ぐため ±0.2 のマージンを設ける
+        if (b.activeH <= scaleX.min + 0.2 || b.activeH >= scaleX.max - 0.2) return;
+
+        const xPos = scaleX.getPixelForValue(b.activeH);
+        if (xPos < chartArea.left || xPos > chartArea.right) return;
+
+        // 垂直破線の描画
+        chartCtx.beginPath();
+        chartCtx.setLineDash([4, 4]);
+        chartCtx.strokeStyle = 'rgba(244, 244, 245, 0.45)';
+        chartCtx.lineWidth = 1.5;
+        chartCtx.moveTo(xPos, chartArea.top);
+        chartCtx.lineTo(xPos, chartArea.bottom);
+        chartCtx.stroke();
+
+        // 日付・時刻ラベル（例: "9/23 0:00"）
+        const dateUnixMs = (currentStartTime + b.realElapsedH * 3600) * 1000;
+        const d = new Date(dateUnixMs);
+        const dateLabel = `${d.getMonth() + 1}/${d.getDate()} 0:00`;
+
+        chartCtx.setLineDash([]);
+        chartCtx.font = '10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        const textWidth = chartCtx.measureText(dateLabel).width;
+        const badgePaddingX = 4;
+        const badgeHeight = 15;
+        const badgeY = chartArea.top + 4;
+
+        // 背景ピルバッジの描画（グラフ線と重なっても文字が確実に読めるようにする）
+        chartCtx.fillStyle = 'rgba(24, 24, 27, 0.88)';
+        chartCtx.fillRect(xPos - textWidth / 2 - badgePaddingX, badgeY, textWidth + badgePaddingX * 2, badgeHeight);
+        chartCtx.strokeStyle = 'rgba(113, 113, 122, 0.6)';
+        chartCtx.lineWidth = 1;
+        chartCtx.strokeRect(xPos - textWidth / 2 - badgePaddingX, badgeY, textWidth + badgePaddingX * 2, badgeHeight);
+
+        // ラベルテキストの描画
+        chartCtx.fillStyle = '#e4e4e7';
+        chartCtx.textAlign = 'center';
+        chartCtx.textBaseline = 'middle';
+        chartCtx.fillText(dateLabel, xPos, badgeY + badgeHeight / 2);
+      });
+      chartCtx.restore();
+    }
+  };
   
   myChart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
+    plugins: [dayBoundaryLinePlugin],
     options: {
       animation: false, // 【重要】データ要素数の異なるフェーズ間での補間モーフィング歪み・斜め線ループ現象を根絶するため全アニメーションを完全無効化
       responsive: true,
@@ -1676,6 +1763,8 @@ const showError = (message) => {
  * @returns {void}
  */
 const renderTable = (data) => {
+  // 現在のソート順序を保持（画像エクスポート時に利用）
+  currentSortedData = data;
   tableBody.innerHTML = ''; 
 
   let userRankCounter = 0; // ボーダー行を除外した順位カウンター
@@ -1792,3 +1881,257 @@ inputIdsEl.addEventListener('keydown', (e) => {
 
 // DOM構築完了時に初期化処理を起動
 window.addEventListener('DOMContentLoaded', init);
+
+// --- ランキング一覧の動的サイズ画像エクスポート機能 ---
+
+/**
+ * 現在のランキングテーブルに表示されているプレイヤーの一覧（名前、ID、累計貢献度）を
+ * 動的なサイズを計算した高解像度Canvasでレンダリングし、PNG画像としてダウンロード保存します。
+ * 
+ * 【背景・意図】
+ * 「順位の一覧を画像として保存するための機能が欲しい。
+ *  2000位ボーダー、10万位ボーダーの記述は不要で、名前、id、累計貢献度がリストとして画像で出力されるようにしたい。
+ *  画像のサイズは動的に決定されるものとする。」
+ * というユーザー要求に対応します。
+ * 
+ * 外部ライブラリ（html2canvas等）を使わず、ブラウザネイティブのCanvas APIで直接描画することで、
+ * CORS制約やCSSレンダリング崩れをゼロにし、高速・超高画質（Retina 2x スケール）で
+ * DiscordやSNS共有に最適なダークモダンデザインの画像を生成します。
+ * 
+ * @returns {void}
+ */
+window.exportRankingImage = function() {
+  if (!globalEventData.tableData || globalEventData.tableData.length === 0) {
+    showToast('出力可能なランキングデータがありません');
+    return;
+  }
+
+  // 1. ボーダー行（10万位・2000位）を除外し、プレイヤーのみを抽出（現在のソート順を維持）
+  const sourceList = (currentSortedData && currentSortedData.length > 0)
+    ? currentSortedData
+    : globalEventData.tableData;
+
+  const usersList = sourceList.filter(row => !row.isBorder);
+
+  if (usersList.length === 0) {
+    showToast('プレイヤーデータが登録されていません');
+    return;
+  }
+
+  // 2. 動的サイズ計算
+  // プレイヤー人数に応じた高さを算出
+  const rowCount = usersList.length;
+  const paddingX = 28;
+  const headerHeight = 74;      // タイトルヘッダー領域
+  const colHeaderHeight = 36;   // テーブル列見出し
+  const rowHeight = 44;         // 1行の高さ
+  const footerHeight = 38;      // フッター領域
+  const totalHeight = headerHeight + colHeaderHeight + (rowCount * rowHeight) + footerHeight;
+
+  // 名前の長さに応じた動的幅計算（最長の名前をCanvasで実測）
+  const measureCanvas = document.createElement('canvas');
+  const mCtx = measureCanvas.getContext('2d');
+  mCtx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", sans-serif';
+  let maxNameWidth = 140;
+  usersList.forEach(u => {
+    const w = mCtx.measureText(u.name || '').width;
+    if (w > maxNameWidth) maxNameWidth = w;
+  });
+
+  // 列のレイアウト幅
+  const rankColWidth = 50;
+  const nameColWidth = Math.max(200, Math.min(360, maxNameWidth + 30));
+  const idColWidth = 110;
+  const pointColWidth = 200;
+  const contentWidth = rankColWidth + nameColWidth + idColWidth + pointColWidth;
+  const totalWidth = contentWidth + (paddingX * 2);
+
+  // 3. 高解像度（2xスケール）用Canvasの作成
+  const scale = 2;
+  const canvas = document.createElement('canvas');
+  canvas.width = totalWidth * scale;
+  canvas.height = totalHeight * scale;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(scale, scale);
+
+  // フォント定義ヘルパー
+  const fontSans = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
+  const fontMono = '"SF Pro Text", Consolas, "Liberation Mono", Menlo, monospace';
+
+  // 背景描画（深みのあるダークグラデーション）
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, totalHeight);
+  bgGrad.addColorStop(0, '#121215');
+  bgGrad.addColorStop(1, '#0c0c0e');
+  ctx.fillStyle = bgGrad;
+  ctx.fillRect(0, 0, totalWidth, totalHeight);
+
+  // 外枠カードボーダー
+  ctx.strokeStyle = '#27272a';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0.5, 0.5, totalWidth - 1, totalHeight - 1);
+
+  // ヘッダー背景（上部アクセント）
+  const headerGrad = ctx.createLinearGradient(0, 0, totalWidth, 0);
+  headerGrad.addColorStop(0, 'rgba(59, 130, 246, 0.15)');
+  headerGrad.addColorStop(0.5, 'rgba(39, 39, 42, 0.3)');
+  headerGrad.addColorStop(1, 'rgba(147, 51, 234, 0.15)');
+  ctx.fillStyle = headerGrad;
+  ctx.fillRect(0, 0, totalWidth, headerHeight);
+
+  // ヘッダー区切り線
+  ctx.strokeStyle = '#3f3f46';
+  ctx.beginPath();
+  ctx.moveTo(0, headerHeight);
+  ctx.lineTo(totalWidth, headerHeight);
+  ctx.stroke();
+
+  // ヘッダータイトル
+  ctx.fillStyle = '#f4f4f5';
+  ctx.font = `bold 18px ${fontSans}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('決戦！星の古戦場 貢献度ランキング', paddingX, 30);
+
+  // ヘッダーサブ情報（取得日時 ＆ 参加人数）
+  const now = new Date();
+  const pad = n => n.toString().padStart(2, '0');
+  const nowStr = `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  ctx.fillStyle = '#a1a1aa';
+  ctx.font = `12px ${fontSans}`;
+  ctx.fillText(`出力日時: ${nowStr}   |   対象: ${rowCount}名`, paddingX, 52);
+
+  // 列見出し領域背景
+  const colHeaderY = headerHeight;
+  ctx.fillStyle = '#18181b';
+  ctx.fillRect(0, colHeaderY, totalWidth, colHeaderHeight);
+
+  // 列見出し区切り線
+  ctx.strokeStyle = '#27272a';
+  ctx.beginPath();
+  ctx.moveTo(0, colHeaderY + colHeaderHeight);
+  ctx.lineTo(totalWidth, colHeaderY + colHeaderHeight);
+  ctx.stroke();
+
+  // 列見出しテキスト
+  ctx.fillStyle = '#71717a';
+  ctx.font = `bold 12px ${fontSans}`;
+  ctx.textBaseline = 'middle';
+  const colTextY = colHeaderY + (colHeaderHeight / 2);
+
+  // 各列の X 基準位置
+  const xRank = paddingX;
+  const xName = xRank + rankColWidth;
+  const xId = xName + nameColWidth;
+  const xPoint = totalWidth - paddingX; // 右寄せ
+
+  ctx.textAlign = 'center';
+  ctx.fillText('#', xRank + (rankColWidth / 2) - 4, colTextY);
+
+  ctx.textAlign = 'left';
+  ctx.fillText('名前', xName, colTextY);
+  ctx.fillText('ID', xId, colTextY);
+
+  ctx.textAlign = 'right';
+  ctx.fillText('累計貢献度', xPoint, colTextY);
+
+  // データ行描画
+  let currentY = colHeaderY + colHeaderHeight;
+  usersList.forEach((u, idx) => {
+    const isEven = idx % 2 === 0;
+    
+    // ゼブラ背景
+    ctx.fillStyle = isEven ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.2)';
+    ctx.fillRect(0, currentY, totalWidth, rowHeight);
+
+    // 行下部区切り線
+    ctx.strokeStyle = 'rgba(63, 63, 70, 0.35)';
+    ctx.beginPath();
+    ctx.moveTo(paddingX, currentY + rowHeight);
+    ctx.lineTo(totalWidth - paddingX, currentY + rowHeight);
+    ctx.stroke();
+
+    const rowMidY = currentY + (rowHeight / 2);
+
+    // 順位番号
+    const rankNum = idx + 1;
+    ctx.textAlign = 'center';
+    ctx.font = `bold 14px ${fontMono}`;
+    if (rankNum === 1) {
+      ctx.fillStyle = '#facc15'; // 1位: ゴールド
+    } else if (rankNum === 2) {
+      ctx.fillStyle = '#e2e8f0'; // 2位: シルバー
+    } else if (rankNum === 3) {
+      ctx.fillStyle = '#fb923c'; // 3位: ブロンズ
+    } else {
+      ctx.fillStyle = '#71717a'; // 4位以降
+    }
+    ctx.fillText(`${rankNum}`, xRank + (rankColWidth / 2) - 4, rowMidY);
+
+    // プレイヤー名
+    ctx.textAlign = 'left';
+    ctx.font = `bold 14px ${fontSans}`;
+    ctx.fillStyle = '#f4f4f5';
+    ctx.fillText(u.name || '騎空士', xName, rowMidY);
+
+    // プレイヤーID
+    ctx.font = `12px ${fontMono}`;
+    ctx.fillStyle = '#71717a';
+    ctx.fillText(`${u.id}`, xId, rowMidY);
+
+    // 累計貢献度（右寄せ: 例: 1,234,567,890 と 億万略記）
+    const pointVal = (u.point !== undefined && u.point !== null) ? u.point : 0;
+    const pointFullStr = pointVal.toLocaleString();
+    const pointShortStr = formatPoint(pointVal);
+
+    ctx.textAlign = 'right';
+    ctx.font = `bold 13px ${fontMono}`;
+    ctx.fillStyle = '#60a5fa';
+    ctx.fillText(pointFullStr, xPoint, rowMidY - 3);
+
+    ctx.font = `11px ${fontSans}`;
+    ctx.fillStyle = '#93c5fd';
+    ctx.fillText(`(${pointShortStr})`, xPoint, rowMidY + 11);
+
+    currentY += rowHeight;
+  });
+
+  // フッター領域
+  const footerY = currentY;
+  ctx.fillStyle = '#0e0e11';
+  ctx.fillRect(0, footerY, totalWidth, footerHeight);
+
+  ctx.strokeStyle = '#27272a';
+  ctx.beginPath();
+  ctx.moveTo(0, footerY);
+  ctx.lineTo(totalWidth, footerY);
+  ctx.stroke();
+
+  ctx.fillStyle = '#52525b';
+  ctx.font = `11px ${fontSans}`;
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('古戦場貢献度チェッカー (namekujilsds.github.io/Kosenjo/)', paddingX, footerY + (footerHeight / 2));
+
+  ctx.textAlign = 'right';
+  ctx.fillText(`${rowCount} Players Recorded`, totalWidth - paddingX, footerY + (footerHeight / 2));
+
+  // 4. PNGとしてダウンロード
+  canvas.toBlob((blob) => {
+    if (!blob) {
+      showToast('画像の生成に失敗しました');
+      return;
+    }
+    const filename = `kosenjo_ranking_${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}.png`;
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    showToast('順位一覧画像を保存しました');
+  }, 'image/png');
+};
