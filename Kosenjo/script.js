@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 古戦場貢献度ランキング スクリプト (script.js)
  * 
  * 本スクリプトは、グランブルーファンタジーのゲーム内イベント「決戦！星の古戦場」において、
@@ -1980,137 +1980,147 @@ window.exportRankingImage = function() {
   const contentWidth = rankColWidth + nameColWidth + pointColWidth;
   const totalWidth = contentWidth + (paddingX * 2);
 
-  // 3. 高解像度（3xスケール）用Canvasの作成
+  // 3. 高解像度Canvas作成（ctx.scaleを使わず座標・フォントを直接スケール倍で指定し鮮明なテキスト描画を実現）
   const scale = 3;
   const canvas = document.createElement('canvas');
-  canvas.width = totalWidth * scale;
-  canvas.height = totalHeight * scale;
+  const W = totalWidth * scale;
+  const H = totalHeight * scale;
+  canvas.width = W;
+  canvas.height = H;
   const ctx = canvas.getContext('2d');
-  ctx.scale(scale, scale);
+
+  // ピクセルスナップ: 座標を物理ピクセル境界にラウンドしてサブピクセルぼかしを排除
+  const s = v => Math.round(v * scale);
+  // スケール済みフォントサイズ（フォントラスタライザが実サイズでヒンティングを行うため鮮明になる）
+  const sf = size => Math.round(size * scale);
 
   // 背景描画（深みのあるダークグラデーション）
-  const bgGrad = ctx.createLinearGradient(0, 0, 0, totalHeight);
+  const bgGrad = ctx.createLinearGradient(0, 0, 0, H);
   bgGrad.addColorStop(0, '#121215');
   bgGrad.addColorStop(1, '#0c0c0e');
   ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, totalWidth, totalHeight);
+  ctx.fillRect(0, 0, W, H);
 
   // 外枠カードボーダー
   ctx.strokeStyle = '#27272a';
-  ctx.lineWidth = 1;
-  ctx.strokeRect(0.5, 0.5, totalWidth - 1, totalHeight - 1);
+  ctx.lineWidth = scale;
+  ctx.strokeRect(scale * 0.5, scale * 0.5, W - scale, H - scale);
 
   // ヘッダー背景（上部アクセント）
-  const headerGrad = ctx.createLinearGradient(0, 0, totalWidth, 0);
+  const headerGrad = ctx.createLinearGradient(0, 0, W, 0);
   headerGrad.addColorStop(0, 'rgba(59, 130, 246, 0.15)');
   headerGrad.addColorStop(0.5, 'rgba(39, 39, 42, 0.3)');
   headerGrad.addColorStop(1, 'rgba(147, 51, 234, 0.15)');
   ctx.fillStyle = headerGrad;
-  ctx.fillRect(0, 0, totalWidth, headerHeight);
+  ctx.fillRect(0, 0, W, s(headerHeight));
 
   // ヘッダー区切り線
   ctx.strokeStyle = '#3f3f46';
+  ctx.lineWidth = scale;
   ctx.beginPath();
-  ctx.moveTo(0, headerHeight);
-  ctx.lineTo(totalWidth, headerHeight);
+  ctx.moveTo(0, s(headerHeight));
+  ctx.lineTo(W, s(headerHeight));
   ctx.stroke();
 
   // ヘッダータイトル: 「第xx回 古戦場 ランキング」
   ctx.fillStyle = '#f4f4f5';
-  ctx.font = `bold 16px ${fontSans}`;
+  ctx.font = `bold ${sf(16)}px ${fontSans}`;
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText(`第${currentRaidNum}回 古戦場 ランキング`, totalWidth / 2, headerHeight / 2);
+  ctx.fillText(`第${currentRaidNum}回 古戦場 ランキング`, s(totalWidth / 2), s(headerHeight / 2));
 
   // 列見出し領域背景
-  const colHeaderY = headerHeight;
   ctx.fillStyle = '#18181b';
-  ctx.fillRect(0, colHeaderY, totalWidth, colHeaderHeight);
+  ctx.fillRect(0, s(headerHeight), W, s(colHeaderHeight));
 
   // 列見出し区切り線
   ctx.strokeStyle = '#27272a';
+  ctx.lineWidth = scale;
   ctx.beginPath();
-  ctx.moveTo(0, colHeaderY + colHeaderHeight);
-  ctx.lineTo(totalWidth, colHeaderY + colHeaderHeight);
+  ctx.moveTo(0, s(headerHeight + colHeaderHeight));
+  ctx.lineTo(W, s(headerHeight + colHeaderHeight));
   ctx.stroke();
 
   // 列見出しテキスト
   ctx.fillStyle = '#71717a';
-  ctx.font = `bold 10px ${fontSans}`;
+  ctx.font = `bold ${sf(10)}px ${fontSans}`;
   ctx.textBaseline = 'middle';
-  const colTextY = colHeaderY + (colHeaderHeight / 2);
+  const colTextYPx = s(headerHeight + colHeaderHeight / 2);
 
-  // 各列の X 基準位置
-  const xRank = paddingX;
-  const xName = xRank + rankColWidth;
-  const xPoint = totalWidth - paddingX; // 右寄せ
+  // 各列の X 基準位置（物理ピクセル）
+  const xRankPx = s(paddingX);
+  const xNamePx = s(paddingX + rankColWidth);
+  const xPointPx = s(totalWidth - paddingX);
 
   ctx.textAlign = 'center';
-  ctx.fillText('#', xRank + (rankColWidth / 2), colTextY);
+  ctx.fillText('#', s(paddingX + rankColWidth / 2), colTextYPx);
 
   ctx.textAlign = 'left';
-  ctx.fillText('名前', xName, colTextY);
+  ctx.fillText('名前', xNamePx, colTextYPx);
 
   ctx.textAlign = 'right';
-  ctx.fillText('累計貢献度', xPoint, colTextY);
+  ctx.fillText('累計貢献度', xPointPx, colTextYPx);
 
   // データ行描画
-  let currentY = colHeaderY + colHeaderHeight;
+  let currentY = headerHeight + colHeaderHeight; // 論理座標で管理
   usersList.forEach((u, idx) => {
     const isEven = idx % 2 === 0;
+    const cyPx = s(currentY);
+    const rhPx = s(rowHeight);
     
     // ゼブラ背景
     ctx.fillStyle = isEven ? 'rgba(255, 255, 255, 0.015)' : 'rgba(0, 0, 0, 0.2)';
-    ctx.fillRect(0, currentY, totalWidth, rowHeight);
+    ctx.fillRect(0, cyPx, W, rhPx);
 
     // 行下部区切り線
     ctx.strokeStyle = 'rgba(63, 63, 70, 0.35)';
+    ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(paddingX, currentY + rowHeight);
-    ctx.lineTo(totalWidth - paddingX, currentY + rowHeight);
+    ctx.moveTo(xRankPx, cyPx + rhPx);
+    ctx.lineTo(xPointPx, cyPx + rhPx);
     ctx.stroke();
 
     // 順位番号（団内順位）
     const rankNum = idx + 1;
     ctx.textAlign = 'center';
-    ctx.font = `bold 13px ${fontMono}`;
+    ctx.font = `bold ${sf(13)}px ${fontMono}`;
     if (rankNum === 1) {
-      ctx.fillStyle = '#facc15'; // 1位: ゴールド
+      ctx.fillStyle = '#facc15';
     } else if (rankNum === 2) {
-      ctx.fillStyle = '#e2e8f0'; // 2位: シルバー
+      ctx.fillStyle = '#e2e8f0';
     } else if (rankNum === 3) {
-      ctx.fillStyle = '#fb923c'; // 3位: ブロンズ
+      ctx.fillStyle = '#fb923c';
     } else {
-      ctx.fillStyle = '#71717a'; // 4位以降
+      ctx.fillStyle = '#71717a';
     }
-    ctx.fillText(`${rankNum}`, xRank + (rankColWidth / 2), currentY + (rowHeight / 2));
+    ctx.fillText(`${rankNum}`, s(paddingX + rankColWidth / 2), s(currentY + rowHeight / 2));
 
     // プレイヤー名（上段）
     ctx.textAlign = 'left';
-    ctx.font = `bold 13px ${fontSans}`;
+    ctx.font = `bold ${sf(13)}px ${fontSans}`;
     ctx.fillStyle = '#f4f4f5';
-    ctx.fillText(u.name || '騎空士', xName, currentY + 14);
+    ctx.fillText(u.name || '騎空士', xNamePx, s(currentY + 14));
 
     // プレイヤーID（名前の下に小さく表示）
-    ctx.font = `10px ${fontMono}`;
+    ctx.font = `${sf(10)}px ${fontMono}`;
     ctx.fillStyle = '#52525b';
-    ctx.fillText(`${u.id}`, xName, currentY + 28);
+    ctx.fillText(`${u.id}`, xNamePx, s(currentY + 28));
 
     // 累計貢献度（右寄せ）
     const pointVal = (u.point !== undefined && u.point !== null) ? u.point : 0;
     const pointFullStr = pointVal.toLocaleString();
 
     ctx.textAlign = 'right';
-    ctx.font = `bold 12px ${fontMono}`;
+    ctx.font = `bold ${sf(12)}px ${fontMono}`;
     ctx.fillStyle = '#60a5fa';
-    ctx.fillText(pointFullStr, xPoint, currentY + 14);
+    ctx.fillText(pointFullStr, xPointPx, s(currentY + 14));
 
     // 総合順位（貢献度の下に小さく表示）
     const overallRankStr = u.rank ? `総合 ${u.rank.toLocaleString()}位` : '';
     if (overallRankStr) {
-      ctx.font = `10px ${fontSans}`;
+      ctx.font = `${sf(10)}px ${fontSans}`;
       ctx.fillStyle = '#52525b';
-      ctx.fillText(overallRankStr, xPoint, currentY + 28);
+      ctx.fillText(overallRankStr, xPointPx, s(currentY + 28));
     }
 
     currentY += rowHeight;
@@ -2140,3 +2150,4 @@ window.exportRankingImage = function() {
     showToast('順位一覧画像を保存しました');
   }, 'image/png');
 };
+
