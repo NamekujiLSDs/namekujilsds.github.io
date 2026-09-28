@@ -1980,8 +1980,8 @@ window.exportRankingImage = function() {
   const contentWidth = rankColWidth + nameColWidth + pointColWidth;
   const totalWidth = contentWidth + (paddingX * 2);
 
-  // 3. 高解像度（2xスケール）用Canvasの作成
-  const scale = 2;
+  // 3. 高解像度（3xスケール）用Canvasの作成
+  const scale = 3;
   const canvas = document.createElement('canvas');
   canvas.width = totalWidth * scale;
   canvas.height = totalHeight * scale;
