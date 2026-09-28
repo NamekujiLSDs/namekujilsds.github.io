@@ -756,10 +756,27 @@ document.getElementById('chartModal').addEventListener('click', (e) => {
  * @param {string} [subSuffix=''] - 接尾ラベル（例: ')'）
  * @returns {string} トグル用HTMLスパン文字列
  */
-const renderToggleablePoint = (num, colorClass, subPrefix = '', subSuffix = '') => {
+/**
+ * 期間内増加量または累計貢献度数値をトグル可能なHTMLとして生成するヘルパー関数。
+ * 
+ * 【背景・意図】
+ * 「+1.5517億のところ、タップしたら正確な数字が出るようにしてほしい」という要求に対応し、
+ * タップ（クリック）で略記（例: 1.5517億）と正確なフル桁数値（例: 155,170,000）を
+ * 相互にトグル切り替え可能にします。
+ * 全期間表示時は「増加量」ではなく「累計貢献度」そのものであるため、showPlus: false で '+' を付けずに表示します。
+ * 
+ * @param {number} num - 表示対象の数値
+ * @param {string} colorClass - テキスト色・フォントウェイトクラス
+ * @param {string} [subPrefix=''] - 接頭ラベル（例: '(着地予測 '）
+ * @param {string} [subSuffix=''] - 接尾ラベル（例: ')'）
+ * @param {boolean} [showPlus=true] - 先頭に '+' 符号を付与するかどうか（全期間累計時は false）
+ * @returns {string} トグル用HTMLスパン文字列
+ */
+const renderToggleablePoint = (num, colorClass, subPrefix = '', subSuffix = '', showPlus = true) => {
   if (num === undefined || num === null || isNaN(num)) return '-';
-  const shortNum = `+${formatPoint(num)}`;
-  const fullNum = `+${Math.round(num).toLocaleString()}`;
+  const prefixSign = (showPlus && num > 0) ? '+' : '';
+  const shortNum = `${prefixSign}${formatPoint(num)}`;
+  const fullNum = `${prefixSign}${Math.round(num).toLocaleString()}`;
 
   // 1万未満の場合は略記とフル表記が一致するため、トグル機能なしでそのまま表示
   if (shortNum === fullNum) {
@@ -811,12 +828,12 @@ window.toggleSummaryNumber = (event) => {
 };
 
 /**
- * 選択された期間（全期間・予選・インターバル・本戦各日）における貢献度の純増量を算出し、
+ * 選択された期間（全期間・予選・インターバル・本戦各日）における貢献度の純増量または累計貢献度を算出し、
  * グラフモーダル上部のサマリー領域に表示します。
  * 
  * 【背景・意図】
- * ユーザーが日別グラフや全期間グラフを見た際に、「この期間で結局どれだけ貢献度が増えたのか」を
- * グラフ上の数値を暗算・引き算することなく一目で直感的に把握できるように、期間内純増量を上部に明記します。
+ * 全期間は0からスタートするため「差異（増加量）」ではなく、最新の「累計貢献度」そのものを表示し、
+ * 各日タブ（予選、インターバル、本戦各日）では当該期間内での純増量を表示します。
  * さらに、タップ操作により正確なフル桁数値（カンマ区切り）と略記（億・万）のトグル切り替えに対応します。
  * 
  * @param {string} phaseId - 選択されたフェーズID ('all', 'qualify', 'interval', 'day1', etc.)
@@ -831,42 +848,62 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
   const valuesEl = document.getElementById('summaryValues');
   if (!phaseLabelEl || !valuesEl) return;
 
+  const isAllPeriod = (phaseId === 'all');
   const phaseObj = EVENT_PHASES.find(p => p.id === phaseId);
   const phaseLabel = phaseObj ? phaseObj.label : '期間';
-  phaseLabelEl.textContent = `${phaseLabel} 増加量`;
 
-  // データ配列から開始点と終了点の貢献度純増量を算出する内部関数
-  const calcIncrease = (dataList) => {
-    if (!dataList || dataList.length === 0) return { realInc: 0, predInc: null, hasData: false };
+  // 全期間は0スタートの通算であるため「累計貢献度」、各日タブは「◯◯ 増加量」と明記
+  if (isAllPeriod) {
+    phaseLabelEl.textContent = '累計貢献度';
+  } else {
+    phaseLabelEl.textContent = `${phaseLabel} 増加量`;
+  }
+
+  // データ配列から実測値および予測値を算出する内部関数
+  const calcStats = (dataList) => {
+    if (!dataList || dataList.length === 0) return { realVal: 0, predVal: null, hasData: false };
     
-    // 実測データ（isPredict: false）の最初と最後
+    // 実測データ（isPredict: false）
     const realList = dataList.filter(d => !d.isPredict && d.point !== undefined && d.point !== null);
     const hasData = realList.length >= 1;
-    let realInc = 0;
-    if (realList.length >= 2) {
-      realInc = Math.max(0, realList[realList.length - 1].point - realList[0].point);
+    let realVal = 0;
+    if (hasData) {
+      if (isAllPeriod) {
+        // 全期間の場合: 0からの累計（最終実測ポイントそのもの）
+        realVal = realList[realList.length - 1].point;
+      } else {
+        // 日別フェーズの場合: 当該期間内の純増量（最終点 - 開始点）
+        realVal = realList.length >= 2 ? Math.max(0, realList[realList.length - 1].point - realList[0].point) : 0;
+      }
     }
     
-    // 予測データが存在する場合の最終予測増加量
+    // 予測データ（isPredict: true）
     const predList = dataList.filter(d => d.isPredict && d.point !== undefined && d.point !== null);
-    let predInc = null;
+    let predVal = null;
     if (predList.length > 0 && realList.length > 0) {
-      predInc = Math.max(0, predList[predList.length - 1].point - realList[0].point);
+      if (isAllPeriod) {
+        // 全期間の場合: 最終着地予測ポイントそのもの
+        predVal = predList[predList.length - 1].point;
+      } else {
+        // 日別フェーズの場合: 予測増加量（最終予測点 - 期間開始点）
+        predVal = Math.max(0, predList[predList.length - 1].point - realList[0].point);
+      }
     }
     
-    return { realInc, predInc, hasData };
+    return { realVal, predVal, hasData };
   };
 
-  const borderStats = calcIncrease(phaseBorderData);
-  const userStats = targetUser ? calcIncrease(phaseUserData) : null;
+  const borderStats = calcStats(phaseBorderData);
+  const userStats = targetUser ? calcStats(phaseUserData) : null;
 
   const htmlParts = [];
+  const showPlus = !isAllPeriod; // 全期間（累計貢献度）は '+' を付けない
 
-  // 1. ユーザー自身の増加量表示（赤系統カラー）
+  // 1. ユーザー自身の表示（赤系統カラー）
   if (userStats && userStats.hasData) {
-    let userText = renderToggleablePoint(userStats.realInc, 'text-[#ef4444]');
-    if (userStats.predInc !== null && userStats.predInc !== userStats.realInc) {
-      userText += ` ${renderToggleablePoint(userStats.predInc, 'text-[11px] text-[#fca5a5] font-normal', '(着地予測 ', ')')}`;
+    let userText = renderToggleablePoint(userStats.realVal, 'text-[#ef4444]', '', '', showPlus);
+    if (userStats.predVal !== null && userStats.predVal !== userStats.realVal) {
+      userText += ` ${renderToggleablePoint(userStats.predVal, 'text-[11px] text-[#fca5a5] font-normal', '(着地予測 ', ')', showPlus)}`;
     }
     htmlParts.push(`
       <div class="flex items-center gap-1.5">
@@ -881,11 +918,11 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
     htmlParts.push(`<span class="text-[#52525b] hidden sm:inline">/</span>`);
   }
 
-  // 2. ボーダーの増加量表示（青系統カラー）
+  // 2. ボーダーの表示（青系統カラー）
   if (borderStats.hasData) {
-    let borderText = renderToggleablePoint(borderStats.realInc, 'text-[#60a5fa]');
-    if (borderStats.predInc !== null && borderStats.predInc !== borderStats.realInc) {
-      borderText += ` ${renderToggleablePoint(borderStats.predInc, 'text-[11px] text-[#93c5fd] font-normal', '(着地予測 ', ')')}`;
+    let borderText = renderToggleablePoint(borderStats.realVal, 'text-[#60a5fa]', '', '', showPlus);
+    if (borderStats.predVal !== null && borderStats.predVal !== borderStats.realVal) {
+      borderText += ` ${renderToggleablePoint(borderStats.predVal, 'text-[11px] text-[#93c5fd] font-normal', '(着地予測 ', ')', showPlus)}`;
     }
     htmlParts.push(`
       <div class="flex items-center gap-1.5">
@@ -1885,18 +1922,14 @@ window.addEventListener('DOMContentLoaded', init);
 // --- ランキング一覧の動的サイズ画像エクスポート機能 ---
 
 /**
- * 現在のランキングテーブルに表示されているプレイヤーの一覧（名前、ID、累計貢献度）を
+ * 現在のランキングテーブルに表示されているプレイヤーの一覧を
  * 動的なサイズを計算した高解像度Canvasでレンダリングし、PNG画像としてダウンロード保存します。
  * 
  * 【背景・意図】
- * 「順位の一覧を画像として保存するための機能が欲しい。
- *  2000位ボーダー、10万位ボーダーの記述は不要で、名前、id、累計貢献度がリストとして画像で出力されるようにしたい。
- *  画像のサイズは動的に決定されるものとする。」
- * というユーザー要求に対応します。
- * 
- * 外部ライブラリ（html2canvas等）を使わず、ブラウザネイティブのCanvas APIで直接描画することで、
- * CORS制約やCSSレンダリング崩れをゼロにし、高速・超高画質（Retina 2x スケール）で
- * DiscordやSNS共有に最適なダークモダンデザインの画像を生成します。
+ * ヘッダーは「第xx回 古戦場 ランキング」（日時・人数なし）。
+ * 各行は名前の下に小さくIDを表示（サイトの表示と同様）。
+ * 総合順位を小さく表示し、フッター（サイトURL・プレイヤー数）は非表示。
+ * レイアウト全体をコンパクトに構成。
  * 
  * @returns {void}
  */
@@ -1918,32 +1951,33 @@ window.exportRankingImage = function() {
     return;
   }
 
-  // 2. 動的サイズ計算
-  // プレイヤー人数に応じた高さを算出
+  // 2. 動的サイズ計算（コンパクト設計）
   const rowCount = usersList.length;
-  const paddingX = 28;
-  const headerHeight = 74;      // タイトルヘッダー領域
-  const colHeaderHeight = 36;   // テーブル列見出し
-  const rowHeight = 44;         // 1行の高さ
-  const footerHeight = 38;      // フッター領域
-  const totalHeight = headerHeight + colHeaderHeight + (rowCount * rowHeight) + footerHeight;
+  const paddingX = 20;
+  const headerHeight = 44;      // タイトルヘッダー領域（コンパクト化: 1行のみ）
+  const colHeaderHeight = 28;   // テーブル列見出し
+  const rowHeight = 40;         // 1行の高さ（名前+ID 2段表示対応）
+  const totalHeight = headerHeight + colHeaderHeight + (rowCount * rowHeight);
+
+  // フォント定義ヘルパー
+  const fontSans = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
+  const fontMono = '"SF Pro Text", Consolas, "Liberation Mono", Menlo, monospace';
 
   // 名前の長さに応じた動的幅計算（最長の名前をCanvasで実測）
   const measureCanvas = document.createElement('canvas');
   const mCtx = measureCanvas.getContext('2d');
-  mCtx.font = 'bold 15px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", sans-serif';
-  let maxNameWidth = 140;
+  mCtx.font = `bold 13px ${fontSans}`;
+  let maxNameWidth = 100;
   usersList.forEach(u => {
     const w = mCtx.measureText(u.name || '').width;
     if (w > maxNameWidth) maxNameWidth = w;
   });
 
-  // 列のレイアウト幅
-  const rankColWidth = 50;
-  const nameColWidth = Math.max(200, Math.min(360, maxNameWidth + 30));
-  const idColWidth = 110;
-  const pointColWidth = 200;
-  const contentWidth = rankColWidth + nameColWidth + idColWidth + pointColWidth;
+  // 列のレイアウト幅（#列 | 名前+ID列 | 貢献度+総合順位列）
+  const rankColWidth = 36;
+  const nameColWidth = Math.max(160, Math.min(300, maxNameWidth + 24));
+  const pointColWidth = 180;
+  const contentWidth = rankColWidth + nameColWidth + pointColWidth;
   const totalWidth = contentWidth + (paddingX * 2);
 
   // 3. 高解像度（2xスケール）用Canvasの作成
@@ -1953,10 +1987,6 @@ window.exportRankingImage = function() {
   canvas.height = totalHeight * scale;
   const ctx = canvas.getContext('2d');
   ctx.scale(scale, scale);
-
-  // フォント定義ヘルパー
-  const fontSans = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif';
-  const fontMono = '"SF Pro Text", Consolas, "Liberation Mono", Menlo, monospace';
 
   // 背景描画（深みのあるダークグラデーション）
   const bgGrad = ctx.createLinearGradient(0, 0, 0, totalHeight);
@@ -1985,20 +2015,12 @@ window.exportRankingImage = function() {
   ctx.lineTo(totalWidth, headerHeight);
   ctx.stroke();
 
-  // ヘッダータイトル
+  // ヘッダータイトル: 「第xx回 古戦場 ランキング」
   ctx.fillStyle = '#f4f4f5';
-  ctx.font = `bold 18px ${fontSans}`;
-  ctx.textAlign = 'left';
+  ctx.font = `bold 16px ${fontSans}`;
+  ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
-  ctx.fillText('決戦！星の古戦場 貢献度ランキング', paddingX, 30);
-
-  // ヘッダーサブ情報（取得日時 ＆ 参加人数）
-  const now = new Date();
-  const pad = n => n.toString().padStart(2, '0');
-  const nowStr = `${now.getFullYear()}/${pad(now.getMonth()+1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-  ctx.fillStyle = '#a1a1aa';
-  ctx.font = `12px ${fontSans}`;
-  ctx.fillText(`出力日時: ${nowStr}   |   対象: ${rowCount}名`, paddingX, 52);
+  ctx.fillText(`第${currentRaidNum}回 古戦場 ランキング`, totalWidth / 2, headerHeight / 2);
 
   // 列見出し領域背景
   const colHeaderY = headerHeight;
@@ -2014,22 +2036,20 @@ window.exportRankingImage = function() {
 
   // 列見出しテキスト
   ctx.fillStyle = '#71717a';
-  ctx.font = `bold 12px ${fontSans}`;
+  ctx.font = `bold 10px ${fontSans}`;
   ctx.textBaseline = 'middle';
   const colTextY = colHeaderY + (colHeaderHeight / 2);
 
   // 各列の X 基準位置
   const xRank = paddingX;
   const xName = xRank + rankColWidth;
-  const xId = xName + nameColWidth;
   const xPoint = totalWidth - paddingX; // 右寄せ
 
   ctx.textAlign = 'center';
-  ctx.fillText('#', xRank + (rankColWidth / 2) - 4, colTextY);
+  ctx.fillText('#', xRank + (rankColWidth / 2), colTextY);
 
   ctx.textAlign = 'left';
   ctx.fillText('名前', xName, colTextY);
-  ctx.fillText('ID', xId, colTextY);
 
   ctx.textAlign = 'right';
   ctx.fillText('累計貢献度', xPoint, colTextY);
@@ -2050,12 +2070,10 @@ window.exportRankingImage = function() {
     ctx.lineTo(totalWidth - paddingX, currentY + rowHeight);
     ctx.stroke();
 
-    const rowMidY = currentY + (rowHeight / 2);
-
-    // 順位番号
+    // 順位番号（団内順位）
     const rankNum = idx + 1;
     ctx.textAlign = 'center';
-    ctx.font = `bold 14px ${fontMono}`;
+    ctx.font = `bold 13px ${fontMono}`;
     if (rankNum === 1) {
       ctx.fillStyle = '#facc15'; // 1位: ゴールド
     } else if (rankNum === 2) {
@@ -2065,57 +2083,44 @@ window.exportRankingImage = function() {
     } else {
       ctx.fillStyle = '#71717a'; // 4位以降
     }
-    ctx.fillText(`${rankNum}`, xRank + (rankColWidth / 2) - 4, rowMidY);
+    ctx.fillText(`${rankNum}`, xRank + (rankColWidth / 2), currentY + (rowHeight / 2));
 
-    // プレイヤー名
+    // プレイヤー名（上段）
     ctx.textAlign = 'left';
-    ctx.font = `bold 14px ${fontSans}`;
+    ctx.font = `bold 13px ${fontSans}`;
     ctx.fillStyle = '#f4f4f5';
-    ctx.fillText(u.name || '騎空士', xName, rowMidY);
+    ctx.fillText(u.name || '騎空士', xName, currentY + 14);
 
-    // プレイヤーID
-    ctx.font = `12px ${fontMono}`;
-    ctx.fillStyle = '#71717a';
-    ctx.fillText(`${u.id}`, xId, rowMidY);
+    // プレイヤーID（名前の下に小さく表示）
+    ctx.font = `10px ${fontMono}`;
+    ctx.fillStyle = '#52525b';
+    ctx.fillText(`${u.id}`, xName, currentY + 28);
 
-    // 累計貢献度（右寄せ: 例: 1,234,567,890 と 億万略記）
+    // 累計貢献度（右寄せ）
     const pointVal = (u.point !== undefined && u.point !== null) ? u.point : 0;
     const pointFullStr = pointVal.toLocaleString();
-    const pointShortStr = formatPoint(pointVal);
 
     ctx.textAlign = 'right';
-    ctx.font = `bold 13px ${fontMono}`;
+    ctx.font = `bold 12px ${fontMono}`;
     ctx.fillStyle = '#60a5fa';
-    ctx.fillText(pointFullStr, xPoint, rowMidY - 3);
+    ctx.fillText(pointFullStr, xPoint, currentY + 14);
 
-    ctx.font = `11px ${fontSans}`;
-    ctx.fillStyle = '#93c5fd';
-    ctx.fillText(`(${pointShortStr})`, xPoint, rowMidY + 11);
+    // 総合順位（貢献度の下に小さく表示）
+    const overallRankStr = u.rank ? `総合 ${u.rank.toLocaleString()}位` : '';
+    if (overallRankStr) {
+      ctx.font = `10px ${fontSans}`;
+      ctx.fillStyle = '#52525b';
+      ctx.fillText(overallRankStr, xPoint, currentY + 28);
+    }
 
     currentY += rowHeight;
   });
 
-  // フッター領域
-  const footerY = currentY;
-  ctx.fillStyle = '#0e0e11';
-  ctx.fillRect(0, footerY, totalWidth, footerHeight);
-
-  ctx.strokeStyle = '#27272a';
-  ctx.beginPath();
-  ctx.moveTo(0, footerY);
-  ctx.lineTo(totalWidth, footerY);
-  ctx.stroke();
-
-  ctx.fillStyle = '#52525b';
-  ctx.font = `11px ${fontSans}`;
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('古戦場貢献度チェッカー (namekujilsds.github.io/Kosenjo/)', paddingX, footerY + (footerHeight / 2));
-
-  ctx.textAlign = 'right';
-  ctx.fillText(`${rowCount} Players Recorded`, totalWidth - paddingX, footerY + (footerHeight / 2));
+  // フッターなし（外枠ボーダーのみ）
 
   // 4. PNGとしてダウンロード
+  const now = new Date();
+  const pad = n => n.toString().padStart(2, '0');
   canvas.toBlob((blob) => {
     if (!blob) {
       showToast('画像の生成に失敗しました');
