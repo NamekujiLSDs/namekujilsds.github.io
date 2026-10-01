@@ -220,6 +220,114 @@ body {
 }
 
 /* ==========================================================================
+   4.5 勧誘画像ランダムコピーセクション
+   ========================================================================== */
+.image-action-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.image-action-card {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, var(--bg-surface) 100%);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.image-action-card:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-glow);
+}
+
+.image-card-left {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex: 1;
+  min-width: 280px;
+}
+
+.image-thumbnail-wrap {
+  position: relative;
+  width: 104px;
+  height: 78px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-default);
+  cursor: pointer;
+  flex-shrink: 0;
+  background: #000;
+}
+
+.image-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-fast);
+}
+
+.image-thumbnail-wrap:hover .image-thumbnail {
+  transform: scale(1.08);
+}
+
+.image-thumb-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  color: #fff;
+}
+
+.image-thumbnail-wrap:hover .image-thumb-overlay {
+  opacity: 1;
+}
+
+.image-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.image-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--color-primary);
+}
+
+.image-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.image-card-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.image-current-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+}
+
+/* ==========================================================================
    5. クイックアクションセクション (FR-04)
    ========================================================================== */
 .quick-action-section {
@@ -419,6 +527,32 @@ body {
 .btn-quick {
   width: 100%;
   padding: 0.65rem 1rem;
+}
+
+/* 勧誘画像コピーボタン */
+.btn-image {
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--color-primary);
+  border-color: rgba(56, 189, 248, 0.3);
+}
+
+.btn-image:hover {
+  background: var(--color-primary);
+  color: #0b0f19;
+}
+
+.btn-image-main {
+  background: var(--color-primary);
+  color: #0b0f19;
+  font-size: 0.95rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+}
+
+.btn-image-main:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 6px 16px rgba(56, 189, 248, 0.45);
 }
 
 /* 個別コピーボタン (カード内) */

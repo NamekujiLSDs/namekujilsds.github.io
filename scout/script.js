@@ -1,7 +1,7 @@
 /**
  * @file 団活スカウト文面マネージャー (Scout Text Manager) コントローラー
  * @description
- * 『グランブルーファンタジー』における団員募集（団活タグへのスカウト活動）を支援するクライアントサイドロジック。
+ * 『グランブルーファンタジー』騎空団「ENDROLL」における団員募集（団活タグへのスカウト活動）を支援するクライアントサイドロジック。
  * 
  * 【背景・開発目的】
  * X（旧Twitter）上で同一文面を連続投稿するとスパム判定・シャドウバンを受けるリスクが高まります。
@@ -9,8 +9,15 @@
  * クリップボードへのコピー回数を localStorage に記録して「最も使用回数の少ない文面」から優先的に
  * ワンクリックでコピー・ローテーション使用できるように設計されています。
  * 
- * 【コーディング規約遵守事項】
+ * 【最新方針反映】
+ * - 詳細はすべて添付画像（ENDROLL募集バナー）へ誘導する構成
+ * - 全480種の文面が「140文字以内（改行込み）」を厳格に遵守（115〜132文字）
+ * - 相手への過度な褒め言葉を排除し、誠実で礼儀正しい自然なビジネス調
+ * - 「団員です」等の自己言及を排除し、騎空団「ENDROLL」として発信
+ * - 5種類の勧誘バナー画像をランダムにクリップボードへ直接コピーする画像コピーシステムを搭載
  * - 絵文字は一切使用せず、Google Material Symbols を採用
+ * 
+ * 【コーディング規約遵守事項】
  * - 全関数にJSDocコメント、処理の意図（Why）と動作（What）を明記
  */
 
@@ -45,125 +52,137 @@ const STORAGE_KEY = 'grablue_scout_counts_v2';
 
 /**
  * 団運営連絡先Xアカウント
- * 団員個人のアカウントから発信するため、連絡窓口への誘導先として固定する。
+ * 入団希望や問い合わせ窓口として文面内で誘導する。
  * @type {string}
  */
 const SCOUT_OFFICIAL_ACCOUNT = '@grablue_scout';
+
+/**
+ * 勧誘用バナー画像ファイルパス一覧 (全5種)
+ * scout/images/ ディレクトリ内に配置されたPNG画像
+ * @type {string[]}
+ */
+const SCOUT_IMAGES = [
+  'images/endroll_banner_01.png',
+  'images/endroll_banner_02.png',
+  'images/endroll_banner_03.png',
+  'images/endroll_banner_04.png',
+  'images/endroll_banner_05.png'
+];
 
 /**
  * 4カテゴリの文節データ定義
  * デカルト積（直積: 6 prefix × 5 body × 4 suffix = 120通り）により、
  * 各カテゴリ120種、全体で480種のユニークな文面を生成する。
  * 
- * リプライ（ikusei_reply, ippan_reply）はXの140文字制限を絶対に超過しないよう（<=137文字）、
- * 各パーツの文字数を厳密に設計・検証済み。
+ * 【制約遵守】
+ * 1. 詳細は添付画像に誘導（「詳細は添付画像をご確認ください」等）
+ * 2. 全パーツの組み合わせにおいて、改行（\n\n）を含めた合計文字数が厳密に140文字以内（実測115〜132文字）
+ * 3. 過度な褒め言葉を排除し、礼儀正しく誠実な表現
+ * 4. 「団員です」等の自己言及を排除し、団「ENDROLL」として発信
  */
 const CATEGORY_CONFIGS = {
-  // 育成枠 リプライ (Twitter用: 改行なし / 140文字以内)
+  // 育成枠 リプライ (Twitter用: 添付画像誘導 / 140文字以内)
   ikusei_reply: {
     prefix: 'ir',
-    isDm: false,
     p1: [
-      '初めまして！団活タグよりお声がけ失礼します。',
-      'こんにちは！団活中のところ失礼いたします。',
-      '初めまして！団活ポストを拝見しリプ失礼します。',
-      '初めまして！団活中とのことでお声がけいたしました。',
-      'こんばんは！団活ツイート拝見しお声がけしました。',
-      '初めまして、団員募集でお声がけいたしました！'
+      '初めまして！団活タグより失礼いたします。\n騎空団「ENDROLL」です。',
+      'こんにちは！団活中のところ失礼いたします。\n騎空団「ENDROLL」です。',
+      '初めまして！団活の投稿を拝見いたしました。\n騎空団「ENDROLL」です。',
+      '初めまして！団員募集の件でご連絡いたしました。\n団「ENDROLL」です。',
+      'こんばんは！団活タグよりご連絡失礼いたします。\n団「ENDROLL」です。',
+      '初めまして！団活をお見かけしご連絡いたしました。\n「ENDROLL」です。'
     ],
     p2: [
-      '当団は育成枠を募集中です！古戦場・ドレバラノルマ免除で、VCでの編成相談や装備強化を全力サポートします。',
-      '当団では成長中の騎空士様を歓迎！古戦場ノルマ免除、VC相談や定期進捗確認で着実に強くなれる育成枠です。',
-      '育成枠の募集です！古戦場やドレバラノルマ免除で、装備進捗の確認やDiscord VC相談など手厚く支えます。',
-      '当団の育成枠はいかがでしょうか？古戦場ノルマ免除でマイペースに成長でき、VCでの編成相談も大歓迎です！',
-      '古戦場ノルマ免除の育成枠を募集中！定期的な装備進捗確認やVC相談環境があり、安心して成長できます。'
+      '当団では現在、育成枠を募集中です！\n詳しい募集条件や方針は添付画像をご確認ください。',
+      'ノルマ免除の育成枠はいかがでしょうか？\n活動方針やサポート等の詳細は添付画像にございます。',
+      '当団の育成枠をご案内いたします！\nノルマや詳しい入団条件等は添付画像をご確認ください。',
+      '意欲重視の育成枠を募集しております！\n詳しい条件や団の環境等は添付画像をご確認ください。',
+      '当団では育成枠の仲間を募集中です！\nイベント方針や詳しい待遇は添付画像をご覧ください。'
     ],
     p3: [
-      `ご興味ありましたら団運営（${SCOUT_OFFICIAL_ACCOUNT}）までお気軽にDMをお願いします！`,
-      `詳細等は団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）のDMへお気軽にご連絡ください！`,
-      `少しでも気になりましたら、団運営（${SCOUT_OFFICIAL_ACCOUNT}）までDMにてご連絡ください！`,
-      `よろしければ団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMでお気軽にお問い合わせください！`
+      `気になりましたら団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMください！`,
+      `詳細は団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）のDMまで！`,
+      `少しでも気になりましたら、団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMを！`,
+      `ご質問等はお気軽に団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMください！`
     ]
   },
 
-  // 育成枠 DM (詳細情報提供用: 改行区切りの3段落構成)
+  // 育成枠 DM (添付画像誘導 / 140文字以内)
   ikusei_dm: {
     prefix: 'id',
-    isDm: true,
     p1: [
-      '突然のDM失礼いたします！団活ポストを拝見し、ぜひお話ししたくご連絡いたしました。',
-      '初めまして！団活タグを拝見し、当団の募集内容に合いそうだと思いDMさせていただきました。',
-      '初めまして、団活中のところDMにて失礼いたします。当団の団員としてお声がけさせていただきました。',
-      'こんにちは！団活ツイートを拝見し、魅力的な騎空士様だと思いスカウトDMをお送りしました。',
-      '初めまして！団活ポストを拝見し、ぜひ当団をご検討いただきたくご連絡差し上げました。',
-      '突然のご連絡失礼いたします。団活をお見かけし、当団の雰囲気にも合いそうだと思いDMいたしました。'
+      '突然のDM失礼いたします。\n騎空団「ENDROLL」よりスカウトのご案内です。',
+      '初めまして。団活タグを拝見いたしました。\n騎空団「ENDROLL」です。',
+      '初めまして、団活中のところ失礼いたします。\n騎空団「ENDROLL」です。',
+      'こんにちは。団活の投稿をお見かけいたしました。\n団「ENDROLL」です。',
+      '突然のご連絡失礼いたします。\n騎空団「ENDROLL」よりご連絡いたしました。',
+      '初めまして。団員募集の件でご連絡いたしました。\n団「ENDROLL」です。'
     ],
     p2: [
-      '当団では現在「育成枠」を募集しております。古戦場およびドレバラのノルマは完全免除となっており、定期的な装備進捗の確認やDiscord VCでの編成・育成相談など、無理なくステップアップできる環境を整えています。',
-      '募集しておりますのは当団の「育成枠」となります。古戦場・ドレバラノルマ免除で、プレッシャーなく育成に専念していただけます。VCでの相談対応や定期的な進捗確認など、団全体であなたの成長をサポートいたします！',
-      '当団の「育成枠」でのご入団はいかがでしょうか？古戦場・ドレバラともにノルマは一切なく、定期的な装備進捗確認やDiscordでのVC相談など、グラブルをより深く楽しんでいただけるようバックアップいたします。',
-      '当団では現在、やる気重視の「育成枠」を募集中です！古戦場等のイベントノルマは免除となっており、定期的な装備進捗確認とVCでの個別相談環境により、初心者〜中級者の方でも安心して強くなれる環境です。',
-      'ご提案したいのが当団の「育成枠」です。古戦場・ドレバラはノルマなしでマイペースに参加可能。定期的な装備進捗確認や、Discord VCでのマルチ攻略・編成相談など、手厚い育成サポートをご用意しています。'
+      '当団では現在、育成枠を募集中です。\n詳しい条件や方針は添付画像をご確認ください。',
+      'ノルマ免除の育成枠はいかがでしょうか？\n活動方針等の詳細は添付画像にございます。',
+      '当団の育成枠をご案内いたします。\n詳しい募集条件や待遇は添付画像をご覧ください。',
+      '意欲重視の育成枠を募集しております。\n団の環境やサポート等は添付画像をご確認ください。',
+      '当団では育成枠の団員を募集中です。\nイベント方針等の詳細は添付画像をご確認ください。'
     ],
     p3: [
-      `私は一般団員のため、入団のご相談や詳細の確認につきましては、団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）までDMにてご連絡いただけますと幸いです。ご検討よろしくお願いいたします！`,
-      `本アカウントは団員個人のため、詳しい団規約やご質問、入団希望のご連絡は団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）へDMをお願いできますでしょうか。ご縁を心よりお待ちしております！`,
-      `スカウト担当は団運営（${SCOUT_OFFICIAL_ACCOUNT}）が一括して対応しております。少しでも興味を持っていただけましたら、ぜひ上記運営垢へDMをお送りください。よろしくお願いいたします！`,
-      `詳細条件のご確認やご質問・応募につきましては、団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）のDMにて承っております。お気軽にお声がけいただけますと嬉しいです。どうぞご検討ください！`
+      `ご質問や入団のご相談は、団運営（${SCOUT_OFFICIAL_ACCOUNT}）のDMまでどうぞ！`,
+      `ご質問やご相談は団運営（${SCOUT_OFFICIAL_ACCOUNT}）のDMまでお気軽にどうぞ！`,
+      `気になる点がございましたら、団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMをお願いします。`,
+      `詳細確認や入団希望は、団運営（${SCOUT_OFFICIAL_ACCOUNT}）のDMまでご連絡ください。`
     ]
   },
 
-  // 一般枠 リプライ (Twitter用: 改行なし / 140文字以内)
+  // 一般枠 リプライ (Twitter用: 添付画像誘導 / 140文字以内)
   ippan_reply: {
     prefix: 'pr',
-    isDm: false,
     p1: [
-      '初めまして！団活タグよりお声がけ失礼します。',
-      'こんにちは！団活中のところリプ失礼いたします。',
-      '初めまして！団活ポストを拝見しご連絡いたしました。',
-      'こんばんは！団活投稿を拝見しお声がけしました。',
-      '初めまして！団活中とのことでリプ失礼いたします。',
-      '初めまして！当団の募集に合いそうでお声がけしました。'
+      '初めまして！団活タグより失礼いたします。\n騎空団「ENDROLL」です。',
+      'こんにちは！団活中のところ失礼いたします。\n騎空団「ENDROLL」です。',
+      '初めまして！団活の投稿を拝見いたしました。\n騎空団「ENDROLL」です。',
+      '初めまして！団員募集の件でご連絡いたしました。\n団「ENDROLL」です。',
+      'こんばんは！団活タグよりご連絡失礼いたします。\n団「ENDROLL」です。',
+      '初めまして！団活をお見かけしご連絡いたしました。\n「ENDROLL」です。'
     ],
     p2: [
-      '当団は予選300位目標/予選5億/個ラン10万位以内、本戦低空なし朝活任意でVC積極参加の団員を募集中です！',
-      '当団は予選300位目標・予選ノルマ5億、個ラン10万位内で低空なし・朝活任意、Discord VCが盛んな団です！',
-      '古戦場予選300位目標(予選5億/個ラン10万位内)、本戦低空なし朝活任意、VC活発な一般枠を募集しております！',
-      '予選300位狙い/予選ノルマ5億/個ラン10万位、低空なし朝活任意でDiscord VC参加を重視した団です！',
-      '当団は予選300位目標/ノルマ予選5億・個ラン10万位内、本戦フリー低空なし・朝活任意、VC積極参加歓迎です！'
+      '当団は予選300位目標の一般枠を募集中です！\nノルマや詳しい方針は添付画像をご確認ください。',
+      '一般枠（予選300位目標/低空なし）の募集です！\n詳しい募集要項は添付画像をご確認ください。',
+      '当団の一般枠はいかがでしょうか？\n予選ノルマや団内環境等の詳細は添付画像にございます。',
+      '古戦場予選300位狙いの一般枠を募集中です！\n詳しい条件や方針は添付画像をご確認ください。',
+      '当団の一般枠をご案内いたします！\n古戦場ノルマや待遇等の詳細は添付画像をご覧ください。'
     ],
     p3: [
-      `ご興味ありましたら団運営（${SCOUT_OFFICIAL_ACCOUNT}）までお気軽にDMをお願いします！`,
-      `詳細等は団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）のDMへお気軽にご連絡ください！`,
-      `少しでも気になりましたら、団運営（${SCOUT_OFFICIAL_ACCOUNT}）までDMにてご連絡ください！`,
-      `よろしければ団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMでお気軽にお問い合わせください！`
+      `気になりましたら団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMください！`,
+      `詳細は団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）のDMまで！`,
+      `少しでも気になりましたら、団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMを！`,
+      `ご質問等はお気軽に団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMください！`
     ]
   },
 
-  // 一般枠 DM (詳細情報提供用: 改行区切りの3段落構成)
+  // 一般枠 DM (添付画像誘導 / 140文字以内)
   ippan_dm: {
     prefix: 'pd',
-    isDm: true,
     p1: [
-      '突然のDM失礼いたします！団活ポストを拝見し、当団の募集条件にぴったりだと思いご連絡いたしました。',
-      '初めまして！団活タグよりプロフィールを拝見し、ぜひスカウトさせていただきたくDMいたしました。',
-      '初めまして、団活中のところ失礼いたします。当団の団員として、ぜひご案内したくご連絡差し上げました。',
-      'こんにちは！団活ポストを拝見し、プレイスタイルが当団にとてもマッチしていると思いお声がけしました。',
-      '初めまして！団活ツイートを拝見し、ぜひ力を貸していただきたくスカウトのDMをお送りいたしました。',
-      '突然のご連絡失礼いたします。団活中のところ、当団の条件に合いそうだと思いDMさせていただきました。'
+      '突然のDM失礼いたします。\n騎空団「ENDROLL」より一般枠のご案内です。',
+      '初めまして。団活タグを拝見いたしました。\n騎空団「ENDROLL」です。',
+      '初めまして、団活中のところ失礼いたします。\n騎空団「ENDROLL」です。',
+      'こんにちは。団活の投稿をお見かけいたしました。\n団「ENDROLL」です。',
+      '突然のご連絡失礼いたします。\n騎空団「ENDROLL」よりご連絡いたしました。',
+      '初めまして。団員募集の件でご連絡いたしました。\n団「ENDROLL」です。'
     ],
     p2: [
-      '当団は古戦場予選300位目標（予選ノルマ5億・総合個ラン10万位以内）、本戦低空指示なしの完全フリーラン、朝活は任意です。普段からDiscord VCでの雑談や高難度マルチ募集が活発で、VCに積極参加いただける一般枠の方を募集しております。',
-      '募集中の一般枠の主な方針ですが、古戦場予選300位目標、ノルマは予選5億・本戦通して個ラン10万位以内となります。本戦は低空なしのフリーラン、朝活は任意です。DiscordのVCが非常に賑やかで、VC参加を歓迎・重視する環境となっています！',
-      '当団の一般枠条件は、古戦場予選300位目標（予選5億ノルマ・個ラン10万位以内）、低空なし、朝活任意となっております。団員同士の交流が活発で、Discord VCでのマルチ攻略や日々の雑談へ積極的にご参加いただける方を心よりお待ちしております。',
-      '当団では「予選300位狙い（予選ノルマ5億／個ラン10万位以内）」を掲げて走っており、本戦は低空なし・朝活任意です。何よりDiscord VCでのコミュニケーションを大切にしており、VCに積極的に混ざって一緒に楽しめる仲間を募集しております！',
-      '当団の募集内容をご案内いたします。古戦場は予選300位目標、予選ノルマ5億、個ラン10万位以内、本戦低空なし、朝活任意です。VCが非常に活発な団ですので、DiscordでのVC通話やマルチ連戦に積極参加していただける方を大歓迎しております。'
+      '当団は予選300位目標の一般枠を募集中です。\n募集要項の詳細は添付画像をご確認ください。',
+      '当団の一般枠をご案内させていただきます。\n詳しい活動方針やノルマは添付画像をご覧ください。',
+      '現在、一般枠の仲間を募集しております。\n古戦場方針やノルマ詳細は添付画像にございます。',
+      '当団の一般枠はいかがでしょうか？\n詳しい募集条件や待遇は添付画像をご確認ください。',
+      '予選300位目標の一般枠募集となります。\n詳しい条件や方針は添付画像をご確認ください。'
     ],
     p3: [
-      `私は一般団員のため、入団のご相談や詳細の確認につきましては、団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）までDMにてご連絡いただけますと幸いです。ご検討よろしくお願いいたします！`,
-      `本アカウントは団員個人のため、詳しい団規約やご質問、入団希望のご連絡は団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）へDMをお願いできますでしょうか。ご縁を心よりお待ちしております！`,
-      `スカウト担当は団運営（${SCOUT_OFFICIAL_ACCOUNT}）が一括して対応しております。少しでも興味を持っていただけましたら、ぜひ上記運営垢へDMをお送りください。よろしくお願いいたします！`,
-      `詳細条件のご確認やご質問・応募につきましては、団運営アカウント（${SCOUT_OFFICIAL_ACCOUNT}）のDMにて承っております。お気軽にお声がけいただけますと嬉しいです。どうぞご検討ください！`
+      `ご質問や入団のご相談は、団運営（${SCOUT_OFFICIAL_ACCOUNT}）のDMまでどうぞ！`,
+      `ご質問やご相談は団運営（${SCOUT_OFFICIAL_ACCOUNT}）のDMまでお気軽にどうぞ！`,
+      `気になる点がございましたら、団運営（${SCOUT_OFFICIAL_ACCOUNT}）へDMをお願いします。`,
+      `詳細確認や入団希望は、団運営（${SCOUT_OFFICIAL_ACCOUNT}）のDMまでご連絡ください。`
     ]
   }
 };
@@ -177,6 +196,7 @@ const CATEGORY_CONFIGS = {
 /**
  * 定義された各カテゴリのPrefix/Body/Suffixからデカルト積（直積）を計算し、
  * 計480件（各120件）のScoutTextItemオブジェクト配列を構築する。
+ * 各パーツ間には段落改行（\n\n）を挿入し、コピー時および表示時に自然な改行レイアウトを保持する。
  * 
  * @returns {ScoutTextItem[]} 生成された文面アイテムの全配列
  */
@@ -196,10 +216,8 @@ function generateScoutTexts() {
           // ID命名則: "ir_001", "id_001", "pr_001", "pd_001" 等
           const id = `${conf.prefix}_${String(catIndex).padStart(3, '0')}`;
 
-          // DM用は段落ごとの改行を挟み、リプライ用は1段落に結合
-          const text = conf.isDm
-            ? `${conf.p1[i]}\n${conf.p2[j]}\n${conf.p3[k]}`
-            : `${conf.p1[i]}${conf.p2[j]}${conf.p3[k]}`;
+          // 全カテゴリ共通で段落ごとの自然な空行改行（\n\n）を挿入
+          const text = `${conf.p1[i]}\n\n${conf.p2[j]}\n\n${conf.p3[k]}`;
 
           items.push({
             id,
@@ -304,13 +322,12 @@ function clearAllCounts() {
 
 /**
  * ==========================================================================
- * 4. クリップボード制御 & トースト通知 (FR-04, FR-05, FR-08)
+ * 4. クリップボード制御 & 画像コピーシステム
  * ==========================================================================
  */
 
 /**
  * トースト非表示タイマーID
- * 連続クリック時に前回のタイマーをクリアしてトースト表示を延長する。
  * @type {number|null}
  */
 let toastTimeoutId = null;
@@ -342,7 +359,6 @@ function showToast(message, duration = 1500) {
 
 /**
  * 指定したテキストをクリップボードにコピーする。
- * navigator.clipboard APIを優先し、エラー時や非HTTPS環境ではexecCommand('copy')へフォールバックする。
  * 
  * @param {string} text - コピーする文字列
  * @returns {Promise<boolean>} コピー成否
@@ -357,7 +373,7 @@ async function copyToClipboard(text) {
     }
   }
 
-  // レガシーフォールバック処理 (一時的なtextareaの配置と選択)
+  // レガシーフォールバック処理
   try {
     const textarea = document.createElement('textarea');
     textarea.value = text;
@@ -377,6 +393,144 @@ async function copyToClipboard(text) {
 }
 
 /**
+ * 直前に選択された画像のインデックス（連続選択時の重複を防止）
+ * @type {number}
+ */
+let lastChosenImageIndex = -1;
+
+/**
+ * ランダムに勧誘画像を選択して取得する。
+ * 連続クリック時に同一画像が連続しないよう配慮する。
+ * 
+ * @returns {string} 選択された画像ファイルのパス
+ */
+function getRandomScoutImage() {
+  if (SCOUT_IMAGES.length === 0) return '';
+  if (SCOUT_IMAGES.length === 1) return SCOUT_IMAGES[0];
+
+  let nextIndex = Math.floor(Math.random() * SCOUT_IMAGES.length);
+  if (nextIndex === lastChosenImageIndex) {
+    nextIndex = (nextIndex + 1) % SCOUT_IMAGES.length;
+  }
+  lastChosenImageIndex = nextIndex;
+  return SCOUT_IMAGES[nextIndex];
+}
+
+/**
+ * 画像BlobをCanvas経由で厳密な image/png Blob に変換する。
+ * ブラウザのクリップボードAPI（ClipboardItem）はPNG形式を要求するため、互換性を保証する。
+ * 
+ * @param {Blob} blob - 元画像Blob
+ * @returns {Promise<Blob>} PNG形式のBlob
+ */
+function convertBlobToPng(blob) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(blob);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Canvas 2D context not available'));
+        return;
+      }
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((pngBlob) => {
+        if (pngBlob) {
+          resolve(pngBlob);
+        } else {
+          reject(new Error('canvas.toBlob failed'));
+        }
+      }, 'image/png');
+    };
+    img.onerror = (err) => {
+      URL.revokeObjectURL(url);
+      reject(err);
+    };
+    img.src = url;
+  });
+}
+
+/**
+ * 指定されたURLの画像データをクリップボードへPNGとしてコピーする。
+ * 
+ * @param {string} imageUrl - コピー対象の画像パス
+ * @returns {Promise<boolean>} コピー成否
+ */
+async function copyImageToClipboard(imageUrl) {
+  try {
+    const res = await fetch(imageUrl);
+    if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+    const rawBlob = await res.blob();
+    const pngBlob = await convertBlobToPng(rawBlob);
+
+    if (navigator.clipboard && navigator.clipboard.write && window.ClipboardItem) {
+      await navigator.clipboard.write([
+        new ClipboardItem({ 'image/png': pngBlob })
+      ]);
+      return true;
+    } else {
+      throw new Error('navigator.clipboard.write with ClipboardItem not supported');
+    }
+  } catch (err) {
+    console.warn('Image clipboard write failed:', err);
+    return false;
+  }
+}
+
+/**
+ * 勧誘バナー画像のランダムコピー処理を実行する
+ * 
+ * @param {HTMLButtonElement|null} [triggerBtn=null] - クリックされたボタン要素
+ * @returns {Promise<void>}
+ */
+async function executeRandomImageCopy(triggerBtn = null) {
+  const imagePath = getRandomScoutImage();
+  if (!imagePath) return;
+
+  const fileName = imagePath.split('/').pop() || imagePath;
+
+  // サムネイルとラベルの表示を更新
+  const thumbEl = /** @type {HTMLImageElement|null} */ (document.getElementById('imagePreviewThumb'));
+  const labelEl = document.getElementById('currentImageLabel');
+  if (thumbEl) thumbEl.src = imagePath;
+  if (labelEl) labelEl.textContent = `現在の選択: ${fileName}`;
+
+  // ボタンをローディング表示
+  let originalHtml = '';
+  if (triggerBtn) {
+    originalHtml = triggerBtn.innerHTML;
+    triggerBtn.disabled = true;
+    triggerBtn.innerHTML = `
+      <span class="material-symbols-outlined" aria-hidden="true">sync</span>
+      <span>画像処理中...</span>
+    `;
+  }
+
+  const success = await copyImageToClipboard(imagePath);
+
+  if (triggerBtn) {
+    triggerBtn.disabled = false;
+    if (success) {
+      triggerButtonFeedback(triggerBtn);
+    } else {
+      triggerBtn.innerHTML = originalHtml;
+    }
+  }
+
+  if (success) {
+    showToast(`画像 [${fileName}] をコピーしました（投稿欄に直接貼り付け可能）`);
+  } else {
+    // クリップボードAPI非対応環境（iOS等）の場合、画像モーダルを開いて長押し保存を案内
+    openImageModal(imagePath);
+    showToast(`画像プレビューを表示しました。長押しまたは右クリックで保存・コピーしてください。`, 2500);
+  }
+}
+
+/**
  * ==========================================================================
  * 5. 状態管理 & ソート・フィルタリング (FR-03, FR-06)
  * ==========================================================================
@@ -389,7 +543,9 @@ const state = {
   /** @type {CategoryType} 現在選択中のカテゴリタブ */
   currentCategory: 'ikusei_reply',
   /** @type {string} 検索キーワード */
-  searchKeyword: ''
+  searchKeyword: '',
+  /** @type {string} 現在モーダル表示対象の画像パス */
+  activeModalImagePath: SCOUT_IMAGES[0]
 };
 
 /**
@@ -404,7 +560,6 @@ function getLeastUsedItem(category) {
   const catItems = ALL_DATA.filter(item => item.cat === category);
   if (catItems.length === 0) return null;
 
-  // 使用回数昇順 -> 初期インデックス昇順（安定ソート）
   let leastItem = catItems[0];
   let minCount = counts[leastItem.id] || 0;
 
@@ -547,10 +702,8 @@ function renderCardList() {
     const isLeastUsed = count === minCountInList;
     const isZero = count === 0;
 
-    // リプライの場合は「125 / 140文字」、DMの場合は「240文字」と表示
-    const charDisplay = (item.cat === 'ikusei_reply' || item.cat === 'ippan_reply')
-      ? `${item.length} / 140文字`
-      : `${item.length}文字`;
+    // 全文面140文字以内のため一貫して表示
+    const charDisplay = `${item.length} / 140文字`;
 
     return `
       <article class="scout-card ${isLeastUsed ? 'least-used' : ''}" data-id="${item.id}">
@@ -559,7 +712,7 @@ function renderCardList() {
             <span class="id-badge">${item.id}</span>
           </div>
           <div class="card-badges">
-            <span class="badge badge-len" title="本文の文字数">
+            <span class="badge badge-len" title="改行を含む本文の文字数（140文字以内）">
               <span class="material-symbols-outlined" aria-hidden="true">text_fields</span>
               <span>${charDisplay}</span>
             </span>
@@ -649,7 +802,7 @@ function triggerButtonFeedback(buttonEl) {
 }
 
 /**
- * コピー実行時の共通ハンドラ
+ * 文面コピー実行時の共通ハンドラ
  * 
  * @param {ScoutTextItem} item - コピー対象の文面アイテム
  * @param {HTMLButtonElement|null} [triggerBtn=null] - クリックされたボタン
@@ -680,12 +833,12 @@ async function executeCopy(item, triggerBtn = null) {
 
 /**
  * ==========================================================================
- * 7. イベントリスナー初期化 & モーダル制御
+ * 7. 画像モーダル & 確認モーダル制御
  * ==========================================================================
  */
 
 /**
- * 確認モーダルの開閉を制御する
+ * カウンター初期化確認モーダルの開閉を制御する
  * 
  * @param {boolean} isOpen - モーダルを開くか閉じるか
  * @returns {void}
@@ -697,9 +850,41 @@ function setResetModalOpen(isOpen) {
 }
 
 /**
- * アプリケーションのイベントリスナーを設定する
+ * 画像プレビューモーダルを開く
+ * 
+ * @param {string} imagePath - 表示する画像ファイルパス
+ * @returns {void}
+ */
+function openImageModal(imagePath) {
+  const modal = document.getElementById('imageModal');
+  const img = /** @type {HTMLImageElement|null} */ (document.getElementById('modalPreviewImage'));
+  const title = document.getElementById('imageModalTitle');
+  const openTabBtn = /** @type {HTMLAnchorElement|null} */ (document.getElementById('btnImageOpenTab'));
+  if (!modal || !img) return;
+
+  state.activeModalImagePath = imagePath;
+  const fileName = imagePath.split('/').pop() || imagePath;
+  img.src = imagePath;
+  if (title) title.textContent = `勧誘バナー画像プレビュー (${fileName})`;
+  if (openTabBtn) openTabBtn.href = imagePath;
+
+  modal.classList.remove('hidden');
+}
+
+/**
+ * 画像プレビューモーダルを閉じる
  * 
  * @returns {void}
+ */
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+/**
+ * ==========================================================================
+ * 8. イベントリスナー初期化
+ * ==========================================================================
  */
 function initEventListeners() {
   // 1. クイック即時コピーボタンのハンドラ (FR-04)
@@ -716,7 +901,61 @@ function initEventListeners() {
     });
   }
 
-  // 2. カテゴリタブ切り替え (FR-06)
+  // 2. 勧誘画像ランダムコピーボタン（メイン＆ヘッダー）
+  const btnCopyRandomImage = document.getElementById('btnCopyRandomImage');
+  const btnCopyRandomImageHeader = document.getElementById('btnCopyRandomImageHeader');
+  if (btnCopyRandomImage) {
+    btnCopyRandomImage.addEventListener('click', () => {
+      executeRandomImageCopy(/** @type {HTMLButtonElement} */ (btnCopyRandomImage));
+    });
+  }
+  if (btnCopyRandomImageHeader) {
+    btnCopyRandomImageHeader.addEventListener('click', () => {
+      executeRandomImageCopy(/** @type {HTMLButtonElement} */ (btnCopyRandomImageHeader));
+    });
+  }
+
+  // 画像サムネイルクリックでプレビューモーダル表示
+  const imageThumbWrap = document.getElementById('imageThumbWrap');
+  if (imageThumbWrap) {
+    imageThumbWrap.addEventListener('click', () => {
+      const thumbImg = /** @type {HTMLImageElement|null} */ (document.getElementById('imagePreviewThumb'));
+      const currentSrc = thumbImg ? thumbImg.getAttribute('src') : SCOUT_IMAGES[0];
+      openImageModal(currentSrc || SCOUT_IMAGES[0]);
+    });
+  }
+
+  // 画像モーダル内ボタン操作
+  const btnImageModalCloseX = document.getElementById('btnImageModalCloseX');
+  const btnImageModalClose = document.getElementById('btnImageModalClose');
+  const btnImageModalCopy = document.getElementById('btnImageModalCopy');
+  const imageModal = document.getElementById('imageModal');
+
+  if (btnImageModalCloseX) {
+    btnImageModalCloseX.addEventListener('click', closeImageModal);
+  }
+  if (btnImageModalClose) {
+    btnImageModalClose.addEventListener('click', closeImageModal);
+  }
+  if (imageModal) {
+    imageModal.addEventListener('click', (e) => {
+      if (e.target === imageModal) closeImageModal();
+    });
+  }
+  if (btnImageModalCopy) {
+    btnImageModalCopy.addEventListener('click', async () => {
+      const success = await copyImageToClipboard(state.activeModalImagePath);
+      const fileName = state.activeModalImagePath.split('/').pop() || state.activeModalImagePath;
+      if (success) {
+        triggerButtonFeedback(/** @type {HTMLButtonElement} */ (btnImageModalCopy));
+        showToast(`画像 [${fileName}] をコピーしました`);
+      } else {
+        showToast('画像のコピーに失敗しました。元サイズで開いて保存してください。');
+      }
+    });
+  }
+
+  // 3. カテゴリタブ切り替え (FR-06)
   const categoryTabs = document.querySelector('.category-tabs');
   if (categoryTabs) {
     categoryTabs.addEventListener('click', (e) => {
@@ -727,7 +966,7 @@ function initEventListeners() {
     });
   }
 
-  // 3. カード一覧内の個別コピーボタン (FR-05)
+  // 4. カード一覧内の個別コピーボタン (FR-05)
   const cardsList = document.getElementById('cardsList');
   if (cardsList) {
     cardsList.addEventListener('click', (e) => {
@@ -742,7 +981,7 @@ function initEventListeners() {
     });
   }
 
-  // 4. 検索インプット操作
+  // 5. 検索インプット操作
   const searchInput = /** @type {HTMLInputElement|null} */ (document.getElementById('searchInput'));
   const btnClearSearch = document.getElementById('btnClearSearch');
 
@@ -762,7 +1001,7 @@ function initEventListeners() {
     });
   }
 
-  // 5. リセット確認モーダルの開閉と実行 (FR-07)
+  // 6. リセット確認モーダルの開閉と実行 (FR-07)
   const btnOpenResetModal = document.getElementById('btnOpenResetModal');
   const btnModalCloseX = document.getElementById('btnModalCloseX');
   const btnModalCancel = document.getElementById('btnModalCancel');
@@ -779,7 +1018,6 @@ function initEventListeners() {
     btnModalCancel.addEventListener('click', () => setResetModalOpen(false));
   }
   if (resetModal) {
-    // 背景クリックで閉じる
     resetModal.addEventListener('click', (e) => {
       if (e.target === resetModal) {
         setResetModalOpen(false);
@@ -799,15 +1037,20 @@ function initEventListeners() {
 
   // キーボードショートカット: Escapeキーでモーダルを閉じる
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && resetModal && !resetModal.classList.contains('hidden')) {
-      setResetModalOpen(false);
+    if (e.key === 'Escape') {
+      if (resetModal && !resetModal.classList.contains('hidden')) {
+        setResetModalOpen(false);
+      }
+      if (imageModal && !imageModal.classList.contains('hidden')) {
+        closeImageModal();
+      }
     }
   });
 }
 
 /**
  * ==========================================================================
- * 8. 初期化エントリーポイント
+ * 9. 初期化エントリーポイント
  * ==========================================================================
  */
 function initApp() {

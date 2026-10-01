@@ -30,18 +30,23 @@
   <!-- アプリケーションの最上位コンテナ -->
   <div class="app-container">
 
-    <!-- ヘッダーエリア: タイトル、ツール概要、全体操作（リセットボタン） -->
+    <!-- ヘッダーエリア: タイトル、ツール概要、全体操作（画像コピー、リセットボタン） -->
     <header class="app-header">
       <div class="header-main">
         <div class="brand-group">
           <div class="brand-badge">
             <span class="material-symbols-outlined" aria-hidden="true">groups</span>
-            <span>GRANBLUE FANTASY SCOUT</span>
+            <span>GRANBLUE FANTASY SCOUT | 騎空団「ENDROLL」</span>
           </div>
           <h1 class="app-title">団活スカウト文面マネージャー</h1>
-          <p class="app-subtitle">X（旧Twitter）スパム判定防止・最少使用文面の自動ローテーション管理ツール</p>
+          <p class="app-subtitle">騎空団「ENDROLL」スカウト文面・Xスパム判定防止ローテーション管理</p>
         </div>
         <div class="header-actions">
+          <!-- 勧誘画像ランダムコピーボタン -->
+          <button id="btnCopyRandomImageHeader" class="btn btn-image" type="button" title="募集用バナー画像をランダムにクリップボードへコピーします">
+            <span class="material-symbols-outlined" aria-hidden="true">image</span>
+            <span>勧誘画像コピー</span>
+          </button>
           <!-- カウンター初期化ボタン: 意図せぬリセットを防ぐため確認モーダルを開く -->
           <button id="btnOpenResetModal" class="btn btn-secondary" type="button" aria-haspopup="dialog" title="記録されている全文面の使用回数を初期化します">
             <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
@@ -50,12 +55,17 @@
         </div>
       </div>
 
-      <!-- グローバル統計情報バー: 全文面数、総コピー回数、現在の最小使用回数を可視化 -->
+      <!-- グローバル統計情報バー: 全文面数、総コピー回数、現在の最小使用回数、画像枚数を可視化 -->
       <div class="stats-bar">
         <div class="stat-item">
           <span class="material-symbols-outlined stat-icon" aria-hidden="true">library_books</span>
           <span class="stat-label">総登録パターン</span>
           <span class="stat-value" id="statTotalItems">480種</span>
+        </div>
+        <div class="stat-item">
+          <span class="material-symbols-outlined stat-icon" aria-hidden="true">photo_library</span>
+          <span class="stat-label">勧誘用バナー画像</span>
+          <span class="stat-value" id="statTotalImages">5種</span>
         </div>
         <div class="stat-item">
           <span class="material-symbols-outlined stat-icon" aria-hidden="true">content_copy</span>
@@ -64,11 +74,45 @@
         </div>
         <div class="stat-item">
           <span class="material-symbols-outlined stat-icon" aria-hidden="true">published_with_changes</span>
-          <span class="stat-label">ローテーション最少回数</span>
+          <span class="stat-label">最少使用回数</span>
           <span class="stat-value" id="statMinCount">0回</span>
         </div>
       </div>
     </header>
+
+    <!-- 勧誘画像ランダムコピーセクション -->
+    <section class="image-action-section" aria-label="勧誘バナー画像コピー">
+      <div class="image-action-card">
+        <div class="image-card-left">
+          <div class="image-thumbnail-wrap" id="imageThumbWrap" title="クリックで画像プレビュー">
+            <img id="imagePreviewThumb" src="images/endroll_banner_01.png" alt="勧誘バナープレビュー" class="image-thumbnail">
+            <div class="image-thumb-overlay">
+              <span class="material-symbols-outlined" aria-hidden="true">visibility</span>
+            </div>
+          </div>
+          <div class="image-card-info">
+            <div class="image-card-title-wrap">
+              <span class="material-symbols-outlined" aria-hidden="true">palette</span>
+              <h3 class="image-card-title">勧誘バナー画像（全5種・ランダムコピー）</h3>
+            </div>
+            <p class="image-card-desc">
+              ワンクリックで5種類の勧誘画像からランダムにクリップボードへ画像データをコピーします。
+              X（旧Twitter）の投稿画面でそのまま貼り付け（Ctrl+V）が可能です。
+            </p>
+            <div class="image-current-status">
+              <span class="material-symbols-outlined" aria-hidden="true">image</span>
+              <span id="currentImageLabel">現在の選択: endroll_banner_01.png</span>
+            </div>
+          </div>
+        </div>
+        <div class="image-card-actions">
+          <button id="btnCopyRandomImage" class="btn btn-image-main" type="button">
+            <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+            <span>勧誘画像をランダムコピー</span>
+          </button>
+        </div>
+      </div>
+    </section>
 
     <!-- クイックアクションエリア (FR-04): 各カテゴリで「現在最も使われていない文面」を1クリックで即時コピー -->
     <section class="quick-action-section" aria-label="ワンクリック即時コピー">
@@ -77,7 +121,7 @@
           <span class="material-symbols-outlined section-icon" aria-hidden="true">bolt</span>
           <h2 class="section-title">クイック即時コピー</h2>
         </div>
-        <span class="section-desc">各カテゴリで最も使用回数が少ない文面を優先して即座にクリップボードへコピーします</span>
+        <span class="section-desc">各カテゴリで最も使用回数が少ない文面を優先して改行付きで即座にクリップボードへコピーします</span>
       </div>
 
       <!-- 4カテゴリのクイックコピーカードグリッド -->
@@ -91,11 +135,11 @@
             </span>
             <span class="format-pill">
               <span class="material-symbols-outlined" aria-hidden="true">chat</span>
-              リプライ (140文字以内)
+              リプライ (改行入 / 140文字以内)
             </span>
           </div>
           <div class="quick-card-info">
-            <span class="quick-spec">古戦場・ドレバラノルマ免除 / VC相談可能</span>
+            <span class="quick-spec">ノルマ免除 / 装備進捗共有 / VC相談歓迎</span>
             <div class="quick-min-count">
               <span class="material-symbols-outlined" aria-hidden="true">history</span>
               <span>現在最少: <strong id="quickMin_ikusei_reply">0</strong>回</span>
@@ -120,7 +164,7 @@
             </span>
           </div>
           <div class="quick-card-info">
-            <span class="quick-spec">ノルマ免除 / 定期装備進捗確認 / サポート手厚い</span>
+            <span class="quick-spec">ノルマ免除 / 定期的な装備進捗確認・共有 / VC質問歓迎</span>
             <div class="quick-min-count">
               <span class="material-symbols-outlined" aria-hidden="true">history</span>
               <span>現在最少: <strong id="quickMin_ikusei_dm">0</strong>回</span>
@@ -141,11 +185,11 @@
             </span>
             <span class="format-pill">
               <span class="material-symbols-outlined" aria-hidden="true">chat</span>
-              リプライ (140文字以内)
+              リプライ (改行入 / 140文字以内)
             </span>
           </div>
           <div class="quick-card-info">
-            <span class="quick-spec">予選300位 / 予選5億 / 低空なし / VC重視</span>
+            <span class="quick-spec">予選300位↑ / 予選5億 / 低空なし / VC活発</span>
             <div class="quick-min-count">
               <span class="material-symbols-outlined" aria-hidden="true">history</span>
               <span>現在最少: <strong id="quickMin_ippan_reply">0</strong>回</span>
@@ -170,7 +214,7 @@
             </span>
           </div>
           <div class="quick-card-info">
-            <span class="quick-spec">予選300位・予選5億・個ラン10万位 / Discord VC活発</span>
+            <span class="quick-spec">予選300位↑・予選5億・個ラン10万位 / ドレバラ頭割り / VC積極参加</span>
             <div class="quick-min-count">
               <span class="material-symbols-outlined" aria-hidden="true">history</span>
               <span>現在最少: <strong id="quickMin_ippan_dm">0</strong>回</span>
@@ -181,7 +225,6 @@
             <span>最少文面を即時コピー</span>
           </button>
         </div>
-      </div>
     </section>
 
     <!-- 一覧・個別選択セクション -->
@@ -273,6 +316,42 @@
           <span class="material-symbols-outlined" aria-hidden="true">delete_forever</span>
           <span>リセットを実行する</span>
         </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 画像プレビューモーダル -->
+  <div id="imageModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="imageModalTitle">
+    <div class="modal-window modal-window-large">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="material-symbols-outlined modal-icon-img" aria-hidden="true">image</span>
+          <h3 id="imageModalTitle" class="modal-title">勧誘バナー画像プレビュー</h3>
+        </div>
+        <button id="btnImageModalCloseX" class="btn-icon" type="button" aria-label="閉じる">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <div class="modal-body modal-body-center">
+        <div class="modal-image-container">
+          <img id="modalPreviewImage" src="" alt="勧誘バナー拡大表示" class="modal-preview-img">
+        </div>
+        <p class="modal-subtext">ブラウザ環境により直接コピーできない場合、画像を長押しまたは右クリックして保存・コピーしてください。</p>
+      </div>
+      <div class="modal-actions modal-actions-between">
+        <a id="btnImageOpenTab" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+          <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span>
+          <span>元サイズで開く</span>
+        </a>
+        <div class="modal-actions-right">
+          <button id="btnImageModalClose" class="btn btn-secondary" type="button">
+            <span>閉じる</span>
+          </button>
+          <button id="btnImageModalCopy" class="btn btn-primary" type="button">
+            <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+            <span>この画像をコピー</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
