@@ -933,6 +933,13 @@ body {
   animation: scaleUp 0.2s ease forwards;
 }
 
+/* 画像プレビュー用大型モーダル */
+.modal-window-large {
+  max-width: 960px;
+  width: min(95vw, 960px);
+  max-height: 92vh;
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
@@ -947,6 +954,11 @@ body {
 
 .modal-icon-warn {
   color: #f59e0b; /* Amber */
+  font-size: 24px;
+}
+
+.modal-icon-img {
+  color: var(--color-primary);
   font-size: 24px;
 }
 
@@ -965,6 +977,36 @@ body {
   line-height: 1.5;
 }
 
+.modal-body-center {
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0.25rem 0;
+}
+
+/* 拡大画像コンテナ: 画面高さに合わせて自動縮小し、アスペクト比を維持して全体を表示 */
+.modal-image-container {
+  width: 100%;
+  max-height: 65vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #080c14;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.modal-preview-img {
+  max-width: 100%;
+  max-height: 65vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  border-radius: var(--radius-sm);
+}
+
 .modal-body strong {
   color: var(--text-primary);
 }
@@ -980,6 +1022,18 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding-top: 0.5rem;
+}
+
+.modal-actions-between {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.modal-actions-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 /* ==========================================================================
@@ -1132,5 +1186,36 @@ body {
   .toast-card {
     justify-content: center;
     border-radius: var(--radius-md);
+  }
+
+  /* モバイル環境における画像プレビューモーダルの最適化 */
+  .modal-window-large {
+    padding: 1rem;
+    max-height: 94vh;
+    gap: 0.75rem;
+  }
+
+  .modal-image-container {
+    max-height: 52vh;
+  }
+
+  .modal-preview-img {
+    max-height: 52vh;
+  }
+
+  .modal-actions-between {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .modal-actions-right {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .modal-actions-right .btn {
+    flex: 1;
   }
 }
