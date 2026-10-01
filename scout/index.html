@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <!--
+    【開発背景・意図】
+    グランブルーファンタジーの団員募集（団活ハッシュタグへのスカウト活動）において、
+    同一文面の連続投稿によるX（旧Twitter）のスパム判定・シャドウバンを防止するため、
+    4カテゴリ（計480種）の文面を均等ローテーションで管理・コピーできる完全クライアントサイド型Webツール。
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="グランブルーファンタジーの団活スカウト文面マネージャー。Xのスパム判定を防止するため、480通りの文面を使用回数の少ない順に自動ローテーション管理・1クリックコピーできるWebツール。">
+  <title>団活スカウト文面マネージャー - Scout Text Manager</title>
+
+  <!-- ファビコンの指定 (SVGベクターアイコン) -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Google Fonts: 視認性に優れた日本語フォント「Noto Sans JP」とID表示用の等幅フォント「JetBrains Mono」 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Material Symbols Outlined: 絵文字を一切使わず、統一されたUIアイコンを表現するために採用 -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+
+  <!-- スタイルシートの読み込み -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- アプリケーションの最上位コンテナ -->
+  <div class="app-container">
+
+    <!-- ヘッダーエリア: タイトル、ツール概要、全体操作（リセットボタン） -->
+    <header class="app-header">
+      <div class="header-main">
+        <div class="brand-group">
+          <div class="brand-badge">
+            <span class="material-symbols-outlined" aria-hidden="true">groups</span>
+            <span>GRANBLUE FANTASY SCOUT</span>
+          </div>
+          <h1 class="app-title">団活スカウト文面マネージャー</h1>
+          <p class="app-subtitle">X（旧Twitter）スパム判定防止・最少使用文面の自動ローテーション管理ツール</p>
+        </div>
+        <div class="header-actions">
+          <!-- カウンター初期化ボタン: 意図せぬリセットを防ぐため確認モーダルを開く -->
+          <button id="btnOpenResetModal" class="btn btn-secondary" type="button" aria-haspopup="dialog" title="記録されている全文面の使用回数を初期化します">
+            <span class="material-symbols-outlined" aria-hidden="true">restart_alt</span>
+            <span>回数リセット</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- グローバル統計情報バー: 全文面数、総コピー回数、現在の最小使用回数を可視化 -->
+      <div class="stats-bar">
+        <div class="stat-item">
+          <span class="material-symbols-outlined stat-icon" aria-hidden="true">library_books</span>
+          <span class="stat-label">総登録パターン</span>
+          <span class="stat-value" id="statTotalItems">480種</span>
+        </div>
+        <div class="stat-item">
+          <span class="material-symbols-outlined stat-icon" aria-hidden="true">content_copy</span>
+          <span class="stat-label">累計コピー実行数</span>
+          <span class="stat-value" id="statTotalCopies">0回</span>
+        </div>
+        <div class="stat-item">
+          <span class="material-symbols-outlined stat-icon" aria-hidden="true">published_with_changes</span>
+          <span class="stat-label">ローテーション最少回数</span>
+          <span class="stat-value" id="statMinCount">0回</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- クイックアクションエリア (FR-04): 各カテゴリで「現在最も使われていない文面」を1クリックで即時コピー -->
+    <section class="quick-action-section" aria-label="ワンクリック即時コピー">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="material-symbols-outlined section-icon" aria-hidden="true">bolt</span>
+          <h2 class="section-title">クイック即時コピー</h2>
+        </div>
+        <span class="section-desc">各カテゴリで最も使用回数が少ない文面を優先して即座にクリップボードへコピーします</span>
+      </div>
+
+      <!-- 4カテゴリのクイックコピーカードグリッド -->
+      <div class="quick-grid" id="quickGrid">
+        <!-- 育成枠 リプライ (Twitter用 140文字以内) -->
+        <div class="quick-card" data-cat="ikusei_reply">
+          <div class="quick-card-meta">
+            <span class="cat-pill cat-ikusei">
+              <span class="material-symbols-outlined" aria-hidden="true">school</span>
+              育成枠
+            </span>
+            <span class="format-pill">
+              <span class="material-symbols-outlined" aria-hidden="true">chat</span>
+              リプライ (140文字以内)
+            </span>
+          </div>
+          <div class="quick-card-info">
+            <span class="quick-spec">古戦場・ドレバラノルマ免除 / VC相談可能</span>
+            <div class="quick-min-count">
+              <span class="material-symbols-outlined" aria-hidden="true">history</span>
+              <span>現在最少: <strong id="quickMin_ikusei_reply">0</strong>回</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-quick" data-action="quick-copy" data-cat="ikusei_reply" type="button">
+            <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+            <span>最少文面を即時コピー</span>
+          </button>
+        </div>
+
+        <!-- 育成枠 DM -->
+        <div class="quick-card" data-cat="ikusei_dm">
+          <div class="quick-card-meta">
+            <span class="cat-pill cat-ikusei">
+              <span class="material-symbols-outlined" aria-hidden="true">school</span>
+              育成枠
+            </span>
+            <span class="format-pill">
+              <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+              DM (改行入り詳細文面)
+            </span>
+          </div>
+          <div class="quick-card-info">
+            <span class="quick-spec">ノルマ免除 / 定期装備進捗確認 / サポート手厚い</span>
+            <div class="quick-min-count">
+              <span class="material-symbols-outlined" aria-hidden="true">history</span>
+              <span>現在最少: <strong id="quickMin_ikusei_dm">0</strong>回</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-quick" data-action="quick-copy" data-cat="ikusei_dm" type="button">
+            <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+            <span>最少文面を即時コピー</span>
+          </button>
+        </div>
+
+        <!-- 一般枠 リプライ (Twitter用 140文字以内) -->
+        <div class="quick-card" data-cat="ippan_reply">
+          <div class="quick-card-meta">
+            <span class="cat-pill cat-ippan">
+              <span class="material-symbols-outlined" aria-hidden="true">military_tech</span>
+              一般枠
+            </span>
+            <span class="format-pill">
+              <span class="material-symbols-outlined" aria-hidden="true">chat</span>
+              リプライ (140文字以内)
+            </span>
+          </div>
+          <div class="quick-card-info">
+            <span class="quick-spec">予選300位 / 予選5億 / 低空なし / VC重視</span>
+            <div class="quick-min-count">
+              <span class="material-symbols-outlined" aria-hidden="true">history</span>
+              <span>現在最少: <strong id="quickMin_ippan_reply">0</strong>回</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-quick" data-action="quick-copy" data-cat="ippan_reply" type="button">
+            <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+            <span>最少文面を即時コピー</span>
+          </button>
+        </div>
+
+        <!-- 一般枠 DM -->
+        <div class="quick-card" data-cat="ippan_dm">
+          <div class="quick-card-meta">
+            <span class="cat-pill cat-ippan">
+              <span class="material-symbols-outlined" aria-hidden="true">military_tech</span>
+              一般枠
+            </span>
+            <span class="format-pill">
+              <span class="material-symbols-outlined" aria-hidden="true">mail</span>
+              DM (改行入り詳細文面)
+            </span>
+          </div>
+          <div class="quick-card-info">
+            <span class="quick-spec">予選300位・予選5億・個ラン10万位 / Discord VC活発</span>
+            <div class="quick-min-count">
+              <span class="material-symbols-outlined" aria-hidden="true">history</span>
+              <span>現在最少: <strong id="quickMin_ippan_dm">0</strong>回</span>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-quick" data-action="quick-copy" data-cat="ippan_dm" type="button">
+            <span class="material-symbols-outlined" aria-hidden="true">content_copy</span>
+            <span>最少文面を即時コピー</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 一覧・個別選択セクション -->
+    <main class="list-section" aria-label="文面一覧と個別操作">
+      <!-- カテゴリ切り替えタブ (FR-06) -->
+      <nav class="category-tabs" role="tablist" aria-label="スカウト文面カテゴリ">
+        <button class="tab-item active" role="tab" aria-selected="true" aria-controls="cardsList" id="tab-ikusei_reply" data-cat="ikusei_reply" type="button">
+          <span class="material-symbols-outlined tab-icon" aria-hidden="true">school</span>
+          <span class="tab-label">育成枠 リプライ</span>
+          <span class="tab-badge" id="tabBadge_ikusei_reply">120</span>
+        </button>
+        <button class="tab-item" role="tab" aria-selected="false" aria-controls="cardsList" id="tab-ikusei_dm" data-cat="ikusei_dm" type="button">
+          <span class="material-symbols-outlined tab-icon" aria-hidden="true">mark_email_read</span>
+          <span class="tab-label">育成枠 DM</span>
+          <span class="tab-badge" id="tabBadge_ikusei_dm">120</span>
+        </button>
+        <button class="tab-item" role="tab" aria-selected="false" aria-controls="cardsList" id="tab-ippan_reply" data-cat="ippan_reply" type="button">
+          <span class="material-symbols-outlined tab-icon" aria-hidden="true">military_tech</span>
+          <span class="tab-label">一般枠 リプライ</span>
+          <span class="tab-badge" id="tabBadge_ippan_reply">120</span>
+        </button>
+        <button class="tab-item" role="tab" aria-selected="false" aria-controls="cardsList" id="tab-ippan_dm" data-cat="ippan_dm" type="button">
+          <span class="material-symbols-outlined tab-icon" aria-hidden="true">forward_to_inbox</span>
+          <span class="tab-label">一般枠 DM</span>
+          <span class="tab-badge" id="tabBadge_ippan_dm">120</span>
+        </button>
+      </nav>
+
+      <!-- 絞り込み・ソート状態インフォメーション -->
+      <div class="list-toolbar">
+        <div class="toolbar-info">
+          <span class="material-symbols-outlined" aria-hidden="true">sort</span>
+          <span id="sortIndicatorText">使用回数の少ない順（昇順）に整列中</span>
+          <span class="toolbar-divider" aria-hidden="true">|</span>
+          <span class="toolbar-count">表示件数: <strong id="displayedCount">120</strong> 件</span>
+        </div>
+        <div class="search-box">
+          <span class="material-symbols-outlined search-icon" aria-hidden="true">search</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="IDまたは文面内をキーワード検索..." aria-label="文面検索">
+          <button id="btnClearSearch" class="btn-clear-search hidden" type="button" aria-label="検索条件をクリア">
+            <span class="material-symbols-outlined" aria-hidden="true">close</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 文面カード一覧コンテナ (FR-03, FR-05) -->
+      <div class="cards-container" id="cardsList" role="tabpanel" aria-labelledby="tab-ikusei_reply">
+        <!-- JavaScriptにより動的にカードが生成・描画されます -->
+      </div>
+
+      <!-- 検索ヒット0件時の空状態表示 -->
+      <div id="emptyState" class="empty-state hidden">
+        <span class="material-symbols-outlined empty-icon" aria-hidden="true">search_off</span>
+        <p class="empty-title">該当する文面が見つかりませんでした</p>
+        <p class="empty-desc">検索キーワードを変更するか、入力欄をクリアしてください。</p>
+      </div>
+    </main>
+
+    <!-- フッター情報 -->
+    <footer class="app-footer">
+      <div class="footer-content">
+        <p>団活スカウト文面マネージャー (Scout Text Manager) | 案内誘導先: <code>@grablue_scout</code></p>
+        <p class="footer-sub">すべてのデータはブラウザのlocalStorageに安全に保管され、外部送信は行われません。</p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- 確認モーダル: カウンター初期化 (FR-07) -->
+  <div id="resetModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <span class="material-symbols-outlined modal-icon-warn" aria-hidden="true">warning</span>
+          <h3 id="modalTitle" class="modal-title">カウンターのリセット確認</h3>
+        </div>
+        <button id="btnModalCloseX" class="btn-icon" type="button" aria-label="閉じる">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">これまでに記録された<strong>すべての文面（480種）の使用回数カウントを 0 にリセット</strong>します。</p>
+        <p class="modal-subtext">この操作は取り消せません。本当に初期化を実行しますか？</p>
+      </div>
+      <div class="modal-actions">
+        <button id="btnModalCancel" class="btn btn-secondary" type="button">
+          <span>キャンセル</span>
+        </button>
+        <button id="btnModalConfirm" class="btn btn-danger" type="button">
+          <span class="material-symbols-outlined" aria-hidden="true">delete_forever</span>
+          <span>リセットを実行する</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- トースト通知 (FR-08): コピー成功時に画面中央下部に表示 -->
+  <div id="toast" class="toast-container" role="status" aria-live="polite" aria-atomic="true">
+    <div class="toast-card">
+      <span class="material-symbols-outlined toast-icon" aria-hidden="true">check_circle</span>
+      <span id="toastMessage" class="toast-message">クリップボードにコピーしました</span>
+    </div>
+  </div>
+
+  <!-- アプリケーションロジックの読み込み -->
+  <script src="script.js"></script>
+</body>
+</html>
