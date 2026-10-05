@@ -4,29 +4,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>いんでっくす - Namekuji</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Namekuji's Page</title>
+    <meta name="description" content="Namekuji が作ったツール・ページ置き場">
+    <style>
+        /* 共有の style.css は他ページ(../style.css)からも読まれているため触らず、
+           トップページ専用の見た目はここに閉じ込めて他ページへの影響を避ける。 */
+        :root {
+            --bg: #333;          /* 既存 style.css の背景色に合わせる */
+            --card: #3d3d3d;
+            --accent: #00ff80;   /* 既存 style.css のリンク色 rgb(0,255,128) */
+            --header: #afb0ff;   /* 既存 style.css のヘッダー色 */
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: #fff;
+            font-family: system-ui, "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif;
+        }
+
+        header {
+            background: var(--header);
+            color: #222;
+            padding: 32px 16px;
+            text-align: center;
+        }
+        header h1 { margin: 0; font-size: 2rem; }
+        header p  { margin: 8px 0 0; }
+
+        main { max-width: 960px; margin: 0 auto; padding: 16px; }
+
+        h2 {
+            margin: 32px 0 12px;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* 画面幅に応じて列数が自動で変わる。メディアクエリ不要。 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            display: block;
+            padding: 14px 16px;
+            background: var(--card);
+            border-radius: 8px;
+            color: #fff;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: border-color .15s, transform .15s;
+        }
+        .card:hover, .card:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
+        .card b    { display: block; color: var(--accent); margin-bottom: 4px; }
+        .card span { font-size: .85rem; color: #ccc; }
+
+        footer { text-align: center; padding: 32px 16px; font-size: .8rem; color: #aaa; }
+
+        *::selection { background-color: rgba(89, 0, 255, 0.288); }
+    </style>
 </head>
 
 <body>
     <header>
-        <div id="title">Namekuji's Page</div>
+        <h1>Namekuji's Page</h1>
+        <p>自作ツール置き場</p>
     </header>
-    <br>
-    <div id="links">
-        Links <br>
-        <a href="./GFG">GodField Card Generator</a><br>
-        <a href="./VVC">Vanced Voxiom Client</a><br>
-        <a href="./SERIAL">連番</a> <br>
-        <a href="./CROSSHAIR">Crosshair DB</a><br>
-        <a href="./AIM">AIM POOP</a><br>
-        <a href="./PASTE">張り付けるだけで保存するやつ</a><br>
-        <a href="./HEADER">行頭でサーチ掛けるやつ</a><br>
-        <a href="./CROSSHAIR">Crosshair DB</a><br>
-        <a href="./colorPicker">いろ選んだりするやつ</a><br>
-        <a href="./scout">団活スカウト文面マネージャー</a><br>
-        <a href="#" onclick="window.open('./arcarum_timer/index.html','_blank', 'width=300,height=350,scrollbars=no')">アーカルムタイマー</a><br>
-    </div>
+
+    <main>
+        <h2>ゲーム用クライアント・ツール</h2>
+        <div class="grid">
+            <a class="card" href="./VoxMate/"><b>VoxMate</b><span>Voxiom.io デスクトップクライアント</span></a>
+            <a class="card" href="./VVC/"><b>Vanced Voxiom Client</b><span>Voxiom.io 用クライアント</span></a>
+            <a class="card" href="./BUG/"><b>BUG Client</b><span>Krunker 用ユーティリティ</span></a>
+            <a class="card" href="./CROSSHAIR/"><b>Crosshair DB</b><span>クロスヘアのデータベース</span></a>
+            <a class="card" href="./GFG/"><b>GodField Card Generator</b><span>ゴッドフィールドのカード作成</span></a>
+        </div>
+
+        <h2>グラブル</h2>
+        <div class="grid">
+            <a class="card" href="./Kosenjo/"><b>古戦場貢献度ランキング</b><span>貢献度のランキング表示</span></a>
+            <a class="card" href="./scout/"><b>団活スカウト文面マネージャー</b><span>スカウト文面の管理・コピー</span></a>
+            <a class="card" href="./gbf/arcalc/"><b>十賢者素材計算機</b><span>必要素材の計算</span></a>
+            <a class="card" href="./gbf/wopon/"><b>ワールド武器 素材計算機</b><span>必要素材の計算</span></a>
+        </div>
+
+        <h2>ユーティリティ</h2>
+        <div class="grid">
+            <a class="card" href="./SERIAL/"><b>連番</b><span>連番や前後への文字付与</span></a>
+            <a class="card" href="./PASTE/"><b>貼り付けて保存</b><span>貼り付けるだけで保存</span></a>
+            <a class="card" href="./HEADER/"><b>行頭フィルタリング</b><span>行頭で検索を掛ける</span></a>
+            <a class="card" href="./colorPicker/"><b>Color Picker</b><span>色を選ぶ</span></a>
+            <a class="card" href="./mjson/"><b>Ultimate Mobile JSON</b><span>モバイル向け JSON ツール</span></a>
+        </div>
+    </main>
+
+    <footer>All content is protected by CC BY-NC-SA 4.0 · By Namekuji</footer>
 </body>
 
 </html>
