@@ -50,7 +50,7 @@
     <header id="home" class="hero-section">
         <div class="container">
             <div class="badge-tag">
-                <span class="material-symbols-outlined">bolt</span> VoxMate v1.1.0 Released
+                <span class="material-symbols-outlined">bolt</span> VoxMate <span class="latest-version">v1.1.8</span> Released
             </div>
 
             <h1 class="hero-title">
@@ -151,10 +151,10 @@
     <section id="download" class="download-section">
         <div class="container">
             <div class="download-card">
-                <div class="download-version">Latest Release • v1.1.0</div>
+                <div class="download-version">Latest Release • <span class="latest-version">v1.1.8</span></div>
                 <h2 class="section-title" style="margin-bottom: 12px;">Ready to Play Voxiom.io like a Pro?</h2>
                 <p class="section-subtitle" style="margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto;">
-                    Download VoxMate for Windows 64-bit. Free, open-source, and privacy-focused under GPL v3.0.
+                    Download VoxMate for Windows, macOS and Linux. Free, open-source, and privacy-focused under GPL v3.0.
                 </p>
 
                 <div style="display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;">
@@ -165,6 +165,8 @@
 
                 <div style="display: flex; justify-content: center; gap: 20px; color: var(--text-muted); font-size: 0.85rem; flex-wrap: wrap;">
                     <span><i class="fa-brands fa-windows"></i> Windows 10 / 11 (64-bit)</span>
+                    <span><i class="fa-brands fa-apple"></i> macOS (Intel x64)</span>
+                    <span><i class="fa-brands fa-linux"></i> Linux (AppImage)</span>
                     <span><span class="material-symbols-outlined">code</span> Open Source (GPL-3.0)</span>
                     <span><span class="material-symbols-outlined">shield</span> VirusTotal Verified</span>
                 </div>
@@ -222,5 +224,16 @@
         </div>
     </footer>
 
+    <script>
+        // 表示バージョンが手動更新で古くなる(v1.1.0のまま等)のを防ぐため、最新リリースのタグから取得する。
+        // 失敗時は HTML に書いてある値のまま表示する。
+        fetch('https://api.github.com/repos/NamekujiLSDs/VoxMate/releases/latest')
+            .then(res => res.json())
+            .then(data => {
+                if (!data.tag_name) return;
+                document.querySelectorAll('.latest-version').forEach(el => el.textContent = data.tag_name);
+            })
+            .catch(() => { });
+    </script>
 </body>
 </html>
