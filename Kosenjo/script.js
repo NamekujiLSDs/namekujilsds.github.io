@@ -46,6 +46,7 @@ let globalEventData = {
   loadedRaidNum: null,
   pastBorders100k: [], // 10万位の過去データ
   pastBorders2k: [],   // 2000位の過去データ
+  pastBordersPromise: null, // 過去データのバックグラウンド取得Promise
   currentBorder100k: [],
   currentBorder2k: [],
   users: {},
@@ -53,6 +54,28 @@ let globalEventData = {
   activityCurve2k: null,
   tableData: [] // テーブルのベースデータ
 };
+
+/**
+ * ストリーミング取得の世代管理ID。
+ * 取得途中で開催回変更や再実行が行われた際、古いリクエストの完了コールバックを破棄するために使用。
+ * @type {number}
+ */
+let activeAnalyzeId = 0;
+
+/**
+ * 行ID（プレイヤーIDまたはボーダーID）ごとの既存 <tr> 要素キャッシュ。
+ * ストリーミング更新やソート時にDOMを再生成せず既存ノードを移動・更新することで、
+ * フォーカス喪失・ホバー切れ・チラつきを防ぎます。
+ * @type {Map<string, HTMLTableRowElement>}
+ */
+const tableRowMap = new Map();
+
+/**
+ * ストリーミング描画用の requestAnimationFrame 予約ID。
+ * 複数リクエストがほぼ同時に完了した場合の連続再描画を1フレームに集約するために使用。
+ * @type {number|null}
+ */
+let streamRenderRafId = null;
 
 /**
  * Chart.jsのチャートインスタンス。
@@ -520,8 +543,20 @@ const calcInflationRate = (currentBorder, activityCurve, latestElapsedH) => {
  * @param {'point'|'speed'} [chartType='point'] - グラフ種別 ('point': 累計貢献度, 'speed': 時速)
  * @returns {void}
  */
-window.openChartModal = function (userId, chartType = 'point') {
-  if (!globalEventData.currentBorder100k || globalEventData.currentBorder100k.length === 0) return;
+window.openChartModal = async function (userId, chartType = 'point') {
+  if (!globalEventData.currentBorder100k || globalEventData.currentBorder100k.length === 0) {
+    showToast('ボーダーデータを取得中です...');
+    return;
+  }
+
+  // バックグラウンドで取得中の過去ボーダーデータがあれば完了を待機（予測曲線の精度確保）
+  if (globalEventData.pastBordersPromise) {
+    try {
+      await globalEventData.pastBordersPromise;
+    } catch (e) {
+      console.warn('Past border background fetch failed:', e);
+    }
+  }
 
   // 初日19:00:00 JSTを開始基準時刻として算出
   const currentStartTime = getEventStartTime(globalEventData.currentBorder100k[0].updatetime);
@@ -1415,6 +1450,49 @@ const updateSortIcons = () => {
 };
 
 /**
+ * 指定されたキーと昇降順でテーブルデータ配列のソート済みコピーを返します。
+ * ストリーミング中の逐次挿入およびヘッダークリックによる手動ソートの双方で共通利用します。
+ * 
+ * @param {Array<object>} data - ソート対象のテーブルデータ配列
+ * @param {string} key - ソートキー ('rank'|'point'|'realSpeed'|'todayInc')
+ * @param {'asc'|'desc'} order - ソート順序
+ * @returns {Array<object>} ソート済み配列
+ */
+const sortTableData = (data, key, order) => {
+  return [...data].sort((a, b) => {
+    const valA = a[key];
+    const valB = b[key];
+
+    // nullまたはundefinedの項目は末尾に送る
+    const isNullA = valA === null || valA === undefined;
+    const isNullB = valB === null || valB === undefined;
+    if (isNullA && !isNullB) return 1;
+    if (isNullB && !isNullA) return -1;
+    if (isNullA && isNullB) return 0;
+
+    if (valA < valB) return order === 'asc' ? -1 : 1;
+    if (valA > valB) return order === 'asc' ? 1 : -1;
+    return 0;
+  });
+};
+
+/**
+ * コンテナ内の既存DOMノード群を、要素を再生成せずに指定順へ並び替えます。
+ * moveBefore() を優先使用してフォーカスや状態を維持し、未対応ブラウザでは append() へフォールバックします。
+ * 
+ * @param {Element} container - 親コンテナ要素（tbody 等）
+ * @param {Element[]} orderedNodes - 並び替え後のノード配列
+ * @returns {void}
+ */
+const reorderNodes = (container, orderedNodes) => {
+  const move = Object.hasOwn(Element.prototype, 'moveBefore')
+    ? (node) => container.moveBefore(node, null)
+    : (node) => container.append(node);
+
+  for (const node of orderedNodes) move(node);
+};
+
+/**
  * 指定したキー（'rank', 'point', 'realSpeed', 'todayInc'）に基づいてテーブルデータをソートし再描画します。
  * 
  * 【背景・意図】
@@ -1435,22 +1513,16 @@ window.handleSort = function (key) {
     currentSortOrder = key === 'rank' ? 'asc' : 'desc';
   }
 
-  const sortedData = [...globalEventData.tableData].sort((a, b) => {
-    const valA = a[key];
-    const valB = b[key];
-
-    // nullまたはundefinedの項目は末尾に送る
-    if (valA === null && valB !== null) return 1;
-    if (valB === null && valA !== null) return -1;
-    if (valA === null && valB === null) return 0;
-
-    if (valA < valB) return currentSortOrder === 'asc' ? -1 : 1;
-    if (valA > valB) return currentSortOrder === 'asc' ? 1 : -1;
-    return 0;
-  });
-
+  const sortedData = sortTableData(globalEventData.tableData, currentSortKey, currentSortOrder);
   renderTable(sortedData);
   updateSortIcons();
+
+  // スクリーンリーダーへソート結果を1回だけ通知
+  if (srStatusEl) {
+    const labelMap = { rank: '全体順位', point: '貢献度', realSpeed: '時速', todayInc: '当日増加量' };
+    const orderLabel = currentSortOrder === 'asc' ? '昇順' : '降順';
+    srStatusEl.textContent = `${labelMap[key] || key}の${orderLabel}で並び替えました（${sortedData.length}件）`;
+  }
 };
 
 // --- メイン解析ロジック ---
@@ -1719,6 +1791,8 @@ const resultSection = document.getElementById('resultSection');
 const tableBody = document.getElementById('tableBody');
 const lastUpdateEl = document.getElementById('lastUpdate');
 const raidSelectEl = document.getElementById('raidSelect');
+const streamProgressEl = document.getElementById('streamProgress');
+const srStatusEl = document.getElementById('srStatus');
 
 /**
  * 選択されている古戦場開催回。
@@ -1746,15 +1820,15 @@ raidSelectEl.addEventListener('change', (e) => {
 });
 
 /**
- * メインの解析・データ取得処理を実行します。
+ * メインの解析・データ取得処理を実行します（ストリーミング表示対応）。
  * 
  * 【背景・意図】
  * 入力された複数のプレイヤーIDおよび選択中の開催回に基づき、
- * 1. 過去3開催分のボーダーデータ（未取得時のみ）
+ * 1. 過去3開催分のボーダーデータ（グラフ予測用・バックグラウンド非同期取得）
  * 2. 今回開催の10万位ボーダーおよび2000位ボーダー
- * 3. 各プレイヤーのユーザー情報およびポイント履歴
- * をすべて Promise.all で並列非同期取得し、速度計算・当日増加量計算・ボーダー差分計算を行って
- * ランキングテーブルを構築・表示します。
+ * 3. 各プレイヤーのユーザー情報およびポイント履歴（ユーザー内も並列取得）
+ * をすべて並列起動し、全件完了を待たずに取得できたデータから順次テーブルへ反映（ストリーミング表示）します。
+ * 10万位ボーダーが後から到着した場合も、既表示プレイヤー行の10万位差・到達判定を自動再計算して更新します。
  * 
  * @returns {Promise<void>}
  */
@@ -1766,13 +1840,22 @@ const handleAnalyze = async () => {
     return;
   }
 
+  // 新しい取得世代を発行し、前回実行中のストリーミング反映を無効化
+  const runId = ++activeAnalyzeId;
+  if (streamRenderRafId !== null) {
+    cancelAnimationFrame(streamRenderRafId);
+    streamRenderRafId = null;
+  }
+
   setLoading(true);
 
-  // カンマまたは空白区切り文字（/[, ]+/）で分割してID配列を生成
+  // カンマまたは空白区切り文字（/[, ]+/）で分割し、重複IDを除去してID配列を生成
   const ids = inputVal.split(/[, ]+/).map(s => s.trim()).filter(s => s.length > 0);
-  await updateUrlParams(ids);
+  const uniqueIds = [...new Set(ids)];
+  await updateUrlParams(uniqueIds);
+  if (runId !== activeAnalyzeId) return;
 
-  // API用の開催回ID文字列を構築（例: 'teamraid082'）
+  // API用の開催回ID文字列を構築（例: 'teamraid085'）
   const currentRaidId = `teamraid${String(currentRaidNum).padStart(3, '0')}`;
   const pastRaidIds = [
     `teamraid${String(currentRaidNum - 1).padStart(3, '0')}`,
@@ -1780,125 +1863,226 @@ const handleAnalyze = async () => {
     `teamraid${String(currentRaidNum - 3).padStart(3, '0')}`
   ];
 
-  try {
-    // 開催回が変わった場合はキャッシュを無視して過去データを再取得する
-    if (globalEventData.pastBorders100k.length === 0 || globalEventData.loadedRaidNum !== currentRaidNum) {
-      const pastReqs100k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(() => []));
-      const pastReqs2k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(() => []));
+  // 状態・テーブルDOMを初期化し、テーブル枠と進捗バーを即座に表示
+  globalEventData.currentBorder100k = [];
+  globalEventData.currentBorder2k = [];
+  globalEventData.users = {};
+  globalEventData.tableData = [];
+  currentSortedData = [];
+  tableRowMap.clear();
+  tableBody.innerHTML = `
+    <tr data-placeholder="loading">
+      <td colspan="8" class="px-5 py-8 text-center text-sm text-[#71717a]">データを取得しています...</td>
+    </tr>
+  `;
 
-      globalEventData.pastBorders100k = await Promise.all(pastReqs100k);
-      globalEventData.pastBorders2k = await Promise.all(pastReqs2k);
-      globalEventData.loadedRaidNum = currentRaidNum;
+  currentSortKey = 'point';
+  currentSortOrder = 'desc';
+  updateSortIcons();
+  resultSection.classList.remove('hidden');
+
+  const totalTasks = uniqueIds.length + 2; // 10万位ボーダー + 2000位ボーダー + 各プレイヤー
+  let completedTasks = 0;
+  let completedUsers = 0;
+  let point100k = null;
+
+  if (streamProgressEl) {
+    streamProgressEl.max = totalTasks;
+    streamProgressEl.value = 0;
+    streamProgressEl.classList.remove('hidden');
+  }
+  lastUpdateEl.textContent = `取得中... (0 / ${uniqueIds.length}人)`;
+
+  const updateProgressUI = () => {
+    if (runId !== activeAnalyzeId) return;
+    if (streamProgressEl) streamProgressEl.value = completedTasks;
+    lastUpdateEl.textContent = `取得中... (${completedUsers} / ${uniqueIds.length}人)`;
+  };
+
+  const flushStreamRender = () => {
+    streamRenderRafId = null;
+    if (runId !== activeAnalyzeId || globalEventData.tableData.length === 0) return;
+    const sortedData = sortTableData(globalEventData.tableData, currentSortKey, currentSortOrder);
+    renderTable(sortedData);
+  };
+
+  const scheduleStreamRender = () => {
+    if (runId !== activeAnalyzeId) return;
+    if (streamRenderRafId === null) {
+      streamRenderRafId = requestAnimationFrame(flushStreamRender);
+    }
+  };
+
+  try {
+    // 過去3回分のボーダーはグラフ予測専用のためバックグラウンド取得し、テーブル表示をブロックしない
+    if (globalEventData.pastBorders100k.length === 0 || globalEventData.loadedRaidNum !== currentRaidNum) {
+      const targetRaidNum = currentRaidNum;
+      globalEventData.loadedRaidNum = targetRaidNum;
       globalEventData.activityCurve100k = null;
       globalEventData.activityCurve2k = null;
+      globalEventData.pastBordersPromise = (async () => {
+        const pastReqs100k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(() => []));
+        const pastReqs2k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(() => []));
+        const [past100k, past2k] = await Promise.all([Promise.all(pastReqs100k), Promise.all(pastReqs2k)]);
+        if (globalEventData.loadedRaidNum === targetRaidNum) {
+          globalEventData.pastBorders100k = past100k;
+          globalEventData.pastBorders2k = past2k;
+        }
+      })();
     }
 
-    const border100kReq = fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_100K}`);
-    const border2kReq = fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_2K}`).catch(() => null);
+    // 1. 今回開催の10万位ボーダー取得（到着次第テーブルへ反映＆既存プレイヤー行の差分も再計算）
+    const border100kTask = fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_100K}`)
+      .then((data) => {
+        if (runId !== activeAnalyzeId) return;
+        if (data && data.length > 0) {
+          globalEventData.currentBorder100k = data;
+          const latest = data[data.length - 1];
+          point100k = latest.point;
 
-    const userReqs = ids.map(async (id) => {
+          globalEventData.tableData.push({
+            id: 'border_100k',
+            name: '10万位ボーダー',
+            rank: BORDER_RANK_100K,
+            point: point100k,
+            todayInc: calculateTodayIncrease(data),
+            realSpeed: calculateSpeedFromPast(data, 3600),
+            predictSpeed: calculateSpeedFromPast(data, 1200),
+            isBorder: true,
+            isReached: true,
+            diff: null,
+            updatetime: latest.updatetime
+          });
+
+          // 先に到着済みのプレイヤー行に対して10万位差・到達判定を遡及反映
+          globalEventData.tableData.forEach(row => {
+            if (!row.isBorder) {
+              row.isReached = row.point >= point100k;
+              row.diff = row.point - point100k;
+            }
+          });
+
+          scheduleStreamRender();
+        }
+      })
+      .catch((e) => {
+        console.warn('100k border fetch failed:', e);
+      })
+      .finally(() => {
+        completedTasks++;
+        updateProgressUI();
+      });
+
+    // 2. 今回開催の2000位ボーダー取得（到着次第テーブルへ反映）
+    const border2kTask = fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_2K}`)
+      .then((data) => {
+        if (runId !== activeAnalyzeId) return;
+        if (data && data.length > 0) {
+          globalEventData.currentBorder2k = data;
+          const latest = data[data.length - 1];
+          globalEventData.tableData.push({
+            id: 'border_2k',
+            name: '2000位ボーダー',
+            rank: BORDER_RANK_2K,
+            point: latest.point,
+            todayInc: calculateTodayIncrease(data),
+            realSpeed: calculateSpeedFromPast(data, 3600),
+            predictSpeed: calculateSpeedFromPast(data, 1200),
+            isBorder: true,
+            isReached: true,
+            diff: null,
+            updatetime: latest.updatetime
+          });
+          scheduleStreamRender();
+        }
+      })
+      .catch(() => null)
+      .finally(() => {
+        completedTasks++;
+        updateProgressUI();
+      });
+
+    // 3. 各プレイヤーの情報・ポイント履歴取得（userとpointを並列取得し、完了順にテーブルへ追加）
+    const userTasks = uniqueIds.map((id) => (async () => {
       try {
-        const userRes = await fetchData(`https://gbf.pub/api/web/gw/user?userid=${id}&username=`);
-        const pointRes = await fetchData(`https://gbf.pub/api/web/gw/point?teamraidid=${currentRaidId}&type=user&id=${id}`);
-        const userInfo = userRes.length > 0 ? userRes[0] : { name: `ID:${id}`, id };
-        return { id, name: userInfo.name, points: pointRes || [] };
+        const [userRes, pointRes] = await Promise.all([
+          fetchData(`https://gbf.pub/api/web/gw/user?userid=${id}&username=`).catch(() => []),
+          fetchData(`https://gbf.pub/api/web/gw/point?teamraidid=${currentRaidId}&type=user&id=${id}`)
+        ]);
+        if (runId !== activeAnalyzeId) return;
+
+        const points = pointRes || [];
+        if (points.length === 0) return;
+
+        const userInfo = (Array.isArray(userRes) && userRes.length > 0) ? userRes[0] : { name: `ID:${id}`, id };
+        const userObj = { id, name: userInfo.name, points };
+        globalEventData.users[id] = userObj;
+
+        const latestUserData = points[points.length - 1];
+        const latestPoint = latestUserData.point;
+
+        globalEventData.tableData.push({
+          id: userObj.id,
+          name: userObj.name,
+          rank: latestUserData.rank,
+          point: latestPoint,
+          todayInc: calculateTodayIncrease(points),
+          realSpeed: calculateSpeedFromPast(points, 3600),
+          predictSpeed: calculateSpeedFromPast(points, 1200),
+          isBorder: false,
+          isReached: point100k !== null ? latestPoint >= point100k : true,
+          diff: point100k !== null ? latestPoint - point100k : null,
+          updatetime: latestUserData.updatetime
+        });
+
+        scheduleStreamRender();
       } catch (e) {
-        return { id, name: `ID:${id} (取得失敗)`, points: [], error: true };
+        console.warn(`User ${id} fetch failed:`, e);
+      } finally {
+        completedTasks++;
+        completedUsers++;
+        updateProgressUI();
       }
-    });
+    })());
 
-    const results = await Promise.all([border100kReq, border2kReq, ...userReqs]);
-    const currentBorder100k = results[0];
-    const currentBorder2k = results[1];
-    const usersData = results.slice(2);
+    await Promise.all([border100kTask, border2kTask, ...userTasks]);
+    if (runId !== activeAnalyzeId) return;
 
-    if (!currentBorder100k || currentBorder100k.length === 0) {
+    if (streamRenderRafId !== null) {
+      cancelAnimationFrame(streamRenderRafId);
+      streamRenderRafId = null;
+    }
+
+    if (streamProgressEl) streamProgressEl.classList.add('hidden');
+
+    if (globalEventData.tableData.length === 0) {
+      resultSection.classList.add('hidden');
       throw new Error('現在のボーダーデータが取得できませんでした。イベントが開始されていない可能性があります。');
     }
 
-    globalEventData.currentBorder100k = currentBorder100k;
-    globalEventData.currentBorder2k = currentBorder2k;
-    globalEventData.users = {};
-    const validUsers = usersData.filter(u => !u.error && u.points.length > 0);
-    validUsers.forEach(u => {
-      globalEventData.users[u.id] = u;
-    });
+    const finalSorted = sortTableData(globalEventData.tableData, currentSortKey, currentSortOrder);
+    renderTable(finalSorted);
+    updateSortIcons();
+    lastUpdateEl.textContent = `取得時刻: ${new Date().toLocaleTimeString()}`;
 
-    const newTableData = [];
-
-    const latestBorder100kData = currentBorder100k[currentBorder100k.length - 1];
-    const point100k = latestBorder100kData.point;
-
-    // 10万位ボーダー行の作成
-    newTableData.push({
-      id: 'border_100k',
-      name: '10万位ボーダー',
-      rank: BORDER_RANK_100K,
-      point: point100k,
-      todayInc: calculateTodayIncrease(currentBorder100k),
-      realSpeed: calculateSpeedFromPast(currentBorder100k, 3600),
-      predictSpeed: calculateSpeedFromPast(currentBorder100k, 1200),
-      isBorder: true,
-      isReached: true,
-      diff: null,
-      updatetime: latestBorder100kData.updatetime
-    });
-
-    // 2000位ボーダー行の作成（データが存在する場合のみ）
-    if (currentBorder2k && currentBorder2k.length > 0) {
-      const latestBorder2kData = currentBorder2k[currentBorder2k.length - 1];
-      newTableData.push({
-        id: 'border_2k',
-        name: '2000位ボーダー',
-        rank: BORDER_RANK_2K,
-        point: latestBorder2kData.point,
-        todayInc: calculateTodayIncrease(currentBorder2k),
-        realSpeed: calculateSpeedFromPast(currentBorder2k, 3600),
-        predictSpeed: calculateSpeedFromPast(currentBorder2k, 1200),
-        isBorder: true,
-        isReached: true,
-        diff: null,
-        updatetime: latestBorder2kData.updatetime
-      });
+    if (!globalEventData.currentBorder100k || globalEventData.currentBorder100k.length === 0) {
+      showError('10万位ボーダーデータの取得に失敗したため、10万位差は未表示です。');
     }
 
-    // 団員・指定プレイヤー行の作成
-    validUsers.forEach(u => {
-      const latestUserData = u.points[u.points.length - 1];
-      const latestPoint = latestUserData.point;
-
-      newTableData.push({
-        id: u.id,
-        name: u.name,
-        rank: latestUserData.rank,
-        point: latestPoint,
-        todayInc: calculateTodayIncrease(u.points),
-        realSpeed: calculateSpeedFromPast(u.points, 3600),
-        predictSpeed: calculateSpeedFromPast(u.points, 1200),
-        isBorder: false,
-        isReached: latestPoint >= point100k,
-        diff: latestPoint - point100k,
-        updatetime: latestUserData.updatetime
-      });
-    });
-
-    // 初期ソートは貢献度降順
-    newTableData.sort((a, b) => b.point - a.point);
-    globalEventData.tableData = newTableData;
-
-    lastUpdateEl.textContent = `取得時刻: ${new Date().toLocaleTimeString()}`;
-    resultSection.classList.remove('hidden');
-
-    currentSortKey = 'point';
-    currentSortOrder = 'desc';
-    renderTable([...globalEventData.tableData]);
-    updateSortIcons();
+    if (srStatusEl) {
+      const userCount = Object.keys(globalEventData.users).length;
+      srStatusEl.textContent = `データ取得が完了しました（プレイヤー${userCount}人）`;
+    }
 
   } catch (err) {
+    if (runId !== activeAnalyzeId) return;
     console.error(err);
+    if (streamProgressEl) streamProgressEl.classList.add('hidden');
     showError(err.message || 'データの取得または処理中にエラーが発生しました。');
   } finally {
-    setLoading(false);
+    if (runId === activeAnalyzeId) {
+      setLoading(false);
+    }
   }
 };
 
@@ -1908,6 +2092,7 @@ const handleAnalyze = async () => {
  * 【背景・意図】
  * 多重リクエストによるサーバー負荷や処理の混乱を防止するため、ボタンを非活性化し、
  * スピナーアイコンを表示して通信中であることをユーザーに通知します。
+ * ストリーミング表示のため、結果セクションは非表示にせず維持します。
  * 
  * @param {boolean} isLoading - ローディング中フラグ
  * @returns {void}
@@ -1918,7 +2103,6 @@ const setLoading = (isLoading) => {
     loadingIcon.classList.remove('hidden');
     btnText.textContent = '';
     errorContainer.classList.add('hidden');
-    resultSection.classList.add('hidden');
   } else {
     loadingIcon.classList.add('hidden');
     btnText.textContent = 'データ取得';
@@ -1940,12 +2124,12 @@ const showError = (message) => {
 };
 
 /**
- * 整形済みランキングデータ配列からHTMLテーブル行要素を生成し、DOMへレンダリングします。
+ * 整形済みランキングデータ配列からHTMLテーブル行要素を生成・更新し、既存DOMノードを再利用してレンダリングします。
  * 
  * 【背景・意図】
- * 各列（全体順位、プレイヤー名、貢献度、時速、当日増加量、10万位差分、更新時刻）の表示を構築します。
- * ボーダー行（10万位・2000位）は行全体を固有のテーマカラー（青・紫）でハイライトし、
- * 10万位未到達のプレイヤーは赤色警告スタイルを適用して、状況をひと目で把握できるようにします。
+ * ストリーミング取得中やソート時に毎回 tbody を innerHTML で全破棄すると、ホバー状態やフォーカスが失われ
+ * 画面がチラつきます。各行を行ID単位でキャッシュし、内容が変わった行のみ更新、並び順は moveBefore()
+ * （未対応ブラウザは append()）でノード移動することで滑らかなストリーミング表示を実現します。
  * 
  * @param {Array<object>} data - 表示対象のテーブル行データ配列
  * @returns {void}
@@ -1953,98 +2137,131 @@ const showError = (message) => {
 const renderTable = (data) => {
   // 現在のソート順序を保持（画像エクスポート時に利用）
   currentSortedData = data;
-  tableBody.innerHTML = '';
 
+  // ローディングプレースホルダー行が存在する場合は除去
+  tableBody.querySelectorAll('tr[data-placeholder]').forEach(el => el.remove());
+
+  const activeIds = new Set();
+  const orderedNodes = [];
   let userRankCounter = 0; // ボーダー行を除外した順位カウンター
 
-  data.forEach((row, idx) => {
-    const tr = document.createElement('tr');
+  data.forEach((row) => {
+    activeIds.add(row.id);
 
     let displayNum = '';
     if (!row.isBorder) {
       userRankCounter++;
-      displayNum = userRankCounter;
+      displayNum = String(userRankCounter);
     }
 
-    let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
-    let rankClass = "font-mono text-[#71717a]";
-    let nameHTML = "";
-    let pointClass = "font-mono text-[#e4e4e7]";
-    let speedHTML = "-";
-    let todayIncHTML = "-";
-    let diffHTML = "-";
+    let tr = tableRowMap.get(row.id);
+    const isNew = !tr;
+    if (isNew) {
+      tr = document.createElement('tr');
+      tr.dataset.rowId = row.id;
+      tableRowMap.set(row.id, tr);
+    }
 
-    const pointStrRaw = row.point !== null ? row.point.toLocaleString() : '-';
-    const realSpdStr = row.realSpeed !== null ? formatSpeed(row.realSpeed) : '-';
-    const realSpdRaw = row.realSpeed !== null ? Math.round(row.realSpeed).toLocaleString() : '-';
-    const predSpdStr = row.predictSpeed !== null ? formatSpeed(row.predictSpeed) : '-';
+    // 順位列（#）以外の表示内容に影響する値からシグネチャを作成し、変更のない行のDOM再構築を回避
+    const rowSignature = `${row.rank}|${row.name}|${row.point}|${row.todayInc}|${row.realSpeed}|${row.predictSpeed}|${row.isReached}|${row.diff}|${row.updatetime}`;
 
-    if (row.todayInc !== null) todayIncHTML = formatPoint(row.todayInc);
-    const todayIncRaw = row.todayInc !== null ? row.todayInc.toLocaleString() : '-';
+    if (isNew || tr.dataset.rowSignature !== rowSignature) {
+      let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
+      let rankClass = "font-mono text-[#71717a]";
+      let nameHTML = "";
+      let pointClass = "font-mono text-[#e4e4e7]";
+      let speedHTML = "-";
+      let todayIncHTML = "-";
+      let diffHTML = "-";
 
-    const rankStr = row.rank ? row.rank.toLocaleString() + '位' : '-';
+      const pointStrRaw = row.point !== null ? row.point.toLocaleString() : '-';
+      const realSpdStr = row.realSpeed !== null ? formatSpeed(row.realSpeed) : '-';
+      const realSpdRaw = row.realSpeed !== null ? Math.round(row.realSpeed).toLocaleString() : '-';
+      const predSpdStr = row.predictSpeed !== null ? formatSpeed(row.predictSpeed) : '-';
 
-    const pointTitle = `貢献度: ${pointStrRaw}`;
-    const speedTitle = `実測時速: ${realSpdRaw} /時`;
-    const todayIncTitle = `当日増加量: ${todayIncRaw}`;
+      if (row.todayInc !== null) todayIncHTML = formatPoint(row.todayInc);
+      const todayIncRaw = row.todayInc !== null ? row.todayInc.toLocaleString() : '-';
 
-    if (row.isBorder) {
-      if (row.id === 'border_2k') {
-        rowClass = "bg-[#4c1d95]/20 hover:bg-[#4c1d95]/40 transition-colors border-y border-[#8b5cf6]/50";
-        rankClass = "font-mono font-bold text-[#a78bfa]";
-        nameHTML = `<div class="font-bold text-[#a78bfa]">${row.name}</div>`;
-        pointClass = "font-mono font-bold text-[#a78bfa]";
-        speedHTML = `<div class="text-[#a78bfa]">${realSpdStr}/時</div><div class="text-[#a78bfa]/70">(${predSpdStr})</div>`;
-        todayIncHTML = `<span class="text-[#a78bfa]">${formatPoint(row.todayInc)}</span>`;
+      const rankStr = row.rank ? row.rank.toLocaleString() + '位' : '-';
+
+      const pointTitle = `貢献度: ${pointStrRaw}`;
+      const speedTitle = `実測時速: ${realSpdRaw} /時`;
+      const todayIncTitle = `当日増加量: ${todayIncRaw}`;
+
+      if (row.isBorder) {
+        if (row.id === 'border_2k') {
+          rowClass = "bg-[#4c1d95]/20 hover:bg-[#4c1d95]/40 transition-colors border-y border-[#8b5cf6]/50";
+          rankClass = "font-mono font-bold text-[#a78bfa]";
+          nameHTML = `<div class="font-bold text-[#a78bfa]">${row.name}</div>`;
+          pointClass = "font-mono font-bold text-[#a78bfa]";
+          speedHTML = `<div class="text-[#a78bfa]">${realSpdStr}/時</div><div class="text-[#a78bfa]/70">(${predSpdStr})</div>`;
+          todayIncHTML = `<span class="text-[#a78bfa]">${formatPoint(row.todayInc)}</span>`;
+        } else {
+          rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
+          rankClass = "font-mono font-bold text-[#60a5fa]";
+          nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
+          pointClass = "font-mono font-bold text-[#60a5fa]";
+          speedHTML = `<div class="text-[#60a5fa]">${realSpdStr}/時</div><div class="text-[#60a5fa]/70">(${predSpdStr})</div>`;
+          todayIncHTML = `<span class="text-[#60a5fa]">${formatPoint(row.todayInc)}</span>`;
+        }
+        diffHTML = `<span class="text-[#71717a]">-</span>`;
       } else {
-        rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
-        rankClass = "font-mono font-bold text-[#60a5fa]";
-        nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
-        pointClass = "font-mono font-bold text-[#60a5fa]";
-        speedHTML = `<div class="text-[#60a5fa]">${realSpdStr}/時</div><div class="text-[#60a5fa]/70">(${predSpdStr})</div>`;
-        todayIncHTML = `<span class="text-[#60a5fa]">${formatPoint(row.todayInc)}</span>`;
-      }
-      diffHTML = `<span class="text-[#71717a]">-</span>`;
-    } else {
-      const nameColorClass = row.isReached ? "text-[#e4e4e7]" : "text-red-400";
-      if (!row.isReached) {
-        rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
-      }
-      nameHTML = `
-        <div onclick="copyId(event, '${row.id}')" class="cursor-pointer group select-none inline-block" title="クリックしてIDをコピー">
-          <div class="font-medium ${nameColorClass} group-hover:text-[#3b82f6] transition-colors">${row.name}</div>
-          <div class="text-xs text-[#71717a] font-mono mt-0.5 group-hover:text-[#3b82f6]/80 transition-colors flex items-center gap-1">
-            ID: ${row.id}
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        const nameColorClass = row.isReached ? "text-[#e4e4e7]" : "text-red-400";
+        if (!row.isReached) {
+          rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
+        }
+        nameHTML = `
+          <div onclick="copyId(event, '${row.id}')" class="cursor-pointer group select-none inline-block" title="クリックしてIDをコピー">
+            <div class="font-medium ${nameColorClass} group-hover:text-[#3b82f6] transition-colors">${row.name}</div>
+            <div class="text-xs text-[#71717a] font-mono mt-0.5 group-hover:text-[#3b82f6]/80 transition-colors flex items-center gap-1">
+              ID: ${row.id}
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </div>
           </div>
-        </div>
-      `;
+        `;
 
-      speedHTML = `<div class="text-[#a1a1aa]">${realSpdStr}/時</div><div class="text-[#71717a]">(${predSpdStr})</div>`;
+        speedHTML = `<div class="text-[#a1a1aa]">${realSpdStr}/時</div><div class="text-[#71717a]">(${predSpdStr})</div>`;
 
-      if (row.diff !== null) {
-        const diffClass = row.diff >= 0 ? 'text-emerald-400' : 'text-red-500 font-bold';
-        const sign = row.diff >= 0 ? '+' : '';
-        diffHTML = `<span class="${diffClass}">${sign}${formatPoint(row.diff)}</span>`;
+        if (row.diff !== null) {
+          const diffClass = row.diff >= 0 ? 'text-emerald-400' : 'text-red-500 font-bold';
+          const sign = row.diff >= 0 ? '+' : '';
+          diffHTML = `<span class="${diffClass}">${sign}${formatPoint(row.diff)}</span>`;
+        }
       }
+
+      tr.className = isNew ? `${rowClass} stream-row-enter` : rowClass;
+
+      const clickableCell = `cursor-pointer hover:bg-[#3f3f46]/40 transition-colors`;
+
+      tr.innerHTML = `
+        <td class="px-3 py-4 text-center font-mono text-xs text-[#71717a]">${displayNum}</td>
+        <td class="px-5 py-4 ${rankClass}">${rankStr}</td>
+        <td class="px-5 py-4">${nameHTML}</td>
+        <td class="px-5 py-4 text-right ${pointClass} ${clickableCell}" title="${pointTitle}" onclick="openChartModal('${row.id}', 'point')">${formatPoint(row.point)}</td>
+        <td class="px-5 py-4 text-right font-mono text-xs ${clickableCell}" title="${speedTitle}" onclick="openChartModal('${row.id}', 'speed')">${speedHTML}</td>
+        <td class="px-5 py-4 text-right font-mono text-[#e4e4e7] ${clickableCell}" title="${todayIncTitle}" onclick="openChartModal('${row.id}', 'point')">${todayIncHTML}</td>
+        <td class="px-5 py-4 text-right font-mono text-xs">${diffHTML}</td>
+        <td class="px-5 py-4 text-right font-mono text-xs text-[#a1a1aa]">${formatTime(row.updatetime)}</td>
+      `;
+      tr.dataset.rowSignature = rowSignature;
+    } else if (tr.firstElementChild && tr.firstElementChild.textContent !== displayNum) {
+      // 内容に変化がない既存行は団内順位（#）のみ最小更新
+      tr.firstElementChild.textContent = displayNum;
     }
 
-    tr.className = rowClass;
-
-    const clickableCell = `cursor-pointer hover:bg-[#3f3f46]/40 transition-colors`;
-
-    tr.innerHTML = `
-      <td class="px-3 py-4 text-center font-mono text-xs text-[#71717a]">${displayNum}</td>
-      <td class="px-5 py-4 ${rankClass}">${rankStr}</td>
-      <td class="px-5 py-4">${nameHTML}</td>
-      <td class="px-5 py-4 text-right ${pointClass} ${clickableCell}" title="${pointTitle}" onclick="openChartModal('${row.id}', 'point')">${formatPoint(row.point)}</td>
-      <td class="px-5 py-4 text-right font-mono text-xs ${clickableCell}" title="${speedTitle}" onclick="openChartModal('${row.id}', 'speed')">${speedHTML}</td>
-      <td class="px-5 py-4 text-right font-mono text-[#e4e4e7] ${clickableCell}" title="${todayIncTitle}" onclick="openChartModal('${row.id}', 'point')">${todayIncHTML}</td>
-      <td class="px-5 py-4 text-right font-mono text-xs">${diffHTML}</td>
-      <td class="px-5 py-4 text-right font-mono text-xs text-[#a1a1aa]">${formatTime(row.updatetime)}</td>
-    `;
-    tableBody.appendChild(tr);
+    orderedNodes.push(tr);
   });
+
+  // 不要になった古い行ノードを除去
+  for (const [id, tr] of tableRowMap.entries()) {
+    if (!activeIds.has(id)) {
+      tr.remove();
+      tableRowMap.delete(id);
+    }
+  }
+
+  // 既存ノードを再生成せずにソート順へ移動
+  reorderNodes(tableBody, orderedNodes);
 };
 
 /**

@@ -24,7 +24,7 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
   <!-- 固有スタイルシート: アニメーションおよびスクロールバー制御のCSS -->
-  <link rel="stylesheet" href="style.css?v=20260928_03">
+  <link rel="stylesheet" href="style.css?v=20261121_02">
 </head>
 <body class="bg-[#18181b] text-[#e4e4e7] min-h-screen p-4 md:p-8 font-sans selection:bg-[#3b82f6] selection:text-white relative">
   
@@ -101,6 +101,7 @@
           <span class="font-medium">画像として保存</span>
         </button>
       </div>
+      <progress id="streamProgress" class="stream-progress hidden w-full" value="0" max="1" aria-label="データ取得の進捗"></progress>
       <div class="overflow-x-auto">
         <table class="w-full text-sm text-left whitespace-nowrap">
           <thead class="bg-[#18181b] text-[#a1a1aa] border-b border-[#3f3f46]">
@@ -186,7 +187,10 @@
     <span id="toastMsg"></span>
   </div>
 
+  <!-- スクリーンリーダー向けステータス通知領域（完了・ソート時に1回だけ通知） -->
+  <p id="srStatus" role="status" class="visually-hidden"></p>
+
   <!-- アプリケーションロジックの読み込み -->
-  <script src="script.js?v=20261121_01"></script>
+  <script src="script.js?v=20261121_02"></script>
 </body>
 </html>

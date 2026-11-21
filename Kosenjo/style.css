@@ -80,3 +80,80 @@
 .no-tap-highlight {
   -webkit-tap-highlight-color: transparent;
 }
+
+/* ==========================================================================
+   ストリーミング表示・アクセシビリティ用スタイル
+   ========================================================================== */
+
+/**
+ * スクリーンリーダー向けにテキストをDOMへ残しつつ視覚的に隠すユーティリティ。
+ * 動的ソート結果やストリーミング取得完了のアナウンス（role="status"）に使用します。
+ */
+.visually-hidden:where(:not(:focus-within, :active)) {
+  position: absolute !important;
+  clip-path: inset(50%) !important;
+  overflow: hidden !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  white-space: nowrap !important;
+}
+
+/**
+ * ストリーミング取得進捗を示すHTML標準 <progress> 要素のダークテーマ用スタイル。
+ * 結果テーブル上端にスリムな進捗バーとして配置し、取得完了率を視覚的に提示します。
+ */
+.stream-progress {
+  display: block;
+  appearance: none;
+  -webkit-appearance: none;
+  height: 3px;
+  border: none;
+  background-color: #27272a;
+}
+
+.stream-progress.hidden {
+  display: none;
+}
+
+.stream-progress::-webkit-progress-bar {
+  background-color: #27272a;
+}
+
+.stream-progress::-webkit-progress-value {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  transition: width 150ms ease-out;
+}
+
+.stream-progress::-moz-progress-bar {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+/**
+ * ストリーミング取得で新しくテーブルへ追加された行のフェードインアニメーション。
+ */
+@keyframes streamRowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stream-row-enter {
+  animation: streamRowFadeIn 180ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stream-row-enter {
+    animation: none;
+  }
+  .stream-progress::-webkit-progress-value {
+    transition: none;
+  }
+}
