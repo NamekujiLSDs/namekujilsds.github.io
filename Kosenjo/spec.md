@@ -10,18 +10,18 @@
 グランブルーファンタジーのイベント「決戦！星の古戦場」において、団員または指定したプレイヤーの貢献度・順位・時速・ボーダー差分を取得し、リアルタイムで一覧表示および将来予測グラフを描画するWebツール。
 
 ### 1.2 外部API仕様 (`gbf.pub`)
-データ取得元として `https://gbf.pub/api/client/gw/` エンドポイント群を利用。直接アクセスに失敗した場合は `https://api.allorigins.win/raw?url=...` によるCORSプロキシフォールバックを実施。
+データ取得元として `https://gbf.pub/api/web/gw/` エンドポイント群を利用。直接アクセスに失敗した場合は `https://api.allorigins.win/raw?url=...` によるCORSプロキシフォールバックを実施。
 
 1. **ボーダーデータ取得**:
-   - `GET https://gbf.pub/api/client/gw/line?teamraidid={teamraidid}&type=user&rank={rank}`
+   - `GET https://gbf.pub/api/web/gw/line?teamraidid={teamraidid}&type=user&rank={rank}`
    - パラメータ:
      - `teamraidid`: 例 `teamraid082`（第82回の場合）
      - `rank`: 100000（10万位）または 2000（2000位）
 2. **ユーザー情報取得**:
-   - `GET https://gbf.pub/api/client/gw/user?userid={userid}`
+   - `GET https://gbf.pub/api/web/gw/user?userid={userid}&username=`
    - プレイヤー名、プロフィール等のメタ情報を取得。
 3. **ユーザーポイント履歴取得**:
-   - `GET https://gbf.pub/api/client/gw/point?teamraidid={teamraidid}&type=user&id={userid}`
+   - `GET https://gbf.pub/api/web/gw/point?teamraidid={teamraidid}&type=user&id={userid}`
    - 指定イベント期間内の時系列ポイント・順位スナップショット配列を取得。
 
 ### 1.3 タイムライン・スケジュールおよび予測モデル仕様

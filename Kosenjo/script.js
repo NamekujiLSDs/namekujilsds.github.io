@@ -1783,8 +1783,8 @@ const handleAnalyze = async () => {
   try {
     // 開催回が変わった場合はキャッシュを無視して過去データを再取得する
     if (globalEventData.pastBorders100k.length === 0 || globalEventData.loadedRaidNum !== currentRaidNum) {
-      const pastReqs100k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(() => []));
-      const pastReqs2k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(() => []));
+      const pastReqs100k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_100K}`).catch(() => []));
+      const pastReqs2k = pastRaidIds.map(id => fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${id}&type=user&rank=${BORDER_RANK_2K}`).catch(() => []));
 
       globalEventData.pastBorders100k = await Promise.all(pastReqs100k);
       globalEventData.pastBorders2k = await Promise.all(pastReqs2k);
@@ -1793,13 +1793,13 @@ const handleAnalyze = async () => {
       globalEventData.activityCurve2k = null;
     }
 
-    const border100kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_100K}`);
-    const border2kReq = fetchData(`https://gbf.pub/api/client/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_2K}`).catch(() => null);
+    const border100kReq = fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_100K}`);
+    const border2kReq = fetchData(`https://gbf.pub/api/web/gw/line?teamraidid=${currentRaidId}&type=user&rank=${BORDER_RANK_2K}`).catch(() => null);
 
     const userReqs = ids.map(async (id) => {
       try {
-        const userRes = await fetchData(`https://gbf.pub/api/client/gw/user?userid=${id}`);
-        const pointRes = await fetchData(`https://gbf.pub/api/client/gw/point?teamraidid=${currentRaidId}&type=user&id=${id}`);
+        const userRes = await fetchData(`https://gbf.pub/api/web/gw/user?userid=${id}&username=`);
+        const pointRes = await fetchData(`https://gbf.pub/api/web/gw/point?teamraidid=${currentRaidId}&type=user&id=${id}`);
         const userInfo = userRes.length > 0 ? userRes[0] : { name: `ID:${id}`, id };
         return { id, name: userInfo.name, points: pointRes || [] };
       } catch (e) {
