@@ -1478,18 +1478,23 @@ const sortTableData = (data, key, order) => {
 
 /**
  * コンテナ内の既存DOMノード群を、要素を再生成せずに指定順へ並び替えます。
- * moveBefore() を優先使用してフォーカスや状態を維持し、未対応ブラウザでは append() へフォールバックします。
+ * 接続済みの既存ノードは moveBefore() で状態（フォーカス等）を維持したまま移動し、
+ * 新規作成直後の未接続ノードや未対応ブラウザでは append() を使用します。
  * 
  * @param {Element} container - 親コンテナ要素（tbody 等）
  * @param {Element[]} orderedNodes - 並び替え後のノード配列
  * @returns {void}
  */
 const reorderNodes = (container, orderedNodes) => {
-  const move = Object.hasOwn(Element.prototype, 'moveBefore')
-    ? (node) => container.moveBefore(node, null)
-    : (node) => container.append(node);
+  const supportsMoveBefore = Object.hasOwn(Element.prototype, 'moveBefore');
 
-  for (const node of orderedNodes) move(node);
+  for (const node of orderedNodes) {
+    if (supportsMoveBefore && container.isConnected && node.isConnected && node.parentNode === container) {
+      container.moveBefore(node, null);
+    } else {
+      container.append(node);
+    }
+  }
 };
 
 /**
