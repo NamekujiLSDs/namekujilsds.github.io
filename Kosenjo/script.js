@@ -463,69 +463,280 @@ const getInterpolatedPoint = (points, startUnix, targetElapsedH) => {
 };
 
 /**
- * 過去開催のボーダー履歴（直近3回分）から、経過時間ごとの平均増加速度（pt/h）をまとめたアクティビティ曲線を生成します。
+ * 指定された1時間区間 [h, h+1] が活動時間帯（非休戦時間帯）かどうかを区間中点で判定します。
  * 
  * 【背景・意図】
- * 古戦場の貢献度の伸びは一定ではなく、日中は緩やかで夜間（20時〜24時）に急加速し、
- * 本戦最終日にはさらに加速するという特有のユーザー行動パターン（アクティビティ推移）が存在します。
- * 過去複数回の同経過時間における時間あたり増加量を平均化することで、
- * 人間味のあるリアルな予測曲線のベースラインモデルを構築します。
+ * 左端点 h のみで isRestTimeByElapsed(h) を判定すると、各日24:00（h=29, 77, 101, 125）の直後に続く
+ * 深夜休戦区間 [24:00, 01:00] が境界マージンにより誤って活動扱いになってしまいます。
+ * 区間の中点 (h + 0.5) を ACTIVE_SEGMENTS と照合することで、活動区間と休戦区間を厳密に分離します。
  * 
- * @param {Array<Array<{point: number, updatetime: number}>>} pastDataArrays - 過去複数開催分の時系列データ配列
- * @param {number} maxHours - 算出対象の最大経過時間（例: 150時間）
- * @returns {Map<number, number>} 経過時間(h)をキー、平均増加量(pt)を値とするMapオブジェクト
+ * @param {number} h - 開始経過時間（整数時間）
+ * @returns {boolean} 区間 [h, h+1] が活動区間であれば true
+ */
+const isActiveInterval = (h) => {
+  const mid = h + 0.5;
+  return ACTIVE_SEGMENTS.some(seg => mid >= seg.realStartH && mid <= seg.realEndH);
+};
+
+/**
+ * 指定した経過時間（時間）が属する活動フェーズ（ACTIVE_SEGMENTS 要素）を返します。
+ * 休戦時間中の場合は直前に終了したフェーズを返します。
+ * 
+ * @param {number} elapsedH - イベント開始からの経過時間（時間）
+ * @returns {{id: string, name: string, realStartH: number, realEndH: number, activeStartH: number, activeEndH: number}|null}
+ */
+const findCurrentSegment = (elapsedH) => {
+  const eps = 0.01;
+  for (const seg of ACTIVE_SEGMENTS) {
+    if (elapsedH >= seg.realStartH - eps && elapsedH <= seg.realEndH + eps) {
+      return seg;
+    }
+  }
+  for (let i = ACTIVE_SEGMENTS.length - 1; i >= 0; i--) {
+    if (elapsedH > ACTIVE_SEGMENTS[i].realEndH) {
+      return ACTIVE_SEGMENTS[i];
+    }
+  }
+  return ACTIVE_SEGMENTS[0] || null;
+};
+
+/**
+ * 過去開催のボーダー履歴（直近3回分）から、各開催回の最終ポイントで正規化した
+ * 「時間別アクティビティ比率曲線（全期間合計 ≒ 1.0）」を生成します。
+ * 
+ * 【背景・意図】
+ * 1. 各過去回の基準時刻を points[0].updatetime（19:40等）ではなく getEventStartTime（19:00 JST）に統一し、
+ *    40分前後の時間軸ズレを解消します。
+ * 2. 開催回ごとのインフレ規模の違いに引きずられないよう、各回の最終ポイントで正規化した形状プロファイルを
+ *    前回重視の指数減衰重み（50% / 30% / 20%）で加重平均します。
+ * 3. 深夜休戦区間は isActiveInterval(h) で厳密に 0 とし、休戦跨ぎの補間ノイズを排除します。
+ * 
+ * @param {Array<Array<{point: number, updatetime: number}>>} pastDataArrays - 過去複数開催分の時系列データ配列（新しい順）
+ * @param {number} maxHours - 算出対象の最大経過時間（例: 149時間）
+ * @returns {Map<number, number>} 経過時間(h)をキー、1時間あたりの正規化増加比率を値とするMapオブジェクト
  */
 const calculateActivityCurve = (pastDataArrays, maxHours) => {
   const curve = new Map();
+  const recencyWeights = [0.5, 0.3, 0.2];
+
+  // 各過去回の開始時刻（19:00 JST）と最終ポイントを事前計算
+  const preparedPast = (pastDataArrays || [])
+    .map((points, idx) => {
+      if (!points || points.length < 2) return null;
+      const startUnix = getEventStartTime(points[0].updatetime);
+      const totalPoint = points[points.length - 1].point;
+      if (!totalPoint || totalPoint <= 0) return null;
+      return {
+        points,
+        startUnix,
+        totalPoint,
+        weight: recencyWeights[idx] ?? 0.15
+      };
+    })
+    .filter(Boolean);
+
   for (let h = 0; h < maxHours; h++) {
-    if (isRestTimeByElapsed(h)) {
+    if (!isActiveInterval(h)) {
       curve.set(h, 0);
       continue;
     }
-    let speedSum = 0; let count = 0;
-    pastDataArrays.forEach(points => {
-      if (!points || points.length === 0) return;
-      const startUnix = points[0].updatetime;
-      const pNow = getInterpolatedPoint(points, startUnix, h);
-      const pNext = getInterpolatedPoint(points, startUnix, h + 1);
-      if (pNow > 0 && pNext > pNow) {
-        speedSum += (pNext - pNow); count++;
+
+    let weightedSum = 0;
+    let weightTotal = 0;
+    preparedPast.forEach(past => {
+      const pNow = getInterpolatedPoint(past.points, past.startUnix, h);
+      const pNext = getInterpolatedPoint(past.points, past.startUnix, h + 1);
+      const inc = Math.max(0, pNext - pNow);
+      // 過去データの終端以降など明らかな欠損を除いて加重積算
+      if (pNext > 0) {
+        weightedSum += (inc / past.totalPoint) * past.weight;
+        weightTotal += past.weight;
       }
     });
-    curve.set(h, count > 0 ? speedSum / count : 10000);
+
+    curve.set(h, weightTotal > 0 ? weightedSum / weightTotal : 0);
   }
+
   return curve;
 };
 
 /**
- * 直近のボーダー伸び実績と過去平均アクティビティ曲線を比較し、今回の開催における「インフレ率（速度倍率）」を算出します。
+ * 正規化アクティビティ曲線の任意の実数区間 [fromH, toH] における積算比率を厳密に計算します。
  * 
  * 【背景・意図】
- * ボス敵のHPや肉集めの効率化、環境キャラ・武器の実装により、古戦場ごとの全体ボーダー速度は
- * 過去開催よりも1.2倍や1.5倍などにインフレ（加速）することが日常的です。
- * 直近12時間の現在実績増加量と過去平均増加量を比較し、インフレ係数（ratio）を求めることで、
- * 今後の伸び予測を今回の加速ペースに合わせて補正します。
+ * 19:20（72.333h）や19:40（72.667h）といった端数時刻から次の正時（73.0h）までの残り時間ぶんだけ
+ * 正確に加算し、また休戦区間（値が0）を跨いでも余計なポイントが加算されないようにします。
+ * 
+ * @param {Map<number, number>} curve - 正規化アクティビティ曲線
+ * @param {number} fromH - 開始経過時間（時間）
+ * @param {number} toH - 終了経過時間（時間）
+ * @returns {number} 区間 [fromH, toH] の積算比率
+ */
+const integrateActivityCurve = (curve, fromH, toH) => {
+  if (!curve || toH <= fromH) return 0;
+  let sum = 0;
+  let cur = Math.max(0, fromH);
+  while (cur < toH - 1e-9) {
+    const hIdx = Math.floor(cur);
+    const next = Math.min(toH, hIdx + 1);
+    const dt = next - cur;
+    sum += (curve.get(hIdx) || 0) * dt;
+    cur = next;
+  }
+  return sum;
+};
+
+/**
+ * 指定した実数区間 [fromH, toH] に含まれる活動時間（非休戦時間）の合計（時間単位）を返します。
+ * 
+ * @param {number} fromH - 開始経過時間
+ * @param {number} toH - 終了経過時間
+ * @returns {number} 活動時間（時間）
+ */
+const getActiveDuration = (fromH, toH) => {
+  if (toH <= fromH) return 0;
+  let total = 0;
+  for (const seg of ACTIVE_SEGMENTS) {
+    const start = Math.max(fromH, seg.realStartH);
+    const end = Math.min(toH, seg.realEndH);
+    if (end > start) total += (end - start);
+  }
+  return total;
+};
+
+/**
+ * 今回開催のボーダー実績と正規化アクティビティ曲線を比較し、
+ * 「本日フェーズ残り用」と「明日以降の未来フェーズ用」の推定スケール係数（最終着地規模換算）を算出します。
+ * 
+ * 【背景・意図】
+ * 古戦場は予選・インターバル・本戦1〜4日目で解禁されるHELL難度が段階的に変化するため、
+ * 1. 通算累計スケール（イベント全体の規模アンカー）
+ * 2. 当該フェーズ内スケール（同じHELL難度での当日ペース）
+ * 3. 直近アクティブウィンドウ（最大4時間）スケール（直近の加速・減速）
+ * をフェーズ内経過時間に応じた信頼度で動的にブレンドすることで、
+ * 開始直後から本戦最終日まで一貫して高精度な着地・時速予測を実現します。
  * 
  * @param {Array<{point: number, updatetime: number}>} currentBorder - 現在開催のボーダーデータ配列
- * @param {Map<number, number>} activityCurve - 過去平均のアクティビティ速度曲線
- * @param {number} latestElapsedH - 現在の最新経過時間（時間）
- * @returns {number} インフレ倍率（データ不足時は 1.0）
+ * @param {Map<number, number>} normCurve - 正規化アクティビティ曲線
+ * @param {number} currentStartTime - イベント開始時刻（19:00 JST のUNIX秒）
+ * @param {number} latestElapsedH - ボーダーの最新経過時間（時間）
+ * @returns {{scaleToday: number, scaleFuture: number, fallbackSpeed: number, currentSeg: object|null}}
  */
-const calcInflationRate = (currentBorder, activityCurve, latestElapsedH) => {
-  // 直近12時間の推移を評価ウィンドウとして採用
-  const compareHours = 12;
-  const elapsedInt = Math.floor(latestElapsedH);
-  if (elapsedInt < compareHours) return 1.0;
+const estimateBorderScale = (currentBorder, normCurve, currentStartTime, latestElapsedH) => {
+  const currentSeg = findCurrentSegment(latestElapsedH);
+  const latestPoint = currentBorder[currentBorder.length - 1].point;
 
-  const pStart = getInterpolatedPoint(currentBorder, currentBorder[0].updatetime, elapsedInt - compareHours);
-  const pEnd = getInterpolatedPoint(currentBorder, currentBorder[0].updatetime, elapsedInt);
-  const currentInc = Math.max(0, pEnd - pStart);
+  // 過去データが欠損している場合のフォールバック時速（直近アクティブ区間平均）
+  const fallbackStartH = currentSeg ? Math.max(currentSeg.realStartH, latestElapsedH - 4) : Math.max(0, latestElapsedH - 4);
+  const fallbackDt = Math.max(0.25, getActiveDuration(fallbackStartH, latestElapsedH));
+  const fallbackInc = Math.max(0, latestPoint - getInterpolatedPoint(currentBorder, currentStartTime, fallbackStartH));
+  const fallbackSpeed = fallbackInc / fallbackDt;
 
-  let pastInc = 0;
-  for (let h = elapsedInt - compareHours; h < elapsedInt; h++) pastInc += (activityCurve.get(h) || 10000);
+  // 1. 通算累計スケール（イベント開始〜現在）
+  const vTotal = integrateActivityCurve(normCurve, 0, latestElapsedH);
+  if (vTotal <= 1e-6 || latestPoint <= 0) {
+    return { scaleToday: 0, scaleFuture: 0, fallbackSpeed, currentSeg };
+  }
+  const sTotal = latestPoint / vTotal;
 
-  if (pastInc > 0 && currentInc > 0) return currentInc / pastInc;
-  return 1.0;
+  // 2. 当該フェーズ内スケール（同じHELL難度・当日内での伸び率）
+  const phaseElapsed = currentSeg ? Math.max(0, latestElapsedH - currentSeg.realStartH) : 0;
+  let sPhase = sTotal;
+  if (currentSeg && phaseElapsed >= 0.5) {
+    const pPhaseStart = getInterpolatedPoint(currentBorder, currentStartTime, currentSeg.realStartH);
+    const incPhase = Math.max(0, latestPoint - pPhaseStart);
+    const vPhase = integrateActivityCurve(normCurve, currentSeg.realStartH, latestElapsedH);
+    if (vPhase > 1e-6 && incPhase > 0) {
+      const rawPhase = incPhase / vPhase;
+      // フェーズ序盤のノイズで極端に暴走しないよう通算アンカー基準で穏当にクランプ
+      sPhase = Math.max(sTotal * 0.35, Math.min(sTotal * 2.5, rawPhase));
+    }
+  }
+
+  // 3. 直近アクティブウィンドウ（当日フェーズ内・最大4時間）のスケール
+  let sRecent = sPhase;
+  if (currentSeg && phaseElapsed >= 0.5) {
+    const recStart = Math.max(currentSeg.realStartH, latestElapsedH - 4);
+    const pRecStart = getInterpolatedPoint(currentBorder, currentStartTime, recStart);
+    const incRec = Math.max(0, latestPoint - pRecStart);
+    const vRec = integrateActivityCurve(normCurve, recStart, latestElapsedH);
+    if (vRec > 1e-6 && incRec > 0) {
+      const rawRecent = incRec / vRec;
+      sRecent = Math.max(sPhase * 0.45, Math.min(sPhase * 2.2, rawRecent));
+    }
+  }
+
+  // フェーズ内経過時間に応じた信頼度（4時間経過で1.0に到達）
+  const conf = Math.min(1, phaseElapsed / 4);
+  const scaleToday = (1 - conf) * sTotal + conf * (0.55 * sPhase + 0.30 * sRecent + 0.15 * sTotal);
+  const scaleFuture = (1 - conf * 0.7) * sTotal + (conf * 0.7) * (0.60 * sPhase + 0.25 * sRecent + 0.15 * sTotal);
+
+  return { scaleToday, scaleFuture, fallbackSpeed, currentSeg };
+};
+
+/**
+ * プレイヤーの稼働ペース（基準ボーダーに対する倍率）を「本日残り用」と「明日以降用」に分けて算出します。
+ * 
+ * 【背景・意図】
+ * 従来の直近12時間単一比率では、睡眠・仕事で一時停止しているだけで以後ずっと+0の水平線になり、
+ * 逆に数時間だけ全力周回すると24時間ずっと5倍速で走り続ける極端な予測になっていました。
+ * 必ずユーザー最新時刻と同一区間のボーダー実績と比較し、「通算水準」「当日フェーズ」「直近4時間」を
+ * 組み合わせることで、現実的で安定した個人着地予測を実現します。
+ * 
+ * @param {Array<{point: number, updatetime: number}>} uPoints - ユーザーのポイント履歴
+ * @param {Array<{point: number, updatetime: number}>} refBorderDataRaw - 基準ボーダーのポイント履歴
+ * @param {number} currentStartTime - イベント開始時刻（19:00 JST のUNIX秒）
+ * @returns {{paceToday: number, paceFuture: number}}
+ */
+const estimateUserPace = (uPoints, refBorderDataRaw, currentStartTime) => {
+  if (!uPoints || uPoints.length === 0 || !refBorderDataRaw || refBorderDataRaw.length === 0) {
+    return { paceToday: 1.0, paceFuture: 1.0 };
+  }
+
+  const uLatest = uPoints[uPoints.length - 1];
+  const uLatestH = (uLatest.updatetime - currentStartTime) / 3600;
+  const bAtLatest = getInterpolatedPoint(refBorderDataRaw, currentStartTime, uLatestH);
+  const totalRatio = bAtLatest > 0 ? Math.max(0, uLatest.point / bAtLatest) : 1.0;
+
+  const seg = findCurrentSegment(uLatestH);
+  const phaseElapsed = seg ? Math.max(0, uLatestH - seg.realStartH) : 0;
+
+  let phaseRatio = totalRatio;
+  if (seg && phaseElapsed >= 0.5) {
+    const uPhaseStart = getInterpolatedPoint(uPoints, currentStartTime, seg.realStartH);
+    const bPhaseStart = getInterpolatedPoint(refBorderDataRaw, currentStartTime, seg.realStartH);
+    const uPhaseInc = Math.max(0, uLatest.point - uPhaseStart);
+    const bPhaseInc = Math.max(0, bAtLatest - bPhaseStart);
+    if (bPhaseInc > 0) {
+      phaseRatio = uPhaseInc / bPhaseInc;
+    }
+  }
+
+  let recentRatio = phaseRatio;
+  if (seg && phaseElapsed >= 0.5) {
+    const recStart = Math.max(seg.realStartH, uLatestH - 4);
+    const uRecStart = getInterpolatedPoint(uPoints, currentStartTime, recStart);
+    const bRecStart = getInterpolatedPoint(refBorderDataRaw, currentStartTime, recStart);
+    const uRecInc = Math.max(0, uLatest.point - uRecStart);
+    const bRecInc = Math.max(0, bAtLatest - bRecStart);
+    if (bRecInc > 0) {
+      recentRatio = uRecInc / bRecInc;
+    }
+  }
+
+  // 瞬間風速スパイクによる暴走を抑えるソフト上限
+  const maxReasonable = Math.max(totalRatio * 2.5, phaseRatio * 1.8, 1.0);
+  const clampedRecent = Math.min(recentRatio, maxReasonable);
+  const clampedPhase = Math.min(phaseRatio, Math.max(totalRatio * 3.0, 1.5));
+
+  const conf = Math.min(1, phaseElapsed / 4);
+  const paceToday = (1 - conf) * totalRatio + conf * (0.40 * clampedRecent + 0.40 * clampedPhase + 0.20 * totalRatio);
+  const paceFuture = (1 - conf * 0.65) * totalRatio + (conf * 0.65) * (0.50 * totalRatio + 0.35 * clampedPhase + 0.15 * clampedRecent);
+
+  return {
+    paceToday: Math.max(0, paceToday),
+    paceFuture: Math.max(0, paceFuture)
+  };
 };
 
 // --- グラフ描画機能 ---
@@ -564,20 +775,13 @@ window.openChartModal = async function (userId, chartType = 'point') {
   const maxElapsed = 149;
 
   if (!globalEventData.activityCurve100k) {
-    globalEventData.activityCurve100k = calculateActivityCurve(globalEventData.pastBorders100k, maxElapsed + 1);
-    globalEventData.activityCurve2k = calculateActivityCurve(globalEventData.pastBorders2k, maxElapsed + 1);
+    globalEventData.activityCurve100k = calculateActivityCurve(globalEventData.pastBorders100k, maxElapsed);
+    globalEventData.activityCurve2k = calculateActivityCurve(globalEventData.pastBorders2k, maxElapsed);
   }
   const curve100k = globalEventData.activityCurve100k;
   const curve2k = globalEventData.activityCurve2k;
 
-  const latestBorder = globalEventData.currentBorder100k[globalEventData.currentBorder100k.length - 1];
-  const latestElapsedH = (latestBorder.updatetime - currentStartTime) / 3600;
-  const latestUnixMs = latestBorder.updatetime * 1000;
-
-  const inflation100k = calcInflationRate(globalEventData.currentBorder100k, curve100k, latestElapsedH);
-  const inflation2k = (globalEventData.currentBorder2k && globalEventData.currentBorder2k.length > 0)
-    ? calcInflationRate(globalEventData.currentBorder2k, curve2k, latestElapsedH)
-    : 1.0;
+  const latestBorder100k = globalEventData.currentBorder100k[globalEventData.currentBorder100k.length - 1];
 
   let targetUser = null;
   let is2kTier = false;
@@ -586,7 +790,7 @@ window.openChartModal = async function (userId, chartType = 'point') {
     targetUser = globalEventData.users[userId];
     if (targetUser) {
       const uLatestPoint = targetUser.points[targetUser.points.length - 1].point;
-      const border100kLatestPoint = latestBorder.point;
+      const border100kLatestPoint = latestBorder100k.point;
       // プレイヤーのポイントが10万位の2倍以上ある場合は、よりハイレベルな2000位ボーダーと比較する
       if (uLatestPoint > border100kLatestPoint * 2) {
         is2kTier = true;
@@ -599,23 +803,94 @@ window.openChartModal = async function (userId, chartType = 'point') {
   const refBorderName = is2kTier ? '2000位ボーダー' : '10万位ボーダー';
   const refBorderDataRaw = (is2kTier && globalEventData.currentBorder2k.length > 0) ? globalEventData.currentBorder2k : globalEventData.currentBorder100k;
   const refCurve = is2kTier ? curve2k : curve100k;
-  const refInflation = is2kTier ? inflation2k : inflation100k;
 
-  let userPace = 1.0;
-  if (targetUser) {
-    // ユーザー自身の直近12時間の稼働速度比率を計算し、ボーダー速度に対する個人ペース係数を算出
-    const compareHours = 12;
-    const uPoints = targetUser.points;
-    const uLatestH = (uPoints[uPoints.length - 1].updatetime - currentStartTime) / 3600;
-    const startH = Math.max(0, uLatestH - compareHours);
+  const latestRefBorder = refBorderDataRaw[refBorderDataRaw.length - 1];
+  const borderLatestElapsedH = (latestRefBorder.updatetime - currentStartTime) / 3600;
+  const latestUnixMs = latestRefBorder.updatetime * 1000;
 
-    const uInc = Math.max(0, uPoints[uPoints.length - 1].point - getInterpolatedPoint(uPoints, currentStartTime, startH));
-    const borderInc = Math.max(0, refBorderDataRaw[refBorderDataRaw.length - 1].point - getInterpolatedPoint(refBorderDataRaw, currentStartTime, startH));
+  const borderScale = estimateBorderScale(refBorderDataRaw, refCurve, currentStartTime, borderLatestElapsedH);
+  const userPace = targetUser
+    ? estimateUserPace(targetUser.points, refBorderDataRaw, currentStartTime)
+    : { paceToday: 1.0, paceFuture: 1.0 };
 
-    if (borderInc > 0) {
-      userPace = uInc / borderInc;
+  // 任意の実数区間 [fromH, toH] に対するボーダー予測増分（当日フェーズ残りと未来フェーズでスケールを切り替え）
+  const computeBorderPredictedInc = (fromH, toH) => {
+    if (toH <= fromH) return 0;
+    const todayEndH = borderScale.currentSeg ? borderScale.currentSeg.realEndH : maxElapsed;
+
+    if (borderScale.scaleToday <= 0 && borderScale.scaleFuture <= 0) {
+      return getActiveDuration(fromH, toH) * borderScale.fallbackSpeed;
     }
-  }
+
+    let inc = 0;
+    if (fromH < todayEndH) {
+      const splitEnd = Math.min(toH, todayEndH);
+      inc += integrateActivityCurve(refCurve, fromH, splitEnd) * borderScale.scaleToday;
+    }
+    if (toH > todayEndH) {
+      const splitStart = Math.max(fromH, todayEndH);
+      inc += integrateActivityCurve(refCurve, splitStart, toH) * borderScale.scaleFuture;
+    }
+    return inc;
+  };
+
+  // 任意の実数区間 [fromH, toH] に対するユーザー予測増分
+  const computeUserPredictedInc = (fromH, toH) => {
+    if (toH <= fromH) return 0;
+    const todayEndH = borderScale.currentSeg ? borderScale.currentSeg.realEndH : maxElapsed;
+    let inc = 0;
+    if (fromH < todayEndH) {
+      const splitEnd = Math.min(toH, todayEndH);
+      inc += computeBorderPredictedInc(fromH, splitEnd) * userPace.paceToday;
+    }
+    if (toH > todayEndH) {
+      const splitStart = Math.max(fromH, todayEndH);
+      inc += computeBorderPredictedInc(splitStart, toH) * userPace.paceFuture;
+    }
+    return inc;
+  };
+
+  // 実測最新時刻より厳密に未来の正時のみから予測点を生成するヘルパー
+  // （例: 19:00ジャストの実測がある場合は20:00から開始し、19:00の重複表示を完全防止）
+  const appendPredictions = (targetSeries, latestPoint, seriesLatestH, incFn) => {
+    if (seriesLatestH >= maxElapsed - 1e-4) return;
+
+    let currentPred = latestPoint;
+    let prevH = seriesLatestH;
+    const startH = Math.floor(seriesLatestH + 1e-4) + 1;
+
+    for (let h = startH; h <= maxElapsed; h++) {
+      if (isRestTimeByElapsed(h)) continue;
+
+      const stepInc = incFn(prevH, h);
+      currentPred += stepInc;
+
+      const unixMs = (currentStartTime + h * 3600) * 1000;
+      const activeX = realElapsedToActiveH(h);
+
+      if (chartType === 'point') {
+        targetSeries.push({
+          x: activeX,
+          y: currentPred,
+          point: currentPred,
+          isPredict: true,
+          realUnixMs: unixMs
+        });
+      } else if (isActiveInterval(h - 1)) {
+        // 時速グラフでは直前1時間 [h-1, h] が活動区間のときのみプロット（休戦明け朝7:00の0落ちを防止）
+        const hourlySpeed = incFn(h - 1, h);
+        targetSeries.push({
+          x: activeX,
+          y: hourlySpeed,
+          point: currentPred,
+          isPredict: true,
+          realUnixMs: unixMs
+        });
+      }
+
+      prevH = h;
+    }
+  };
 
   const borderData = [];
   const userData = [];
@@ -647,28 +922,6 @@ window.openChartModal = async function (userId, chartType = 'point') {
           realUnixMs: p.updatetime * 1000
         });
       });
-    }
-
-    // 3. 未来予測データの追加（イベント進行中の場合のみ）
-    if (latestElapsedH < maxElapsed) {
-      let currentBorderPred = refBorderDataRaw[refBorderDataRaw.length - 1].point;
-      let currentUserPred = targetUser && targetUser.points.length > 0 ? targetUser.points[targetUser.points.length - 1].point : 0;
-      const startH = Math.ceil(latestElapsedH);
-
-      for (let h = startH; h <= maxElapsed; h++) {
-        if (isRestTimeByElapsed(h)) continue;
-        const unixMs = (currentStartTime + h * 3600) * 1000;
-        const activeX = realElapsedToActiveH(h);
-        const baseSpeed = refCurve.get(h - 1) || 10000;
-        const borderSpeed = baseSpeed * refInflation;
-        currentBorderPred += borderSpeed;
-        borderData.push({ x: activeX, y: currentBorderPred, point: currentBorderPred, isPredict: true, realUnixMs: unixMs });
-
-        if (targetUser) {
-          currentUserPred += borderSpeed * userPace;
-          userData.push({ x: activeX, y: currentUserPred, point: currentUserPred, isPredict: true, realUnixMs: unixMs });
-        }
-      }
     }
   } else if (chartType === 'speed') {
     /**
@@ -709,25 +962,14 @@ window.openChartModal = async function (userId, chartType = 'point') {
     if (targetUser) {
       userData.push(...generateSpeedData(targetUser.points));
     }
+  }
 
-    // 未来の予測時速データ生成（イベント進行中のみ）
-    if (latestElapsedH < maxElapsed) {
-      let currentBorderPred = refBorderDataRaw[refBorderDataRaw.length - 1].point;
-      let currentUserPred = targetUser && targetUser.points.length > 0 ? targetUser.points[targetUser.points.length - 1].point : 0;
-      for (let h = Math.ceil(latestElapsedH); h <= maxElapsed; h++) {
-        if (isRestTimeByElapsed(h)) continue;
-        const unixMs = (currentStartTime + h * 3600) * 1000;
-        const activeX = realElapsedToActiveH(h);
-        const baseSpeed = refCurve.get(h - 1) || 10000;
-        const borderSpeed = baseSpeed * refInflation;
-        currentBorderPred += borderSpeed;
-        borderData.push({ x: activeX, y: borderSpeed, point: currentBorderPred, isPredict: true, realUnixMs: unixMs });
-        if (targetUser) {
-          currentUserPred += borderSpeed * userPace;
-          userData.push({ x: activeX, y: borderSpeed * userPace, point: currentUserPred, isPredict: true, realUnixMs: unixMs });
-        }
-      }
-    }
+  // 3. 未来予測データの追加（ボーダー・ユーザーそれぞれの最新実測時刻より厳密に未来から生成）
+  appendPredictions(borderData, latestRefBorder.point, borderLatestElapsedH, computeBorderPredictedInc);
+  if (targetUser && targetUser.points.length > 0) {
+    const latestUserPt = targetUser.points[targetUser.points.length - 1];
+    const userLatestElapsedH = (latestUserPt.updatetime - currentStartTime) / 3600;
+    appendPredictions(userData, latestUserPt.point, userLatestElapsedH, computeUserPredictedInc);
   }
 
   renderChartjs(userId, targetUser, refBorderName, borderData, userData, currentStartTime, latestUnixMs, chartType);
