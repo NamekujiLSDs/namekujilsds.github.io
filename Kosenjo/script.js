@@ -934,11 +934,11 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
   const htmlParts = [];
   const showPlus = !isAllPeriod; // 全期間（累計貢献度）は '+' を付けない
 
-  // 1. ユーザー自身の表示（赤系統カラー）
+  // 1. ユーザー自身の表示（実測: 赤 / 予測: オレンジでグラフ線色と統一）
   if (userStats && userStats.hasData) {
     let userText = renderToggleablePoint(userStats.realVal, 'text-[#ef4444]', '', '', showPlus);
     if (userStats.predVal !== null && userStats.predVal !== userStats.realVal) {
-      userText += ` ${renderToggleablePoint(userStats.predVal, 'text-[11px] text-[#fca5a5] font-normal', '(着地予測 ', ')', showPlus)}`;
+      userText += ` ${renderToggleablePoint(userStats.predVal, 'text-[11px] text-[#fb923c] font-normal', '(着地予測 ', ')', showPlus)}`;
     }
     htmlParts.push(`
       <div class="flex items-center gap-1.5">
@@ -953,11 +953,11 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
     htmlParts.push(`<span class="text-[#52525b] hidden sm:inline">/</span>`);
   }
 
-  // 2. ボーダーの表示（青系統カラー）
+  // 2. ボーダーの表示（実測: 青 / 予測: シアンでグラフ線色と統一）
   if (borderStats.hasData) {
     let borderText = renderToggleablePoint(borderStats.realVal, 'text-[#60a5fa]', '', '', showPlus);
     if (borderStats.predVal !== null && borderStats.predVal !== borderStats.realVal) {
-      borderText += ` ${renderToggleablePoint(borderStats.predVal, 'text-[11px] text-[#93c5fd] font-normal', '(着地予測 ', ')', showPlus)}`;
+      borderText += ` ${renderToggleablePoint(borderStats.predVal, 'text-[11px] text-[#22d3ee] font-normal', '(着地予測 ', ')', showPlus)}`;
     }
     htmlParts.push(`
       <div class="flex items-center gap-1.5">
@@ -1070,19 +1070,31 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
           myChart.options.scales.x.min = phase.activeStartH;
           myChart.options.scales.x.max = phase.activeEndH;
           // 日別フェーズは50〜80点と適正な密度の受入範囲内であるため、各時間のデータ点を視認できるようポイントを表示します。
-          myChart.data.datasets.forEach(ds => {
-            const r = ds.label.includes('自分') ? (isMobile ? 2.5 : 3) : (isMobile ? 1.5 : 2);
-            ds.pointRadius = r;
-            ds.radius = r;
-            ds.pointHoverRadius = ds.label.includes('自分') ? 5 : 4;
+          // 予測点（isPredict: true）は中抜きひし形が視認しやすいよう少し大きめの半径を適用します。
+          myChart.data.datasets.forEach((ds, idx) => {
+            const isUser = idx === 1;
+            const radiusFn = (ptCtx) => {
+              const isPred = Boolean(ptCtx.raw?.isPredict);
+              if (isUser) return isPred ? (isMobile ? 3 : 3.5) : (isMobile ? 2.5 : 3);
+              return isPred ? (isMobile ? 2.5 : 3) : (isMobile ? 1.5 : 2);
+            };
+            ds.pointRadius = radiusFn;
+            ds.radius = radiusFn;
+            ds.pointHoverRadius = isUser ? 5.5 : 5;
             ds.pointHitRadius = 10;
           });
           for (let i = 0; i < myChart.data.datasets.length; i++) {
             const meta = myChart.getDatasetMeta(i);
+            const isUser = i === 1;
+            const dsData = myChart.data.datasets[i].data || [];
             if (meta && meta.data) {
-              const r = myChart.data.datasets[i].label.includes('自分') ? (isMobile ? 2.5 : 3) : (isMobile ? 1.5 : 2);
-              meta.data.forEach(pt => {
-                if (pt.options) pt.options.radius = r;
+              meta.data.forEach((pt, idx) => {
+                if (pt.options) {
+                  const isPred = Boolean(dsData[idx]?.isPredict);
+                  pt.options.radius = isUser
+                    ? (isPred ? (isMobile ? 3 : 3.5) : (isMobile ? 2.5 : 3))
+                    : (isPred ? (isMobile ? 2.5 : 3) : (isMobile ? 1.5 : 2));
+                }
               });
             }
           }
@@ -1098,53 +1110,222 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
     tabsContainer.appendChild(btn);
   });
 
-  const datasets = [];
-  const borderRealIdx = borderData.findIndex(d => d.isPredict);
+  // 実測 vs 予測のカラーパレット定義（背景 #1c1c1e に対しコントラスト比 4.5:1〜10:1 超を確保）
+  // 寒色（青→シアン）= ボーダー、暖色（赤→オレンジ）= 自分 と対応を保ちつつ色相を大きく分離
+  const CHART_COLORS = {
+    borderReal: '#3b82f6',
+    borderPred: '#22d3ee',
+    userReal: '#ef4444',
+    userPred: '#fb923c',
+    canvasBg: '#1c1c1e'
+  };
 
-  // ボーダー曲線のデータセット定義（実測値は実線、予測値は破線 [5, 5] で描画）
-  // 【背景・意図】
-  // 全期間表示において、300点以上の過密プロットが重なって線が極太になる現象を根絶するため、
-  // pointRadius および radius の関数形式コールバックで全期間時は radius: 0 を強制評価させます。
+  // セグメントが予測区間かを各データ点の isPredict フラグから動的に判定
+  // （固定インデックス比較だと日別タブ切替時に配列長が変わり予測スタイルが失われるため、raw.isPredict を直接参照）
+  const isPredictSegment = (segCtx) => Boolean(segCtx.p1?.raw?.isPredict || segCtx.p0?.raw?.isPredict);
+
+  const hasBorderPredict = allBorderData.some(d => d.isPredict);
+  const hasUserPredict = allUserData.some(d => d.isPredict);
+
+  const datasets = [];
+
+  // ボーダー曲線のデータセット定義
+  // 実測: 鮮やかなブルー実線＋塗りつぶし丸点 / 予測: 鮮やかなシアン破線＋中抜きひし形点
   datasets.push({
     label: refBorderName,
     data: borderData,
-    borderColor: '#3b82f6',
-    backgroundColor: '#3b82f6',
-    borderWidth: 2,
-    pointRadius: (ctx) => currentSelectedPhaseId === 'all' ? 0 : (isMobile ? 1.5 : 2),
-    radius: (ctx) => currentSelectedPhaseId === 'all' ? 0 : (isMobile ? 1.5 : 2),
-    pointHoverRadius: 4,
+    borderColor: CHART_COLORS.borderReal,
+    backgroundColor: CHART_COLORS.borderReal,
+    borderWidth: 2.5,
+    pointRadius: (ptCtx) => currentSelectedPhaseId === 'all' ? 0 : (ptCtx.raw?.isPredict ? (isMobile ? 2.5 : 3) : (isMobile ? 1.5 : 2)),
+    radius: (ptCtx) => currentSelectedPhaseId === 'all' ? 0 : (ptCtx.raw?.isPredict ? (isMobile ? 2.5 : 3) : (isMobile ? 1.5 : 2)),
+    pointHoverRadius: 5,
     pointHitRadius: 10,
-    pointBackgroundColor: '#3b82f6',
+    pointStyle: (ptCtx) => ptCtx.raw?.isPredict ? 'rectRot' : 'circle',
+    pointBackgroundColor: (ptCtx) => ptCtx.raw?.isPredict ? CHART_COLORS.canvasBg : CHART_COLORS.borderReal,
+    pointBorderColor: (ptCtx) => ptCtx.raw?.isPredict ? CHART_COLORS.borderPred : CHART_COLORS.borderReal,
+    pointBorderWidth: (ptCtx) => ptCtx.raw?.isPredict ? 1.5 : 0,
     segment: {
-      borderDash: ctx => ctx.p0DataIndex >= (borderRealIdx === -1 ? Infinity : borderRealIdx - 1) ? [5, 5] : undefined,
-      borderColor: ctx => ctx.p0DataIndex >= (borderRealIdx === -1 ? Infinity : borderRealIdx - 1) ? '#60a5fa' : '#3b82f6',
+      borderDash: segCtx => isPredictSegment(segCtx) ? [7, 5] : undefined,
+      borderColor: segCtx => isPredictSegment(segCtx) ? CHART_COLORS.borderPred : CHART_COLORS.borderReal,
+      borderWidth: segCtx => isPredictSegment(segCtx) ? 2 : 2.5,
     }
   });
 
   if (targetUser) {
-    const userRealIdx = userData.findIndex(d => d.isPredict);
-    // ユーザー自身の曲線のデータセット定義（赤色で際立たせ、予測値は破線描画）
+    // ユーザー自身の曲線のデータセット定義
+    // 実測: 鮮やかなレッド実線＋塗りつぶし丸点 / 予測: 鮮やかなオレンジ破線＋中抜きひし形点
     datasets.push({
       label: targetUser.name + ' (自分)',
       data: userData,
-      borderColor: '#ef4444',
-      backgroundColor: '#ef4444',
-      borderWidth: 2.5,
-      pointRadius: (ctx) => currentSelectedPhaseId === 'all' ? 0 : (isMobile ? 2.5 : 3),
-      radius: (ctx) => currentSelectedPhaseId === 'all' ? 0 : (isMobile ? 2.5 : 3),
-      pointHoverRadius: 5,
+      borderColor: CHART_COLORS.userReal,
+      backgroundColor: CHART_COLORS.userReal,
+      borderWidth: 3,
+      pointRadius: (ptCtx) => currentSelectedPhaseId === 'all' ? 0 : (ptCtx.raw?.isPredict ? (isMobile ? 3 : 3.5) : (isMobile ? 2.5 : 3)),
+      radius: (ptCtx) => currentSelectedPhaseId === 'all' ? 0 : (ptCtx.raw?.isPredict ? (isMobile ? 3 : 3.5) : (isMobile ? 2.5 : 3)),
+      pointHoverRadius: 5.5,
       pointHitRadius: 10,
-      pointBackgroundColor: '#ef4444',
+      pointStyle: (ptCtx) => ptCtx.raw?.isPredict ? 'rectRot' : 'circle',
+      pointBackgroundColor: (ptCtx) => ptCtx.raw?.isPredict ? CHART_COLORS.canvasBg : CHART_COLORS.userReal,
+      pointBorderColor: (ptCtx) => ptCtx.raw?.isPredict ? CHART_COLORS.userPred : CHART_COLORS.userReal,
+      pointBorderWidth: (ptCtx) => ptCtx.raw?.isPredict ? 1.8 : 0,
       segment: {
-        borderDash: ctx => ctx.p0DataIndex >= (userRealIdx === -1 ? Infinity : userRealIdx - 1) ? [5, 5] : undefined,
-        borderColor: ctx => ctx.p0DataIndex >= (userRealIdx === -1 ? Infinity : userRealIdx - 1) ? '#fca5a5' : '#ef4444',
+        borderDash: segCtx => isPredictSegment(segCtx) ? [7, 5] : undefined,
+        borderColor: segCtx => isPredictSegment(segCtx) ? CHART_COLORS.userPred : CHART_COLORS.userReal,
+        borderWidth: segCtx => isPredictSegment(segCtx) ? 2.2 : 3,
       }
     });
   }
 
   // 以前のチャートが存在する場合は必ず破棄してキャンバスをクリーンアップ
   if (myChart) myChart.destroy();
+
+  // 予測ゾーン用の斜線ハッチングパターンを一度だけ生成
+  const createHatchPattern = (targetCtx) => {
+    const patternCanvas = document.createElement('canvas');
+    patternCanvas.width = 12;
+    patternCanvas.height = 12;
+    const pCtx = patternCanvas.getContext('2d');
+    pCtx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+    pCtx.fillRect(0, 0, 12, 12);
+    pCtx.strokeStyle = 'rgba(255, 255, 255, 0.055)';
+    pCtx.lineWidth = 1;
+    pCtx.beginPath();
+    pCtx.moveTo(-2, 14);
+    pCtx.lineTo(14, -2);
+    pCtx.moveTo(-2, 2);
+    pCtx.lineTo(2, -2);
+    pCtx.moveTo(10, 14);
+    pCtx.lineTo(14, 10);
+    pCtx.stroke();
+    return targetCtx.createPattern(patternCanvas, 'repeat');
+  };
+
+  /**
+   * 予測エリアの背景シェーディング（斜線ハッチング）および実測→予測の境界ラインを描画するプラグイン。
+   * 
+   * 【背景・意図】
+   * 線色・破線・点形状の差別化に加えて、グラフ空間そのものを「実測エリア（左）」と「予測エリア（右）」で
+   * 視覚的に分離することで、ひと目でどこから先が予測値かを直感的に判別できるようにします。
+   */
+  const predictionZonePlugin = {
+    id: 'predictionZone',
+    _getZoneGeometry(chart) {
+      const { chartArea, scales: { x: scaleX } } = chart;
+      if (!chartArea || !scaleX) return null;
+
+      const borderDs = chart.data.datasets[0]?.data || [];
+      const hasPredictInView = borderDs.some(d => d.isPredict && d.x >= scaleX.min - 0.01 && d.x <= scaleX.max + 0.01);
+      if (!hasPredictInView) return null;
+
+      // 最新実測点（isPredict: false の末尾）の X 座標を特定
+      let lastRealX = null;
+      for (let i = allBorderData.length - 1; i >= 0; i--) {
+        if (!allBorderData[i].isPredict) {
+          lastRealX = allBorderData[i].x;
+          break;
+        }
+      }
+
+      if (lastRealX === null || lastRealX <= scaleX.min) {
+        // 表示領域の全域が予測エリア（未来の日別タブなど）
+        return {
+          zoneLeft: chartArea.left,
+          zoneRight: chartArea.right,
+          splitXPixel: null
+        };
+      }
+
+      if (lastRealX >= scaleX.max) {
+        return null;
+      }
+
+      const splitXPixel = Math.max(chartArea.left, Math.min(chartArea.right, scaleX.getPixelForValue(lastRealX)));
+      return {
+        zoneLeft: splitXPixel,
+        zoneRight: chartArea.right,
+        splitXPixel
+      };
+    },
+    beforeDatasetsDraw(chart) {
+      const geom = this._getZoneGeometry(chart);
+      if (!geom) return;
+      const { ctx: chartCtx, chartArea } = chart;
+      const zoneWidth = geom.zoneRight - geom.zoneLeft;
+      if (zoneWidth <= 1) return;
+
+      chartCtx.save();
+      chartCtx.fillStyle = createHatchPattern(chartCtx);
+      chartCtx.fillRect(geom.zoneLeft, chartArea.top, zoneWidth, chartArea.bottom - chartArea.top);
+      chartCtx.restore();
+    },
+    afterDatasetsDraw(chart) {
+      const geom = this._getZoneGeometry(chart);
+      if (!geom) return;
+      const { ctx: chartCtx, chartArea } = chart;
+
+      chartCtx.save();
+
+      // 実測→予測の切り替わり境界線＋下端「現在 ▸ 予測」バッジ（上部日付バッジと重複しない配置）
+      if (geom.splitXPixel !== null && geom.splitXPixel > chartArea.left + 2 && geom.splitXPixel < chartArea.right - 2) {
+        chartCtx.beginPath();
+        chartCtx.setLineDash([3, 3]);
+        chartCtx.strokeStyle = 'rgba(250, 204, 21, 0.75)';
+        chartCtx.lineWidth = 1.5;
+        chartCtx.moveTo(geom.splitXPixel, chartArea.top);
+        chartCtx.lineTo(geom.splitXPixel, chartArea.bottom);
+        chartCtx.stroke();
+
+        const nowLabel = '現在 ▸ 予測';
+        chartCtx.setLineDash([]);
+        chartCtx.font = 'bold 10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        const tw = chartCtx.measureText(nowLabel).width;
+        const padX = 6;
+        const badgeW = tw + padX * 2;
+        const badgeH = 18;
+        const badgeX = Math.max(chartArea.left + 4, Math.min(chartArea.right - badgeW - 4, geom.splitXPixel - badgeW / 2));
+        const badgeY = chartArea.bottom - badgeH - 6;
+
+        chartCtx.fillStyle = 'rgba(24, 24, 27, 0.92)';
+        chartCtx.fillRect(badgeX, badgeY, badgeW, badgeH);
+        chartCtx.strokeStyle = 'rgba(250, 204, 21, 0.85)';
+        chartCtx.lineWidth = 1;
+        chartCtx.strokeRect(badgeX, badgeY, badgeW, badgeH);
+
+        chartCtx.fillStyle = '#fde047';
+        chartCtx.textAlign = 'center';
+        chartCtx.textBaseline = 'middle';
+        chartCtx.fillText(nowLabel, badgeX + badgeW / 2, badgeY + badgeH / 2);
+      }
+
+      // 予測エリア右上隅に「予測エリア」ラベルバッジを表示（十分な幅がある場合）
+      const zoneWidth = geom.zoneRight - geom.zoneLeft;
+      if (zoneWidth >= 72) {
+        const areaLabel = '予測エリア';
+        chartCtx.setLineDash([]);
+        chartCtx.font = 'bold 10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        const tw = chartCtx.measureText(areaLabel).width;
+        const padX = 6;
+        const badgeW = tw + padX * 2;
+        const badgeH = 17;
+        const badgeX = chartArea.right - badgeW - 6;
+        const badgeY = chartArea.top + 4;
+
+        chartCtx.fillStyle = 'rgba(24, 24, 27, 0.88)';
+        chartCtx.fillRect(badgeX, badgeY, badgeW, badgeH);
+        chartCtx.strokeStyle = 'rgba(161, 161, 170, 0.55)';
+        chartCtx.lineWidth = 1;
+        chartCtx.strokeRect(badgeX, badgeY, badgeW, badgeH);
+
+        chartCtx.fillStyle = '#d4d4d8';
+        chartCtx.textAlign = 'center';
+        chartCtx.textBaseline = 'middle';
+        chartCtx.fillText(areaLabel, badgeX + badgeW / 2, badgeY + badgeH / 2);
+      }
+
+      chartCtx.restore();
+    }
+  };
 
   /**
    * 全期間及び日をまたぐ場合のグラフにおいて、日の切り替わり時刻（24:00 / 0:00）に縦線を描画するプラグイン。
@@ -1228,7 +1409,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
   myChart = new Chart(ctx, {
     type: 'line',
     data: { datasets },
-    plugins: [dayBoundaryLinePlugin],
+    plugins: [predictionZonePlugin, dayBoundaryLinePlugin],
     options: {
       animation: false, // 【重要】データ要素数の異なるフェーズ間での補間モーフィング歪み・斜め線ループ現象を根絶するため全アニメーションを完全無効化
       responsive: true,
@@ -1244,7 +1425,53 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
           padding: { bottom: 8 }
         },
         legend: {
-          labels: { color: '#e4e4e7', font: { size: isMobile ? 12 : 14, weight: 'bold' } }
+          onClick: (e, legendItem, legend) => {
+            const idx = legendItem.datasetIndex;
+            const ci = legend.chart;
+            ci.setDatasetVisibility(idx, !ci.isDatasetVisible(idx));
+            ci.update('none');
+          },
+          labels: {
+            color: '#e4e4e7',
+            font: { size: isMobile ? 11 : 13, weight: 'bold' },
+            boxWidth: isMobile ? 22 : 28,
+            boxHeight: 3,
+            padding: isMobile ? 10 : 14,
+            generateLabels: (chart) => {
+              const items = [];
+              chart.data.datasets.forEach((ds, i) => {
+                const isHidden = !chart.isDatasetVisible(i);
+                const isUser = i === 1;
+                const realColor = isUser ? CHART_COLORS.userReal : CHART_COLORS.borderReal;
+                const predColor = isUser ? CHART_COLORS.userPred : CHART_COLORS.borderPred;
+                const hasPred = isUser ? hasUserPredict : hasBorderPredict;
+
+                items.push({
+                  text: hasPred ? `${ds.label} 実測` : ds.label,
+                  fillStyle: realColor,
+                  strokeStyle: realColor,
+                  lineWidth: 3,
+                  hidden: isHidden,
+                  fontColor: isHidden ? '#71717a' : '#e4e4e7',
+                  datasetIndex: i
+                });
+
+                if (hasPred) {
+                  items.push({
+                    text: `${ds.label} 予測`,
+                    fillStyle: 'transparent',
+                    strokeStyle: predColor,
+                    lineWidth: 2.5,
+                    lineDash: [5, 3],
+                    hidden: isHidden,
+                    fontColor: isHidden ? '#71717a' : predColor,
+                    datasetIndex: i
+                  });
+                }
+              });
+              return items;
+            }
+          }
         },
         tooltip: {
           callbacks: {
@@ -1260,12 +1487,24 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
             },
             label: function (context) {
               const label = context.dataset.label || '';
-              const isPredict = context.raw.isPredict ? ' (予測)' : '';
+              const isPredict = context.raw.isPredict ? ' (予測)' : ' (実測)';
               const val = context.raw.y;
               if (chartType === 'speed') {
                 return `${label}${isPredict}: ${formatSpeed(val)}/時`;
               }
               return `${label}${isPredict}: ${formatPoint(val)}`;
+            },
+            labelColor: function (context) {
+              const isUser = context.datasetIndex === 1;
+              const isPred = Boolean(context.raw?.isPredict);
+              const color = isUser
+                ? (isPred ? CHART_COLORS.userPred : CHART_COLORS.userReal)
+                : (isPred ? CHART_COLORS.borderPred : CHART_COLORS.borderReal);
+              return {
+                borderColor: color,
+                backgroundColor: isPred ? CHART_COLORS.canvasBg : color,
+                borderWidth: 2
+              };
             }
           }
         }
