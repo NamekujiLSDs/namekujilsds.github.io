@@ -2,93 +2,151 @@
 
 /**
  * 古戦場貢献度ランキング スタイルシート (style.css)
- * 
- * 本ファイルは「古戦場貢献度ランキング」ツール固有のカスタムスタイル定義です。
- * 基本レイアウトおよびユーティリティにはTailwind CSSを使用していますが、
- * Tailwindの標準クラスでは賄えないアニメーションやブラウザ固有のUI調整
- * （スクロールバー制御、モバイルでのタッチ操作性向上など）を本ファイルで集約管理しています。
+ *
+ * shadcn/ui 準拠のダークテーマデザイントークン、アクセシビリティユーティリティ、
+ * ソートヘッダー状態スタイル、スケルトンローダー、アニメーションを集約管理します。
  */
+
+:root {
+  color-scheme: dark;
+  --background: #09090b;
+  --surface: #121215;
+  --card: #18181b;
+  --card-subtle: #141417;
+  --muted: #27272a;
+  --muted-foreground: #a1a1aa;
+  --subtle-foreground: #71717a;
+  --foreground: #f4f4f5;
+  --border: #27272a;
+  --border-strong: #3f3f46;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-foreground: #ffffff;
+  --destructive: #ef4444;
+  --ring: #3b82f6;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+}
 
 /* ==========================================================================
    アニメーション定義
    ========================================================================== */
 
-/**
- * データ取得中を示すローディングスピナー用の回転キーフレームアニメーション。
- * 0度から360度へ連続回転させることで、非同期通信（API fetch）が進行中であることを
- * ユーザーへ視覚的に明示するために使用します。
- */
 @keyframes spin {
   to {
     transform: rotate(360deg);
   }
 }
 
-/**
- * ローディングアイコン要素へ付与するクラス。
- * 1秒間で等速（linear）かつ無限ループ（infinite）で回転させ、
- * カクつきのない滑らかな処理中インジケータを実現します。
- */
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+.skeleton-bar {
+  border-radius: 0.375rem;
+  background-color: #27272a;
+  animation: skeletonPulse 1.4s ease-in-out infinite;
 }
 
 /* ==========================================================================
    UI・スクロールバー制御ユーティリティ
    ========================================================================== */
 
-/* スクロールバー非表示用ユーティリティ */
-
-/**
- * WebKit系ブラウザ（Chrome, Safari, Edge等）において、
- * 横スクロール可能な要素（ブックマークレット表示欄や日付タブなど）の
- * スクロールバー外観を非表示にする設定。
- * スクロール機能自体は維持したまま、コンパクトで洗練されたUIを保つ意図があります。
- */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-/**
- * IE / 旧Edge (-ms-) および Firefox (scrollbar-width) において、
- * スクロールバーを非表示にする設定。
- * クロスブラウザで一貫したスクロールバー非表示レイアウトを保証します。
- */
 .scrollbar-hide {
-  -ms-overflow-style: none; /* IE / 旧Edge向け設定 */
-  scrollbar-width: none;    /* Firefox向け設定 */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* ==========================================================================
-   モバイル・レスポンシブ操作性向上スタイル
-   ========================================================================== */
-
-/**
- * モバイル端末（特にiOS Safari）において、指による水平スワイプ操作を滑らかにするための設定。
- * -webkit-overflow-scrolling: touch を指定することで、タブボタングループの慣性スクロールを実現し、
- * 片手操作時のユーザー体験を向上させます。
- */
 .touch-scroll {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
 }
 
-/**
- * モバイル端末でのタップ時の青いハイライト枠（タップフィードバック）を抑制し、
- * ネイティブアプリに近い快適な操作感を提供するための設定。
- */
 .no-tap-highlight {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================================================
+   ソート可能テーブルヘッダー（aria-sort CSS 駆動）
+   ========================================================================== */
+
+th.sortable-col {
+  padding: 0;
+}
+
+.sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.25rem;
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.sort-btn:hover {
+  background-color: rgba(63, 63, 70, 0.45);
+  color: var(--foreground);
+}
+
+.sort-btn:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+
+.sort-indicator {
+  width: 0.875rem;
+  height: 0.875rem;
+  flex-shrink: 0;
+  color: var(--subtle-foreground);
+  opacity: 0.35;
+  transition: transform 150ms ease, opacity 150ms ease, color 150ms ease;
+}
+
+.sort-btn:hover .sort-indicator {
+  opacity: 0.75;
+}
+
+th[aria-sort="descending"] .sort-btn,
+th[aria-sort="ascending"] .sort-btn {
+  color: var(--foreground);
+}
+
+th[aria-sort="descending"] .sort-indicator,
+th[aria-sort="ascending"] .sort-indicator {
+  opacity: 1;
+  color: #60a5fa;
+}
+
+th[aria-sort="ascending"] .sort-indicator {
+  transform: rotate(180deg);
 }
 
 /* ==========================================================================
    ストリーミング表示・アクセシビリティ用スタイル
    ========================================================================== */
 
-/**
- * スクリーンリーダー向けにテキストをDOMへ残しつつ視覚的に隠すユーティリティ。
- * 動的ソート結果やストリーミング取得完了のアナウンス（role="status"）に使用します。
- */
 .visually-hidden:where(:not(:focus-within, :active)) {
   position: absolute !important;
   clip-path: inset(50%) !important;
@@ -101,10 +159,6 @@
   white-space: nowrap !important;
 }
 
-/**
- * ストリーミング取得進捗を示すHTML標準 <progress> 要素のダークテーマ用スタイル。
- * 結果テーブル上端にスリムな進捗バーとして配置し、取得完了率を視覚的に提示します。
- */
 .stream-progress {
   display: block;
   appearance: none;
@@ -131,9 +185,6 @@
   background: linear-gradient(90deg, #3b82f6, #60a5fa);
 }
 
-/**
- * ストリーミング取得で新しくテーブルへ追加された行のフェードインアニメーション。
- */
 @keyframes streamRowFadeIn {
   from {
     opacity: 0;
@@ -149,11 +200,20 @@
   animation: streamRowFadeIn 180ms ease-out;
 }
 
+/* トグルボタンの選択状態 */
+.metric-toggle-btn[aria-pressed="true"] {
+  background-color: rgba(59, 130, 246, 0.18);
+  border-color: rgba(96, 165, 250, 0.6);
+  color: #93c5fd;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .stream-row-enter {
+  .stream-row-enter,
+  .skeleton-bar {
     animation: none;
   }
-  .stream-progress::-webkit-progress-value {
+  .stream-progress::-webkit-progress-value,
+  .sort-indicator {
     transition: none;
   }
 }

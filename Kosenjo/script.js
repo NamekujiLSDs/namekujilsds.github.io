@@ -545,7 +545,7 @@ const calcInflationRate = (currentBorder, activityCurve, latestElapsedH) => {
  */
 window.openChartModal = async function (userId, chartType = 'point') {
   if (!globalEventData.currentBorder100k || globalEventData.currentBorder100k.length === 0) {
-    showToast('ボーダーデータを取得中です...');
+    showToast('ボーダー読込中');
     return;
   }
 
@@ -761,6 +761,16 @@ document.getElementById('chartModal').addEventListener('click', (e) => {
   if (e.target.id === 'chartModal') closeChartModal();
 });
 
+// Escapeキーで開いているモーダルを閉じる
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('chartModal');
+    if (modal && !modal.classList.contains('hidden')) {
+      closeChartModal();
+    }
+  }
+});
+
 /**
  * 選択中の期間フェーズにおいて、期間内で増加した貢献度（開始〜終了/最新）を算出し、
  * グラフ上部のサマリー表示領域（#modalIncreaseSummary）を更新します。
@@ -820,12 +830,12 @@ const renderToggleablePoint = (num, colorClass, subPrefix = '', subSuffix = '', 
 
   const currentDisplayNum = isSummaryDetailMode ? fullNum : shortNum;
   return `
-    <span class="increase-number-toggle cursor-pointer underline decoration-dotted underline-offset-4 decoration-[#71717a] hover:decoration-current hover:brightness-125 active:opacity-75 transition-all select-none ${colorClass}"
+    <span class="increase-number-toggle cursor-pointer underline decoration-dotted underline-offset-4 decoration-[#52525b] hover:decoration-current hover:brightness-125 active:opacity-75 transition-all select-none ${colorClass}"
           data-short="${shortNum}"
           data-full="${fullNum}"
           data-prefix="${subPrefix}"
           data-suffix="${subSuffix}"
-          title="タップで正確な数値を表示 / 略記切替 (${fullNum})"
+          title="${fullNum}"
           onclick="toggleSummaryNumber(event)">
       ${subPrefix}${currentDisplayNum}${subSuffix}
     </span>
@@ -835,11 +845,6 @@ const renderToggleablePoint = (num, colorClass, subPrefix = '', subSuffix = '', 
 /**
  * グラフ上部の期間内増加量サマリー数値をタップした際に、略記（億・万）と正確なフル桁実数値をトグル切り替えします。
  * 
- * 【背景・意図】
- * 「+1.5517億のところ、タップしたら正確な数字が出るようにしてほしい」という要求に対応し、
- * タップで即座に正確なカンマ区切り数値を表示・トグルできるようにします。
- * 一度タップしたモード（略記 or 詳細）は状態として保持され、他の期間タブに切り替えても維持されます。
- * 
  * @param {Event} [event] - クリックイベント
  * @returns {void}
  */
@@ -848,6 +853,11 @@ window.toggleSummaryNumber = (event) => {
     event.stopPropagation();
   }
   isSummaryDetailMode = !isSummaryDetailMode;
+
+  const toggleBtn = document.getElementById('summaryDetailToggle');
+  if (toggleBtn) {
+    toggleBtn.setAttribute('aria-pressed', String(isSummaryDetailMode));
+  }
 
   const allToggles = document.querySelectorAll('.increase-number-toggle');
   allToggles.forEach(toggleEl => {
@@ -934,35 +944,41 @@ const updateIncreaseSummary = (phaseId, phaseBorderData, phaseUserData, refBorde
   const htmlParts = [];
   const showPlus = !isAllPeriod; // 全期間（累計貢献度）は '+' を付けない
 
+  const toggleBtn = document.getElementById('summaryDetailToggle');
+  if (toggleBtn) {
+    toggleBtn.setAttribute('aria-pressed', String(isSummaryDetailMode));
+  }
+
   // 1. ユーザー自身の表示（実測: 赤 / 予測: オレンジでグラフ線色と統一）
   if (userStats && userStats.hasData) {
     let userText = renderToggleablePoint(userStats.realVal, 'text-[#ef4444]', '', '', showPlus);
     if (userStats.predVal !== null && userStats.predVal !== userStats.realVal) {
-      userText += ` ${renderToggleablePoint(userStats.predVal, 'text-[11px] text-[#fb923c] font-normal', '(着地予測 ', ')', showPlus)}`;
+      userText += ` ${renderToggleablePoint(userStats.predVal, 'text-[11px] text-[#fb923c] font-normal', '予測 ', '', showPlus)}`;
     }
     htmlParts.push(`
-      <div class="flex items-center gap-1.5">
-        <span class="text-[#a1a1aa]">${targetUser.name}:</span>
-        <strong class="flex items-center gap-1">${userText}</strong>
+      <div class="inline-flex items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 text-[#a1a1aa]">
+          <span aria-hidden="true" class="inline-block w-2 h-2 rounded-full bg-[#ef4444]"></span>
+          <span>${targetUser.name}</span>
+        </span>
+        <strong class="inline-flex items-center gap-1.5 font-semibold">${userText}</strong>
       </div>
     `);
-  }
-
-  // 区切りスラッシュ（ユーザーとボーダーの両方がある場合）
-  if (userStats && userStats.hasData && borderStats.hasData) {
-    htmlParts.push(`<span class="text-[#52525b] hidden sm:inline">/</span>`);
   }
 
   // 2. ボーダーの表示（実測: 青 / 予測: シアンでグラフ線色と統一）
   if (borderStats.hasData) {
     let borderText = renderToggleablePoint(borderStats.realVal, 'text-[#60a5fa]', '', '', showPlus);
     if (borderStats.predVal !== null && borderStats.predVal !== borderStats.realVal) {
-      borderText += ` ${renderToggleablePoint(borderStats.predVal, 'text-[11px] text-[#22d3ee] font-normal', '(着地予測 ', ')', showPlus)}`;
+      borderText += ` ${renderToggleablePoint(borderStats.predVal, 'text-[11px] text-[#22d3ee] font-normal', '予測 ', '', showPlus)}`;
     }
     htmlParts.push(`
-      <div class="flex items-center gap-1.5">
-        <span class="text-[#a1a1aa]">${refBorderName}:</span>
-        <strong class="flex items-center gap-1">${borderText}</strong>
+      <div class="inline-flex items-center gap-2">
+        <span class="inline-flex items-center gap-1.5 text-[#a1a1aa]">
+          <span aria-hidden="true" class="inline-block w-2 h-2 rounded-full bg-[#3b82f6]"></span>
+          <span>${refBorderName}</span>
+        </span>
+        <strong class="inline-flex items-center gap-1.5 font-semibold">${borderText}</strong>
       </div>
     `);
   }
@@ -996,13 +1012,16 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
   const ctx = document.getElementById('detailChart').getContext('2d');
   const tabsContainer = document.getElementById('modalDateTabs');
   const modalTitleEl = document.getElementById('modalChartTitle');
+  const modalTypeBadgeEl = document.getElementById('modalChartTypeBadge');
   tabsContainer.innerHTML = '';
 
-  // モーダルヘッダータイトルの更新
+  // モーダルヘッダータイトルと種別バッジの更新
   if (modalTitleEl) {
     const targetName = targetUser ? `${targetUser.name}` : `${refBorderName}`;
-    const typeLabel = chartType === 'speed' ? '時速推移' : '貢献度推移';
-    modalTitleEl.textContent = `${targetName} - ${typeLabel}`;
+    modalTitleEl.textContent = targetName;
+  }
+  if (modalTypeBadgeEl) {
+    modalTypeBadgeEl.textContent = chartType === 'speed' ? '時速' : '貢献度';
   }
 
   // 画面幅によるモバイル判定（640px未満をスマホと判定）
@@ -1015,16 +1034,20 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
   // 現在選択されているフェーズID（初期値: 'all'）
   let currentSelectedPhaseId = 'all';
 
+  const tabInactiveClass = 'px-3 py-1.5 text-xs sm:text-sm rounded-md font-medium transition-colors whitespace-nowrap border border-[#27272a] text-[#a1a1aa] hover:bg-[#27272a] hover:text-[#f4f4f5] bg-[#18181b] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] cursor-pointer';
+  const tabActiveClass = 'px-3 py-1.5 text-xs sm:text-sm rounded-md font-semibold transition-colors whitespace-nowrap border border-[#3b82f6]/60 bg-[#3b82f6]/15 text-[#93c5fd] shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] cursor-pointer';
+
   // 期間タブボタングループの動的生成
   EVENT_PHASES.forEach(phase => {
     const btn = document.createElement('button');
-    btn.className = `px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-lg font-medium transition-all whitespace-nowrap border border-[#3f3f46] text-[#a1a1aa] hover:bg-[#3f3f46]/50 bg-[#18181b] shrink-0`;
+    btn.type = 'button';
+    btn.className = tabInactiveClass;
     btn.textContent = phase.label;
     btn.onclick = () => {
       Array.from(tabsContainer.children).forEach(c => {
-        c.className = `px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-lg font-medium transition-all whitespace-nowrap border border-[#3f3f46] text-[#a1a1aa] hover:bg-[#3f3f46]/50 bg-[#18181b] shrink-0`;
+        c.className = tabInactiveClass;
       });
-      btn.className = `px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm rounded-lg font-bold transition-all whitespace-nowrap border border-[#3b82f6] bg-[#3b82f6]/20 text-[#60a5fa] shrink-0 shadow-sm`;
+      btn.className = tabActiveClass;
 
       currentSelectedPhaseId = phase.id;
 
@@ -1276,7 +1299,7 @@ const renderChartjs = (userId, targetUser, refBorderName, borderData, userData, 
         chartCtx.lineTo(geom.splitXPixel, chartArea.bottom);
         chartCtx.stroke();
 
-        const nowLabel = '現在 ▸ 予測';
+        const nowLabel = '現在';
         chartCtx.setLineDash([]);
         chartCtx.font = 'bold 10px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
         const tw = chartCtx.measureText(nowLabel).width;
@@ -1597,7 +1620,7 @@ window.copyId = function (e, id) {
   textArea.select();
   try {
     document.execCommand('copy');
-    showToast(`ID: ${id} をコピーしました`);
+    showToast(`${id} をコピー`);
   } catch (err) {
     console.error('Copy failed', err);
   }
@@ -1624,7 +1647,7 @@ window.copyBookmarklet = function () {
   textArea.select();
   try {
     document.execCommand('copy');
-    showToast('ブックマークレットをコピーしました');
+    showToast('団員ID取得コードをコピー');
   } catch (err) {
     console.error('Copy failed', err);
   }
@@ -1663,27 +1686,18 @@ const showToast = (message) => {
 // --- ソート機能の実装 ---
 
 /**
- * テーブルヘッダーの各列に対応するソートアイコン（▲/▼）の表示状態を更新します。
- * 
- * 【背景・意図】
- * ユーザーが現在どの列を昇順または降順で並び替えているかを視覚的に明示するためです。
+ * テーブルヘッダーの `aria-sort` 属性を更新します（ソート矢印の向き・強調は CSS が自動制御）。
  * 
  * @returns {void}
  */
 const updateSortIcons = () => {
-  const keys = ['rank', 'point', 'realSpeed', 'todayInc'];
-  keys.forEach(k => {
-    const iconEl = document.getElementById(`sort-icon-${k}`);
-    if (iconEl) {
-      if (currentSortKey === k) {
-        iconEl.textContent = currentSortOrder === 'asc' ? '▲' : '▼';
-        iconEl.classList.remove('opacity-0', 'group-hover:opacity-50');
-        iconEl.classList.add('opacity-100');
-      } else {
-        iconEl.textContent = '▼';
-        iconEl.classList.remove('opacity-100');
-        iconEl.classList.add('opacity-0', 'group-hover:opacity-50');
-      }
+  const headers = document.querySelectorAll('th[data-sort-key]');
+  headers.forEach(th => {
+    const key = th.getAttribute('data-sort-key');
+    if (key === currentSortKey) {
+      th.setAttribute('aria-sort', currentSortOrder === 'asc' ? 'ascending' : 'descending');
+    } else {
+      th.removeAttribute('aria-sort');
     }
   });
 };
@@ -2032,6 +2046,9 @@ const btnText = document.getElementById('btnText');
 const errorContainer = document.getElementById('errorContainer');
 const errorMsg = document.getElementById('errorMsg');
 const resultSection = document.getElementById('resultSection');
+const resultRaidBadgeEl = document.getElementById('resultRaidBadge');
+const resultCountBadgeEl = document.getElementById('resultCountBadge');
+const saveImageBtn = document.getElementById('saveImageBtn');
 const tableBody = document.getElementById('tableBody');
 const lastUpdateEl = document.getElementById('lastUpdate');
 const raidSelectEl = document.getElementById('raidSelect');
@@ -2079,7 +2096,7 @@ raidSelectEl.addEventListener('change', (e) => {
 const handleAnalyze = async () => {
   const inputVal = inputIdsEl.value;
   if (!inputVal.trim()) {
-    showError('プレイヤーIDを入力してください。');
+    showError('プレイヤーIDを入力');
     await updateUrlParams([]);
     return;
   }
@@ -2107,18 +2124,31 @@ const handleAnalyze = async () => {
     `teamraid${String(currentRaidNum - 3).padStart(3, '0')}`
   ];
 
-  // 状態・テーブルDOMを初期化し、テーブル枠と進捗バーを即座に表示
+  // 状態・テーブルDOMを初期化し、スケルトン行と進捗バーを即座に表示
   globalEventData.currentBorder100k = [];
   globalEventData.currentBorder2k = [];
   globalEventData.users = {};
   globalEventData.tableData = [];
   currentSortedData = [];
   tableRowMap.clear();
-  tableBody.innerHTML = `
-    <tr data-placeholder="loading">
-      <td colspan="8" class="px-5 py-8 text-center text-sm text-[#71717a]">データを取得しています...</td>
+
+  const skeletonRow = `
+    <tr data-placeholder="loading" aria-hidden="true">
+      <td class="px-3 py-4"><div class="skeleton-bar h-3.5 w-4 mx-auto"></div></td>
+      <td class="px-5 py-4"><div class="skeleton-bar h-3.5 w-16"></div></td>
+      <td class="px-5 py-4"><div class="skeleton-bar h-3.5 w-28 mb-1.5"></div><div class="skeleton-bar h-2.5 w-16"></div></td>
+      <td class="px-5 py-4"><div class="skeleton-bar h-3.5 w-20 ml-auto"></div></td>
+      <td class="px-5 py-4"><div class="skeleton-bar h-3.5 w-16 ml-auto"></div></td>
+      <td class="px-5 py-4"><div class="skeleton-bar h-3.5 w-16 ml-auto"></div></td>
+      <td class="px-5 py-4"><div class="skeleton-bar h-3.5 w-14 ml-auto"></div></td>
+      <td class="px-5 py-4"><div class="skeleton-bar h-3.5 w-16 ml-auto"></div></td>
     </tr>
   `;
+  tableBody.innerHTML = skeletonRow.repeat(Math.min(3, Math.max(1, uniqueIds.length)));
+
+  if (resultRaidBadgeEl) resultRaidBadgeEl.textContent = `第${currentRaidNum}回`;
+  if (resultCountBadgeEl) resultCountBadgeEl.classList.add('hidden');
+  if (saveImageBtn) saveImageBtn.disabled = true;
 
   currentSortKey = 'point';
   currentSortOrder = 'desc';
@@ -2135,12 +2165,20 @@ const handleAnalyze = async () => {
     streamProgressEl.value = 0;
     streamProgressEl.classList.remove('hidden');
   }
-  lastUpdateEl.textContent = `取得中... (0 / ${uniqueIds.length}人)`;
+  lastUpdateEl.textContent = `0 / ${uniqueIds.length}`;
 
   const updateProgressUI = () => {
     if (runId !== activeAnalyzeId) return;
     if (streamProgressEl) streamProgressEl.value = completedTasks;
-    lastUpdateEl.textContent = `取得中... (${completedUsers} / ${uniqueIds.length}人)`;
+    lastUpdateEl.textContent = `${completedUsers} / ${uniqueIds.length}`;
+    const loadedUsers = Object.keys(globalEventData.users).length;
+    if (resultCountBadgeEl && loadedUsers > 0) {
+      resultCountBadgeEl.textContent = `${loadedUsers}人`;
+      resultCountBadgeEl.classList.remove('hidden');
+    }
+    if (saveImageBtn) {
+      saveImageBtn.disabled = loadedUsers === 0;
+    }
   };
 
   const flushStreamRender = () => {
@@ -2301,28 +2339,36 @@ const handleAnalyze = async () => {
 
     if (globalEventData.tableData.length === 0) {
       resultSection.classList.add('hidden');
-      throw new Error('現在のボーダーデータが取得できませんでした。イベントが開始されていない可能性があります。');
+      throw new Error('ボーダーデータを取得できませんでした');
     }
 
     const finalSorted = sortTableData(globalEventData.tableData, currentSortKey, currentSortOrder);
     renderTable(finalSorted);
     updateSortIcons();
-    lastUpdateEl.textContent = `取得時刻: ${new Date().toLocaleTimeString()}`;
+    lastUpdateEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    const userCount = Object.keys(globalEventData.users).length;
+    if (resultCountBadgeEl && userCount > 0) {
+      resultCountBadgeEl.textContent = `${userCount}人`;
+      resultCountBadgeEl.classList.remove('hidden');
+    }
+    if (saveImageBtn) {
+      saveImageBtn.disabled = userCount === 0;
+    }
 
     if (!globalEventData.currentBorder100k || globalEventData.currentBorder100k.length === 0) {
-      showError('10万位ボーダーデータの取得に失敗したため、10万位差は未表示です。');
+      showError('10万位ボーダーを取得できませんでした');
     }
 
     if (srStatusEl) {
-      const userCount = Object.keys(globalEventData.users).length;
-      srStatusEl.textContent = `データ取得が完了しました（プレイヤー${userCount}人）`;
+      srStatusEl.textContent = `取得完了（${userCount}人）`;
     }
 
   } catch (err) {
     if (runId !== activeAnalyzeId) return;
     console.error(err);
     if (streamProgressEl) streamProgressEl.classList.add('hidden');
-    showError(err.message || 'データの取得または処理中にエラーが発生しました。');
+    showError(err.message || 'データを取得できませんでした');
   } finally {
     if (runId === activeAnalyzeId) {
       setLoading(false);
@@ -2332,11 +2378,6 @@ const handleAnalyze = async () => {
 
 /**
  * 読み込み状態（ローディング）のUI切り替えを制御します。
- * 
- * 【背景・意図】
- * 多重リクエストによるサーバー負荷や処理の混乱を防止するため、ボタンを非活性化し、
- * スピナーアイコンを表示して通信中であることをユーザーに通知します。
- * ストリーミング表示のため、結果セクションは非表示にせず維持します。
  * 
  * @param {boolean} isLoading - ローディング中フラグ
  * @returns {void}
@@ -2349,7 +2390,7 @@ const setLoading = (isLoading) => {
     errorContainer.classList.add('hidden');
   } else {
     loadingIcon.classList.add('hidden');
-    btnText.textContent = 'データ取得';
+    btnText.textContent = 'ランキングを取得';
   }
 };
 
@@ -2410,10 +2451,10 @@ const renderTable = (data) => {
     const rowSignature = `${row.rank}|${row.name}|${row.point}|${row.todayInc}|${row.realSpeed}|${row.predictSpeed}|${row.isReached}|${row.diff}|${row.updatetime}`;
 
     if (isNew || tr.dataset.rowSignature !== rowSignature) {
-      let rowClass = "hover:bg-[#3f3f46]/30 transition-colors";
-      let rankClass = "font-mono text-[#71717a]";
+      let rowClass = "hover:bg-[#27272a]/50 transition-colors";
+      let rankClass = "font-mono tabular-nums text-[#a1a1aa]";
       let nameHTML = "";
-      let pointClass = "font-mono text-[#e4e4e7]";
+      let pointClass = "font-mono tabular-nums font-medium text-[#f4f4f5]";
       let speedHTML = "-";
       let todayIncHTML = "-";
       let diffHTML = "-";
@@ -2428,46 +2469,46 @@ const renderTable = (data) => {
 
       const rankStr = row.rank ? row.rank.toLocaleString() + '位' : '-';
 
-      const pointTitle = `貢献度: ${pointStrRaw}`;
-      const speedTitle = `実測時速: ${realSpdRaw} /時`;
-      const todayIncTitle = `当日増加量: ${todayIncRaw}`;
+      const pointTitle = pointStrRaw;
+      const speedTitle = `${realSpdRaw}/時`;
+      const todayIncTitle = todayIncRaw;
 
       if (row.isBorder) {
         if (row.id === 'border_2k') {
-          rowClass = "bg-[#4c1d95]/20 hover:bg-[#4c1d95]/40 transition-colors border-y border-[#8b5cf6]/50";
-          rankClass = "font-mono font-bold text-[#a78bfa]";
-          nameHTML = `<div class="font-bold text-[#a78bfa]">${row.name}</div>`;
-          pointClass = "font-mono font-bold text-[#a78bfa]";
-          speedHTML = `<div class="text-[#a78bfa]">${realSpdStr}/時</div><div class="text-[#a78bfa]/70">(${predSpdStr})</div>`;
-          todayIncHTML = `<span class="text-[#a78bfa]">${formatPoint(row.todayInc)}</span>`;
+          rowClass = "bg-violet-950/25 hover:bg-violet-950/40 transition-colors border-y border-violet-500/30";
+          rankClass = "font-mono tabular-nums font-semibold text-[#c4b5fd]";
+          nameHTML = `<div class="font-semibold text-[#c4b5fd]">${row.name}</div>`;
+          pointClass = "font-mono tabular-nums font-semibold text-[#c4b5fd]";
+          speedHTML = `<div class="text-[#c4b5fd]">${realSpdStr}/時</div><div class="text-[#a78bfa]/70">${predSpdStr}</div>`;
+          todayIncHTML = `<span class="text-[#c4b5fd]">${formatPoint(row.todayInc)}</span>`;
         } else {
-          rowClass = "bg-[#1e3a8a]/20 hover:bg-[#1e3a8a]/40 transition-colors border-y border-[#3b82f6]/50";
-          rankClass = "font-mono font-bold text-[#60a5fa]";
-          nameHTML = `<div class="font-bold text-[#60a5fa]">${row.name}</div>`;
-          pointClass = "font-mono font-bold text-[#60a5fa]";
-          speedHTML = `<div class="text-[#60a5fa]">${realSpdStr}/時</div><div class="text-[#60a5fa]/70">(${predSpdStr})</div>`;
+          rowClass = "bg-blue-950/30 hover:bg-blue-950/45 transition-colors border-y border-blue-500/30";
+          rankClass = "font-mono tabular-nums font-semibold text-[#60a5fa]";
+          nameHTML = `<div class="font-semibold text-[#60a5fa]">${row.name}</div>`;
+          pointClass = "font-mono tabular-nums font-semibold text-[#60a5fa]";
+          speedHTML = `<div class="text-[#60a5fa]">${realSpdStr}/時</div><div class="text-[#60a5fa]/70">${predSpdStr}</div>`;
           todayIncHTML = `<span class="text-[#60a5fa]">${formatPoint(row.todayInc)}</span>`;
         }
-        diffHTML = `<span class="text-[#71717a]">-</span>`;
+        diffHTML = `<span class="text-[#52525b]">-</span>`;
       } else {
-        const nameColorClass = row.isReached ? "text-[#e4e4e7]" : "text-red-400";
+        const nameColorClass = row.isReached ? "text-[#f4f4f5]" : "text-red-400";
         if (!row.isReached) {
-          rowClass = "bg-red-900/10 hover:bg-red-900/20 transition-colors";
+          rowClass = "bg-red-950/20 hover:bg-red-950/35 transition-colors";
         }
         nameHTML = `
-          <div onclick="copyId(event, '${row.id}')" class="cursor-pointer group select-none inline-block" title="クリックしてIDをコピー">
-            <div class="font-medium ${nameColorClass} group-hover:text-[#3b82f6] transition-colors">${row.name}</div>
-            <div class="text-xs text-[#71717a] font-mono mt-0.5 group-hover:text-[#3b82f6]/80 transition-colors flex items-center gap-1">
-              ID: ${row.id}
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 transition-opacity"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <button type="button" onclick="copyId(event, '${row.id}')" class="text-left cursor-pointer group select-none inline-block rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6]" aria-label="${row.name} のID ${row.id} をコピー">
+            <div class="font-medium ${nameColorClass} group-hover:text-[#60a5fa] transition-colors">${row.name}</div>
+            <div class="text-xs text-[#71717a] font-mono tabular-nums mt-0.5 group-hover:text-[#60a5fa]/80 transition-colors flex items-center gap-1">
+              <span>${row.id}</span>
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
             </div>
-          </div>
+          </button>
         `;
 
-        speedHTML = `<div class="text-[#a1a1aa]">${realSpdStr}/時</div><div class="text-[#71717a]">(${predSpdStr})</div>`;
+        speedHTML = `<div class="text-[#d4d4d8]">${realSpdStr}/時</div><div class="text-[#71717a]">${predSpdStr}</div>`;
 
         if (row.diff !== null) {
-          const diffClass = row.diff >= 0 ? 'text-emerald-400' : 'text-red-500 font-bold';
+          const diffClass = row.diff >= 0 ? 'text-emerald-400' : 'text-red-400 font-semibold';
           const sign = row.diff >= 0 ? '+' : '';
           diffHTML = `<span class="${diffClass}">${sign}${formatPoint(row.diff)}</span>`;
         }
@@ -2475,17 +2516,17 @@ const renderTable = (data) => {
 
       tr.className = isNew ? `${rowClass} stream-row-enter` : rowClass;
 
-      const clickableCell = `cursor-pointer hover:bg-[#3f3f46]/40 transition-colors`;
+      const clickableCell = `cursor-pointer hover:bg-[#27272a]/70 transition-colors`;
 
       tr.innerHTML = `
-        <td class="px-3 py-4 text-center font-mono text-xs text-[#71717a]">${displayNum}</td>
-        <td class="px-5 py-4 ${rankClass}">${rankStr}</td>
-        <td class="px-5 py-4">${nameHTML}</td>
-        <td class="px-5 py-4 text-right ${pointClass} ${clickableCell}" title="${pointTitle}" onclick="openChartModal('${row.id}', 'point')">${formatPoint(row.point)}</td>
-        <td class="px-5 py-4 text-right font-mono text-xs ${clickableCell}" title="${speedTitle}" onclick="openChartModal('${row.id}', 'speed')">${speedHTML}</td>
-        <td class="px-5 py-4 text-right font-mono text-[#e4e4e7] ${clickableCell}" title="${todayIncTitle}" onclick="openChartModal('${row.id}', 'point')">${todayIncHTML}</td>
-        <td class="px-5 py-4 text-right font-mono text-xs">${diffHTML}</td>
-        <td class="px-5 py-4 text-right font-mono text-xs text-[#a1a1aa]">${formatTime(row.updatetime)}</td>
+        <td class="px-3 py-3.5 text-center font-mono tabular-nums text-xs text-[#71717a]">${displayNum}</td>
+        <td class="px-5 py-3.5 ${rankClass}">${rankStr}</td>
+        <td class="px-5 py-3.5">${nameHTML}</td>
+        <td class="px-5 py-3.5 text-right ${pointClass} ${clickableCell}" title="${pointTitle}" onclick="openChartModal('${row.id}', 'point')">${formatPoint(row.point)}</td>
+        <td class="px-5 py-3.5 text-right font-mono tabular-nums text-xs ${clickableCell}" title="${speedTitle}" onclick="openChartModal('${row.id}', 'speed')">${speedHTML}</td>
+        <td class="px-5 py-3.5 text-right font-mono tabular-nums text-[#e4e4e7] ${clickableCell}" title="${todayIncTitle}" onclick="openChartModal('${row.id}', 'point')">${todayIncHTML}</td>
+        <td class="px-5 py-3.5 text-right font-mono tabular-nums text-xs">${diffHTML}</td>
+        <td class="px-5 py-3.5 text-right font-mono tabular-nums text-xs text-[#71717a]">${formatTime(row.updatetime)}</td>
       `;
       tr.dataset.rowSignature = rowSignature;
     } else if (tr.firstElementChild && tr.firstElementChild.textContent !== displayNum) {
@@ -2759,7 +2800,7 @@ window.exportRankingImage = function () {
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
 
-    showToast('順位一覧画像を保存しました');
+    showToast('PNGを保存');
   }, 'image/png');
 };
 

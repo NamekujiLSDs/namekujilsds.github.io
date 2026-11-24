@@ -4,193 +4,265 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>古戦場貢献度ランキング</title>
-  
-  <!-- Tailwind CSS CDNの読み込み: ユーティリティファーストの高速なスタイリングを実現 -->
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Tailwind CSSの設定: ダークモードをクラスベース（class="dark"）で制御するためにインライン記述 -->
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
-        extend: {}
+        extend: {
+          colors: {
+            background: '#09090b',
+            surface: '#121215',
+            card: '#18181b',
+            muted: '#27272a',
+            border: '#27272a',
+            primary: '#3b82f6'
+          }
+        }
       }
     }
   </script>
 
-  <!-- Chart.js CDNの読み込み: モーダル内での貢献度・時速の時系列グラフ描画に使用 -->
+  <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <!-- ファビコン: 古戦場の星とランキング推移を象徴するSVGアイコン -->
+  <!-- ファビコン -->
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
 
-  <!-- 固有スタイルシート: アニメーションおよびスクロールバー制御のCSS -->
-  <link rel="stylesheet" href="style.css?v=20261121_02">
+  <!-- 固有スタイルシート -->
+  <link rel="stylesheet" href="style.css?v=20261124_02">
 </head>
-<body class="bg-[#18181b] text-[#e4e4e7] min-h-screen p-4 md:p-8 font-sans selection:bg-[#3b82f6] selection:text-white relative">
-  
-  <div class="max-w-5xl mx-auto space-y-6">
-    
-    <!-- ヘッダーエリア: タイトルおよび団員一覧抽出用ブックマークレット提供欄 -->
-    <header class="bg-[#27272a] rounded-lg shadow-lg p-6 border border-[#3f3f46]">
-      <h1 class="text-2xl font-bold flex items-center gap-2 text-[#e4e4e7]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
+<body class="bg-background text-[#f4f4f5] min-h-screen px-4 py-6 md:px-8 md:py-10 font-sans antialiased selection:bg-[#3b82f6] selection:text-white relative">
+
+  <div class="max-w-5xl mx-auto space-y-5">
+
+    <!-- ヘッダー: ページタイトルと団員ID取得コードのコピーボタンのみに集約 -->
+    <header class="flex flex-wrap items-center justify-between gap-3 pb-1">
+      <h1 class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2.5 text-[#f4f4f5]">
+        <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-[#18181b] border border-[#27272a] shadow-sm">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </span>
         古戦場貢献度ランキング
       </h1>
-      <div class="mt-3">
-        <p class="text-[#a1a1aa] text-sm mb-2">団員一覧を取得するブックマークレット</p>
-        <div class="flex items-center gap-2 bg-[#18181b] border border-[#3f3f46] rounded p-2">
-          <code class="text-xs text-[#a1a1aa] font-mono overflow-x-auto whitespace-nowrap flex-1 scrollbar-hide">javascript:(async()=>{u=JSON.parse(document.getElementById("server-props").textContent).userId;v=window.Game.version;r=await Promise.all([1,2,3].map(i=>fetch(`/guild_main/guild_member_list/${i}?uid=${u}`,{headers:{"X-Requested-With":"XMLHttpRequest","X-VERSION":v}}).then(r=>r.json())));navigator.clipboard.writeText(r.flatMap(j=>j.list.map(m=>m.id)).join(","));})()</code>
-          <button onclick="copyBookmarklet()" class="shrink-0 bg-[#3f3f46] hover:bg-[#52525b] text-[#e4e4e7] px-3 py-1.5 rounded text-xs font-medium transition-colors flex items-center gap-1" title="クリップボードにコピー">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            コピー
-          </button>
-        </div>
-      </div>
+
+      <button
+        type="button"
+        onclick="copyBookmarklet()"
+        class="inline-flex items-center gap-2 h-9 px-3.5 rounded-md bg-[#18181b] hover:bg-[#27272a] border border-[#27272a] hover:border-[#3f3f46] text-xs font-medium text-[#d4d4d8] hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] focus-visible:ring-offset-2 focus-visible:ring-offset-background cursor-pointer select-none"
+      >
+        <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#a1a1aa]">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        団員ID取得コードをコピー
+      </button>
     </header>
 
-    <!-- コントロールセクション: 開催回選択、プレイヤーID入力、取得実行ボタン -->
-    <section class="bg-[#27272a] rounded-lg shadow-lg p-5 border border-[#3f3f46]">
-      <div class="flex flex-col md:flex-row gap-4 items-stretch">
-        <div>
-          <select id="raidSelect" class="h-full bg-[#18181b] border border-[#3f3f46] text-[#e4e4e7] rounded p-3 text-sm focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] outline-none transition-colors cursor-pointer" title="開催回を選択">
-            <!-- JSで生成 -->
-          </select>
-        </div>
-        <div class="flex-1">
-          <input
-            type="text"
-            id="inputIds"
-            class="w-full bg-[#18181b] border border-[#3f3f46] text-[#e4e4e7] rounded p-3 text-sm focus:border-[#3b82f6] focus:ring-1 focus:ring-[#3b82f6] outline-none transition-colors font-mono"
-            placeholder="プレイヤーID (カンマ区切り)"
-          />
-        </div>
-        <button
-          id="analyzeBtn"
-          class="bg-[#3b82f6] hover:bg-[#2563eb] disabled:bg-[#1e3a8a] disabled:text-gray-400 disabled:cursor-not-allowed text-white font-bold py-3 px-8 rounded transition-colors flex items-center justify-center gap-2 whitespace-nowrap"
-        >
-          <svg id="loadingIcon" class="hidden animate-spin" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
-          </svg>
-          <span id="btnText">データ取得</span>
-        </button>
-      </div>
+    <main class="space-y-5">
+      <!-- 検索・取得フォームカード -->
+      <section class="bg-[#18181b] rounded-xl border border-[#27272a] p-4 sm:p-5 shadow-sm">
+        <div class="flex flex-col md:flex-row gap-3 md:items-end">
+          <div class="w-full md:w-32 shrink-0">
+            <label for="raidSelect" class="block text-xs font-medium text-[#a1a1aa] mb-1.5">開催回</label>
+            <select
+              id="raidSelect"
+              class="w-full h-10 px-3 rounded-md bg-[#09090b] border border-[#27272a] hover:border-[#3f3f46] text-sm text-[#f4f4f5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] focus-visible:border-[#3b82f6] transition-colors cursor-pointer"
+            >
+              <!-- JSで生成 -->
+            </select>
+          </div>
 
-      <!-- エラー表示領域: バリデーションエラーや通信エラー時に表示 -->
-      <div id="errorContainer" class="hidden mt-4 p-3 bg-red-900/30 text-red-400 rounded flex items-center gap-2 text-sm border border-red-800/50">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
-          <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
-        </svg>
-        <p id="errorMsg"></p>
-      </div>
-    </section>
+          <div class="flex-1 min-w-0">
+            <label for="inputIds" class="block text-xs font-medium text-[#a1a1aa] mb-1.5">プレイヤーID</label>
+            <input
+              type="text"
+              id="inputIds"
+              autocomplete="off"
+              spellcheck="false"
+              class="w-full h-10 px-3 rounded-md bg-[#09090b] border border-[#27272a] hover:border-[#3f3f46] text-sm text-[#f4f4f5] placeholder:text-[#52525b] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] focus-visible:border-[#3b82f6] transition-colors font-mono"
+              placeholder="12345678, 87654321"
+            />
+          </div>
 
-    <!-- ランキング結果テーブルセクション -->
-    <section id="resultSection" class="hidden bg-[#27272a] rounded-lg shadow-lg border border-[#3f3f46] overflow-hidden">
-      <div class="p-3 sm:p-4 bg-[#18181b] border-b border-[#3f3f46] flex flex-wrap justify-between items-center gap-2">
-        <div class="flex items-center gap-2.5">
-          <h2 class="font-bold text-[#e4e4e7] text-sm sm:text-base">最新ランキング</h2>
-          <span id="lastUpdate" class="text-xs text-[#71717a]"></span>
+          <button
+            type="button"
+            id="analyzeBtn"
+            class="h-10 px-5 rounded-md bg-[#3b82f6] hover:bg-[#2563eb] active:bg-[#1d4ed8] disabled:bg-[#1e3a8a] disabled:text-[#93c5fd]/70 disabled:cursor-not-allowed text-white text-sm font-semibold transition-colors inline-flex items-center justify-center gap-2 whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#18181b] cursor-pointer"
+          >
+            <svg id="loadingIcon" aria-hidden="true" class="hidden animate-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="2" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="22"></line><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line><line x1="2" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="22" y2="12"></line><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+            </svg>
+            <span id="btnText">ランキングを取得</span>
+          </button>
         </div>
-        <button id="saveImageBtn" onclick="exportRankingImage()" class="flex items-center gap-1.5 px-3 py-1.5 text-xs sm:text-sm bg-[#27272a] hover:bg-[#3f3f46] text-[#e4e4e7] hover:text-white rounded-lg border border-[#3f3f46] transition-all shadow-sm cursor-pointer select-none active:scale-95" title="現在の順位・貢献度一覧を画像(PNG)として保存">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#60a5fa]">
-            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-            <circle cx="12" cy="13" r="4"></circle>
+
+        <!-- エラー通知バー -->
+        <div id="errorContainer" role="alert" class="hidden mt-3.5 px-3.5 py-2.5 bg-red-950/50 text-red-300 rounded-md flex items-center gap-2.5 text-sm border border-red-900/70">
+          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0 text-red-400">
+            <circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>
           </svg>
-          <span class="font-medium">画像として保存</span>
-        </button>
-      </div>
-      <progress id="streamProgress" class="stream-progress hidden w-full" value="0" max="1" aria-label="データ取得の進捗"></progress>
-      <div class="overflow-x-auto">
-        <table class="w-full text-sm text-left whitespace-nowrap">
-          <thead class="bg-[#18181b] text-[#a1a1aa] border-b border-[#3f3f46]">
-            <tr>
-              <th class="px-3 py-3 font-medium w-10 text-center text-[#71717a]">#</th>
-              <th class="px-5 py-3 font-medium w-24 cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('rank')" title="全体順位で並び替え">
-                <div class="flex items-center gap-1">全体順位 <span id="sort-icon-rank" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
-              </th>
-              <th class="px-5 py-3 font-medium">プレイヤー</th>
-              <th class="px-5 py-3 font-medium text-right cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('point')" title="貢献度で並び替え">
-                <div class="flex items-center justify-end gap-1">貢献度 <span id="sort-icon-point" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
-              </th>
-              <th class="px-5 py-3 font-medium text-right cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('realSpeed')" title="時速で並び替え">
-                <div class="flex flex-col items-end">
-                  <div class="flex items-center justify-end gap-1">時速 <span id="sort-icon-realSpeed" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
-                  <span class="text-xs text-[#71717a] font-normal block">1h (20m予測)</span>
-                </div>
-              </th>
-              <th class="px-5 py-3 font-medium text-right cursor-pointer hover:bg-[#3f3f46]/50 transition-colors select-none group" onclick="handleSort('todayInc')" title="当日増加量で並び替え">
-                <div class="flex items-center justify-end gap-1">当日増加量 <span id="sort-icon-todayInc" class="text-[#3b82f6] text-xs transition-opacity opacity-0 group-hover:opacity-50">▼</span></div>
-              </th>
-              <th class="px-5 py-3 font-medium text-right">10万位差</th>
-              <th class="px-5 py-3 font-medium text-right">更新日時</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody" class="divide-y divide-[#3f3f46]">
-            <!-- JSで動的にtr要素を生成 -->
-          </tbody>
-        </table>
-      </div>
-    </section>
+          <p id="errorMsg"></p>
+        </div>
+      </section>
+
+      <!-- ランキング結果テーブルカード -->
+      <section id="resultSection" class="hidden bg-[#18181b] rounded-xl border border-[#27272a] shadow-sm overflow-hidden">
+        <div class="px-4 py-3 bg-[#141417] border-b border-[#27272a] flex flex-wrap justify-between items-center gap-2.5">
+          <div class="flex flex-wrap items-center gap-2">
+            <h2 id="rankingTableHeading" class="font-semibold text-sm text-[#f4f4f5]">
+              <span id="resultRaidBadge">ランキング</span>
+            </h2>
+            <span id="resultCountBadge" class="hidden inline-flex items-center px-2 py-0.5 rounded-full text-xs font-mono font-medium bg-[#27272a] text-[#d4d4d8]"></span>
+            <span class="inline-flex items-center gap-1.5 text-xs font-mono text-[#71717a]">
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span id="lastUpdate"></span>
+            </span>
+          </div>
+
+          <button
+            type="button"
+            id="saveImageBtn"
+            onclick="exportRankingImage()"
+            disabled
+            class="inline-flex items-center gap-1.5 h-8 px-3 text-xs font-medium rounded-md bg-[#18181b] hover:bg-[#27272a] disabled:opacity-40 disabled:pointer-events-none text-[#e4e4e7] hover:text-white border border-[#27272a] hover:border-[#3f3f46] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] focus-visible:ring-offset-2 focus-visible:ring-offset-[#141417] cursor-pointer select-none"
+          >
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-[#60a5fa]">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            PNGを保存
+          </button>
+        </div>
+
+        <progress id="streamProgress" class="stream-progress hidden w-full" value="0" max="1" aria-label="取得進捗"></progress>
+
+        <div class="overflow-x-auto" role="region" aria-labelledby="rankingTableHeading" tabindex="0">
+          <table class="w-full min-w-[720px] text-sm text-left whitespace-nowrap">
+            <caption class="visually-hidden">古戦場貢献度ランキング一覧</caption>
+            <thead class="bg-[#141417] text-xs font-medium text-[#a1a1aa] border-b border-[#27272a]">
+              <tr>
+                <th scope="col" class="px-3 py-3 w-11 text-center text-[#71717a]">#</th>
+                <th scope="col" class="sortable-col w-28" data-sort-key="rank">
+                  <button type="button" class="sort-btn justify-start" onclick="handleSort('rank')">
+                    <span>全体順位</span>
+                    <svg aria-hidden="true" class="sort-indicator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                </th>
+                <th scope="col" class="px-5 py-3">プレイヤー</th>
+                <th scope="col" class="sortable-col text-right" data-sort-key="point" aria-sort="descending">
+                  <button type="button" class="sort-btn justify-end" onclick="handleSort('point')">
+                    <span>貢献度</span>
+                    <svg aria-hidden="true" class="sort-indicator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                </th>
+                <th scope="col" class="sortable-col text-right" data-sort-key="realSpeed">
+                  <button type="button" class="sort-btn justify-end" onclick="handleSort('realSpeed')">
+                    <span class="flex flex-col items-end leading-tight">
+                      <span>時速</span>
+                      <span class="text-[11px] text-[#71717a] font-normal">1h / 20m</span>
+                    </span>
+                    <svg aria-hidden="true" class="sort-indicator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                </th>
+                <th scope="col" class="sortable-col text-right" data-sort-key="todayInc">
+                  <button type="button" class="sort-btn justify-end" onclick="handleSort('todayInc')">
+                    <span>当日増加</span>
+                    <svg aria-hidden="true" class="sort-indicator" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </button>
+                </th>
+                <th scope="col" class="px-5 py-3 text-right">10万位差</th>
+                <th scope="col" class="px-5 py-3 text-right">更新</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody" class="divide-y divide-[#27272a]">
+              <!-- JSで動的にtr要素を生成 -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
 
   </div>
 
-  <!-- グラフ詳細モーダルダイアログ: モバイル時は画面高さいっぱいに使い、PC時は最大幅5xlで表示 -->
-  <div id="chartModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-2 sm:p-4 opacity-0 transition-opacity duration-300">
-    <div class="bg-[#27272a] rounded-xl shadow-2xl border border-[#3f3f46] w-full max-w-5xl h-[92vh] sm:h-[80vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
-      
-      <!-- モーダルヘッダー: 上部にタイトルと閉じるボタン、下部に期間切替タブ（横スクロール対応） -->
-      <div class="p-3 sm:p-4 border-b border-[#3f3f46] flex flex-col gap-2.5 bg-[#202023]">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- グラフ詳細モーダルダイアログ -->
+  <div id="chartModal" role="dialog" aria-modal="true" aria-labelledby="modalChartTitle" class="fixed inset-0 bg-black/80 backdrop-blur-[2px] hidden z-50 flex items-center justify-center p-2 sm:p-4 opacity-0 transition-opacity duration-300">
+    <div class="bg-[#18181b] rounded-xl shadow-2xl border border-[#27272a] w-full max-w-5xl h-[92vh] sm:h-[82vh] flex flex-col overflow-hidden" onclick="event.stopPropagation()">
+
+      <!-- モーダルヘッダー -->
+      <div class="p-3.5 sm:p-4 border-b border-[#27272a] flex flex-col gap-3 bg-[#141417]">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
               <line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
-            <span id="modalChartTitle" class="font-bold text-sm sm:text-base text-[#e4e4e7]">推移・予測グラフ</span>
+            <h2 id="modalChartTitle" class="font-semibold text-sm sm:text-base text-[#f4f4f5] truncate">推移グラフ</h2>
+            <span id="modalChartTypeBadge" class="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#27272a] text-[#a1a1aa] shrink-0"></span>
           </div>
-          <!-- 閉じるボタン: モバイルでも親指で押しやすいようタップ領域を確保 -->
-          <button onclick="closeChartModal()" class="text-[#a1a1aa] hover:text-white transition-colors p-1.5 bg-[#18181b] hover:bg-[#3f3f46] rounded-md border border-[#3f3f46] no-tap-highlight" title="閉じる">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+          <button
+            type="button"
+            onclick="closeChartModal()"
+            aria-label="閉じる"
+            class="inline-flex items-center justify-center w-8 h-8 rounded-md text-[#a1a1aa] hover:text-white bg-[#18181b] hover:bg-[#27272a] border border-[#27272a] hover:border-[#3f3f46] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] no-tap-highlight cursor-pointer"
+          >
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </button>
         </div>
-        <!-- 期間切り替えボタンタブ（予選・インターバル・各本戦日など） -->
-        <div id="modalDateTabs" class="flex gap-1.5 sm:gap-2 overflow-x-auto w-full pb-1 scrollbar-hide touch-scroll no-tap-highlight">
+
+        <!-- 期間切り替えタブ -->
+        <div id="modalDateTabs" class="flex gap-1.5 overflow-x-auto w-full pb-0.5 scrollbar-hide touch-scroll no-tap-highlight">
           <!-- JSで動的に期間タブを生成 -->
         </div>
 
-        <!-- 選択期間内の貢献度増加量サマリー表示領域: グラフ上部で直感的に期間内純増を把握可能にする -->
-        <div id="modalIncreaseSummary" class="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5 px-3 py-1.5 rounded-lg bg-[#18181b] border border-[#3f3f46]/80 text-xs sm:text-sm">
-          <div class="flex items-center gap-1.5 text-[#a1a1aa] shrink-0">
-            <span class="inline-block w-2 h-2 rounded-full bg-[#3b82f6]"></span>
-            <span id="summaryPhaseLabel" class="font-semibold text-[#e4e4e7]">期間内増加量</span>
-            <span class="text-[10px] text-[#71717a] cursor-pointer hover:text-[#a1a1aa] transition-colors select-none" onclick="toggleSummaryNumber(event)" title="タップで数値表記切り替え（略記 ⇄ 正確な実数値）">(タップで詳細数値切替)</span>
+        <!-- 期間サマリーバー -->
+        <div id="modalIncreaseSummary" class="flex flex-wrap items-center justify-between gap-2.5 px-3 py-2 rounded-lg bg-[#09090b] border border-[#27272a] text-xs sm:text-sm">
+          <div class="flex items-center gap-2 shrink-0">
+            <span id="summaryPhaseLabel" class="font-medium text-[#d4d4d8]">累計貢献度</span>
+            <button
+              type="button"
+              id="summaryDetailToggle"
+              aria-pressed="false"
+              onclick="toggleSummaryNumber(event)"
+              class="metric-toggle-btn inline-flex items-center gap-1 h-6 px-2 rounded border border-[#27272a] bg-[#18181b] hover:bg-[#27272a] text-[11px] font-medium text-[#a1a1aa] hover:text-[#f4f4f5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] cursor-pointer select-none"
+            >
+              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+              実数値
+            </button>
           </div>
-          <div id="summaryValues" class="flex flex-wrap items-center gap-2 sm:gap-3 font-mono">
+          <div id="summaryValues" class="flex flex-wrap items-center gap-3 font-mono tabular-nums">
             <!-- JSで動的に生成 -->
           </div>
         </div>
       </div>
-      
-      <!-- モーダルコンテンツ: グラフ描画用キャンバス領域 -->
-      <div class="p-2 sm:p-4 flex-1 min-h-0 relative bg-[#1c1c1e]">
+
+      <!-- グラフ描画キャンバス -->
+      <div class="p-2.5 sm:p-4 flex-1 min-h-0 relative bg-[#1c1c1e]">
         <canvas id="detailChart"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- トースト通知コンテナ: コピー完了などのフィードバックを一時表示 -->
-  <div id="toast" class="fixed bottom-6 right-6 bg-[#27272a] border border-[#3f3f46] text-[#e4e4e7] px-5 py-3 rounded-lg shadow-2xl transition-opacity duration-300 opacity-0 pointer-events-none z-50 text-sm flex items-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- トースト通知 -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-[#18181b] border border-[#3f3f46] text-[#f4f4f5] px-4 py-2.5 rounded-lg shadow-2xl transition-opacity duration-300 opacity-0 pointer-events-none z-50 text-xs sm:text-sm font-medium flex items-center gap-2">
+    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="20 6 9 17 4 12"></polyline>
     </svg>
     <span id="toastMsg"></span>
   </div>
 
-  <!-- スクリーンリーダー向けステータス通知領域（完了・ソート時に1回だけ通知） -->
+  <!-- スクリーンリーダー向けステータス通知領域 -->
   <p id="srStatus" role="status" class="visually-hidden"></p>
 
-  <!-- アプリケーションロジックの読み込み -->
-  <script src="script.js?v=20261124_01"></script>
+  <!-- アプリケーションロジック -->
+  <script src="script.js?v=20261124_02"></script>
 </body>
 </html>
